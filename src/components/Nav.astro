@@ -1,0 +1,103 @@
+---
+
+---
+<div class="glass" 
+	style="  
+	position: fixed; 
+	top: 0; 
+	left: 0; 
+	width: 100%; 
+	height: var(--portion); 
+	z-index: var(--z-layed-top);
+	font-size: var(--regular-font);
+	padding: 1ch;
+	background-color: var(--glass-background);
+	display: flex;
+	position: relative;
+	align-items: center;
+	gap: 1ch; ">
+
+
+	<div style="margin-inline: calc((var(--portion) - var(--small-clickable)) / 4 ); 
+      		margin-right: auto;
+      		font-size:var(--big-font);"> 
+
+    		home</div>
+
+    <input type="checkbox" name="menu" id="menu" style="display: none;"/>
+	<label aria-label="Menu Drawer" for="menu"
+	    style="
+	    border: none;
+  		background: none;
+  		padding: 0;
+  		cursor: pointer;
+  		position: relative;
+  		width: var(--portion);
+  		height: var(--portion);
+  		display: flex;
+		place-content: center;">
+
+		<div id="line1" class="line line1"></div>
+ 		<div id="line2" class="line line2"></div>
+
+	</label>
+</div>
+
+
+<div id="drawer" class="glass drw" 
+  	style=" display: flex;
+ 	position: fixed; 
+ 	left: 0; 
+ 	width: 100%; 
+ 	height: 100%; 
+ 	padding: 10px;
+ 	box-sizing: border-box;
+ 	flex-direction: column;
+ 	transition: top 0.15s ease-out;  
+ 	z-index: var(--z-layer-higher);
+ 	background-color: var(--glass-background)">
+
+	<slot/>
+
+ </div>
+
+<style is:global>
+
+.drw{
+display: none;
+top: -100% ;
+}
+
+:root:has(#menu:checked) .drw {
+	display: block;
+    top: var(--portion) ;
+	transition-duration:0.2s;
+}
+
+
+.line {
+position: absolute;
+width: var(--small-clickable);
+height: 2px;
+background: var(--accent-color);
+transition: transform 0.3s ease;
+border-radius: 2ch;
+}
+
+.line1 {
+top: calc(50% - 5px);
+}
+
+.line2 {
+top: calc(50% + 5px);
+}
+
+:root:has(#menu:checked) .line1 {
+    transform: rotate(-45deg) translate(0, 7.1px);
+}
+
+:root:has(#menu:checked) .line2 {
+    transform: rotate(45deg) translate(0, -7.1px);
+}
+
+</style>

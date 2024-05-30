@@ -1,0 +1,117 @@
+---
+import Nav from '../components/Nav.astro';
+import Drawer from '../components/Drawer.astro';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<script is:inline > if (typeof navigator.serviceWorker !== 'undefined') {navigator.serviceWorker.register('sw.js')}</script>
+
+	</head>
+
+	<body id="page" style="
+		min-height: max-content;
+ 		min-height: 100vh;
+ 		background-position: 0 0;
+  	border: 0px solid transparent ;
+		background: var(--bg-canv);
+		font-size: var(--regular-font);
+		transition: color 0.2s ease-out ;"> 
+
+		<Nav>
+			<Drawer/>
+		</Nav>	
+		<slot/>
+		
+
+	</body>
+
+
+
+</html>
+<style is:global>
+
+:root {
+
+  font-family: system-ui;
+  --big-font: 130%;
+  --regular-font: 100%;
+  --extra-small-font: 80%;
+
+  accent-color: oklch(0.65 0.142 268.67);
+  --primary: oklch(0.65 0.142 268.67);
+  --primery-transparent: oklch(0.65 0.185 268.67 / 0.75);
+  --secondary: oklch(0.62 0.152 273.00);
+  --card-bg-color: linear-gradient(290deg, oklch(0.58742 0.17443 277.74) 0%, oklch(0.61088 0.16236 274.98) 65%, oklch(0.69733 0.125 261.28) 100%);
+  --drop-shadow: 0 0 5px oklch(0.65554 0.14152 268.67 / 0.7);
+  --light-reflection: oklch(1 0 0/ 0.65);
+
+
+  --bg-canv: linear-gradient(135deg, oklch(0.40 0 0) 0%, oklch(0.35 0 0) 14%, oklch(0.22 0 0) 100%);
+  --select-color: oklch(0.15 0 0);
+  --accent-color: oklch(0.99 0.005 197.00);
+  --focus-color: oklch(1 0 0 / 0.5);
+  --focus-color-gradient: linear-gradient(oklch(1 0 0 / 0.4),oklch(1 0 0 / 0.3));
+  --main-border: oklch(0.35 0 0);
+  --glass-background: oklch(0.1 0 0 / 0.4);
+  --slider-thumb-color: linear-gradient(oklch(0.22 0 0),oklch(0.34 0 0));
+  --inout-bg: oklch(0.1 0 0 / 0.5);
+  --input-bg-focus: linear-gradient(oklch(0.22 0 0 / 0.9),oklch(0.22 0 0 / 0.8));
+  --toggle-bg: oklch(0.22 0 0 );
+  --toggle-bg-darker: oklch(0.1 0 0 / 0.5);
+  --indent-bg: linear-gradient(oklch(0 0 0 / 0.8),oklch(0.19125 0 0 / 0.8));
+  --tab-bg: linear-gradient(290deg, oklch(0.085 0 0 / 0.5) 0%, oklch(0.085 0 0 / 0.4) 65%, oklch(0.085 0 0 / 0.35) 100%);
+  --glow: oklch(0.65 0 268.67);
+  --dark-shadow: oklch(0.22 0.162 268.67);
+
+
+  --portion: 6ch;
+  --small-clickable: 3.5ch;
+  --default-padding: 0.7ch 1.5ch;
+  --thin-padding: 0.35ch 1ch;
+  --slider-width: 97.5%;
+
+  --radiu-a: 0.7ch;
+  --radiu-b: 2.1ch;
+  --radus-c: 2.5ch;
+
+  --z-layed-top: 4;
+  --z-layer-higher: 3;
+  --z-layer-middle: 2
+}
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent
+}
+
+*,
+:after,
+:before {
+  box-sizing: border-box
+}
+
+html,
+body {
+  color: var(--accent-color);
+}
+
+.glass {
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px)
+}
+
+</style>

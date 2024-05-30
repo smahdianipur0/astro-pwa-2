@@ -1,0 +1,101 @@
+
+
+<input type="radio" name="tab" id="one" data-tab="one" checked />
+<input type="radio" name="tab" id="two" data-tab="two"/>
+
+<nav class="drw-list">
+   <label id="one_lable" for="one" class="tab-label" data-tab-label="one">Random</label>
+   <label id="two_lable" for="two" class="tab-label" data-tab-label="two">Manual</label> 
+</nav>
+
+
+
+<style is:global>
+	
+
+[data-tab] {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute
+}
+
+[data-tab=one]:focus ~ nav [data-tab-label=one],
+[data-tab=two]:focus ~ nav [data-tab-label=two] {
+  outline: Highlight auto 1px;  
+/*   outline: -webkit-focus-ring-color auto 1px  */
+}
+
+a {
+  text-decoration: none; 
+  height: 25px;
+  margin:10px var(--portion); 
+  margin: 100px;
+}
+
+.drw-list {
+  display: grid;
+  grid-template-columns: auto;
+  grid-gap: 1ch;
+  opacity: 0.1;
+  transform: translateX(-50px);
+}
+
+.tab-label{
+  width: 200px;
+  height: 25px;
+  vertical-align: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: start;
+  color: var(--accent-color);
+  font-size: var(--regular-font);
+  font-family: inherit;
+  
+}
+
+:root:has(#menu:checked) .drw-list {
+    transform: translateX(calc((var(--portion) - var(--small-clickable)) / 4 ));
+    opacity: 1;
+    transition-delay: 0.2s;
+    transition-duration: 0.2s;
+}
+
+.tab-content {
+    display: none;
+    width: 100%;
+}
+
+:root:has(#one:checked) .tab-content.one {
+    display: block;
+}
+
+
+:root:has(#two:checked) .tab-content.two {
+    display: block;
+}
+
+
+</style>
+
+<script>
+
+const checkbox = document.getElementById("menu")! as HTMLInputElement;
+
+document.getElementById("one_lable")!.addEventListener("click", toggleCheckbox);
+      document.getElementById("one")!.addEventListener("keydown", toggleOnEnter);
+
+document.getElementById("two_lable")!.addEventListener("click", toggleCheckbox);
+      document.getElementById("two")!.addEventListener("keydown", toggleOnEnter);
+
+function toggleCheckbox() {
+    checkbox.checked = !checkbox.checked;
+}
+
+function toggleOnEnter(event: KeyboardEvent) {
+    if (event.key === "Enter") {
+        toggleCheckbox();
+    }
+}
+
+</script>

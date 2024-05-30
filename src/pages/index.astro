@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Mytext from '../components/Mytext.astro';
+import Slider from '../components/Slider.astro';
+import Mytab from '../components/Mytab.astro';
+---
+
+<Layout title="Welcome to Astro.">
+	<main id = "main" class="drw_target" style="
+	margin: auto;
+	padding: 1rem;
+	width: 800px;
+	max-width: calc(100% - 2rem);
+	color: white;
+	font-size: 20px;
+	line-height: 1.6;">
+
+	<Mytext id = "try" body="hello"/>
+	<Mytext id = "try-2" body="hello-2"/>
+	<Slider body="hi"/>
+	<p id= "createEffect"></p>
+	<p id= "createEffect-2"></p>	
+	<!-- <Mytab/> -->
+
+
+    <div class="tab-content one"> 
+        <div>Random tab</div>
+    </div>
+
+    <div class="tab-content two"> 
+        <div>Manual tab</div>
+    </div>
+
+
+
+
+	</main>
+
+
+</Layout>
+
+
+<style >
+
+
+
+
+</style>
+
+
+
+
+
+
+
+
+

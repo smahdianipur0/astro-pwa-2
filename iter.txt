@@ -1,0 +1,43 @@
+iter
+
+SW
+
+const CACHE = "pwabuilder-offline";
+
+importScripts('third_party/workbox/workbox-v7.1.0/workbox-sw.js');
+
+workbox.setConfig({
+  modulePathPrefix:'third_party/workbox/workbox-v7.1.0',
+})
+
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});
+
+workbox.routing.registerRoute(
+  new RegExp('/*'),
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: CACHE
+  })
+);
+    <script> if (typeof navigator.serviceWorker !== 'undefined') {navigator.serviceWorker.register('/sw.js')}</script>
+
+
+drawer
+
+document.addEventListener("click", function (event) {
+    const target = event.target as HTMLElement;
+    if (target.id === "one_label" || target.id === "two_label") {
+        const checkbox = document.getElementById("menu")!;
+        if (checkbox) {
+            checkbox.checked = !checkbox.checked;
+        }
+    }
+});
+
+
+
+
+outline: -webkit-focus-ring-color auto 1px

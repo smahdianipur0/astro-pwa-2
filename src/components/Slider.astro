@@ -1,0 +1,62 @@
+---
+interface Props {	
+	body: string;	
+}
+
+const { body } = Astro.props;
+---
+
+
+<button id ="Slider" style= "font-size:20px;"> { body } </button>
+<input type="range"  id="rangeInput" min="12" max="20" value="16"
+style = "  --position: 50%;
+   -webkit-appearance: none;
+   appearance: none;
+   cursor: pointer;
+   height: 7px;
+   width: 100%;
+   border-radius: 1ch;
+   outline: none;
+   border: 1px solid var(--accent-color);
+   display: flex;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 1ch;
+   background-color: rgba(45, 45, 45,1);
+   background-image: linear-gradient(rgba(180, 185, 185, 1), rgba(250, 255, 255, 1));
+   background-clip: content-box;
+   background-size: 120% 1ch;
+   background-position: calc(600% - ( var(--position) * 5) );
+   background-repeat: no-repeat;
+
+">
+
+
+
+
+<script>
+
+import { count, setCount } from '../components/signals.ts';
+import { len, setLen } from '../components/signals.ts';
+
+document.getElementById("main")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#try-2 ,#try")){
+      setCount(count() + 1); 
+      console.log(count()) ;     
+    }
+   else if((e!.target as HTMLInputElement).matches("#Slider")){       
+      console.log(count())
+    }
+});
+
+
+document.getElementById("main")!.addEventListener("input",(e)=>{
+    if ((e!.target as HTMLInputElement).matches("#rangeInput")) {
+      console.log("got the rangeInput");
+      setLen(Number((e!.target as HTMLInputElement).value));
+
+      document.getElementById("rangeInput")!.style.setProperty('--position', (((Number(len()) - 12) / 8) * 100) + '%');
+   }
+});
+
+</script>

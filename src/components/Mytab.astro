@@ -1,0 +1,94 @@
+---
+
+---
+
+
+    <input checked="checked" id=tab1 type="radio" name="tab" data-tab=tab1 />
+    <input id=tab2 type="radio" name="tab" data-tab=tab2 />
+
+    <nav>
+      <label for=tab1 data-tab-label=tab1 role="tab">tab1</label>
+      <label for=tab2 data-tab-label=tab2 role="tab">tab2</label>
+    </nav>
+
+<div>hello</div>
+
+<p>
+  <section data-tab-panel=tab1 role="tabpanel" aria-labelledby=tab1>
+      First Tab Panel
+      <p>1,2,3, testing</p>
+    </section>
+      <section data-tab-panel=tab2 role="tabpanel" aria-labelledby=tab2>
+      Second Tab Panel
+    </section>
+</p>
+
+
+    <style is:global>
+
+
+
+  :root{
+    color: white;
+  }
+  
+nav{
+  display: flex;
+  place-content: center;
+}
+
+nav > * {
+  text-align: center;
+  width: 10ch;
+
+}
+
+[data-tab] {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute
+}
+
+[data-tab-panel] {
+
+  height: 0;
+  opacity: 0;
+  position: relative;
+  transition: opacity .3s ease-in-out;
+  visibility: hidden;
+}
+
+
+[data-tab-label] {
+  background-color: var(--tab-background-color,none);
+  border-bottom: var(--tab-border-bottom-width,0) solid transparent;
+  border-top-left-radius: var(--tab-radius,0);
+  border-top-right-radius: var(--tab-radius,0);
+  bottom: -1px;
+  cursor: pointer;
+  padding: var(--tab-spacing,0);
+  position: relative
+}
+
+
+[data-tab=tab1]:checked ~ nav [data-tab-label=tab1],
+[data-tab=tab2]:checked ~ nav [data-tab-label=tab2] {
+  color: gold;
+}
+
+
+
+[data-tab=tab1]:checked ~ nav ~[data-tab-panel=tab1],
+[data-tab=tab2]:checked ~ nav ~[data-tab-panel=tab2] {
+
+  height: auto;
+  opacity: 1;
+  visibility: visible;
+  width: 100%;
+  border: 2px solid lightcoral;
+}
+
+
+
+
+</style>
