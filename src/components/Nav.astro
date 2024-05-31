@@ -1,8 +1,4 @@
----
-
----
-<div class="glass" 
-	style="  
+<div class="glass" style="  
 	position: fixed; 
 	top: 0; 
 	left: 0; 
@@ -18,15 +14,16 @@
 	gap: 1ch; ">
 
 
-	<div style="margin-inline: calc((var(--portion) - var(--small-clickable)) / 4 ); 
+  <div style="margin-inline: calc((var(--portion) - var(--small-clickable)) / 4 ); 
       		margin-right: auto;
-      		font-size:var(--big-font);"> 
+      		font-size:var(--big-font);">
 
-    		home</div>
+    home</div>
 
-    <input type="checkbox" name="menu" id="menu" style="display: none;"/>
-	<label aria-label="Menu Drawer" for="menu"
-	    style="
+  <input type="checkbox" name="menu" id="menu" data-menu="menu" style="
+  opacity: 0; pointer-events: none;position: absolute" />
+
+  <label aria-label="Menu Drawer" for="menu" data-menu-label="menu" style="
 	    border: none;
   		background: none;
   		padding: 0;
@@ -37,43 +34,49 @@
   		display: flex;
 		place-content: center;">
 
-		<div id="line1" class="line line1"></div>
- 		<div id="line2" class="line line2"></div>
+    <div id="line1" class="line line1"></div>
+    <div id="line2" class="line line2"></div>
 
-	</label>
+  </label>
 </div>
 
 
-<div id="drawer" class="glass drw" 
-  	style=" display: flex;
+<div id="drawer" class="glass drw" style="
  	position: fixed; 
  	left: 0; 
  	width: 100%; 
  	height: 100%; 
  	padding: 10px;
- 	box-sizing: border-box;
  	flex-direction: column;
- 	transition: top 0.15s ease-out;  
  	z-index: var(--z-layer-higher);
  	background-color: var(--glass-background)">
 
-	<slot/>
+  <slot />
 
- </div>
+</div>
 
 <style is:global>
 
 .drw{
-display: none;
-top: -100% ;
+	block-size: 0;
+	display: none;
+	top: -100% ;
+	transition-duration:0.2s;
+	transition-behavior: allow-discrete;
 }
 
 :root:has(#menu:checked) .drw {
-	display: block;
+	display: flex;
     top: var(--portion) ;
-	transition-duration:0.2s;
+
+	@starting-style{
+	top: -100% ;	
+	}
 }
 
+[data-menu=menu]:focus-visible ~ [data-menu-label=menu] {
+  outline: Highlight auto 1px;  
+}
 
 .line {
 position: absolute;
@@ -82,6 +85,7 @@ height: 2px;
 background: var(--accent-color);
 transition: transform 0.3s ease;
 border-radius: 2ch;
+
 }
 
 .line1 {
@@ -101,3 +105,16 @@ top: calc(50% + 5px);
 }
 
 </style>
+
+<script >
+
+const checkbox = document.getElementById("menu")! as HTMLInputElement;
+
+document.getElementById("menu")!.addEventListener("keydown", toggleOnEnter);
+
+function toggleOnEnter(event: KeyboardEvent) {
+    if (event.key === "Enter") {
+        checkbox.checked = !checkbox.checked;;
+    }
+}
+</script>

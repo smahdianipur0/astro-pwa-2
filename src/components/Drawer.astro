@@ -1,5 +1,3 @@
-
-
 <input type="radio" name="tab" id="one" data-tab="one" checked />
 <input type="radio" name="tab" id="two" data-tab="two"/>
 
@@ -12,15 +10,14 @@
 
 <style is:global>
 	
-
 [data-tab] {
   opacity: 0;
   pointer-events: none;
   position: absolute
 }
 
-[data-tab=one]:focus ~ nav [data-tab-label=one],
-[data-tab=two]:focus ~ nav [data-tab-label=two] {
+[data-tab=one]:focus-visible ~ nav [data-tab-label=one],
+[data-tab=two]:focus-visible ~ nav [data-tab-label=two] {
   outline: Highlight auto 1px;  
 /*   outline: -webkit-focus-ring-color auto 1px  */
 }

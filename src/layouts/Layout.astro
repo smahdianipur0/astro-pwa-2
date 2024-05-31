@@ -21,24 +21,22 @@ const { title } = Astro.props;
 		<script is:inline > if (typeof navigator.serviceWorker !== 'undefined') {navigator.serviceWorker.register('sw.js')}</script>
 
 	</head>
+<body id="page" style="
+  min-height: max-content;
+  min-height: 100vh;
+  background-position: 0 0;
+  border: 0px solid transparent ;
+  background: var(--bg-canv);
+  font-size: var(--regular-font);
+  transition: color 0.2s ease-out ;">
 
-	<body id="page" style="
-		min-height: max-content;
- 		min-height: 100vh;
- 		background-position: 0 0;
-  	border: 0px solid transparent ;
-		background: var(--bg-canv);
-		font-size: var(--regular-font);
-		transition: color 0.2s ease-out ;"> 
+  <Nav>
+    <Drawer />
+  </Nav>
+  <slot />
 
-		<Nav>
-			<Drawer/>
-		</Nav>	
-		<slot/>
-		
 
-	</body>
-
+</body>
 
 
 </html>
