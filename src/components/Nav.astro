@@ -75,7 +75,9 @@
 }
 
 [data-menu=menu]:focus-visible ~ [data-menu-label=menu] {
-  outline: Highlight auto 1px;  
+  outline: Highlight auto 1px;
+  outline: -webkit-focus-ring-color auto 1px;
+ 
 }
 
 .line {
@@ -106,15 +108,3 @@ top: calc(50% + 5px);
 
 </style>
 
-<script >
-
-const checkbox = document.getElementById("menu")! as HTMLInputElement;
-
-document.getElementById("menu")!.addEventListener("keydown", toggleOnEnter);
-
-function toggleOnEnter(event: KeyboardEvent) {
-    if (event.key === "Enter") {
-        checkbox.checked = !checkbox.checked;;
-    }
-}
-</script>

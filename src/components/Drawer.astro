@@ -1,26 +1,50 @@
-<input type="radio" name="tab" id="one" data-tab="one" checked />
-<input type="radio" name="tab" id="two" data-tab="two"/>
+<nav class="drw-list" id="route">
 
-<nav class="drw-list">
-   <label id="one_lable" for="one" class="tab-label" data-tab-label="one">Random</label>
-   <label id="two_lable" for="two" class="tab-label" data-tab-label="two">Manual</label> 
+<input type="radio" name="tab" class="sub-route" id="one" checked />
+<input type="radio" name="tab" class="sub-route" id="two" />
+
+<input aria-label="theme toggle" class="sub-route" id="theme-toggle"  type="checkbox" id="theme-toggle"
+name="theme" style="margin-bottom: 8ch; margin-top: auto;"> 
+
 </nav>
 
 
 
 <style is:global>
-	
-[data-tab] {
-  opacity: 0;
-  pointer-events: none;
-  position: absolute
+
+.sub-route {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  cursor: pointer;
+  font-size:var(--regular-font);
+  background-color: transparent;
+  text-align: start;
+  font-size: var(--regular-font);
+  text-align: start;
+  line-height: 2ch;
+  transition-duration: 0.2s;
 }
 
-[data-tab=one]:focus-visible ~ nav [data-tab-label=one],
-[data-tab=two]:focus-visible ~ nav [data-tab-label=two] {
-  outline: Highlight auto 1px;  
-/*   outline: -webkit-focus-ring-color auto 1px  */
+#one:after {
+  content: 'Random';
+  color:var(--accent-color); 
 }
+
+#two:after {
+  content: 'Manual';
+  color:var(--accent-color); 
+}
+
+#theme-toggle:before {
+  color:var(--accent-color);
+  content: 'Change Theme: ☀️'; 
+}
+
+:root:has(#theme-toggle:checked) #theme-toggle:before {
+  content: 'Change Theme: 🌙'; 
+}
+
 
 a {
   text-decoration: none; 
@@ -37,25 +61,17 @@ a {
   transform: translateX(-50px);
 }
 
-.tab-label{
-  width: 200px;
-  height: 25px;
-  vertical-align: center;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  text-align: start;
-  color: var(--accent-color);
-  font-size: var(--regular-font);
-  font-family: inherit;
-  
-}
 
 :root:has(#menu:checked) .drw-list {
     transform: translateX(calc((var(--portion) - var(--small-clickable)) / 4 ));
     opacity: 1;
     transition-delay: 0.2s;
     transition-duration: 0.2s;
+
+    @starting-style{
+    opacity: 0.1;
+    transform: translateX(-50px);    
+    }
 }
 
 .tab-content {
@@ -73,26 +89,40 @@ a {
 }
 
 
+
+
+
 </style>
 
 <script>
 
 const checkbox = document.getElementById("menu")! as HTMLInputElement;
 
-document.getElementById("one_lable")!.addEventListener("click", toggleCheckbox);
-      document.getElementById("one")!.addEventListener("keydown", toggleOnEnter);
+document
+    .getElementById("one")!
+    .addEventListener("click", (event) => toggleCheckbox(event));
+document
+    .getElementById("two")!
+    .addEventListener("click", (event) => toggleCheckbox(event));
 
-document.getElementById("two_lable")!.addEventListener("click", toggleCheckbox);
-      document.getElementById("two")!.addEventListener("keydown", toggleOnEnter);
-
-function toggleCheckbox() {
-    checkbox.checked = !checkbox.checked;
+function toggleCheckbox(event: MouseEvent) {
+    if (event.detail === 1) {
+        checkbox.checked = !checkbox.checked;
+    }
 }
+
+document.getElementById("route")!.addEventListener("keydown", toggleOnEnter);
 
 function toggleOnEnter(event: KeyboardEvent) {
     if (event.key === "Enter") {
-        toggleCheckbox();
+        if (event.detail === 1) {
+            checkbox.checked = !checkbox.checked;
+        } else {
+            checkbox.checked = !checkbox.checked;
+        }
     }
 }
+
+
 
 </script>
