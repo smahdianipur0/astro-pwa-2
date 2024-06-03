@@ -8,61 +8,32 @@ const { body } = Astro.props;
 
 
 <button id ="Slider"> { body } </button>
-<input type="range"  id="rangeInput" min="12" max="20" value="16" list="values"
-style = "
-   -webkit-appearance: none;
-   appearance: none;
-   bborder-radius: 10px;
-   cursor: pointer;
-   --position: 50%;
-   height: 7px;
-   width: 100%;
-   border-radius: 1ch;
-   outline: none;
-   border: 1px solid var(--accent-color);
-   display: flex;
-   margin-left: auto;
-   margin-right: auto;
-   margin-top: 1ch;
-   background-color: rgba(45, 45, 45,1);
-   background-image: linear-gradient(rgba(180, 185, 185, 1), rgba(250, 255, 255, 1));
-   background-clip: content-box;
-   background-size: 120% 1ch;
-   background-position: calc(600% - ( var(--position) * 5) );
-   background-repeat: no-repeat; 
-
+<input type="range"  id="rangeInput" min="12" max="20" value="16" list="values" 
+style = "-webkit-appearance: none;
+appearance: none;
+bborder-radius: 10px;
+cursor: pointer;
+--position: 50%;
+height: 7px;
+width: 100%;
+border-radius: 1ch;
+outline: none;
+border: 1px solid var(--accent-color);
+display: flex;
+margin-left: auto;
+margin-right: auto;
+margin-top: 1ch;
+background-color: rgba(45, 45, 45,1);
+background-image: linear-gradient(rgba(180, 185, 185, 1), rgba(250, 255, 255, 1));
+background-clip: content-box;
+background-size: 120% 1ch;
+background-position: calc(600% - ( var(--position) * 5) );
+background-repeat: no-repeat; 
 ">
-<!-- 
-<datalist id="values">
-  <option value="12" label="12"></option>
-  <option value="13" label="13"></option>
-  <option value="14" label="14"></option>
-  <option value="15" label="15"></option>
-  <option value="16" label="16"></option>
-  <option value="17" label="17"></option>
-  <option value="18" label="18"></option>
-  <option value="19" label="19"></option>
-  <option value="20" label="20"></option>
-</datalist> -->
+
 
 <style>
-/*    datalist {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  font-size: var(--extra-small-font);
-  margin:0px 5px;
-}
 
- option {
-  padding: 10px;
-} 
-
-input[type="range"] {
-  width: 200px;
-  margin: 0;
-}  */
 
 </style>
 
