@@ -29,7 +29,8 @@ max-width: calc(100% - 2rem);">
     </div>
 
 
-
+<input type= "checkbox" id="foo"/>
+<input type= "checkbox" id="bar"/>
 
 	</main>
 
@@ -43,6 +44,90 @@ max-width: calc(100% - 2rem);">
 
 
 </style>
+
+<script>
+	
+
+const params = new URLSearchParams(window.location.search);
+
+function updateURL() {
+	params.set("theme", document.getElementById("theme-toggle").checked);
+	params.set("checkbox-two", document.getElementById("bar").checked);
+	window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
+}
+
+function getCheckboxState(id) {
+	return params.get(id) === "true";
+}
+
+const checkboxElementOne = document.getElementById("theme-toggle");
+checkboxElementOne.checked = getCheckboxState("theme");
+checkboxElementOne.addEventListener("change", updateURL);
+
+const checkboxElementTwo = document.getElementById("bar");
+checkboxElementTwo.checked = getCheckboxState("checkbox-two");
+checkboxElementTwo.addEventListener("change", updateURL);
+
+
+
+
+
+
+
+
+
+function updateURLForRadios() {
+	if (document.querySelector('input[name="tab"]:checked')) {
+		params.set("tab", document.querySelector('input[name="tab"]:checked').id);
+	}
+	if (document.querySelector('input[name="another-tab"]:checked')) {
+		params.set(
+			"another-tab",
+			document.querySelector('input[name="another-tab"]:checked').id,
+		);
+	}
+
+	window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
+}
+
+function setInitialRadioStates() {
+	const tabValue = params.get("tab");
+
+	if (tabValue) {
+		const tabRadioToCheck = document.querySelector(
+			`input[name="tab"][id="${tabValue}"]`,
+		);
+		if (tabRadioToCheck) {
+			tabRadioToCheck.checked = true;
+		}
+	}
+
+	const anotherTabValue = params.get("another-tab");
+
+	if (anotherTabValue) {
+		const anotherTabRadioToCheck = document.querySelector(
+			`input[name="another-tab"][id="${anotherTabValue}"]`,
+		);
+		if (anotherTabRadioToCheck) {
+			anotherTabRadioToCheck.checked = true;
+		}
+	}
+}
+
+setInitialRadioStates();
+
+const allTabRadios = document.querySelectorAll('input[name="tab"]');
+allTabRadios.forEach((radio) => {
+	radio.addEventListener("change", updateURLForRadios);
+});
+
+const allAnotherTabRadios = document.querySelectorAll('input[name="another-tab"]');
+allAnotherTabRadios.forEach((radio) => {
+	radio.addEventListener("change", updateURLForRadios);
+});
+
+
+</script>
 
 
 
