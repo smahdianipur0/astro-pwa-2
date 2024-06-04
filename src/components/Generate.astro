@@ -1,0 +1,96 @@
+---
+
+---
+<div id ="maina">
+
+<input type="range" id="rangeInput" min="12" max="20" value="16">
+<input type="text"  id="Input" >
+
+<div id = "gp">  <div class = "skeleton"> </div> </div>
+<div id = "gu">  <div class = "skeleton"> </div> </div>
+<div id = "s1">  <div class = "skeleton"> </div> </div>
+<div id = "s2">  <div class = "skeleton"> </div> </div>
+<div class = "skeleton"> </div>
+
+</div>
+
+
+<style>
+
+.skeleton{
+   font-size: inherit;
+   height: 1.5ch;
+   width: 30ch;
+   margin: 0.75ch 0;
+   border-radius: 4ch;
+   background-color: oklch(0.8 0 0 / 0.4);
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, .5) 50%,
+    rgba(255, 255, 255, 0) 60%
+  ) oklch(0.8 0 0 / 0.4);
+  background-size: 200% 100%;
+  background-position-x: 180%;
+  animation: 1s loading ease-in-out infinite;
+
+}
+
+@keyframes loading {
+  to {
+    background-position-x: -20%;
+  }
+}
+
+
+</style>
+
+<script>
+
+import { generate_password }            from "../pkg/rust_lib";
+import { calculate_password_strength }  from "../pkg/rust_lib";
+import { calculate_password_strength2 } from "../pkg/rust_lib";
+import { guessable }                    from "../pkg/rust_lib";
+
+
+
+const password = generate_password(16, true, true, true);
+const guess = guessable(password);
+const strength = calculate_password_strength(password);
+const strength2 = calculate_password_strength2(password);
+
+
+document.getElementById("gp")!.textContent = password.toString();
+document.getElementById("gu")!.textContent = guess.toString();
+document.getElementById("s1")!.textContent = strength.toString();
+document.getElementById("s2")!.textContent = strength2.toString();
+
+
+
+document.getElementById("maina")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#rangeInput")){
+
+      const value = (e!.target as HTMLInputElement).value;
+      const password = generate_password(Number(value), true, true, true);
+
+      document.getElementById("gp")!.textContent = password.toString();
+      
+   }
+
+   if((e!.target as HTMLInputElement).matches("#Input")){
+
+      const value = (e!.target as HTMLInputElement).value;
+      const guess = guessable(value);
+      const strength = calculate_password_strength(value);
+      const strength2 = calculate_password_strength2(value);
+
+      document.getElementById("gu")!.textContent = guess.toString();
+      document.getElementById("s1")!.textContent = strength.toString();
+      document.getElementById("s2")!.textContent = strength2.toString();
+      
+   }
+});
+      
+
+
+</script>
