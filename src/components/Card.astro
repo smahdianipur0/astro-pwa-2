@@ -1,0 +1,37 @@
+---
+interface Props {
+	
+	title: string;
+	
+}
+
+const { title } = Astro.props;
+---
+
+<div>
+	
+<p style="font-weight: bold; 
+font-size: var(--big-font); 
+margin-bottom: var(--gap);
+margin-top: var(--gap);
+padding-left: var(--bigger-gap);">
+
+{ title }</p>
+
+
+<div class="glass"
+style="	height: auto;
+width : auto;
+border: 1px solid  var(--main-border);
+border-radius: var(--radiu-b);
+padding: var(--bigger-gap);
+margin-bottom: var(--small-clickable);
+contain: paint;
+background-color: var(--glass-background);
+box-shadow: 4px 6px 20px 2px oklch(0 0 0 / 0.2);" >
+
+<slot/>
+
+</div>	
+</div>
+

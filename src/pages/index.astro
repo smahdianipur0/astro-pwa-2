@@ -4,14 +4,22 @@ import Mytext from '../components/Mytext.astro';
 import Slider from '../components/Slider.astro';
 import Mytab from '../components/Mytab.astro';
 import Generate from '../components/Generate.astro'; 
+import Card from '../components/Card.astro';
 ---
 
 <Layout title="Welcome to Astro.">
 
 <main id = "main"  style="
 padding: 1rem;
-width: 800px;
-max-width: calc(100% - 2rem);">
+max-width: calc(100% - 2rem);
+display: grid;
+gap:2ch;
+grid-template-columns: repeat(auto-fit, clamp(200px, 350px, 100% ) )  ;
+justify-content: center;
+">
+
+
+<Card title = "Generate Password">
 
 	<Mytext id = "try" body="hello"/>
 	<Mytext id = "try-2" body="hello-2"/>
@@ -30,13 +38,16 @@ max-width: calc(100% - 2rem);">
     </div>
     <Generate/>
 
-	</main>
+    </Card>
+</main>
+
 
 
 </Layout>
 
 
 <style >
+
 
 
 

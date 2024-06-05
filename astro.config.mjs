@@ -7,8 +7,17 @@ import solidJs from "@astrojs/solid-js";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [solidJs()],
-  vite: { plugins: [wasm(), topLevelAwait()],},
-  css: { transformer: "lightningcss" },
-  build: { assetsInlineLimit: 51200, cssMinify: "lightningcss" },
+  integrations: [
+    solidJs()
+    ],
+  vite: {
+    plugins: [wasm(), topLevelAwait()]
+  },
+  css: { 
+    transformer: "lightningcss" 
+  },
+  build: {
+    assetsInlineLimit: 51200,
+    cssMinify: "lightningcss"
+  },
 });
