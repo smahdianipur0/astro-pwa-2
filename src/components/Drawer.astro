@@ -2,6 +2,8 @@
 
 <input type="radio" name="tab" class="sub-route" id="one" checked />
 <input type="radio" name="tab" class="sub-route" id="two" />
+<input type="radio" name="tab" class="sub-route" id="three" />
+<input type="radio" name="tab" class="sub-route" id="four" />
 
 </nav>
 
@@ -15,6 +17,14 @@ name="theme" style="">
 }
 
 :root:has(#two:checked) #title:after {
+  content: 'QR Code Generator'; 
+}
+
+:root:has(#three:checked) #title:after {
+  content: 'Varification Code'; 
+}
+
+:root:has(#four:checked) #title:after {
   content: 'About'; 
 }
 
@@ -38,6 +48,16 @@ name="theme" style="">
 }
 
 #two:after {
+  content: 'QR Code Generator';
+  color:var(--accent-color); 
+}
+
+#three:after {
+  content: 'Varification Code';
+  color:var(--accent-color); 
+}
+
+#four:after {
   content: 'About';
   color:var(--accent-color); 
 }
@@ -94,8 +114,15 @@ a {
     display: block;
 }
 
-
 :root:has(#two:checked) .tab-content.two {
+    display: block;
+}
+
+:root:has(#three:checked) .tab-content.three {
+    display: block;
+}
+
+:root:has(#four:checked) .tab-content.four {
     display: block;
 }
 
@@ -111,6 +138,12 @@ document
     .addEventListener("click", (event) => toggleCheckbox(event));
 document
     .getElementById("two")!
+    .addEventListener("click", (event) => toggleCheckbox(event));
+document
+    .getElementById("three")!
+    .addEventListener("click", (event) => toggleCheckbox(event));
+document
+    .getElementById("four")!
     .addEventListener("click", (event) => toggleCheckbox(event));
 
 function toggleCheckbox(event: MouseEvent) {

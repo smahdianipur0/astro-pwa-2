@@ -53,13 +53,12 @@ document.getElementById("main")!.addEventListener("click",(e)=>{
 });
 
 
-document.getElementById("main")!.addEventListener("input",(e)=>{
-    if ((e!.target as HTMLInputElement).matches("#rangeInput")) {
-      console.log("got the rangeInput");
-      setLen(Number((e!.target as HTMLInputElement).value));
-
-      document.getElementById("rangeInput")!.style.setProperty('--position', (((Number(len()) - 12) / 8) * 100) + '%');
-   }
-});
+// document.getElementById("maina")!.addEventListener("input",(e)=>{
+//     if ((e!.target as HTMLInputElement).matches("#rangeInput")) {
+//       console.log("got the rangeInput");
+//       const value = (Number((e!.target as HTMLInputElement).value));
+//       document.getElementById("rangeInput")!.style.setProperty('--position', (((Number(value) - 12) / 8) * 100) + '%');
+//    }
+// });
 
 </script>

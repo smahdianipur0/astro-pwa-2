@@ -18,27 +18,36 @@ grid-template-columns: repeat(auto-fit, clamp(200px, 350px, 100% ) )  ;
 justify-content: center;
 ">
 
+<div class="tab-content one"> 
+     
+	<Card title = "Generate Password">
+		<Generate/>
+	</Card>	
 
-<Card title = "Generate Password">
+	<Card title = "test">
+		<Mytext id = "try" body="hello"/>
+		<Mytext id = "try-2" body="hello-2"/>
+		<Slider body="hi"/>
+		<p id= "createEffect"></p>
+		<p id= "createEffect-2"></p>	
+		<!-- <Mytab/> -->
+ 	</Card>   
+</div>
 
-	<Mytext id = "try" body="hello"/>
-	<Mytext id = "try-2" body="hello-2"/>
-	<Slider body="hi"/>
-	<p id= "createEffect"></p>
-	<p id= "createEffect-2"></p>	
-	<!-- <Mytab/> -->
+<div class="tab-content two"> 
+    <div>QR Code Generator</div>
+</div>
 
+<div class="tab-content three"> 
+    <div>Varification Code</div>
+</div>
 
-    <div class="tab-content one"> 
-        <div>Home tab</div>
-    </div>
+<div class="tab-content four"> 
+    <div>About tab</div>
+</div>
+    
 
-    <div class="tab-content two"> 
-        <div>About tab</div>
-    </div>
-    <Generate/>
-
-    </Card>
+    
 </main>
 
 

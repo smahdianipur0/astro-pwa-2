@@ -1,0 +1,100 @@
+---
+interface Props {	
+	tab1: string;
+	tab2: string;
+	content1: string;
+	content2: string;	
+}
+
+const {tab1 , tab2, content1, content2} = Astro.props;
+
+---
+<div class="section">
+<input type="radio" class="tabs first-lable" name="tabs" id= {tab1} checked />
+<input type="radio" class="tabs second-lable" name="tabs" id= {tab2} />
+
+
+<div class="tabs-content"  id= {content1} > 
+    <slot name="tab1"/>
+</div>
+
+<div class="tabs-content" id= {content2}> 
+    <slot name="tab2"/>
+
+</div>
+
+
+
+<style>
+
+
+.section{
+	display: flex;
+	 flex-wrap: wrap;
+	 position: relative;
+	 justify-content: center;
+	 align-items: center;
+}
+
+.tabs{
+	appearance: none;
+	-webkit-appearance: none;
+	border: none;
+	background-color: transparent;
+	line-height: 2ch;
+	font-size: var(--big-font);
+	display: grid;
+	line-height: 2ch;
+	height: 3ch;
+	width: 10ch;	
+	cursor: pointer; 
+	z-index: 2;
+	text-align: center;
+	justify-self: center;
+	align-items: center;
+	transition: color 200ms ease-out;
+	color: var(--focus-color);
+	margin-bottom: 2ch;
+}
+
+
+
+
+
+.tabs-content {
+    display: none;
+    width: 100%;
+}
+
+.tabs:checked.first-lable,
+.tabs:checked.second-lable{
+	color: var(--accent-color)
+}
+
+
+
+
+
+
+/* :root:has(#random:checked) {
+	.first-lable {
+    color: var(--accent-color)
+	}
+	.first-tab {
+    display: block;
+	}
+}
+
+
+
+:root:has(#manual:checked) {
+	.second-lable {
+	color: var(--accent-color)
+	}
+	.second-tab {
+    display: block;
+	}
+}  */
+ 
+
+</style>
