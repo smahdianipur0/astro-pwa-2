@@ -120,6 +120,23 @@ body {
   backdrop-filter: blur(20px)
 }
 
+.reflection{
+  border: 0.2px solid oklch(0.84 0.078 273/ 0.6);
+  box-shadow: inset 0.6px 0.6px 0px 0px oklch(0.84 0.078 273/ 0.6), 
+                    1px   2px   2px 0px oklch(0 0 0 / 0.1) ;
+}
+
+.card-bg{
+
+  height: 7.7125ch;
+  width: calc( 100% + 4ch ) ;
+  padding: 2ch;
+  margin-bottom: var(--small-clickable);
+  position: absolute; 
+  margin: -2ch -2ch;
+  background: var(--card-bg-color);
+
+}
 
 :root:has(#theme-toggle:checked) {
 

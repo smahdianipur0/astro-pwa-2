@@ -58,20 +58,15 @@ background-color: var(--glass-background)">
 <style is:global>
 
 .drw{
+	display: flex;
 	block-size: 0;
-	display: none;
 	top: -100% ;
 	transition-duration:0.2s;
-	transition-behavior: allow-discrete;
 }
 
 :root:has(#menu:checked) .drw {
-	display: flex;
     top: var(--portion) ;
 
-	@starting-style{
-	top: -100% ;	
-	}
 }
 
 [data-menu=menu]:focus-visible ~ [data-menu-label=menu] {
