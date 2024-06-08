@@ -147,3 +147,17 @@ function toggleOnEnter(event: KeyboardEvent) {
 </script>
 
 
+   if((e!.target as HTMLInputElement).matches("#Input")){
+
+      const value = (e!.target as HTMLInputElement).value;
+      const guess = guessable(value);
+      const strength = calculate_password_strength(value);
+      const strength2 = calculate_password_strength2(value);
+
+      document.getElementById("gu")!.textContent = guess.toString();
+      document.getElementById("s1")!.textContent = strength.toString();
+      document.getElementById("s2")!.textContent = strength2.toString();
+      
+   }
+
+
