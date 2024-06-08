@@ -4,22 +4,29 @@
 
 
 
+<input type="checkbox" id= "add_number" name="pass-ops" />
+<input type="checkbox" id= "capitalize_first_letter" name="pass-ops"/>
 
-<input type="checkbox" id= "add_number" name="menu" />
-<input type="checkbox" id= "capitalize_first_letter" name="menu"/>
-
-<input type="checkbox" id="add_special_cha" name="add special cha" data-menu="add special cha"
-style="opacity: 0; pointer-events: none;position: absolute"/>
+<input type="checkbox" id="add_special_cha" name="pass-ops" data-menu="add special cha"
+style="opacity: 1; pointer-events: none;position: absolute"/>
 
 <div class="tgl-group " >
-<label aria-label="special character" for="add_special_cha" data-menu-label="menu" class="toggle-text">
+
+<label aria-label="Capitalize First Letter" for="capitalize_first_letter" 
+data-menu-label="Capitalize First Letter" class="toggle-text first">
+Capitalize</label>
+<label aria-label="Add Number" for="add_number" 
+data-menu-label="Add Number" class="toggle-text">
+Number</label>
+<label aria-label="Special Character" for="add_special_cha" 
+data-menu-label="Special Character" class="toggle-text last">
 !@#$%&...</label>
 
 </div>
 
 <style>
 
-	.tgl-group {
+.tgl-group {
 	position: relative;
 	display: flex;
 	justify-content: center;
@@ -27,19 +34,19 @@ style="opacity: 0; pointer-events: none;position: absolute"/>
 	height: var(--portion);
 }
 
-	.toggle-text {
+.toggle-text {
 	position: relative;
-  background: none ;
+	background: none ;
 	font-size: var(--regular-font);
-	padding: var(--default-padding);
-	border-radius: var(--radiu-a);	
-	border: 1px solid  var(--focus-color);
-  user-select: none; 
-  cursor: pointer;
-  color: var(--focus-color);
-  background-color: var(--toggle-bg);
-  opacity: 1;
+	padding: var(--default-padding);	
+	user-select: none; 
+	cursor: pointer;
+	color: var(--focus-color);
+	background-color: var(--toggle-bg);
+	opacity: 1;
 	box-shadow: 1px 3px 0px var(--toggle-bg-darker) ;
+	border: none;
+	border-radius: 0px;
 
 }
 
@@ -55,6 +62,48 @@ style="opacity: 0; pointer-events: none;position: absolute"/>
 	mix-blend-mode: soft-light;
 }
 
+.toggle-text::after{
+	border: none;
+	content: "";
+	position: absolute;
+	border-top:0.2px solid var(--light-reflection);
+	border-bottom:0.2px solid var(--light-reflection);
+	box-shadow:  inset 0px 0.4px 0px 0px var(--light-reflection);
+	border-radius: 0px;
+	inset: 0;
+	mix-blend-mode: soft-light;
+
+}
+
+
+.first{
+	border-top-left-radius: var(--radiu-a);
+	border-bottom-left-radius: var(--radiu-a);
+}
+
+.first::after{
+	content: "";
+	position: absolute;
+	border-top-left-radius: var(--radiu-a);
+	border-bottom-left-radius: var(--radiu-a);
+	border-left: 0.2px solid var(--light-reflection) ;
+	box-shadow:   inset 0.6px 0.4px 0px 0px var(--light-reflection);
+}
+
+.last{
+		border-top-right-radius: var(--radiu-a);
+	border-bottom-right-radius: var(--radiu-a);
+}
+
+.last::after{
+	content: "";
+	position: absolute;
+	border-top-right-radius: var(--radiu-a);
+	border-bottom-right-radius: var(--radiu-a);
+	border-right: 0.2px solid var(--light-reflection) ;
+	box-shadow:   inset 0px 0.4px 0px 0px var(--light-reflection) ;
+
+}
 
 
 .toggle-on {
@@ -62,7 +111,6 @@ style="opacity: 0; pointer-events: none;position: absolute"/>
 	border: 1px solid transparent;
   background-color: var(--primery-transparent);
   color: var(--accent-color);
-/* 		filter: drop-shadow(1px 3.5px 0px var(--dark-shadow) ); */
 	box-shadow: 1px 3px 0px var(--dark-shadow) ;
 
 
@@ -77,60 +125,6 @@ style="opacity: 0; pointer-events: none;position: absolute"/>
   transform: scaleX(1.2);
   border-radius: 3ch;
 	filter: blur(10px);
-
-}
-
-.tgl-group > * {
-
-	border: none;
-	border-radius: 0px;
-
-}
-
-
-.tgl-group > :first-child {
-	border-top-left-radius: var(--radiu-a);
-	border-bottom-left-radius: var(--radiu-a);
-
-
-}
-
-.tgl-group > :last-child {
-	border-top-right-radius: var(--radiu-a);
-	border-bottom-right-radius: var(--radiu-a);
-
-}
-
-.tgl-group > *::after{
-	border: none;
-	content: "";
-	position: absolute;
-	border-top:0.2px solid var(--light-reflection);
-	border-bottom:0.2px solid var(--light-reflection);
-	box-shadow:  inset 0px 0.4px 0px 0px var(--light-reflection);
-	border-radius: 0px;
-	inset: 0;
-	mix-blend-mode: soft-light;
-
-}
-
-.tgl-group > :first-child::after{
-	content: "";
-	position: absolute;
-	border-top-left-radius: var(--radiu-a);
-	border-bottom-left-radius: var(--radiu-a);
-	border-left: 0.2px solid var(--light-reflection) ;
-	box-shadow:   inset 0.6px 0.4px 0px 0px var(--light-reflection);
-
-}
-
-.tgl-group > :last-child::after{
-	content: "";
-	position: absolute;
-	border-top-right-radius: var(--radiu-a);
-	border-bottom-right-radius: var(--radiu-a);
-	border-right: 0.2px solid var(--light-reflection) ;
-	box-shadow:   inset 0px 0.4px 0px 0px var(--light-reflection) ;
 
 }
 
