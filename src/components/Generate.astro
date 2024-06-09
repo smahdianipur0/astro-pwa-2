@@ -12,11 +12,31 @@ import ToggleGroup from '../components/ToggleGroup.astro';
        <RangeSlider/>
        <ToggleGroup/>
 
+        <div class="center" >
+          <button  id = "gp" class=" unstyle-button copy"style="font-size:var(--big-font);
+            font-family: system-ui;
+            font-weight: 300;
 
-        <div id = "gp">  <div class = "skeleton"> </div> </div>
-        <div id = "gu">  <div class = "skeleton"> </div> </div>
-        <div id = "s1">  <div class = "skeleton"> </div> </div>
-        <div id = "s2">  <div class = "skeleton"> </div> </div>
+            margin-top: 2ch; 
+            margin-bottom: 2ch;">
+            <div class = "skeleton" style="width:15ch"> </div> 
+          </button>
+
+          <button  id = "redo" class=" unstyle-button redo_container" 
+            style="font-size:var(--big-font); font-weight: 300; 
+            margin-top: 2ch; margin-bottom: 2ch;">
+              ↻
+          </button> 
+          <p id="ttc" class="hint" style="
+            margin-top: 2ch; margin-bottom: 2ch;"> tap to copy </p>
+        </div>
+
+        <div style="font-size: var(--regular-font);margin-bottom: 2ch;">
+          <div id = "gu">  <div class = "skeleton"> </div> </div>
+          <p id="box" class="box"></p>
+          <div id = "s1">  <div class = "skeleton"> </div> </div>
+          <div id = "s2">  <div class = "skeleton"> </div> </div>
+        </div>
         <div class = "skeleton"> </div>
 
       </fragment>
@@ -86,5 +106,80 @@ import ToggleGroup from '../components/ToggleGroup.astro';
   }
 }
 
+.center {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
 
+}
+.unstyle-button{
+  background: none;
+  border: none;
+  box-shadow: none;
+  color:var(--accent-color);
+  cursor: pointer;
+}
+
+.copy{
+  border: 1px solid oklch(1 0 0 /0.0);
+  border-radius: var(--radiu-a);
+  padding: var(--thin-padding);
+  line-height: 2ch;
+}
+
+
+
+.redo_container{
+  place-content: center;
+  border: 1px solid oklch(1 0 0 /0.0);
+  border-radius: var(--radiu-a);
+  line-height: 2ch;
+  position: absolute;
+  right: 0ch;
+  padding: var(--thin-padding);
+
+}
+
+.redo_container:focus,
+.redo_container:hover{
+  border: 1px solid var(--main-border);
+}
+
+.copy:focus,
+.copy:hover{
+  border: 1px solid var(--main-border);
+  border-radius: var(--radiu-a);
+}
+
+.hint{
+  place-content: center;
+  border: 1px solid oklch(1 0 0 /0.0);
+  position: absolute;
+  width: 18ch;
+  right: calc(50% - 9ch );
+  text-align: center;
+  top : 5ch;
+  opacity: 0.6;
+  font-size:var(--extra-small-font); 
+  font-weight: 300; 
+}
+
+.box {
+    display: flex;
+    align-items: center;
+    transition: width 0.5s, background-color 0.5s, background-position 0.5s ;
+    border-radius: var(--radiu-a);
+    background-color: red; 
+    margin-bottom: 10px;
+    height: 0.3ch;
+    margin-top: 0.5ch;
+    background-image: linear-gradient(to right, #f21616, #f02f11, #d47a20, #719deb, #6977e3, #7643b1, #5d43b1);
+    background-clip: content-box;
+    background-size: 300% 1ch;
+    --box-w: 36%;
+    --box-p: 0%;
+    width: var(--box-w);
+    background-position: var(--box-p);
+  }
 </style>

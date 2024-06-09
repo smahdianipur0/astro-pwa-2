@@ -11,13 +11,14 @@ import Card from '../components/Card.astro';
 
 
 
-<div class="tab-content one" style="
+<div class="tab-content one" > 
+  <div style="
 padding: 1rem;
 max-width: calc(100% - 2rem);
 display: grid;
 gap:2ch;
 grid-template-columns: repeat(auto-fit, clamp(200px, 350px, 100% ) )  ;
-justify-content: center;"> 
+justify-content: center;">
      
 	<Card title = "Generate Password">
 		<Generate/>
@@ -30,7 +31,8 @@ justify-content: center;">
 		<p id= "createEffect"></p>
 		<p id= "createEffect-2"></p>	
 		<!-- <Mytab/> -->
- 	</Card>   
+ 	</Card>  
+  </div> 
 </div>
 
 <div class="tab-content two"> 
