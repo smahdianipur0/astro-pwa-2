@@ -32,6 +32,35 @@ createEffect(() => { setPassword(generate_password(
 });
 
 
+document.getElementById("maina")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#rangeInput")){
+      const value = (e!.target as HTMLInputElement).value;
+      setLength(Number(value));      
+   }
+});
+
+
+document.getElementById("maina")!.addEventListener("change",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#add_special_cha")){
+      if ((e!.target as HTMLInputElement).checked){ 
+         setAddSpecialCha(true) } else { setAddSpecialCha(false) 
+      }
+   }
+
+   if((e!.target as HTMLInputElement).matches("#add_number")){
+      if ((e!.target as HTMLInputElement).checked){ 
+         setAddNumber(true) } else { setAddNumber(false) 
+      }
+   }
+
+   if((e!.target as HTMLInputElement).matches("#capitalize_first_letter")){
+      if ((e!.target as HTMLInputElement).checked){ 
+         setCapitalizeFirstLetter(true) } else { setCapitalizeFirstLetter(false) 
+      }
+   }
+
+});
+
 createEffect(() => { document.getElementById("gp")!
    .textContent = password() });
 
@@ -67,46 +96,10 @@ createEffect(() => {
 
 
 
-
-
-
-
-
-
-
-document.getElementById("maina")!.addEventListener("input",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#rangeInput")){
-      const value = (e!.target as HTMLInputElement).value;
-      setLength(Number(value));      
-   }
-});
-
-
-
-document.getElementById("maina")!.addEventListener("change",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#add_special_cha")){
-      if ((e!.target as HTMLInputElement).checked){ 
-         setAddSpecialCha(true) } else { setAddSpecialCha(false) 
-      }
-   }
-
-   if((e!.target as HTMLInputElement).matches("#add_number")){
-      if ((e!.target as HTMLInputElement).checked){ 
-         setAddNumber(true) } else { setAddNumber(false) 
-      }
-   }
-
-   if((e!.target as HTMLInputElement).matches("#capitalize_first_letter")){
-      if ((e!.target as HTMLInputElement).checked){ 
-         setCapitalizeFirstLetter(true) } else { setCapitalizeFirstLetter(false) 
-      }
-   }
-
-});
-
 document.getElementById("maina")!.addEventListener("click",(e)=>{
    if((e!.target as HTMLInputElement).matches("#gp ,#ttc")){
-      navigator.clipboard.writeText(password());   
+      navigator.clipboard.writeText(password());  
+      showToast(); 
 
    }
    if((e!.target as HTMLInputElement).matches("#redo")){
@@ -115,9 +108,37 @@ document.getElementById("maina")!.addEventListener("click",(e)=>{
       addSpecialCha(),
       addNumber(),
       capitalizeFirstLetter(),
-   ));
-
+      ));
    }
+});
+
+
+
+import { onMount } from 'solid-js';
+
+let timeoutId: number | undefined;
+
+function showToast() {
+  const toastElement = document.getElementById('toast');
+  if (toastElement) {
+    toastElement.style.bottom = 'var(--portion)';
+    timeoutId = window.setTimeout(() => {
+      toastElement.style.bottom = '-100%';
+    }, 2000);
+  }
+}
+
+function clearToastTimeout() {
+  if (timeoutId !== undefined) {
+    clearTimeout(timeoutId);
+    timeoutId = undefined;
+  }
+}
+
+onMount(() => {
+   return () => {
+      clearToastTimeout();
+   };
 });
 
 

@@ -38,6 +38,13 @@ contain: paint;">
 
   <slot/>
 
+  </div>
+    <div id="toast" class="toast dark glass">
+      <span class="gg-check-o"/>
+      <span>&nbsp Copied</span>
+    </div>
+  <div>
+
 
 </body>
 
@@ -135,6 +142,53 @@ body {
   position: absolute; 
   margin: -2ch -2ch;
   background: var(--card-bg-color);
+}
+
+
+.toast {
+ display: flex;
+ position: fixed; 
+ background-color: var(--glass-background);
+ border-radius: var(--radiu-b);
+ border: 1px solid  var(--main-border);
+ bottom: -100%;  
+ width: 250px; 
+ left: calc(50% - 125px ); 
+ align-items: center;
+ justify-content: center;
+ height: var(--portion); 
+ padding: 10px;
+ box-sizing: border-box;
+ transition: bottom 0.15s ease-out;  
+ z-index: var(--z-layer-higher);
+}
+
+.gg-check-o {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(0.7);
+  width: 22px;
+  height: 22px;
+  border: 2px solid;
+  border-radius: 100px
+
+}
+
+.gg-check-o::after {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  left: 3px;
+  top: -1px;
+  width: 6px;
+  height: 10px;
+  border-color: currentColor;
+  border-width: 0 2px 2px 0;
+  border-style: solid;
+  transform-origin: bottom left;
+  transform: rotate(45deg)
 
 }
 
