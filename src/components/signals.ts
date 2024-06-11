@@ -49,6 +49,16 @@ document.getElementById("generate")!.addEventListener("input",(e)=>{
 
 
 document.getElementById("generate")!.addEventListener("change",(e)=>{
+   if ((e!.target as HTMLInputElement).matches("#random")) {
+         if ((event.target as HTMLInputElement).checked) {
+            setCurrentPass(password());
+         }
+      }
+      if ((e!.target as HTMLInputElement).matches("#manual")) {
+         if ((event.target as HTMLInputElement).checked) {
+            setCurrentPass(mpassword());
+         }
+      }
    if((e!.target as HTMLInputElement).matches("#add_special_cha")){
       if ((e!.target as HTMLInputElement).checked){ 
          setAddSpecialCha(true) } else { setAddSpecialCha(false) 
@@ -72,23 +82,6 @@ document.getElementById("generate")!.addEventListener("change",(e)=>{
 createEffect(() => { document.getElementById("gp")!
    .textContent = password() });
 
-
-createEffect(() => {
-   document.getElementById("generate")!.addEventListener("change", (e) => {
-      if ((e!.target as HTMLInputElement).matches("#random")) {
-         if ((event.target as HTMLInputElement).checked) {
-            setCurrentPass(password());
-         }
-      }
-      if ((e!.target as HTMLInputElement).matches("#manual")) {
-         if ((event.target as HTMLInputElement).checked) {
-            setCurrentPass(mpassword());
-         }
-      }
-   });
-});
-
-
 createEffect(() => { document.getElementById("gu")!
    .textContent = guessable(currentPass()) });
 
@@ -101,7 +94,10 @@ createEffect(() => { document.getElementById("s2")!
 
 createEffect(() => { 
    const gu= guessable(currentPass());
-   if (gu === "Too Guessable") {
+       if (gu === "Enter password") {
+      document.getElementById("box")!.style.setProperty("--box-w", "0%");
+      document.getElementById("box")!.style.setProperty("--box-p", "0%");
+   }   if (gu === "Too Guessable") {
       document.getElementById("box")!.style.setProperty("--box-w", "36%");
       document.getElementById("box")!.style.setProperty("--box-p", "0%");
    }   if (gu === "Very Guessable") {
@@ -125,8 +121,13 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
    if((e!.target as HTMLInputElement).matches("#gp ,#ttc")){
       navigator.clipboard.writeText(password());  
       showToast(); 
-
    }
+
+   if((e!.target as HTMLInputElement).matches("#copyMPassword")){
+      navigator.clipboard.writeText(mpassword());  
+      showToast(); 
+   }
+
    if((e!.target as HTMLInputElement).matches("#redo")){
       setPassword(generate_password(
       length(),
@@ -134,8 +135,11 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
       addNumber(),
       capitalizeFirstLetter(),
       ));
+      setCurrentPass(password())
    }
 });
+
+
 
 
 

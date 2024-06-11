@@ -1,0 +1,84 @@
+---
+import Tabs from '../components/Tabs.astro';
+---
+<div class="card-bg" style="height: 18.4ch;"></div> 
+
+<form autocomplete="off">
+	
+	<div class="relative ">
+		<input type="text" class="input glass dent-shadow k " name="Key"
+		placeholder="Key">
+		<span class="key-indicator"></span>
+	</div>
+	
+	<div class="relative" style ="margin-bottom: 1ch;"> 
+		<input type="text" class="input glass dent-shadow v " name="IV" 
+		placeholder="IV">
+		<span class="key-indicator"></span>
+	</div>
+
+</form>
+
+<Tabs name="encdec" tab1="enc" tab2="dec" content1="cenc" content2="cdec">
+	<fragment slot="tab1">
+
+	</fragment>
+
+
+	<fragment slot="tab2">
+	</fragment>
+</Tabs>
+
+<style is:global>
+
+
+#enc:after {
+  content: 'Encrypt';
+}
+
+#dec:after {
+  content: 'Decrypt';
+}
+
+
+
+:root:has(#enc:checked) { 
+	#cenc{display: block;} 
+	#encdec {transform: translate3d(-5ch, 0, 0);}
+}
+
+:root:has(#dec:checked) {
+ #cdec {display: block;} 
+ 	#encdec { transform: translate3d(5ch, 0, 0);}
+}
+
+
+
+.k{
+	background: var(--inout-bg);
+	border: none;
+	border-radius: var(--radiu-a);
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	padding: 0.95ch 1.5ch;
+	margin-bottom: 0;
+	border-bottom: 0.1px solid var(--primary);
+}
+
+.v{
+	background: var(--inout-bg);
+	border: none;
+	border-radius: var(--radiu-a);
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	padding: 0.95ch 1.5ch;
+}
+ 
+.k:focus,
+.v:focus{
+  	background: var(--input-bg-focus);
+}
+
+
+	
+</style>

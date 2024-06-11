@@ -5,6 +5,8 @@ import Slider from '../components/Slider.astro';
 import Mytab from '../components/Mytab.astro';
 import Generate from '../components/Generate.astro'; 
 import Card from '../components/Card.astro';
+import Enced from '../components/Encdec.astro';
+import Encdec from '../components/Encdec.astro';
 ---
 
 <Layout title="Welcome to Astro.">
@@ -22,6 +24,10 @@ justify-content: center;">
 	<Card title = "Generate Password">
 		<Generate/>
 	</Card>	
+
+	<Card title = "Encryption and Decryption">
+		<Encdec/>
+	</Card>
 
 	<Card title = "test">
 		<Mytext id = "try" body="hello"/>

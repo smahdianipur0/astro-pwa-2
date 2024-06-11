@@ -1,12 +1,13 @@
 ---
-interface Props {	
+interface Props {
+	name: string;	
 	tab1: string;
 	tab2: string;
 	content1: string;
 	content2: string;	
 }
 
-const {tab1 , tab2, content1, content2} = Astro.props;
+const {name, tab1 , tab2, content1, content2} = Astro.props;
 
 ---
 <div style="display: flex;
@@ -14,10 +15,10 @@ const {tab1 , tab2, content1, content2} = Astro.props;
  position: relative;
  justify-content: center;
  align-items: center;">
-<input type="radio" class="tabs first-lable" name="tabs" id= {tab1} checked />
-<input type="radio" class="tabs second-lable" name="tabs" id= {tab2} />
+<input type="radio" class="tabs first-lable" name={name} id= {tab1} checked />
+<input type="radio" class="tabs second-lable" name={name} id= {tab2} />
 
-<div class="tab__indicator reflection glass"></div>
+<div id={name} class="tab__indicator reflection glass"></div>
 
 <div class="tabs-content"  id= {content1} > 
     <slot name="tab1"/>
@@ -74,7 +75,7 @@ const {tab1 , tab2, content1, content2} = Astro.props;
 }
 
 
- .tab__indicator {
+.tab__indicator {
 
  font-size: var(--big-font);
  width: 10ch;
@@ -91,7 +92,9 @@ const {tab1 , tab2, content1, content2} = Astro.props;
 }
 
 
- .tab input#one:checked ~ .tab__indicator { 
+
+
+/*  .tab input#one:checked ~ .tab__indicator { 
 	 transform: translate3d(-5ch, 0, 0);
 
 }
@@ -99,7 +102,7 @@ const {tab1 , tab2, content1, content2} = Astro.props;
  .tab input#two:checked ~ .tab__indicator {
 	 transform: translate3d(5ch, 0, 0);
 
-}
+} */
  
 
 </style>
