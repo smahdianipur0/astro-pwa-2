@@ -133,6 +133,20 @@ body {
                     1px   2px   2px 0px oklch(0 0 0 / 0.1) ;
 }
 
+.dent-shadow {
+  box-shadow: inset 0px 2px 5px oklch(0 0 0 / 0.2) , 
+                    0px 2px 2px oklch(1 0 0 / 0.1) , 
+                    0px 0px 1px 0.5px oklch(1 0 0 / 0.1) ;
+}
+
+.flex{
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1ch;
+}
+
 .card-bg{
 
   height: 7.7125ch;
@@ -142,6 +156,78 @@ body {
   position: absolute; 
   margin: -2ch -2ch;
   background: var(--card-bg-color);
+}
+
+
+.input {
+  background-color: var(--glass-background);
+  font-size: var(--regular-font);
+  padding: var(--default-padding);
+  width: 100%;
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: var(--radiu-a);
+  border-bottom: 1px solid var(--primary);
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  color: var(--accent-color);
+  margin-bottom: 1ch;
+}
+
+.input:focus {
+  border: 1px solid var(--primary);
+  border-radius: var(--radiu-a);
+  background-color:var(--select-color) ;
+  outline: none;
+}
+
+button.main{
+  background: none;
+  font-size: var(--regular-font);
+  padding:var(--default-padding);
+  border-radius: var(--radiu-a);  
+  border: 0px solid  transparent;
+  color: var(--accent-color);
+  margin-bottom: 1ch;
+  box-shadow: 1px 3px 0px var(--toggle-bg-darker);
+  background-color: var(--primery-transparent);
+  box-shadow: 1px 1px 0px 1px var(--dark-shadow) ;
+  position: relative;
+}
+
+button.main::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;    
+  background-color: var(--toggle-bg-darker);
+  scale: 0.65;
+  border-radius: 3ch;
+  filter: blur(10px);
+  mix-blend-mode: soft-light;
+}
+
+button.main::after{
+  content: "";
+  inset: 0;
+  border-radius: var(--radiu-a);
+  position: absolute;
+  border:0.2px solid var(--light-reflection);
+  box-shadow:  inset 0px 0.4px 0px 0px var(--light-reflection);
+  mix-blend-mode: soft-light;
+}
+
+button.main:active::before{
+  background-color:oklch(1 0 0 / 0);
+}
+
+button.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button.disabled::before{
+  background-color:oklch(1 0 0 / 0);
 }
 
 

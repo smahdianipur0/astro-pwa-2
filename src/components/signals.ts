@@ -16,7 +16,9 @@ import { calculate_password_strength2 } from "../pkg/rust_lib";
 import { guessable }                    from "../pkg/rust_lib";
 
 
-const [password, setPassword] = createSignal(generate_password(16, true, true, true));
+const [password, setPassword]       = createSignal(generate_password(16, true, true, true));
+const [mpassword, setMPassword]     = createSignal("");
+const [currentPass, setCurrentPass] = createSignal("");
 
 const [length, setLength]                               = createSignal(16);
 const [addSpecialCha, setAddSpecialCha]                 = createSignal(true);
@@ -29,18 +31,24 @@ createEffect(() => { setPassword(generate_password(
       addNumber(),
       capitalizeFirstLetter(),
    ));
+   setCurrentPass(password())
 });
 
 
-document.getElementById("maina")!.addEventListener("input",(e)=>{
+document.getElementById("generate")!.addEventListener("input",(e)=>{
    if((e!.target as HTMLInputElement).matches("#rangeInput")){
       const value = (e!.target as HTMLInputElement).value;
       setLength(Number(value));      
    }
+   if((e!.target as HTMLInputElement).matches("#mPassword")){
+      const value = (e!.target as HTMLInputElement).value;
+      setMPassword(value.toString());
+      setCurrentPass(mpassword())     
+   }
 });
 
 
-document.getElementById("maina")!.addEventListener("change",(e)=>{
+document.getElementById("generate")!.addEventListener("change",(e)=>{
    if((e!.target as HTMLInputElement).matches("#add_special_cha")){
       if ((e!.target as HTMLInputElement).checked){ 
          setAddSpecialCha(true) } else { setAddSpecialCha(false) 
@@ -64,18 +72,35 @@ document.getElementById("maina")!.addEventListener("change",(e)=>{
 createEffect(() => { document.getElementById("gp")!
    .textContent = password() });
 
+
+createEffect(() => {
+   document.getElementById("generate")!.addEventListener("change", (e) => {
+      if ((e!.target as HTMLInputElement).matches("#random")) {
+         if ((event.target as HTMLInputElement).checked) {
+            setCurrentPass(password());
+         }
+      }
+      if ((e!.target as HTMLInputElement).matches("#manual")) {
+         if ((event.target as HTMLInputElement).checked) {
+            setCurrentPass(mpassword());
+         }
+      }
+   });
+});
+
+
 createEffect(() => { document.getElementById("gu")!
-   .textContent = guessable(password()) });
+   .textContent = guessable(currentPass()) });
 
 createEffect(() => { document.getElementById("s1")!
-   .textContent = calculate_password_strength(password()) });
+   .textContent = calculate_password_strength(currentPass()) });
 
 createEffect(() => { document.getElementById("s2")!
-   .textContent = calculate_password_strength2(password()) });
+   .textContent = calculate_password_strength2(currentPass()) });
 
 
 createEffect(() => { 
-   const gu= guessable(password());
+   const gu= guessable(currentPass());
    if (gu === "Too Guessable") {
       document.getElementById("box")!.style.setProperty("--box-w", "36%");
       document.getElementById("box")!.style.setProperty("--box-p", "0%");
@@ -96,7 +121,7 @@ createEffect(() => {
 
 
 
-document.getElementById("maina")!.addEventListener("click",(e)=>{
+document.getElementById("generate")!.addEventListener("click",(e)=>{
    if((e!.target as HTMLInputElement).matches("#gp ,#ttc")){
       navigator.clipboard.writeText(password());  
       showToast(); 

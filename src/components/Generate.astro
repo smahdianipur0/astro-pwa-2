@@ -4,7 +4,7 @@ import RangeSlider from '../components/RangeSlider.astro';
 import ToggleGroup from '../components/ToggleGroup.astro';
 
 ---
-<div id ="maina">
+<div id ="generate">
   <div class="card-bg"> </div>
    <Tabs tab1="random" tab2="manual" content1="crandom" content2="cmanual">
 
@@ -16,7 +16,6 @@ import ToggleGroup from '../components/ToggleGroup.astro';
           <button  id = "gp" class=" unstyle-button copy"style="font-size:var(--big-font);
             font-family: system-ui;
             font-weight: 300;
-
             margin-top: 2ch; 
             margin-bottom: 2ch;">
             <div class = "skeleton" style="width:15ch"> </div> 
@@ -31,22 +30,31 @@ import ToggleGroup from '../components/ToggleGroup.astro';
             margin-top: 2ch; margin-bottom: 2ch;"> tap to copy </p>
         </div>
 
-        <div style="font-size: var(--regular-font);margin-bottom: 2ch;">
-          <div id = "gu">  <div class = "skeleton"> </div> </div>
-          <p id="box" class="box"></p>
-          <div id = "s1">  <div class = "skeleton"> </div> </div>
-          <div id = "s2">  <div class = "skeleton"> </div> </div>
-        </div>
-        <div class = "skeleton"> </div>
+        
 
       </fragment>
 
       <fragment slot="tab2">
-      hello
+
+      <div class="flex" style="margin:1ch 0">
+        <form autocomplete="off">
+          <input id="mPassword" type="text" class="input glass dent-shadow" 
+          placeholder="Password" >
+        </form>
+        <button id="copyMPassword" class="main" > Copy </button>  
+      </div>
+
       </fragment>
 
    </Tabs>
-   
+
+  <div style="font-size: var(--regular-font); margin-top:2ch; margin-bottom: 2ch;">
+    <div id = "gu">  <div class = "skeleton"> </div> </div>
+    <p id="box" class="box"></p>
+    <div id = "s1">  <div class = "skeleton"> </div> </div>
+    <div id = "s2">  <div class = "skeleton"> </div> </div>
+  </div>
+  <div class = "skeleton"> </div>  
 
 </div>
 
