@@ -6,14 +6,12 @@ import Tabs from '../components/Tabs.astro';
 <form autocomplete="off">
 	
 	<div class="relative ">
-		<input type="text" class="input glass dent-shadow k " name="Key"
-		placeholder="Key">
+		<input type="text" class="k glass dent-shadow " name="Key" placeholder="Key">
 		<span class="key-indicator"></span>
 	</div>
 	
 	<div class="relative" style ="margin-bottom: 1ch;"> 
-		<input type="text" class="input glass dent-shadow v " name="IV" 
-		placeholder="IV">
+		<input type="text" class="v glass dent-shadow " name="IV" placeholder="IV">
 		<span class="key-indicator"></span>
 	</div>
 
@@ -21,6 +19,25 @@ import Tabs from '../components/Tabs.astro';
 
 <Tabs name="encdec" tab1="enc" tab2="dec" content1="cenc" content2="cdec">
 	<fragment slot="tab1">
+
+		<label >
+		<input type="checkbox" style="margin-bottom: 2ch;
+		margin-top: 3ch;
+		accent-color: var(--primary);"> Use Password as Plain Text </label>
+		<textarea  class="txt-area glass dent-shadow" rows="2"placeholder="Plain Text"> </textarea>
+
+		<p style="margin-top: 3ch; margin-bottom: 1ch; font-size: var(--extra-small-font); opacity: 0.6;">Encrypted Text : </p>
+		<textarea  class="txt-area" style="border: 0px solid transparent;" rows="2" readonly> </textarea>
+
+		<div class="btn-group"> 
+					
+	    <button  name="Copy" class="main"  > Copy </button>
+			<label aria-label="Show QR Code" for="show_qr_code" 
+			data-menu-label="show_qr_code" class="main sqrc" style="width: 17ch;"> &nbsp 
+
+			<input type="checkbox" id= "show_qr_code" name="show_qr_code" data-menu="show_qr_code"
+			style="opacity: 0; pointer-events: none;position: absolute" checked/> </label>
+		</div>
 
 	</fragment>
 
@@ -55,6 +72,11 @@ import Tabs from '../components/Tabs.astro';
 
 
 .k{
+  font-size: var(--regular-font);
+  width: 100%;
+  display: inline-block;
+  color: var(--accent-color);
+
 	background: var(--inout-bg);
 	border: none;
 	border-radius: var(--radiu-a);
@@ -66,6 +88,11 @@ import Tabs from '../components/Tabs.astro';
 }
 
 .v{
+	font-size: var(--regular-font);
+  width: 100%;
+  display: inline-block;
+  color: var(--accent-color);
+
 	background: var(--inout-bg);
 	border: none;
 	border-radius: var(--radiu-a);
@@ -76,7 +103,88 @@ import Tabs from '../components/Tabs.astro';
  
 .k:focus,
 .v:focus{
+	  background-color:var(--select-color) ;
+	  outline: none;
   	background: var(--input-bg-focus);
+}
+
+.txt-area{
+  background-color: transparent; 
+  font-size: var(--regular-font);
+  font-family: inherit;
+  width: 100%;
+  padding: var(--default-padding);
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: var(--radiu-a);
+  resize: vertical;
+  border-bottom: 1px solid var(--primary);
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  color: var(--accent-color);
+}
+
+
+.txt-area:focus {
+	border: 1px solid var(--primary);
+	border-radius: var(--radiu-a);
+	outline: none;
+}
+
+.btn-group {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: var(--portion);
+}
+
+
+.btn-group > :first-child {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+
+}
+
+.btn-group > :first-child::after{
+
+	border-right: 0px solid transparent;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.btn-group > :last-child {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+
+}
+
+.btn-group > :last-child::after{
+
+	border-left: 0px solid transparent;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+
+
+.sqrc{
+	width: 17ch; 
+	padding: var(--default-padding);
+	background: none;
+	margin-bottom: 1ch;
+}
+
+.sqrc::after{
+	content: "Show QR Code"; 
+	text-align: center;
+	width: 17ch;
+	inset: 0;
+	font-size: var(--regular-font);
+	padding:var(--default-padding);	
+}
+
+:root:has(#show_qr_code:checked) .sqrc::after{
+	content: "Hide QR Code"; 
 }
 
 
