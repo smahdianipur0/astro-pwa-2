@@ -159,12 +159,34 @@ const [plainText, setPlainText]     = createSignal("");
 const [fbPlainText, setFbPlainText] = createSignal("");
 const [resultE, setResultE]         = createSignal("");
 
+import QRCode from 'qrcode'
+// var canvas = document.getElementById('canvas')
 
 
-createEffect(() => { 
-   setResultE(encrypt(key(),iv(),plainText()));
+
+// QRCode.toCanvas(canvas, resultE(), { width : 160 , margin: 1}, function (error) {
+//   if (error) console.error(error)
+//   console.log('success!');
+// })
+
+
+createEffect(() => {
+   setResultE(encrypt(key(), iv(), plainText()));
    document.getElementById("result_e")!.textContent = resultE();
+   if (resultE() === "") {
+      document.getElementById("result_e")!.textContent = "Enter Plain Text";
+   }
+   QRCode.toCanvas(
+      document.getElementById("canvas")!,
+      resultE(),
+      { width: 160, margin: 1 },
+      // function (error) {
+      //    if (error) console.error(error);
+      //    console.log("success!");
+      // },
+   );
 });
+
 
 
 
@@ -199,6 +221,12 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
 
 
 // result_d = decrypt(Key,IV,cipher_text);
+
+
+
+
+
+
 
 import { onMount } from 'solid-js';
 
