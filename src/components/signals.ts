@@ -43,7 +43,12 @@ document.getElementById("generate")!.addEventListener("input",(e)=>{
    if((e!.target as HTMLInputElement).matches("#mPassword")){
       const value = (e!.target as HTMLInputElement).value;
       setMPassword(value.toString());
-      setCurrentPass(mpassword())     
+      setCurrentPass(mpassword()) 
+      if(mpassword() === "") {
+         document.getElementById("copyMPassword")!.classList.add("disabled")  
+          } else {
+         document.getElementById("copyMPassword")!.classList.remove("disabled") 
+      }   
    }
 });
 
@@ -97,6 +102,7 @@ createEffect(() => {
        if (gu === "Enter password") {
       document.getElementById("box")!.style.setProperty("--box-w", "0%");
       document.getElementById("box")!.style.setProperty("--box-p", "0%");
+      document.getElementById("s2")!.textContent= "";
    }   if (gu === "Too Guessable") {
       document.getElementById("box")!.style.setProperty("--box-w", "36%");
       document.getElementById("box")!.style.setProperty("--box-p", "0%");
@@ -124,8 +130,10 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
    }
 
    if((e!.target as HTMLInputElement).matches("#copyMPassword")){
-      navigator.clipboard.writeText(mpassword());  
-      showToast(); 
+      if(mpassword() !== "") {
+         navigator.clipboard.writeText(mpassword());  
+         showToast(); 
+      }
    }
 
    if((e!.target as HTMLInputElement).matches("#redo")){
@@ -142,6 +150,55 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
 
 
 
+import { encrypt } from "../pkg/rust_lib";
+import { decrypt } from "../pkg/rust_lib";
+
+const [key, setKey]                 = createSignal("");
+const [iv, setIv]                   = createSignal("");
+const [plainText, setPlainText]     = createSignal("");
+const [fbPlainText, setFbPlainText] = createSignal("");
+const [resultE, setResultE]         = createSignal("");
+
+
+
+createEffect(() => { 
+   setResultE(encrypt(key(),iv(),plainText()));
+   document.getElementById("result_e")!.textContent = resultE();
+});
+
+
+
+document.getElementById("encryption")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#key")){
+      const value = (e!.target as HTMLInputElement).value;
+      setKey(value.toString());
+   }
+   if((e!.target as HTMLInputElement).matches("#iv")){
+      const value = (e!.target as HTMLInputElement).value;
+      setIv(value.toString());
+   }
+
+   if((e!.target as HTMLInputElement).matches("#plain_text")){
+      const value = (e!.target as HTMLInputElement).value;
+      setPlainText(value.toString());
+      setFbPlainText(value.toString());
+   }
+   
+});
+
+
+document.getElementById("encryption")!.addEventListener("change",(e)=>{
+   if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
+      if ((event.target as HTMLInputElement).checked) {
+         setPlainText(currentPass())
+      } else {
+         setPlainText(fbPlainText)
+      }
+   }
+});
+
+
+// result_d = decrypt(Key,IV,cipher_text);
 
 import { onMount } from 'solid-js';
 

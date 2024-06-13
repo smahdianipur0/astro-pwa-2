@@ -1,20 +1,20 @@
 <div class="tgl-group " >
 
-<label aria-label="Capitalize First Letter" for="capitalize_first_letter" 
+<label  id= "l_capitalize_first_letter" aria-label="Capitalize First Letter" for="capitalize_first_letter" 
 data-menu-label="capitalize" class="toggle-text first">
 Capitalize</label>
 
 <input type="checkbox" id= "capitalize_first_letter" name="pass-ops" data-menu="capitalize"
 style="opacity: 0; pointer-events: none;position: absolute" checked/>
 
-<label aria-label="Add Number" for="add_number" 
+<label id= "l_add_number" aria-label="Add Number" for="add_number" 
 data-menu-label="add_number" class="toggle-text middle">
 Number</label>
 
 <input type="checkbox" id= "add_number" name="pass-ops"
 style="opacity: 0; pointer-events: none;position: absolute" checked />
 
-<label aria-label="Special Character" for="add_special_cha" 
+<label id="l_add_special_cha" aria-label="Special Character" for="add_special_cha" 
 data-menu-label="add_special_cha" class="toggle-text last">
 !@#$%&...</label>
 
@@ -71,7 +71,7 @@ style="opacity: 0; pointer-events: none;position: absolute" checked/>
 	box-shadow:  inset 0px 0.4px 0px 0px var(--light-reflection);
 	border-radius: 0px;
 	inset: 0;
-	mix-blend-mode: soft-light;
+	mix-blend-mode: hard-light;
 
 }
 
@@ -107,9 +107,9 @@ style="opacity: 0; pointer-events: none;position: absolute" checked/>
 
 
 
-:root:has(#capitalize_first_letter:checked) .first,
-:root:has(#add_number:checked) .middle ,
-:root:has(#add_special_cha:checked) .last {
+:root:has(#capitalize_first_letter:checked) #l_capitalize_first_letter,
+:root:has(#add_number:checked) #l_add_number ,
+:root:has(#add_special_cha:checked) #l_add_special_cha {
 	position: relative;
   background-color: var(--primery-transparent);
   color: var(--accent-color);
@@ -117,9 +117,9 @@ style="opacity: 0; pointer-events: none;position: absolute" checked/>
 
 }
 
-:root:has(#capitalize_first_letter:checked) .first::before ,
-:root:has(#add_number:checked) .middle::before ,
-:root:has(#add_special_cha:checked) .last::before {
+:root:has(#capitalize_first_letter:checked) #l_capitalize_first_letter::before ,
+:root:has(#add_number:checked)  #l_add_number::before ,
+:root:has(#add_special_cha:checked) #l_add_special_cha::before {
 	content: "";
 	position: absolute;
 	inset: 0;
@@ -131,9 +131,9 @@ style="opacity: 0; pointer-events: none;position: absolute" checked/>
 
 }
 
-:root:has(#capitalize_first_letter:focus-visible) .first,
-:root:has(#add_number:focus-visible) .middle ,
-:root:has(#add_special_cha:focus-visible) .last {
+:root:has(#capitalize_first_letter:focus-visible) #l_capitalize_first_letter,
+:root:has(#add_number:focus-visible)  #l_add_number ,
+:root:has(#add_special_cha:focus-visible) #l_add_special_cha {
 	outline: Highlight auto 1px;
   outline: -webkit-focus-ring-color auto 1px;
 }

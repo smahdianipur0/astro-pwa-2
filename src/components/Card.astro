@@ -2,13 +2,14 @@
 interface Props {
 	
 	title: string;
+	iden:string;
 	
 }
 
-const { title } = Astro.props;
+const { title , iden } = Astro.props;
 ---
 
-<div>
+<div id={iden}>
 	
 <p style="font-weight: bold; 
 font-size: var(--big-font); 

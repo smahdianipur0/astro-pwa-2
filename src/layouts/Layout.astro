@@ -65,7 +65,7 @@ contain: paint;">
   --secondary: oklch(0.62 0.152 273.00);
   --card-bg-color: linear-gradient(290deg, oklch(0.58742 0.17443 277.74) 0%, oklch(0.61088 0.16236 274.98) 65%, oklch(0.69733 0.125 261.28) 100%);
   --drop-shadow: 0 0 5px oklch(0.65554 0.14152 268.67 / 0.7);
-  --light-reflection: oklch(1 0 0/ 0.65);
+  --light-reflection: oklch(1 0 0/ 0.35);
 
 
   --bg-canv: linear-gradient(135deg, oklch(0.40 0 0) 0%, oklch(0.35 0 0) 14%, oklch(0.22 0 0) 100%);
@@ -120,6 +120,13 @@ contain: paint;">
 html,
 body {
   color: var(--accent-color);
+}
+
+input,
+button,
+label,
+textarea{
+  font-family: system-ui;
 }
 
 .glass {
@@ -193,6 +200,7 @@ button.main{
   background-color: var(--primery-transparent);
   box-shadow: 1px 1px 0px 1px var(--dark-shadow) ;
   position: relative;
+  cursor: pointer;
 }
 
 button.main::before{
@@ -207,7 +215,7 @@ button.main::before{
   mix-blend-mode: soft-light;
 }
 
-button.main::after{
+button.main::after {
   content: "";
   inset: 0;
   border-radius: var(--radiu-a);
@@ -217,16 +225,16 @@ button.main::after{
   mix-blend-mode: soft-light;
 }
 
-button.main:active::before{
+button.main:active::before {
   background-color:oklch(1 0 0 / 0);
 }
 
-button.disabled {
+button.disabled  {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-button.disabled::before{
+button.disabled::before {
   background-color:oklch(1 0 0 / 0);
 }
 
