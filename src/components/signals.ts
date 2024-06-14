@@ -1,15 +1,5 @@
 import { createSignal, createEffect } from 'solid-js';
 
-export const [count, setCount] = createSignal(0);
-createEffect(() => {  
-	document.getElementById("createEffect")!.textContent = count().toString()});
-
-export const [len, setLen] = createSignal(16);
-createEffect(() => {  
-	document.getElementById("createEffect-2")!.textContent = len().toString()});
-
-
-
 import { generate_password }            from "../pkg/rust_lib";
 import { calculate_password_strength }  from "../pkg/rust_lib";
 import { calculate_password_strength2 } from "../pkg/rust_lib";
@@ -152,22 +142,58 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
 
 import { encrypt } from "../pkg/rust_lib";
 import { decrypt } from "../pkg/rust_lib";
+import { count_characters }  from "../pkg/rust_lib";
 
 const [key, setKey]                 = createSignal("");
 const [iv, setIv]                   = createSignal("");
 const [plainText, setPlainText]     = createSignal("");
 const [fbPlainText, setFbPlainText] = createSignal("");
+const [cipherText, setCipherText]   = createSignal("");
 const [resultE, setResultE]         = createSignal("");
+const [resultD, setResultD]         = createSignal("");
+
+
+
+
+document.getElementById("encryption")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#key")){
+      const value = (e!.target as HTMLInputElement).value;
+      setKey(value.toString());
+      document.getElementById("key_indic")!.textContent = count_characters(key()).toString();
+   }
+   if((e!.target as HTMLInputElement).matches("#iv")){
+      const value = (e!.target as HTMLInputElement).value;
+      setIv(value.toString());
+      document.getElementById("iv_indic")!.textContent = count_characters(iv()).toString();
+   }
+
+   if((e!.target as HTMLInputElement).matches("#plain_text")){
+      const value = (e!.target as HTMLInputElement).value;
+      setPlainText(value.toString());
+      setFbPlainText(value.toString());
+   }
+
+   if((e!.target as HTMLInputElement).matches("#cipher_text")){
+      const value = (e!.target as HTMLInputElement).value;
+      setCipherText(value.toString());
+   }
+   
+});
+
+
+document.getElementById("encryption")!.addEventListener("change",(e)=>{
+   if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
+      if ((event.target as HTMLInputElement).checked) {
+         document.getElementById("plain_text").readOnly = true;
+         createEffect(() => { setPlainText(currentPass()) })
+      } else {
+         setPlainText(fbPlainText())
+         document.getElementById("plain_text").readOnly = false;
+      }
+   }
+});
 
 import QRCode from 'qrcode'
-// var canvas = document.getElementById('canvas')
-
-
-
-// QRCode.toCanvas(canvas, resultE(), { width : 160 , margin: 1}, function (error) {
-//   if (error) console.error(error)
-//   console.log('success!');
-// })
 
 
 createEffect(() => {
@@ -177,54 +203,82 @@ createEffect(() => {
       document.getElementById("result_e")!.textContent = "Enter Plain Text";
    }
    QRCode.toCanvas(
-      document.getElementById("canvas")!,
+      document.getElementById("eqr")!,
       resultE(),
       { width: 160, margin: 1 },
-      // function (error) {
-      //    if (error) console.error(error);
-      //    console.log("success!");
-      // },
+      // function (error) { if (error) console.error(error);console.log("success!");},
+   );
+});
+
+createEffect(() => {
+   setResultD(decrypt(key(), iv(), cipherText()));
+   document.getElementById("result_d")!.textContent = resultD();
+   if (resultD() === "") {
+      document.getElementById("result_d")!.textContent = "Enter Cipher Text";
+   }
+   QRCode.toCanvas(
+      document.getElementById("dqr")!,
+      resultD(),
+      { width: 160, margin: 1 },
+      // function (error) { if (error) console.error(error);console.log("success!");},
    );
 });
 
 
-
-
-document.getElementById("encryption")!.addEventListener("input",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#key")){
-      const value = (e!.target as HTMLInputElement).value;
-      setKey(value.toString());
+createEffect(() => {
+   if(resultE() !== "IV is not 16 Characters" &&
+      resultE() !== "Key is not 16 Characters" &&
+      resultE() !== "") {
+      document.getElementById("copy_e")!.classList.remove("disabled");
+      document.getElementById("l_show_e")!.classList.remove("disabled");
+      document.getElementById("show_e").disabled  = false;
+   } else{
+      document.getElementById("copy_e")!.classList.add("disabled");
+      document.getElementById("l_show_e")!.classList.add("disabled");
+      document.getElementById("show_e").checked   = false; 
+      document.getElementById("show_e").disabled  = true;
    }
-   if((e!.target as HTMLInputElement).matches("#iv")){
-      const value = (e!.target as HTMLInputElement).value;
-      setIv(value.toString());
-   }
-
-   if((e!.target as HTMLInputElement).matches("#plain_text")){
-      const value = (e!.target as HTMLInputElement).value;
-      setPlainText(value.toString());
-      setFbPlainText(value.toString());
-   }
-   
 });
 
-
-document.getElementById("encryption")!.addEventListener("change",(e)=>{
-   if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
-      if ((event.target as HTMLInputElement).checked) {
-         setPlainText(currentPass())
-      } else {
-         setPlainText(fbPlainText)
-      }
+document.getElementById("encryption")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#copy_e")){
+       if(resultE() !== "IV is not 16 Characters" &&
+         resultE() !== "Key is not 16 Characters" &&
+         resultE() !== "") {
+         navigator.clipboard.writeText(resultE());  
+          showToast();
+      } 
    }
 });
 
 
-// result_d = decrypt(Key,IV,cipher_text);
+createEffect(() => {
+   if(resultD() !== "IV is not 16 Characters" &&
+      resultD() !== "Key is not 16 Characters" &&
+      resultD() !== "Invalid Credentials"&&
+      resultD() !== "") {
+      document.getElementById("copy_d")!.classList.remove("disabled");
+      document.getElementById("l_show_d")!.classList.remove("disabled");
+      document.getElementById("show_d").disabled  = false;
+   } else{
+      document.getElementById("copy_d")!.classList.add("disabled");
+      document.getElementById("l_show_d")!.classList.add("disabled");
+      document.getElementById("show_d").checked   = false; 
+      document.getElementById("show_d").disabled  = true;
+   }
+});
 
-
-
-
+document.getElementById("encryption")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#copy_d")){
+       if(resultD() !== "IV is not 16 Characters" &&
+         resultD() !== "Key is not 16 Characters" &&
+         resultD() !== "Invalid Credentials"&&
+         resultD() !== "") {
+         navigator.clipboard.writeText(resultD());  
+          showToast();
+      } 
+   }
+});
 
 
 
@@ -235,9 +289,9 @@ let timeoutId: number | undefined;
 function showToast() {
   const toastElement = document.getElementById('toast');
   if (toastElement) {
-    toastElement.style.bottom = 'var(--portion)';
+    toastElement.style.top = '85dvh';
     timeoutId = window.setTimeout(() => {
-      toastElement.style.bottom = '-100%';
+      toastElement.style.top = '110dvh';
     }, 2000);
   }
 }
@@ -254,5 +308,3 @@ onMount(() => {
       clearToastTimeout();
    };
 });
-
-

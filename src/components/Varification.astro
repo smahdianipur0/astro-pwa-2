@@ -1,0 +1,22 @@
+<input id="use_varif" type="checkbox" style="accent-color: var(--primary);
+place-content: center;
+">
+
+
+<style >
+	
+#use_varif::after{
+	content :  "Use Decrypted text as key for varification code" ;
+	display: block;
+	margin-left: 3ch;
+	color: var(--accent-color);
+	font-size: var(--regular-font);
+	width: 41ch;
+	line-height: 2ch;
+}
+
+:root:has(#enc:checked) #use_varif::after {
+	content :  "Use plain text as key for varification code" ;
+
+}
+</style>
