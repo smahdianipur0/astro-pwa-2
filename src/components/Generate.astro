@@ -13,11 +13,7 @@ import ToggleGroup from '../components/ToggleGroup.astro';
        <ToggleGroup/>
 
         <div class="center" >
-          <button  id = "gp" class=" unstyle-button copy"style="font-size:var(--big-font);
-            font-family: system-ui;
-            font-weight: 300;
-            margin-top: 2ch; 
-            margin-bottom: 2ch;">
+          <button  id = "gp" class=" unstyle-button copy"style="margin-top: 2ch; margin-bottom: 2ch;">
             <div class = "skeleton" style="width:15ch"> </div> 
           </button>
 
@@ -26,7 +22,12 @@ import ToggleGroup from '../components/ToggleGroup.astro';
             margin-top: 2ch; margin-bottom: 2ch;">↻
           </button> 
           <p id="ttc" class="hint" style="
-            margin-top: 2ch; margin-bottom: 2ch;"> tap to copy </p>
+            margin-top: 2ch; margin-bottom: 2ch;
+            position: absolute;
+            width: 18ch;
+            right: calc(50% - 9ch );
+            text-align: center;
+            top : 5.5ch;"> tap to copy </p>
         </div>
       </fragment>
 
@@ -45,10 +46,10 @@ import ToggleGroup from '../components/ToggleGroup.astro';
    </Tabs>
 
   <div style="font-size: var(--regular-font); margin-top:2ch; margin-bottom: 2ch;">
-    <div id = "gu">  <div class = "skeleton"> </div> </div>
+    <div id = "gu">  <div style="width:15ch;" class = "skeleton"> </div> </div>
     <p id="box" class="box"></p>
-    <div id = "s1">  <div class = "skeleton"> </div> </div>
-    <div id = "s2">  <div class = "skeleton"> </div> </div>
+    <div id = "s1">  <div style="width:80%;"class = "skeleton"> </div> </div>
+    <div id = "s2">  <div style="width:65%;"class = "skeleton"> </div> </div>
   </div>
 
 
@@ -122,6 +123,8 @@ import ToggleGroup from '../components/ToggleGroup.astro';
   border-radius: var(--radiu-a);
   padding: var(--thin-padding);
   line-height: 2ch;
+  font-weight: 300;
+  font-size:var(--big-font);
 }
 
 
@@ -149,13 +152,8 @@ import ToggleGroup from '../components/ToggleGroup.astro';
 }
 
 .hint{
-  place-content: center;
   border: 1px solid oklch(1 0 0 /0.0);
-  position: absolute;
-  width: 18ch;
-  right: calc(50% - 9ch );
-  text-align: center;
-  top : 5.5ch;
+
   opacity: 0.6;
   font-size:var(--extra-small-font); 
   font-weight: 300; 

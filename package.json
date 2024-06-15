@@ -16,6 +16,7 @@
     "lightningcss": "^1.25.1",
     "qrcode": "^1.5.3",
     "solid-js": "^1.8.17",
+    "totp-generator": "^1.0.0",
     "typescript": "^5.4.5"
   },
   "devDependencies": {

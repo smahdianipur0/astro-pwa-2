@@ -155,6 +155,8 @@ const [resultD, setResultD]         = createSignal("");
 
 
 
+
+
 document.getElementById("encryption")!.addEventListener("input",(e)=>{
    if((e!.target as HTMLInputElement).matches("#key")){
       const value = (e!.target as HTMLInputElement).value;
@@ -246,7 +248,7 @@ document.getElementById("encryption")!.addEventListener("click",(e)=>{
          resultE() !== "Key is not 16 Characters" &&
          resultE() !== "") {
          navigator.clipboard.writeText(resultE());  
-          showToast();
+         showToast();
       } 
    }
 });
@@ -275,10 +277,73 @@ document.getElementById("encryption")!.addEventListener("click",(e)=>{
          resultD() !== "Invalid Credentials"&&
          resultD() !== "") {
          navigator.clipboard.writeText(resultD());  
-          showToast();
+         showToast();
       } 
    }
 });
+
+import { TOTP } from "totp-generator";
+
+const [sKey, setSkey]           = createSignal("");
+const [otpRe, setOtpRe]         = createSignal("");
+const [countDown, setCountDown] = createSignal("");
+
+
+
+document.getElementById("encryption")!.addEventListener("input",(e)=>{
+   if ((document.getElementById("enc")! as HTMLInputElement).checked) {
+      if((e!.target as HTMLInputElement).matches("#plain_text")){
+         const value = (e!.target as HTMLInputElement).value;
+         setSkey(value.toString());
+      }
+   }
+   if ((document.getElementById("dec")! as HTMLInputElement).checked) {
+      if((e!.target as HTMLInputElement).matches("#cipher_text")){
+         setSkey(decrypt(key(), iv(), cipherText()));
+      }
+   }
+});
+
+document.getElementById("encryption")!.addEventListener("change",(e)=>{
+   if ((e!.target as HTMLInputElement).matches("#enc")) {
+      if ((event.target as HTMLInputElement).checked) {
+         setSkey(fbPlainText());
+      }
+   }
+   if ((e!.target as HTMLInputElement).matches("#dec")) {
+      if ((event.target as HTMLInputElement).checked) {
+         setSkey(resultD());
+      }
+   }
+});
+
+
+
+function updateOtp() {
+   createEffect(() => {
+   try { 
+      
+      const { otp, expires } = TOTP.generate(sKey());
+      setOtpRe(otp.toString());
+   } catch (error) {
+      setOtpRe("The provided key is not valid.");
+   }
+   document.getElementById("varif_detail_re")!.textContent = otpRe();
+});
+}
+setInterval(updateOtp, 1000);
+
+
+
+
+function updateCountDown(){
+   const currentTime = Math.round(new Date().getTime() / 1000);
+   const remainingSeconds = 30 - (currentTime % 30);
+   setCountDown(remainingSeconds.toString().padStart(2, '0'));
+   document.getElementById("varif_hint")!.textContent = countDown();
+}
+setInterval(updateCountDown, 1000)
+
 
 
 
