@@ -301,6 +301,14 @@ document.getElementById("encryption")!.addEventListener("input",(e)=>{
       if((e!.target as HTMLInputElement).matches("#plain_text")){
          const value = (e!.target as HTMLInputElement).value;
          setSkey(value.toString());
+         if( fbPlainText() !== "") {
+         document.getElementById("use_varif")!.classList.remove("disabled");;
+         document.getElementById("use_varif").disabled  = false;
+         } else{
+         document.getElementById("use_varif")!.classList.add("disabled");
+         document.getElementById("use_varif").checked   = false; 
+         document.getElementById("use_varif").disabled  = true;
+         }
       }
    }
    if ((document.getElementById("dec")! as HTMLInputElement).checked) {
@@ -327,40 +335,49 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
 
 function updateOtp() {
    createEffect(() => {
-   try { const { otp, expires } = TOTP.generate(sKey());
-      setOtpRe(otp.toString());
-   } catch (error) {
-      setOtpRe("The provided key is not valid.");   
-   }
-});
+      try { const { otp, expires } = TOTP.generate(sKey());
+         setOtpRe(otp.toString());
+      } catch (error) {
+         setOtpRe("The provided key is not valid.");   
+      }
+   });
 }
 setInterval(updateOtp, 1000);
 
 
-createEffect(() => {
-   if ((document.getElementById("enc")! as HTMLInputElement).checked) {
-      if( fbPlainText() !== "") {
-         document.getElementById("use_varif")!.classList.remove("disabled");;
-         document.getElementById("use_varif").disabled  = false;
-      } else{
-         document.getElementById("use_varif")!.classList.add("disabled");
-         document.getElementById("use_varif").checked   = false; 
-         document.getElementById("use_varif").disabled  = true;
-      }
-   } if ((document.getElementById("dec")! as HTMLInputElement).checked) {
-      if(resultD() !== "IV is not 16 Characters" &&
-         resultD() !== "Key is not 16 Characters" &&
-         resultD() !== "Invalid Credentials" &&
-         resultD() !== "") {
-         document.getElementById("use_varif")!.classList.remove("disabled");;
-         document.getElementById("use_varif").disabled  = false;
-      } else {
-         document.getElementById("use_varif")!.classList.add("disabled");
-         document.getElementById("use_varif").checked   = false; 
-         document.getElementById("use_varif").disabled  = true;
+document.getElementById("encryption")!.addEventListener("change",(e)=>{
+   if ((e!.target as HTMLInputElement).matches("#enc")) {
+      if ((event.target as HTMLInputElement).checked) {
+         createEffect(() => {
+            if( fbPlainText() !== "") {
+            document.getElementById("use_varif")!.classList.remove("disabled");;
+            document.getElementById("use_varif").disabled  = false;
+            } else{
+            document.getElementById("use_varif")!.classList.add("disabled");
+            document.getElementById("use_varif").checked   = false; 
+            document.getElementById("use_varif").disabled  = true;
+            } 
+         });
+      }}
+   if ((e!.target as HTMLInputElement).matches("#dec")) {
+      if ((event.target as HTMLInputElement).checked) {
+         createEffect(() => {
+            if(resultD() !== "IV is not 16 Characters" &&
+            resultD() !== "Key is not 16 Characters" &&
+            resultD() !== "Invalid Credentials" &&
+            resultD() !== "") {
+            document.getElementById("use_varif")!.classList.remove("disabled");;
+            document.getElementById("use_varif").disabled  = false;
+            } else {
+            document.getElementById("use_varif")!.classList.add("disabled");
+            document.getElementById("use_varif").checked   = false; 
+            document.getElementById("use_varif").disabled  = true;
+            }
+         });
       }
    }
 });
+
 
 createEffect(() => {
    if(otpRe() !== "The provided key is not valid." ){
@@ -372,7 +389,7 @@ createEffect(() => {
 
       document.getElementById("varification")!.addEventListener("click",(e)=>{
          if((e!.target as HTMLInputElement).matches("#varif_detail ,#varif_detail_re")){
-            navigator.clipboard.writeText(otpRe());  
+           navigator.clipboard.writeText(otpRe());  
            showToast(); 
         }
       });
@@ -382,9 +399,6 @@ createEffect(() => {
       document.getElementById("varif_hint")!.textContent = ""
    } 
 });
-
-
-
 
 
 
@@ -413,4 +427,76 @@ onMount(() => {
    return () => {
       clearToastTimeout();
    };
+});
+
+
+
+document.getElementById("generateQR")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#text_for_qr")){
+      const value = (e!.target as HTMLInputElement).value;
+      if (value === "") {
+          document.getElementById("gqr")!.style.height = "0"
+      } else {
+      document.getElementById("gqr")!.style.height = "160px"
+      QRCode.toCanvas(
+         document.getElementById("gqr")!,
+         value,
+         { width: 160, margin: 1 },
+         // function (error) { if (error) console.error(error);console.log("success!");},
+         );
+   }
+   }
+
+});
+
+
+const [otpReO, setOtpReO] = createSignal("");
+const [keyO, setKeyO] = createSignal("");
+
+document.getElementById("varificationOnly")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#text_for_varif")){
+      const value = (e!.target as HTMLInputElement).value;
+      setKeyO(value.toString())
+   }
+});
+
+
+function updateOtpO() {
+   createEffect(() => {
+      try { const { otp, expires } = TOTP.generate(keyO());
+         setOtpReO(otp.toString());
+      } catch (error) {
+         setOtpReO("The provided key is not valid.");   
+      }
+   });
+}
+setInterval(updateOtpO, 1000);
+
+createEffect(() => {
+      if(keyO() === "") { 
+      document.getElementById("varif_detail_o")!.textContent = "";
+      document.getElementById("varif_detail_re_o")!.textContent = "";
+      document.getElementById("varif_hint_o")!.textContent = ""
+   } else {
+   if(otpReO() !== "The provided key is not valid."){
+      document.getElementById("varif_detail_o")!.textContent = "Varification Code:"
+      document.getElementById("varif_detail_re_o")!.textContent = otpReO();
+
+      document.getElementById("varif_hint_o")!.textContent = 
+      "This code is valid for the next ".concat( countDown().toString(), " seconds.");
+
+      document.getElementById("varificationOnly")!.addEventListener("click",(e)=>{
+         if((e!.target as HTMLInputElement).matches("#varif_detail_o ,#varif_detail_re_o")){
+           navigator.clipboard.writeText(otpReO());  
+           showToast(); 
+        }
+      });
+   } 
+
+   else {
+      document.getElementById("varif_detail_o")!.textContent = otpReO();
+      document.getElementById("varif_detail_re_o")!.textContent = "";
+      document.getElementById("varif_hint_o")!.textContent = ""
+   } 
+}
 });
