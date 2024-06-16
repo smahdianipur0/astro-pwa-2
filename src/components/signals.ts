@@ -395,9 +395,9 @@ let timeoutId: number | undefined;
 function showToast() {
   const toastElement = document.getElementById('toast');
   if (toastElement) {
-    toastElement.style.top = '85dvh';
+    toastElement.style.bottom = 'var(--portion)';
     timeoutId = window.setTimeout(() => {
-      toastElement.style.top = '110dvh';
+      toastElement.style.bottom = '-100%';
     }, 2000);
   }
 }

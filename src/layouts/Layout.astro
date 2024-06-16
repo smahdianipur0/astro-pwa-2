@@ -23,28 +23,31 @@ const { title } = Astro.props;
 
 	</head>
   
-<body id="page" style="
-min-height: max-content;
+<body id="page" style="font-size: var(--regular-font);
 min-height: 100vh;
-background-position: 0 0;
-border: 0px solid transparent ;
 background: var(--bg-canv);
-font-size: var(--regular-font);
-transition: color 0.2s ease-out ;
-contain: paint;">
+border-width: 0.1px;
+border-style: solid;
+border-color: rgba(0, 0, 0, 0);
+border-image: initial;
+transition: color 0.2s ease-out 0s;
+">
 
   <Nav>
     <Drawer/>
+
+
+
   </Nav>
 
   <slot/>
 
-  </div>
-    <div id="toast" class="toast dark glass">
-      <span class="gg-check-o"/>
-      <span>&nbsp Copied</span>
     </div>
-  <div>
+      <div id="toast" class="toast dark glass">
+        <span class="gg-check-o"/>
+        <span>&nbsp Copied</span>
+      </div>
+    <div>
 
 
 </body>
@@ -246,7 +249,7 @@ button.disabled::before , label.disabled::before {
  background-color: var(--glass-background);
  border-radius: var(--radiu-b);
  border: 1px solid  var(--main-border);
- top: 110dvh;
+ bottom: -100%;
  width: 250px; 
  left: calc(50% - 125px ); 
  align-items: center;
@@ -254,7 +257,7 @@ button.disabled::before , label.disabled::before {
  height: var(--portion); 
  padding: 10px;
  box-sizing: border-box;
- transition: top 0.15s ease-out;  
+ transition: bottom 0.15s ease-out;  
  z-index: var(--z-layer-higher);
 }
 
