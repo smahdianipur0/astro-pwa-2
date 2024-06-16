@@ -35,9 +35,9 @@ document.getElementById("generate")!.addEventListener("input",(e)=>{
       setMPassword(value.toString());
       setCurrentPass(mpassword()) 
       if(mpassword() === "") {
-         document.getElementById("copyMPassword")!.classList.add("disabled")  
+         (document.getElementById("copyMPassword")! as HTMLInputElement).classList.add("disabled")  
           } else {
-         document.getElementById("copyMPassword")!.classList.remove("disabled") 
+         (document.getElementById("copyMPassword")! as HTMLInputElement).classList.remove("disabled") 
       }   
    }
 });
@@ -45,12 +45,12 @@ document.getElementById("generate")!.addEventListener("input",(e)=>{
 
 document.getElementById("generate")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#random")) {
-         if ((event.target as HTMLInputElement).checked) {
+         if ((e.target as HTMLInputElement).checked) {
             setCurrentPass(password());
          }
       }
       if ((e!.target as HTMLInputElement).matches("#manual")) {
-         if ((event.target as HTMLInputElement).checked) {
+         if ((e.target as HTMLInputElement).checked) {
             setCurrentPass(mpassword());
          }
       }
@@ -185,12 +185,12 @@ document.getElementById("encryption")!.addEventListener("input",(e)=>{
 
 document.getElementById("encryption")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
-      if ((event.target as HTMLInputElement).checked) {
-         document.getElementById("plain_text").readOnly = true;
+      if ((e.target as HTMLInputElement).checked) {
+         (document.getElementById("plain_text")! as HTMLInputElement).readOnly = true;
          createEffect(() => { setPlainText(currentPass()) })
       } else {
-         setPlainText(fbPlainText())
-         document.getElementById("plain_text").readOnly = false;
+         setPlainText(fbPlainText().toString());
+         (document.getElementById("plain_text")! as HTMLInputElement).readOnly = false;
       }
    }
 });
@@ -233,12 +233,12 @@ createEffect(() => {
       resultE() !== "") {
       document.getElementById("copy_e")!.classList.remove("disabled");
       document.getElementById("l_show_e")!.classList.remove("disabled");
-      document.getElementById("show_e").disabled  = false;
+      (document.getElementById("show_e")! as HTMLInputElement).disabled  = false;
    } else{
       document.getElementById("copy_e")!.classList.add("disabled");
       document.getElementById("l_show_e")!.classList.add("disabled");
-      document.getElementById("show_e").checked   = false; 
-      document.getElementById("show_e").disabled  = true;
+      (document.getElementById("show_e")! as HTMLInputElement).checked   = false; 
+      (document.getElementById("show_e")! as HTMLInputElement).disabled  = true;
    }
 });
 
@@ -261,12 +261,12 @@ createEffect(() => {
       resultD() !== "") {
       document.getElementById("copy_d")!.classList.remove("disabled");
       document.getElementById("l_show_d")!.classList.remove("disabled");
-      document.getElementById("show_d").disabled  = false;
+      (document.getElementById("show_d")! as HTMLInputElement).disabled  = false;
    } else{
       document.getElementById("copy_d")!.classList.add("disabled");
       document.getElementById("l_show_d")!.classList.add("disabled");
-      document.getElementById("show_d").checked   = false; 
-      document.getElementById("show_d").disabled  = true;
+      (document.getElementById("show_d")! as HTMLInputElement).checked   = false; 
+      (document.getElementById("show_d")! as HTMLInputElement).disabled  = true;
    }
 });
 
@@ -303,11 +303,11 @@ document.getElementById("encryption")!.addEventListener("input",(e)=>{
          setSkey(value.toString());
          if( fbPlainText() !== "") {
          document.getElementById("use_varif")!.classList.remove("disabled");;
-         document.getElementById("use_varif").disabled  = false;
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
          } else{
          document.getElementById("use_varif")!.classList.add("disabled");
-         document.getElementById("use_varif").checked   = false; 
-         document.getElementById("use_varif").disabled  = true;
+         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
          }
       }
    }
@@ -320,12 +320,12 @@ document.getElementById("encryption")!.addEventListener("input",(e)=>{
 
 document.getElementById("encryption")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#enc")) {
-      if ((event.target as HTMLInputElement).checked) {
+      if ((e.target as HTMLInputElement).checked) {
          setSkey(fbPlainText());
       }
    }
    if ((e!.target as HTMLInputElement).matches("#dec")) {
-      if ((event.target as HTMLInputElement).checked) {
+      if ((e.target as HTMLInputElement).checked) {
          setSkey(resultD());
       }
    }
@@ -347,31 +347,31 @@ setInterval(updateOtp, 1000);
 
 document.getElementById("encryption")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#enc")) {
-      if ((event.target as HTMLInputElement).checked) {
+      if ((e.target as HTMLInputElement).checked) {
          createEffect(() => {
             if( fbPlainText() !== "") {
             document.getElementById("use_varif")!.classList.remove("disabled");;
-            document.getElementById("use_varif").disabled  = false;
+            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
             } else{
             document.getElementById("use_varif")!.classList.add("disabled");
-            document.getElementById("use_varif").checked   = false; 
-            document.getElementById("use_varif").disabled  = true;
+            (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
             } 
          });
       }}
    if ((e!.target as HTMLInputElement).matches("#dec")) {
-      if ((event.target as HTMLInputElement).checked) {
+      if ((e.target as HTMLInputElement).checked) {
          createEffect(() => {
             if(resultD() !== "IV is not 16 Characters" &&
             resultD() !== "Key is not 16 Characters" &&
             resultD() !== "Invalid Credentials" &&
             resultD() !== "") {
             document.getElementById("use_varif")!.classList.remove("disabled");;
-            document.getElementById("use_varif").disabled  = false;
+            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
             } else {
             document.getElementById("use_varif")!.classList.add("disabled");
-            document.getElementById("use_varif").checked   = false; 
-            document.getElementById("use_varif").disabled  = true;
+            (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
             }
          });
       }
@@ -407,7 +407,7 @@ import { onMount } from 'solid-js';
 let timeoutId: number | undefined;
 
 function showToast() {
-  const toastElement = document.getElementById('toast');
+  const toastElement = document.getElementById('toast')!;
   if (toastElement) {
     toastElement.style.bottom = 'var(--portion)';
     timeoutId = window.setTimeout(() => {
@@ -444,9 +444,8 @@ document.getElementById("generateQR")!.addEventListener("input",(e)=>{
          { width: 160, margin: 1 },
          // function (error) { if (error) console.error(error);console.log("success!");},
          );
+      }
    }
-   }
-
 });
 
 
@@ -473,30 +472,28 @@ function updateOtpO() {
 setInterval(updateOtpO, 1000);
 
 createEffect(() => {
-      if(keyO() === "") { 
+   if (keyO() === "") {
       document.getElementById("varif_detail_o")!.textContent = "";
       document.getElementById("varif_detail_re_o")!.textContent = "";
-      document.getElementById("varif_hint_o")!.textContent = ""
+      document.getElementById("varif_hint_o")!.textContent = "";
    } else {
-   if(otpReO() !== "The provided key is not valid."){
-      document.getElementById("varif_detail_o")!.textContent = "Varification Code:"
-      document.getElementById("varif_detail_re_o")!.textContent = otpReO();
+      if (otpReO() !== "The provided key is not valid.") {
+         document.getElementById("varif_detail_o")!.textContent = "Varification Code:";
+         document.getElementById("varif_detail_re_o")!.textContent = otpReO();
 
-      document.getElementById("varif_hint_o")!.textContent = 
-      "This code is valid for the next ".concat( countDown().toString(), " seconds.");
+         document.getElementById("varif_hint_o")!.textContent =
+            "This code is valid for the next ".concat(countDown().toString()," seconds.",);
 
-      document.getElementById("varificationOnly")!.addEventListener("click",(e)=>{
-         if((e!.target as HTMLInputElement).matches("#varif_detail_o ,#varif_detail_re_o")){
-           navigator.clipboard.writeText(otpReO());  
-           showToast(); 
-        }
-      });
-   } 
-
-   else {
-      document.getElementById("varif_detail_o")!.textContent = otpReO();
-      document.getElementById("varif_detail_re_o")!.textContent = "";
-      document.getElementById("varif_hint_o")!.textContent = ""
-   } 
-}
+         document.getElementById("varificationOnly")!.addEventListener("click", (e) => {
+            if ((e!.target as HTMLInputElement).matches("#varif_detail_o ,#varif_detail_re_o",)) {
+               navigator.clipboard.writeText(otpReO());
+               showToast();
+            }
+         });
+      } else {
+         document.getElementById("varif_detail_o")!.textContent = otpReO();
+         document.getElementById("varif_detail_re_o")!.textContent = "";
+         document.getElementById("varif_hint_o")!.textContent = "";
+      }
+   }
 });

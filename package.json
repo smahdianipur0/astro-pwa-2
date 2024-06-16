@@ -20,6 +20,7 @@
     "typescript": "^5.4.5"
   },
   "devDependencies": {
+    "@types/qrcode": "^1.5.5",
     "vite-plugin-top-level-await": "^1.4.1",
     "vite-plugin-wasm": "^3.3.0"
   }

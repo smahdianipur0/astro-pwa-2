@@ -11,13 +11,12 @@ export default defineConfig({
     solidJs()
     ],
   vite: {
-    plugins: [wasm(), topLevelAwait()]
-  },
-  css: { 
-    transformer: "lightningcss" 
+    plugins: [wasm(), topLevelAwait()],
+    css: { transformer: "lightningcss" },
   },
   build: {
     assetsInlineLimit: 51200,
+    inlineStylesheets: 'always',
     cssMinify: "lightningcss"
   },
 });
