@@ -83,8 +83,15 @@ createEffect(() => { document.getElementById("gu")!
 createEffect(() => { document.getElementById("s1")!
    .textContent = calculate_password_strength(currentPass()) });
 
-createEffect(() => { document.getElementById("s2")!
-   .textContent = calculate_password_strength2(currentPass()) });
+createEffect(() => { 
+   if(calculate_password_strength2(currentPass()) !== "Zxcvbn cannot evaluate a blank password") {
+    document.getElementById("s2")!
+   .textContent = calculate_password_strength2(currentPass())  
+   } else {
+      document.getElementById("s2")!
+      .textContent = ""  
+   }
+});    
 
 
 createEffect(() => { 
@@ -92,7 +99,6 @@ createEffect(() => {
        if (gu === "Enter password") {
       document.getElementById("box")!.style.setProperty("--box-w", "0%");
       document.getElementById("box")!.style.setProperty("--box-p", "0%");
-      document.getElementById("s2")!.textContent= "";
    }   if (gu === "Too Guessable") {
       document.getElementById("box")!.style.setProperty("--box-w", "36%");
       document.getElementById("box")!.style.setProperty("--box-p", "0%");
@@ -187,10 +193,14 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
       if ((e.target as HTMLInputElement).checked) {
          (document.getElementById("plain_text")! as HTMLInputElement).readOnly = true;
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
+         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
          createEffect(() => { setPlainText(currentPass()) })
       } else {
          setPlainText(fbPlainText().toString());
          (document.getElementById("plain_text")! as HTMLInputElement).readOnly = false;
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
       }
    }
 });
@@ -291,8 +301,7 @@ const [countDown, setCountDown] = createSignal("");
 function updateCountDown(){
    const currentTime = Math.round(new Date().getTime() / 1000);
    const remainingSeconds = 30 - (currentTime % 30);
-   setCountDown(remainingSeconds.toString().padStart(2, '0'));
-   
+   setCountDown(remainingSeconds.toString().padStart(2, '0'));   
 }
 setInterval(updateCountDown, 1000)
 
@@ -302,10 +311,10 @@ document.getElementById("encryption")!.addEventListener("input",(e)=>{
          const value = (e!.target as HTMLInputElement).value;
          setSkey(value.toString());
          if( fbPlainText() !== "") {
-         document.getElementById("use_varif")!.classList.remove("disabled");;
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
          (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
          } else{
-         document.getElementById("use_varif")!.classList.add("disabled");
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
          (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
          (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
          }
@@ -386,18 +395,20 @@ createEffect(() => {
 
       document.getElementById("varif_hint")!.textContent = 
       "This code is valid for the next ".concat( countDown().toString(), " seconds.");
-
-      document.getElementById("varification")!.addEventListener("click",(e)=>{
-         if((e!.target as HTMLInputElement).matches("#varif_detail ,#varif_detail_re")){
-           navigator.clipboard.writeText(otpRe());  
-           showToast(); 
-        }
-      });
    } else {
       document.getElementById("varif_detail")!.textContent = otpRe();
       document.getElementById("varif_detail_re")!.textContent = "";
       document.getElementById("varif_hint")!.textContent = ""
    } 
+});
+
+document.getElementById("varification")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#varif_detail ,#varif_detail_re")){
+      if(otpRe() !== "The provided key is not valid." ){
+      navigator.clipboard.writeText(otpRe());  
+      showToast(); 
+     }
+  }
 });
 
 
