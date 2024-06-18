@@ -161,3 +161,62 @@ function toggleOnEnter(event: KeyboardEvent) {
    }
 
 
+// document.getElementById("encryption")!.addEventListener("change",(e)=>{
+//    if ((e!.target as HTMLInputElement).matches("#dec")) {
+//       if ((e.target as HTMLInputElement).checked) {
+//          createEffect(() => {
+//             if(resultD() !== "IV is not 16 Characters" &&
+//             resultD() !== "Key is not 16 Characters" &&
+//             resultD() !== "Invalid Credentials" &&
+//             resultD() !== "") {
+//             (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
+//             (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
+//             } else {
+//             (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
+//             (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+//             (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
+//             }
+//          });
+//       }
+//    }
+// });
+
+
+
+document.getElementById("encryption")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#plain_text")){
+      const value = (e!.target as HTMLInputElement).value;
+      setSkey(value.toString());
+      createEffect(() => {
+         if( sKey() === fbPlainText() &&
+             fbPlainText() !== "" && 
+             fbPlainText() === plainText() ) {
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false; 
+         } else{
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
+         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
+         console.log("beep")
+         }
+      });
+   }
+   if((e!.target as HTMLInputElement).matches("#cipher_text, #key, #iv")){
+      setResultD(decrypt(key(), iv(), cipherText()));
+      setSkey(resultD());
+      createEffect(() => {
+         if( sKey() === resultD() &&
+            resultD() !== "IV is not 16 Characters" &&
+            resultD() !== "Key is not 16 Characters" &&
+            resultD() !== "Invalid Credentials" &&
+            resultD() !== "") {
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
+         } else {
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
+         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
+         }
+      });
+   }
+});

@@ -1,5 +1,6 @@
 <input id="use_varif" type="checkbox" style="accent-color: var(--primary);
-opacity: 0.6;" disabled >
+opacity: 0.6; font-size: var(--regular-font); height: 2.5ch; margin-bottom: 3ch;
+" disabled >
 
 <div style="display: flex;
 position: relative;
@@ -16,7 +17,7 @@ gap: 1ch;">
 
 </div>
 
-<div id="varif_hint" class="hint varif_detail_cl"><div class="skeleton" style="width:20ch"></div></div>
+<div id="varif_hint" class="hint varif_detail_cl" style="line-height: 1.5ch;" ><div class="skeleton" style="width:20ch;"></div></div>
 
 
 <style >
@@ -24,11 +25,9 @@ gap: 1ch;">
 #use_varif::after{
 	content :  "Use Decrypted text as key for varification code" ;
 	color:var(--accent-color);
-	font-size: var(--regular-font);
 	display: block;
-	margin-left: 3ch;
-	width: 41ch;
-	line-height: 1.2;
+	margin-left: 2.5ch;
+	width: calc(350px - 4ch);
 }
 
 :root:has(#enc:checked) #use_varif::after {

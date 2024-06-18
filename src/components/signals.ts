@@ -193,14 +193,10 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
       if ((e.target as HTMLInputElement).checked) {
          (document.getElementById("plain_text")! as HTMLInputElement).readOnly = true;
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
-         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
          createEffect(() => { setPlainText(currentPass()) })
       } else {
          setPlainText(fbPlainText().toString());
          (document.getElementById("plain_text")! as HTMLInputElement).readOnly = false;
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
       }
    }
 });
@@ -305,27 +301,6 @@ function updateCountDown(){
 }
 setInterval(updateCountDown, 1000)
 
-document.getElementById("encryption")!.addEventListener("input",(e)=>{
-   if ((document.getElementById("enc")! as HTMLInputElement).checked) {
-      if((e!.target as HTMLInputElement).matches("#plain_text")){
-         const value = (e!.target as HTMLInputElement).value;
-         setSkey(value.toString());
-         if( fbPlainText() !== "") {
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
-         } else{
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
-         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
-         }
-      }
-   }
-   if ((document.getElementById("dec")! as HTMLInputElement).checked) {
-      if((e!.target as HTMLInputElement).matches("#cipher_text, #key, #iv")){
-         setSkey(decrypt(key(), iv(), cipherText()));
-      }
-   }
-});
 
 document.getElementById("encryption")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#enc")) {
@@ -341,6 +316,87 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
 });
 
 
+document.getElementById("encryption")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#plain_text")){
+      const value = (e!.target as HTMLInputElement).value;
+      setSkey(value.toString());
+      if(sKey() !== "" ) {
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false; 
+         } else {
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
+         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
+      }
+   }
+   if((e!.target as HTMLInputElement).matches("#cipher_text, #key, #iv")){
+      setSkey(decrypt(key(), iv(), cipherText()));
+         if(sKey() !== "IV is not 16 Characters" &&
+            sKey() !== "Key is not 16 Characters" &&
+            sKey() !== "Invalid Credentials" &&
+            sKey() !== "") {
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
+         } else {
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
+         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
+         }
+   }
+});
+
+document.getElementById("encryption")!.addEventListener("change",(e)=>{
+   if ((e!.target as HTMLInputElement).matches("#enc")) {
+      if ((e.target as HTMLInputElement).checked) {
+         if(sKey() !== "" && 
+         (document.getElementById("auto_pass")! as HTMLInputElement).checked === false ) {
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false; 
+         } else {
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
+         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
+         } 
+      }
+   }
+   if ((e!.target as HTMLInputElement).matches("#dec")) {
+      if ((e.target as HTMLInputElement).checked) {
+         if(sKey() !== "IV is not 16 Characters" &&
+            sKey() !== "Key is not 16 Characters" &&
+            sKey() !== "Invalid Credentials" &&
+            sKey() !== "") {
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
+         } else {
+         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
+         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
+         }
+      }
+   }
+});
+
+document.getElementById("encryption")!.addEventListener("change",(e)=>{
+   if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
+      if ((e.target as HTMLInputElement).checked) {
+         if ((document.getElementById("enc")! as HTMLInputElement).checked){
+
+            (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
+            (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
+         }
+      } else {
+         if(sKey() !== "" ) { 
+            (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
+            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false; 
+         } else {
+            (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
+            (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
+         } 
+      }
+   }
+});
 
 function updateOtp() {
    createEffect(() => {
@@ -353,39 +409,6 @@ function updateOtp() {
 }
 setInterval(updateOtp, 1000);
 
-
-document.getElementById("encryption")!.addEventListener("change",(e)=>{
-   if ((e!.target as HTMLInputElement).matches("#enc")) {
-      if ((e.target as HTMLInputElement).checked) {
-         createEffect(() => {
-            if( fbPlainText() !== "") {
-            document.getElementById("use_varif")!.classList.remove("disabled");;
-            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
-            } else{
-            document.getElementById("use_varif")!.classList.add("disabled");
-            (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
-            } 
-         });
-      }}
-   if ((e!.target as HTMLInputElement).matches("#dec")) {
-      if ((e.target as HTMLInputElement).checked) {
-         createEffect(() => {
-            if(resultD() !== "IV is not 16 Characters" &&
-            resultD() !== "Key is not 16 Characters" &&
-            resultD() !== "Invalid Credentials" &&
-            resultD() !== "") {
-            document.getElementById("use_varif")!.classList.remove("disabled");;
-            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
-            } else {
-            document.getElementById("use_varif")!.classList.add("disabled");
-            (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
-            }
-         });
-      }
-   }
-});
 
 
 createEffect(() => {
