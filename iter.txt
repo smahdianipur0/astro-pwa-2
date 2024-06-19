@@ -220,3 +220,17 @@ document.getElementById("encryption")!.addEventListener("input",(e)=>{
       });
    }
 });
+
+
+/* #use_varif::after{
+    content :  "Use Decrypted text as key for varification code" ;
+    color:var(--accent-color);
+    display: block;
+    margin-left: 2.5ch;
+    width: calc(350px - 6.5ch);
+}
+
+:root:has(#enc:checked) #use_varif::after {
+    content :  "Use plain text as key for varification code" ;
+
+} */

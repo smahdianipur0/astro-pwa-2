@@ -315,33 +315,34 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
    }
 });
 
+function activateVarif() {
+   (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
+   (document.getElementById("use_varif_l")! as HTMLInputElement).style.opacity = "1";
+   (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
+};
+
+function deactivateVarif() {
+   (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
+   (document.getElementById("use_varif_l")! as HTMLInputElement).style.opacity = "0.6";
+   (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
+   (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
+};
+
 
 document.getElementById("encryption")!.addEventListener("input",(e)=>{
    if((e!.target as HTMLInputElement).matches("#plain_text")){
       const value = (e!.target as HTMLInputElement).value;
       setSkey(value.toString());
-      if(sKey() !== "" ) {
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false; 
-         } else {
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
-         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
-      }
+      if(sKey() !== "" ) { activateVarif() } else {deactivateVarif()}
    }
    if((e!.target as HTMLInputElement).matches("#cipher_text, #key, #iv")){
-      setSkey(decrypt(key(), iv(), cipherText()));
+      if ((document.getElementById("dec")! as HTMLInputElement).checked){
+         setSkey(decrypt(key(), iv(), cipherText()));
          if(sKey() !== "IV is not 16 Characters" &&
             sKey() !== "Key is not 16 Characters" &&
             sKey() !== "Invalid Credentials" &&
-            sKey() !== "") {
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
-         } else {
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
-         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
-         }
+            sKey() !== "") { activateVarif() } else {deactivateVarif()}
+      }
    }
 });
 
@@ -349,14 +350,8 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#enc")) {
       if ((e.target as HTMLInputElement).checked) {
          if(sKey() !== "" && 
-         (document.getElementById("auto_pass")! as HTMLInputElement).checked === false ) {
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false; 
-         } else {
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
-         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
-         } 
+         (document.getElementById("auto_pass")! as HTMLInputElement).checked === false )
+           { activateVarif() } else {deactivateVarif()}
       }
    }
    if ((e!.target as HTMLInputElement).matches("#dec")) {
@@ -364,14 +359,7 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
          if(sKey() !== "IV is not 16 Characters" &&
             sKey() !== "Key is not 16 Characters" &&
             sKey() !== "Invalid Credentials" &&
-            sKey() !== "") {
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
-         } else {
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
-         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
-         }
+            sKey() !== "") { activateVarif() } else {deactivateVarif()}
       }
    }
 });
@@ -379,21 +367,9 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
 document.getElementById("encryption")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
       if ((e.target as HTMLInputElement).checked) {
-         if ((document.getElementById("enc")! as HTMLInputElement).checked){
-
-            (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
-            (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
-         }
+         if ((document.getElementById("enc")! as HTMLInputElement).checked){ deactivateVarif() }
       } else {
-         if(sKey() !== "" ) { 
-            (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
-            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false; 
-         } else {
-            (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
-            (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-            (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
-         } 
+         if(sKey() !== "" ) { activateVarif() } else { deactivateVarif() } 
       }
    }
 });
@@ -418,15 +394,18 @@ createEffect(() => {
 
       document.getElementById("varif_hint")!.textContent = 
       "This code is valid for the next ".concat( countDown().toString(), " seconds.");
+      document.getElementById("varif_copy_hint")!.textContent = "Tap to copy";
    } else {
       document.getElementById("varif_detail")!.textContent = otpRe();
       document.getElementById("varif_detail_re")!.textContent = "";
-      document.getElementById("varif_hint")!.textContent = ""
+      document.getElementById("varif_hint")!.textContent = "";
+      document.getElementById("varif_copy_hint")!.textContent = "";
    } 
 });
 
 document.getElementById("varification")!.addEventListener("click",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#varif_detail ,#varif_detail_re")){
+   if((e!.target as HTMLInputElement).matches(
+      "#varif_detail ,#varif_detail_re, #varif_copy_hint")){
       if(otpRe() !== "The provided key is not valid." ){
       navigator.clipboard.writeText(otpRe());  
       showToast(); 
@@ -510,6 +489,7 @@ createEffect(() => {
       document.getElementById("varif_detail_o")!.textContent = "";
       document.getElementById("varif_detail_re_o")!.textContent = "";
       document.getElementById("varif_hint_o")!.textContent = "";
+      document.getElementById("varif_copy_hint_o")!.textContent = "";
    } else {
       if (otpReO() !== "The provided key is not valid.") {
          document.getElementById("varif_detail_o")!.textContent = "Varification Code:";
@@ -517,9 +497,11 @@ createEffect(() => {
 
          document.getElementById("varif_hint_o")!.textContent =
             "This code is valid for the next ".concat(countDown().toString()," seconds.",);
+         document.getElementById("varif_copy_hint_o")!.textContent = "Tap to copy"
 
          document.getElementById("varificationOnly")!.addEventListener("click", (e) => {
-            if ((e!.target as HTMLInputElement).matches("#varif_detail_o ,#varif_detail_re_o",)) {
+            if ((e!.target as HTMLInputElement).matches(
+               "#varif_detail_o ,#varif_detail_re_o, #varif_copy_hint_o ",)) {
                navigator.clipboard.writeText(otpReO());
                showToast();
             }
@@ -528,6 +510,7 @@ createEffect(() => {
          document.getElementById("varif_detail_o")!.textContent = otpReO();
          document.getElementById("varif_detail_re_o")!.textContent = "";
          document.getElementById("varif_hint_o")!.textContent = "";
+         document.getElementById("varif_copy_hint_o")!.textContent = "";
       }
    }
 });

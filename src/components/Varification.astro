@@ -1,8 +1,10 @@
-<input id="use_varif" type="checkbox" style="accent-color: var(--primary);
-opacity: 0.6; font-size: var(--regular-font); height: 2.5ch; margin-bottom: 3ch;
-" disabled >
+<input id="use_varif" type="checkbox" style="accent-color: var(--primary);" disabled >
+<label for="use_varif" id="use_varif_l" style="
+opacity: 0.6; font-size: var(--regular-font); height: 2.5ch;">
+Use plain text as key for varification code</label>
 
 <div style="display: flex;
+margin-top: 2ch;
 position: relative;
 justify-content: space-between;
 align-items: center;
@@ -18,30 +20,30 @@ gap: 1ch;">
 </div>
 
 <div id="varif_hint" class="hint varif_detail_cl" style="line-height: 1.5ch;" ><div class="skeleton" style="width:20ch;"></div></div>
-
+<div id="varif_copy_hint" class="hint varif_detail_cl" style="line-height: 2.5ch;" ><div class="skeleton" style="width:8ch;"></div></div>
 
 <style >
 	
-#use_varif::after{
-	content :  "Use Decrypted text as key for varification code" ;
-	color:var(--accent-color);
-	display: block;
-	margin-left: 2.5ch;
-	width: calc(350px - 4ch);
-}
-
-:root:has(#enc:checked) #use_varif::after {
-	content :  "Use plain text as key for varification code" ;
-
-}
 .varif_detail_cl{
 	display: none;
+	font-variant-numeric: tabular-nums;
 }
 
 :root:has(#use_varif:checked) .varif_detail_cl{
 	display: block;
 }
 
-
-
 </style>
+
+<script>
+
+document.getElementById("encryption")!.addEventListener("change",(e)=>{
+   if ((e!.target as HTMLInputElement).matches("#enc")) {
+   	document.getElementById("use_varif_l")!.textContent = "Use plain text as key for varification code";
+   }if ((e!.target as HTMLInputElement).matches("#dec")){
+   	document.getElementById("use_varif_l")!.textContent = "Use Decrypted text as key for varification code";
+   }
+});
+	
+
+</script>

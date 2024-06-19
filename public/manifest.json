@@ -1,8 +1,8 @@
 {
   "name": "KeyPass",
   "short_name": "KeyPass",
-  "theme_color": "#161616",
-  "background_color": "#161616",
+  "theme_color": "#272727",
+  "background_color": "#272727",
   "display": "standalone",
   "start_url": "/",
   "icons": [
