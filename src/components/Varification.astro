@@ -1,7 +1,14 @@
-<input id="use_varif" type="checkbox" style="accent-color: var(--primary);" disabled >
+<div style="display: flex;
+flex-direction: row;
+align-items: flex-start;">
+
+<input id="use_varif" type="checkbox" style="accent-color: var(--primary); 
+height: 2.7ch; margin: 0.4ch 1ch 0 0;" disabled >
 <label for="use_varif" id="use_varif_l" style="
-opacity: 0.6; font-size: var(--regular-font); height: 2.5ch;">
-Use plain text as key for varification code</label>
+opacity: 0.6; font-size: var(--regular-font); line-height: 2.7ch;">
+Use plain text as key for varification code.</label>
+
+</div>
 
 <div style="display: flex;
 margin-top: 2ch;
@@ -39,9 +46,9 @@ gap: 1ch;">
 
 document.getElementById("encryption")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#enc")) {
-   	document.getElementById("use_varif_l")!.textContent = "Use plain text as key for varification code";
+   	document.getElementById("use_varif_l")!.textContent = "Use plain text as key for varification code.";
    }if ((e!.target as HTMLInputElement).matches("#dec")){
-   	document.getElementById("use_varif_l")!.textContent = "Use Decrypted text as key for varification code";
+   	document.getElementById("use_varif_l")!.textContent = "Use Decrypted text as key for varification code.";
    }
 });
 	

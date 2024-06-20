@@ -167,16 +167,30 @@ function toggleCheckbox(event: MouseEvent) {
 
 document.getElementById("route")!.addEventListener("keydown", toggleOnEnter);
 
+function tabindexoff() {
+    document.getElementById("one")!.tabIndex = -1;
+    document.getElementById("two")!.tabIndex = -1;
+    document.getElementById("three")!.tabIndex = -1;
+    document.getElementById("four")!.tabIndex = -1;
+    document.getElementById("theme-toggle")!.tabIndex = -1;
+}
+
+function tabindexon() {
+    document.getElementById("one")!.tabIndex = 0;
+    document.getElementById("two")!.tabIndex = 0;
+    document.getElementById("three")!.tabIndex = 0;
+    document.getElementById("four")!.tabIndex = -0;
+    document.getElementById("theme-toggle")!.tabIndex = 0;
+}
+
 function toggleOnEnter(event: KeyboardEvent) {
     if (event.key === "Enter") {
         if (event.detail === 1) {
             checkbox.checked = !checkbox.checked;
-            document.getElementById("one")!.tabIndex = -1;
-            document.getElementById("theme-toggle")!.tabIndex = -1;
+            tabindexoff();
         } else {
             checkbox.checked = !checkbox.checked;
-            document.getElementById("one")!.tabIndex = -1;
-            document.getElementById("theme-toggle")!.tabIndex = -1;
+            tabindexoff();
         }
     }
 }
@@ -184,11 +198,9 @@ function toggleOnEnter(event: KeyboardEvent) {
 
 checkbox.addEventListener("change", (e) => {
     if (checkbox.checked){
-      document.getElementById("one")!.tabIndex = 0;
-      document.getElementById("theme-toggle")!.tabIndex = 0;  
+      tabindexon()  
     } else {
-      document.getElementById("one")!.tabIndex = -1;
-      document.getElementById("theme-toggle")!.tabIndex = -1;
+      tabindexoff();
     }
 });
 
