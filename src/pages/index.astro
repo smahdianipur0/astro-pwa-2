@@ -13,70 +13,47 @@ import VarificationOnly from '../components/VarificationOnly.astro';
 
 
 <div class="tab-content one" > 
-  <div style="margin-top: var(--portion);
-padding: 1rem;
-display: grid;
-gap:2ch;
-grid-template-columns: repeat(auto-fit, clamp(200px, 350px, 100% ) )  ;
-justify-content: center;">
+  <div class="grid-layout-350">
      
 	<Card title = "Generate Password" iden='generate'>
 		<Generate/>
 	</Card>	
 
 	<Card title = "Encryption and Decryption" iden='encryption'>
-
 		<Encdec/>
-
 	</Card>
 
 	<Card title = "Varification Code" iden='varification'>
 		<Varification/> 
-
  	</Card>  
+
   </div> 
 </div>
 
 <div class="tab-content two">
-<div style="margin-top: var(--portion);
-padding: 1rem;
-display: grid;
-gap:2ch;
-grid-template-columns: repeat(auto-fit, clamp(200px, 350px, 100% ) )  ;
-justify-content: center;"> 
+	<div class="grid-layout-350"> 
 
-	<Card title = "Generate QR Code" iden='generateQR'>
-		<GenerateQR/> 
+		<Card title = "Generate QR Code" iden='generateQR'>
+			<GenerateQR/> 
+ 		</Card> 
 
- 	</Card> 
-</div>
+	</div>
 </div>
 
 <div class="tab-content three"> 
-<div style="margin-top: var(--portion);
-padding: 1rem;
-display: grid;
-gap:2ch;
-grid-template-columns: repeat(auto-fit, clamp(200px, 350px, 100% ) )  ;
-justify-content: center;"> 
+	<div class="grid-layout-350" > 
 
-	<Card title = "Varification Code" iden='varificationOnly'>
-		<VarificationOnly/> 
+		<Card title = "Varification Code" iden='varificationOnly'>
+			<VarificationOnly/> 
+ 		</Card> 
 
- 	</Card> 
-</div>
+	</div>
 </div>
 
 <div class="tab-content four"> 
     <div>About tab</div>
 </div>
     
-
-    
-
-
-
-
 </Layout>
 
 <script src="../components/signals.ts"></script>
@@ -88,12 +65,8 @@ const params: URLSearchParams = new URLSearchParams(window.location.search);
 function updateURL(): void {
 	params.set(
 		"theme",
-		(document.getElementById("theme-toggle")! as HTMLInputElement).checked.toString(),);
-
-	// params.set(
-	// 	"checkbox-two",
-	// 	(document.getElementById("bar")! as HTMLInputElement).checked.toString(),);
-
+		(document.getElementById("theme-toggle")! as HTMLInputElement).checked.toString(),
+	);
 	window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
 }
 
@@ -107,20 +80,6 @@ const checkboxElementOne: HTMLInputElement = document.getElementById(
 checkboxElementOne.checked = getCheckboxState("theme");
 checkboxElementOne.addEventListener("change", updateURL);
 
-// const checkboxElementTwo: HTMLInputElement = document.getElementById(
-// 	"bar",
-// ) as HTMLInputElement;
-// checkboxElementTwo.checked = getCheckboxState("checkbox-two");
-// checkboxElementTwo.addEventListener("change", updateURL);
-
-
-
-
-
-
-
-
-
 
 
 
@@ -128,18 +87,7 @@ function updateURLForRadios(): void {
 	if (document.querySelector('input[name="tab"]:checked')) {
 		params.set(
 			"tab",
-			(document.querySelector('input[name="tab"]:checked') as HTMLInputElement)
-				.id,
-		);
-	}
-	if (document.querySelector('input[name="another-tab"]:checked')) {
-		params.set(
-			"another-tab",
-			(
-				document.querySelector(
-					'input[name="another-tab"]:checked',
-				) as HTMLInputElement
-			).id,
+			(document.querySelector('input[name="tab"]:checked') as HTMLInputElement).id,
 		);
 	}
 
@@ -157,17 +105,6 @@ function setInitialRadioStates(): void {
 			tabRadioToCheck.checked = true;
 		}
 	}
-
-	const anotherTabValue = params.get("another-tab");
-
-	if (anotherTabValue) {
-		const anotherTabRadioToCheck = document.querySelector(
-			`input[name="another-tab"][id="${anotherTabValue}"]`,
-		) as HTMLInputElement;
-		if (anotherTabRadioToCheck) {
-			anotherTabRadioToCheck.checked = true;
-		}
-	}
 }
 
 setInitialRadioStates();
@@ -177,23 +114,16 @@ allTabRadios.forEach((radio) => {
 	radio.addEventListener("change", updateURLForRadios);
 });
 
-const allAnotherTabRadios = document.querySelectorAll(
-	'input[name="another-tab"]',
-);
-allAnotherTabRadios.forEach((radio) => {
-	radio.addEventListener("change", updateURLForRadios);
-});
-
-
-
-
 </script>
 
+<style>
+	
+.grid-layout-350 {
+	margin-top: var(--portion);
+	display: grid;
+	gap:var(--bigger-gap);
+	grid-template-columns: repeat(auto-fit, clamp(200px, 350px, 100% ) )  ;
+	justify-content: center;
+}
 
-
-
-
-
-
-
-
+</style>

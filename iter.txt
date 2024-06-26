@@ -25,212 +25,106 @@ workbox.routing.registerRoute(
     <script> if (typeof navigator.serviceWorker !== 'undefined') {navigator.serviceWorker.register('/sw.js')}</script>
 
 
-drawer
+save in url
 
-document.addEventListener("click", function (event) {
-    const target = event.target as HTMLElement;
-    if (target.id === "one_label" || target.id === "two_label") {
-        const checkbox = document.getElementById("menu")!;
-        if (checkbox) {
-            checkbox.checked = !checkbox.checked;
+
+const params: URLSearchParams = new URLSearchParams(window.location.search);
+
+function updateURL(): void {
+    params.set(
+        "theme",
+        (document.getElementById("theme-toggle")! as HTMLInputElement).checked.toString(),);
+
+      params.set(
+      "checkbox-two",
+      (document.getElementById("bar")! as HTMLInputElement).checked.toString(),);
+
+    window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
+}
+
+function getCheckboxState(id: string): boolean {
+    return params.get(id) === "true";
+}
+
+const checkboxElementOne: HTMLInputElement = document.getElementById(
+    "theme-toggle",
+) as HTMLInputElement;
+checkboxElementOne.checked = getCheckboxState("theme");
+checkboxElementOne.addEventListener("change", updateURL);
+
+const checkboxElementTwo: HTMLInputElement = document.getElementById(
+ "bar",
+ ) as HTMLInputElement;
+ checkboxElementTwo.checked = getCheckboxState("checkbox-two");
+ checkboxElementTwo.addEventListener("change", updateURL);
+
+
+
+
+
+
+
+
+
+
+
+
+function updateURLForRadios(): void {
+    if (document.querySelector('input[name="tab"]:checked')) {
+        params.set(
+            "tab",
+            (document.querySelector('input[name="tab"]:checked') as HTMLInputElement)
+                .id,
+        );
+    }
+    if (document.querySelector('input[name="another-tab"]:checked')) {
+        params.set(
+            "another-tab",
+            (
+                document.querySelector(
+                    'input[name="another-tab"]:checked',
+                ) as HTMLInputElement
+            ).id,
+        );
+    }
+
+    window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
+}
+
+function setInitialRadioStates(): void {
+    const tabValue = params.get("tab");
+
+    if (tabValue) {
+        const tabRadioToCheck = document.querySelector(
+            `input[name="tab"][id="${tabValue}"]`,
+        ) as HTMLInputElement;
+        if (tabRadioToCheck) {
+            tabRadioToCheck.checked = true;
         }
     }
-});
 
+    const anotherTabValue = params.get("another-tab");
 
-
-
-outline: -webkit-focus-ring-color auto 1px
-
-
-
-
-drawer
-
-<input type="radio" name="tab" id="one" data-tab="one" checked />
-<input type="radio" name="tab" id="two" data-tab="two"/>
-
-<nav class="drw-list">
-   <label id="one_lable" for="one" class="tab-label" data-tab-label="one">Random</label>
-   <label id="two_lable" for="two" class="tab-label" data-tab-label="two">Manual</label> 
-</nav>
-
-
-
-<style is:global>
-  
-[data-tab] {
-  opacity: 0;
-  pointer-events: none;
-  position: absolute
-}
-
-[data-tab=one]:focus-visible ~ nav [data-tab-label=one],
-[data-tab=two]:focus-visible ~ nav [data-tab-label=two] {
-  outline: Highlight auto 1px;
-  outline: -webkit-focus-ring-color auto 1px;  
-}
-
-a {
-  text-decoration: none; 
-  height: 25px;
-  margin:10px var(--portion); 
-  margin: 100px;
-}
-
-.drw-list {
-  display: grid;
-  grid-template-columns: auto;
-  grid-gap: 1ch;
-  opacity: 0.1;
-  transform: translateX(-50px);
-}
-
-.tab-label{
-  width: 200px;
-  height: 25px;
-  vertical-align: center;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  text-align: start;
-  color: var(--accent-color);
-  font-size: var(--regular-font);
-  font-family: inherit;
-  
-}
-
-:root:has(#menu:checked) .drw-list {
-    transform: translateX(calc((var(--portion) - var(--small-clickable)) / 4 ));
-    opacity: 1;
-    transition-delay: 0.2s;
-    transition-duration: 0.2s;
-}
-
-.tab-content {
-    display: none;
-    width: 100%;
-}
-
-:root:has(#one:checked) .tab-content.one {
-    display: block;
-}
-
-
-:root:has(#two:checked) .tab-content.two {
-    display: block;
-}
-
-
-</style>
-
-<script>
-
-const checkbox = document.getElementById("menu")! as HTMLInputElement;
-
-document.getElementById("one_lable")!.addEventListener("click", toggleCheckbox);
-      document.getElementById("one")!.addEventListener("keydown", toggleOnEnter);
-
-document.getElementById("two_lable")!.addEventListener("click", toggleCheckbox);
-      document.getElementById("two")!.addEventListener("keydown", toggleOnEnter);
-
-function toggleCheckbox() {
-    checkbox.checked = !checkbox.checked;
-}
-
-function toggleOnEnter(event: KeyboardEvent) {
-    if (event.key === "Enter") {
-        toggleCheckbox();
+    if (anotherTabValue) {
+        const anotherTabRadioToCheck = document.querySelector(
+            `input[name="another-tab"][id="${anotherTabValue}"]`,
+        ) as HTMLInputElement;
+        if (anotherTabRadioToCheck) {
+            anotherTabRadioToCheck.checked = true;
+        }
     }
 }
 
-</script>
+setInitialRadioStates();
 
-
-   if((e!.target as HTMLInputElement).matches("#Input")){
-
-      const value = (e!.target as HTMLInputElement).value;
-      const guess = guessable(value);
-      const strength = calculate_password_strength(value);
-      const strength2 = calculate_password_strength2(value);
-
-      document.getElementById("gu")!.textContent = guess.toString();
-      document.getElementById("s1")!.textContent = strength.toString();
-      document.getElementById("s2")!.textContent = strength2.toString();
-      
-   }
-
-
-// document.getElementById("encryption")!.addEventListener("change",(e)=>{
-//    if ((e!.target as HTMLInputElement).matches("#dec")) {
-//       if ((e.target as HTMLInputElement).checked) {
-//          createEffect(() => {
-//             if(resultD() !== "IV is not 16 Characters" &&
-//             resultD() !== "Key is not 16 Characters" &&
-//             resultD() !== "Invalid Credentials" &&
-//             resultD() !== "") {
-//             (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
-//             (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
-//             } else {
-//             (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
-//             (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-//             (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
-//             }
-//          });
-//       }
-//    }
-// });
-
-
-
-document.getElementById("encryption")!.addEventListener("input",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#plain_text")){
-      const value = (e!.target as HTMLInputElement).value;
-      setSkey(value.toString());
-      createEffect(() => {
-         if( sKey() === fbPlainText() &&
-             fbPlainText() !== "" && 
-             fbPlainText() === plainText() ) {
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false; 
-         } else{
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
-         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
-         console.log("beep")
-         }
-      });
-   }
-   if((e!.target as HTMLInputElement).matches("#cipher_text, #key, #iv")){
-      setResultD(decrypt(key(), iv(), cipherText()));
-      setSkey(resultD());
-      createEffect(() => {
-         if( sKey() === resultD() &&
-            resultD() !== "IV is not 16 Characters" &&
-            resultD() !== "Key is not 16 Characters" &&
-            resultD() !== "Invalid Credentials" &&
-            resultD() !== "") {
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
-         } else {
-         (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
-         (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-         (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
-         }
-      });
-   }
+const allTabRadios = document.querySelectorAll('input[name="tab"]');
+allTabRadios.forEach((radio) => {
+    radio.addEventListener("change", updateURLForRadios);
 });
 
-
-/* #use_varif::after{
-    content :  "Use Decrypted text as key for varification code" ;
-    color:var(--accent-color);
-    display: block;
-    margin-left: 2.5ch;
-    width: calc(350px - 6.5ch);
-}
-
-:root:has(#enc:checked) #use_varif::after {
-    content :  "Use plain text as key for varification code" ;
-
-} */
+const allAnotherTabRadios = document.querySelectorAll(
+    'input[name="another-tab"]',
+);
+allAnotherTabRadios.forEach((radio) => {
+    radio.addEventListener("change", updateURLForRadios);
+});

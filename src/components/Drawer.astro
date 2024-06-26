@@ -146,18 +146,9 @@ a {
 
 const checkbox = document.getElementById("menu")! as HTMLInputElement;
 
-document
-    .getElementById("one")!
+document.getElementById("route")!
     .addEventListener("click", (event) => toggleCheckbox(event));
-document
-    .getElementById("two")!
-    .addEventListener("click", (event) => toggleCheckbox(event));
-document
-    .getElementById("three")!
-    .addEventListener("click", (event) => toggleCheckbox(event));
-document
-    .getElementById("four")!
-    .addEventListener("click", (event) => toggleCheckbox(event));
+
 
 function toggleCheckbox(event: MouseEvent) {
     if (event.detail === 1) {
@@ -185,13 +176,8 @@ function tabindexon() {
 
 function toggleOnEnter(event: KeyboardEvent) {
     if (event.key === "Enter") {
-        if (event.detail === 1) {
-            checkbox.checked = !checkbox.checked;
-            tabindexoff();
-        } else {
-            checkbox.checked = !checkbox.checked;
-            tabindexoff();
-        }
+        checkbox.checked = !checkbox.checked;
+        tabindexoff();
     }
 }
 
