@@ -104,6 +104,7 @@ transition: color 0.2s ease-out 0s;">
   --extra-small-font: 80%;
 
   accent-color: oklch(0.65 0.142 268.67);
+
   --primary: oklch(0.65 0.142 268.67);
   --primery-transparent: oklch(0.65 0.185 268.67 / 0.75);
   --secondary: oklch(0.62 0.152 273.00);
@@ -116,14 +117,11 @@ transition: color 0.2s ease-out 0s;">
   --select-color: oklch(0.15 0 0);
   --accent-color: oklch(0.99 0.005 197.00);
   --focus-color: oklch(1 0 0 / 0.5);
-  --focus-color-gradient: linear-gradient(oklch(1 0 0 / 0.4),oklch(1 0 0 / 0.3));
   --main-border: oklch(0.35 0 0);
-  --glass-background: oklch(0.1 0 0 / 0.4);
+  --transparent-bg: oklch(0.1 0 0 / 0.45);
   --slider-thumb-color: linear-gradient(oklch(0.22 0 0),oklch(0.34 0 0));
-  --inout-bg: oklch(0.1 0 0 / 0.5);
   --input-bg-focus: linear-gradient(oklch(0.22 0 0 / 0.9),oklch(0.22 0 0 / 0.8));
   --toggle-bg: oklch(0.22 0 0 );
-  --toggle-bg-darker: oklch(0.1 0 0 / 0.5);
   --indent-bg: linear-gradient(oklch(0 0 0 / 0.8),oklch(0.19125 0 0 / 0.8));
   --tab-bg: linear-gradient(290deg, oklch(0.085 0 0 / 0.5) 0%, oklch(0.085 0 0 / 0.4) 65%, oklch(0.085 0 0 / 0.35) 100%);
   --glow: oklch(0.65 0 268.67);
@@ -140,6 +138,8 @@ transition: color 0.2s ease-out 0s;">
   --slider-width: 97.5%;
   --gap: 1ch;
   --bigger-gap: 2ch;
+  --text-height: 2.4ch;
+
 
   --radiu-a: 0.7ch;
   --radiu-b: 2.1ch;
@@ -198,6 +198,31 @@ textarea{
   gap: 1ch;
 }
 
+.skeleton{
+   font-size: inherit;
+   font-family: inherit;
+   height: 1.5ch;
+   width: 30ch;
+   margin: calc( (var(--text-height) - 1.5ch) / 2 ) 0;
+   border-radius: 4ch;
+   background-color: oklch(0.8 0 0 / 0.4);
+   background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, .5) 50%,
+    rgba(255, 255, 255, 0) 60%
+  ) oklch(0.8 0 0 / 0.4);
+  background-size: 200% 100%;
+  background-position-x: 180%;
+  animation: 1s loading ease-in-out infinite;
+
+}
+
+@keyframes loading {
+  to {
+    background-position-x: -20%;
+  }
+}
 .card-bg{
 
   height: 7.7125ch;
@@ -211,7 +236,7 @@ textarea{
 
 
 .input {
-  background-color: var(--glass-background);
+  background-color: var(--transparent-bg);
   font-size: var(--regular-font);
   padding: var(--default-padding);
   width: 100%;
@@ -240,7 +265,7 @@ button.main{
   border: 0px solid  transparent;
   color: var(--accent-color);
   margin-bottom: 1ch;
-  box-shadow: 1px 3px 0px var(--toggle-bg-darker);
+  box-shadow: 1px 3px 0px var(--transparent-bg);
   background-color: var(--primery-transparent);
   box-shadow: 1px 1px 0px 1px var(--dark-shadow) ;
   position: relative;
@@ -252,7 +277,7 @@ button.main::before{
   position: absolute;
   inset: 0;
   z-index: -1;    
-  background-color: var(--toggle-bg-darker);
+  background-color: var(--transparent-bg);
   scale: 0.65;
   border-radius: 3ch;
   filter: blur(10px);
@@ -286,7 +311,7 @@ button.disabled::before , label.disabled::before {
 .toast {
  display: flex;
  position: fixed; 
- background-color: var(--glass-background);
+ background-color: var(--transparent-bg);
  border-radius: var(--radiu-b);
  border: 1px solid  var(--main-border);
  bottom: -100%;
@@ -339,12 +364,10 @@ button.disabled::before , label.disabled::before {
   --focus-color : oklch(0 0 0 / 0.5);
   --focus-color-gradient : linear-gradient(oklch(0 0 0 / 0.4),oklch(0 0 0 / 0.3));
   --main-border : oklch(0.82 0 0);
-  --glass-background: oklch(0.98 0 0 / 0.4);
+  --transparent-bg: oklch(0.98 0 0 / 0.45);
   --slider-thumb-color : linear-gradient(oklch(0.85 0 0),oklch(0.90 0 0));
-  --inout-bg:oklch(0.98 0 0 / 0.5);
   --input-bg-focus:linear-gradient(oklch(0.89 0 0 / 0.8),oklch(0.89 0.0268 106.93 / 0.9));
   --toggle-bg: oklch(0.95 0 0 );
-  --toggle-bg-darker:oklch(0.85 0 0 ) ;
   --indent-bg: linear-gradient(oklch(0.90 0 0 / 0.8),oklch(1 0 0 / 0.8));
   --tab-bg:linear-gradient(290deg, oklch(1 0 0 / 0.35) 0%, oklch(1 0 0 / 0.4) 65%, oklch(1 0 0 / 0.5) 100%);
   --glow:oklch(0.79 0 268.67);

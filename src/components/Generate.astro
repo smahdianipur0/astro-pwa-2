@@ -12,8 +12,9 @@ import ToggleGroup from '../components/ToggleGroup.astro';
        <RangeSlider/>
        <ToggleGroup/>
 
-        <div class="center" >
-          <button  id = "gp" class=" unstyle-button copy"style="margin-top: 2ch; margin-bottom: 2ch;">
+        <div class="center" style="overflow: hidden;" >
+          <button  id = "gp" class=" unstyle-button copy" 
+          style="margin-top: 2ch; margin-bottom: 2ch; line-height: var(--text-height);">
             <div class = "skeleton" style="width:15ch"> </div> 
           </button>
 
@@ -45,12 +46,14 @@ import ToggleGroup from '../components/ToggleGroup.astro';
 
    </Tabs>
 
-  <div style="font-size: var(--regular-font); margin-top:2ch; margin-bottom: 2ch;">
-    <div id = "gu">  <div style="width:15ch;" class = "skeleton"> </div> </div>
+  <div style="font-size: var(--regular-font); margin-top:2ch; margin-bottom: 2ch; overflow: hidden">
+    <div id = "gu" style="line-height: var(--text-height); overflow: hidden;">  <div style="width:15ch;" class = "skeleton"> </div> </div>
     <p id="box" class="box"></p>
-    <div id = "s1">  <div style="width:80%;"class = "skeleton"> </div> </div>
-    <div id = "s2">  <div style="width:65%;"class = "skeleton"> </div> </div>
+    <div id = "s1" style="line-height: var(--text-height); overflow: hidden;">  <div style="width:80%;"class = "skeleton"> </div> </div>
+    <div id = "s2" style="line-height: var(--text-height); overflow: hidden;">  <div style="width:65%;"class = "skeleton"> </div> </div>
   </div>
+
+
 
 
 
@@ -77,31 +80,6 @@ import ToggleGroup from '../components/ToggleGroup.astro';
   #pass { transform: translate3d(5ch, 0, 0);}
 }
 
-
-.skeleton{
-   font-size: inherit;
-   height: 1.5ch;
-   width: 30ch;
-   margin: 0.75ch 0;
-   border-radius: 4ch;
-   background-color: oklch(0.8 0 0 / 0.4);
-  background: linear-gradient(
-    100deg,
-    rgba(255, 255, 255, 0) 40%,
-    rgba(255, 255, 255, .5) 50%,
-    rgba(255, 255, 255, 0) 60%
-  ) oklch(0.8 0 0 / 0.4);
-  background-size: 200% 100%;
-  background-position-x: 180%;
-  animation: 1s loading ease-in-out infinite;
-
-}
-
-@keyframes loading {
-  to {
-    background-position-x: -20%;
-  }
-}
 
 .center {
   display: flex;
