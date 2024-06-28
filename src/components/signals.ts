@@ -206,7 +206,10 @@ import QRCode from 'qrcode'
 
 createEffect(() => {
    setResultE(encrypt(key(), iv(), plainText()));
-   document.getElementById("result_e")!.textContent = resultE();
+   if ( key() !== "" && iv() !== "") {
+      document.getElementById("result_e")!.textContent = resultE();
+   }
+
    if (resultE() === "") {
       document.getElementById("result_e")!.textContent = "Enter Plain Text";
    }
@@ -214,13 +217,15 @@ createEffect(() => {
       document.getElementById("eqr")!,
       resultE(),
       { width: 160, margin: 1 },
-      // function (error) { if (error) console.error(error);console.log("success!");},
    );
 });
 
 createEffect(() => {
    setResultD(decrypt(key(), iv(), cipherText()));
+   if ( key() !== "" && iv() !== "") {
    document.getElementById("result_d")!.textContent = resultD();
+   }
+
    if (resultD() === "") {
       document.getElementById("result_d")!.textContent = "Enter Cipher Text";
    }
@@ -228,7 +233,6 @@ createEffect(() => {
       document.getElementById("dqr")!,
       resultD(),
       { width: 160, margin: 1 },
-      // function (error) { if (error) console.error(error);console.log("success!");},
    );
 });
 
@@ -455,7 +459,6 @@ document.getElementById("generateQR")!.addEventListener("input",(e)=>{
          document.getElementById("gqr")!,
          value,
          { width: 160, margin: 1 },
-         // function (error) { if (error) console.error(error);console.log("success!");},
          );
       }
    }

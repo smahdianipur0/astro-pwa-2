@@ -31,14 +31,8 @@ name="theme" style="" tabindex="-1">
 .sub-route {
   appearance: none;
   -webkit-appearance: none;
-  border: none;
   cursor: pointer;
   font-size:var(--regular-font);
-  background-color: transparent;
-  text-align: start;
-  font-size: var(--regular-font);
-  text-align: start;
-  line-height: 2ch;
   transition-duration: 0.2s;
 }
 
@@ -70,16 +64,7 @@ name="theme" style="" tabindex="-1">
   width: 20ch;  
 }
 
-#theme-toggle:before {
-  color:var(--accent-color);
-  content: 'Change Theme: ☀️';
-  display: block;
-  width: 20ch; 
-}
 
-:root:has(#theme-toggle:checked) #theme-toggle:before {
-  content: 'Change Theme: 🌙'; 
-}
 
 
 a {

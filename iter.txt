@@ -128,3 +128,23 @@ const allAnotherTabRadios = document.querySelectorAll(
 allAnotherTabRadios.forEach((radio) => {
     radio.addEventListener("change", updateURLForRadios);
 });
+
+
+
+
+qr code
+
+
+createEffect(() => {
+   setResultE(encrypt(key(), iv(), plainText()));
+   document.getElementById("result_e")!.textContent = resultE();
+   if (resultE() === "") {
+      document.getElementById("result_e")!.textContent = "Enter Plain Text";
+   }
+   QRCode.toCanvas(
+      document.getElementById("eqr")!,
+      resultE(),
+      { width: 160, margin: 1 },
+      // function (error) { if (error) console.error(error);console.log("success!");},
+   );
+});

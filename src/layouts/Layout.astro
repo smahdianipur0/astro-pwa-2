@@ -70,13 +70,11 @@ const { title } = Astro.props;
 	</head>
   
 <body id="page" style="font-size: var(--regular-font);
-min-height: 100vh;
-background: var(--bg-canv);
-border-width: 0.1px;
-border-style: solid;
-border-color: rgba(0, 0, 0, 0);
-border-image: initial;
-transition: color 0.2s ease-out 0s;">
+  background: var(--bg-canv);
+  border: .1px solid #0000;
+  border-image: initial;
+  min-height: 100vh;
+  transition: color .2s ease-out">
 
   <Nav>
     <Drawer/>
@@ -94,6 +92,7 @@ transition: color 0.2s ease-out 0s;">
 
 
 </html>
+
 <style is:global>
 
 :root {
@@ -111,24 +110,6 @@ transition: color 0.2s ease-out 0s;">
   --card-bg-color: linear-gradient(290deg, oklch(0.58742 0.17443 277.74) 0%, oklch(0.61088 0.16236 274.98) 65%, oklch(0.69733 0.125 261.28) 100%);
   --drop-shadow: 0 0 5px oklch(0.65554 0.14152 268.67 / 0.7);
   --light-reflection: oklch(1 0 0/ 0.25);
-
-
-  --bg-canv: linear-gradient(135deg, oklch(0.40 0 0) 0%, oklch(0.35 0 0) 14%, oklch(0.22 0 0) 100%);
-  --select-color: oklch(0.15 0 0);
-  --accent-color: oklch(0.99 0.005 197.00);
-  --focus-color: oklch(1 0 0 / 0.5);
-  --main-border: oklch(0.35 0 0);
-  --transparent-bg: oklch(0.1 0 0 / 0.45);
-  --slider-thumb-color: linear-gradient(oklch(0.22 0 0),oklch(0.34 0 0));
-  --input-bg-focus: linear-gradient(oklch(0.22 0 0 / 0.9),oklch(0.22 0 0 / 0.8));
-  --toggle-bg: oklch(0.22 0 0 );
-  --indent-bg: linear-gradient(oklch(0 0 0 / 0.8),oklch(0.19125 0 0 / 0.8));
-  --tab-bg: linear-gradient(290deg, oklch(0.085 0 0 / 0.5) 0%, oklch(0.085 0 0 / 0.4) 65%, oklch(0.085 0 0 / 0.35) 100%);
-  --glow: oklch(0.65 0 268.67);
-  --dark-shadow: oklch(28.83% 0.191 268.67);
-
-
-
 
 
   --portion: 6ch;
@@ -149,6 +130,7 @@ transition: color 0.2s ease-out 0s;">
   --z-layer-higher: 3;
   --z-layer-middle: 2
 }
+
 * {
   margin: 0;
   padding: 0;
@@ -223,8 +205,8 @@ textarea{
     background-position-x: -20%;
   }
 }
-.card-bg{
 
+.card-bg{
   height: 7.7125ch;
   width: calc( 100% + 4ch ) ;
   padding: 2ch;
@@ -277,7 +259,7 @@ button.main::before{
   position: absolute;
   inset: 0;
   z-index: -1;    
-  background-color: var(--transparent-bg);
+  background-color: var(--glow);
   scale: 0.65;
   border-radius: 3ch;
   filter: blur(10px);
@@ -295,7 +277,15 @@ button.main::after {
 }
 
 button.main:active::before {
-  background-color:oklch(1 0 0 / 0);
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;    
+  background-color: white;
+  scale: 0.65;
+  border-radius: 3ch;
+  filter: blur(10px);
+  mix-blend-mode: soft-light;
 }
 
 button.disabled , label.disabled {
@@ -303,8 +293,13 @@ button.disabled , label.disabled {
   cursor: not-allowed;
 }
 
-button.disabled::before , label.disabled::before {
-  background-color:oklch(1 0 0 / 0);
+button.disabled::before , label.disabled::before ,
+button.disabled:active::before , label.disabled:active::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1; 
+  background-color: transparent;
 }
 
 
@@ -355,8 +350,35 @@ button.disabled::before , label.disabled::before {
 
 }
 
-:root:has(#theme-toggle:checked) {
+#theme-toggle:before {
+  color:var(--accent-color);
+  content: 'Change Theme: ☀️';
+  display: block;
+  width: 20ch; 
+}
 
+:root:has(#theme-toggle:checked) #theme-toggle:before {
+  content: 'Change Theme: 🌙'; 
+}
+
+:root{
+  --bg-canv: linear-gradient(135deg, oklch(0.40 0 0) 0%, oklch(0.35 0 0) 14%, oklch(0.22 0 0) 100%);
+  --select-color: oklch(0.15 0 0);
+  --accent-color: oklch(0.99 0.005 197.00);
+  --focus-color: oklch(1 0 0 / 0.5);
+  --main-border: oklch(0.35 0 0);
+  --transparent-bg: oklch(0.1 0 0 / 0.45);
+  --slider-thumb-color: linear-gradient(oklch(0.22 0 0),oklch(0.34 0 0));
+  --input-bg-focus: linear-gradient(oklch(0.22 0 0 / 0.9),oklch(0.22 0 0 / 0.8));
+  --toggle-bg: oklch(0.22 0 0 );
+  --indent-bg: linear-gradient(oklch(0 0 0 / 0.8),oklch(0.19125 0 0 / 0.8));
+  --tab-bg: linear-gradient(290deg, oklch(0.085 0 0 / 0.5) 0%, oklch(0.085 0 0 / 0.4) 65%, oklch(0.085 0 0 / 0.35) 100%);
+  --glow: oklch(0.80 0 0);
+  --dark-shadow: oklch(0.32 0.2 268.67);
+  --dark-shadow-disabled: oklch(0.27 0.16 268.67);
+}
+
+:root:has(#theme-toggle:checked) {
   --bg-canv: linear-gradient(135deg, oklch(0.90 0 0) 0%, oklch(0.83 0 0) 14%, oklch(0.80 0 0) 100%);
   --tertiary-color: linear-gradient(oklch(0.90 0 0 / 0.8),oklch(1 0 0 / 0.8));
   --select-color:oklch(0.96 0 0);
@@ -370,8 +392,61 @@ button.disabled::before , label.disabled::before {
   --toggle-bg: oklch(0.95 0 0 );
   --indent-bg: linear-gradient(oklch(0.90 0 0 / 0.8),oklch(1 0 0 / 0.8));
   --tab-bg:linear-gradient(290deg, oklch(1 0 0 / 0.35) 0%, oklch(1 0 0 / 0.4) 65%, oklch(1 0 0 / 0.5) 100%);
-  --glow:oklch(0.79 0 268.67);
-  --dark-shadow: oklch(43.62% 0.2108 268.67);
+  --glow:oklch(1 0 268.67);
+  --dark-shadow: oklch(0.5 0.22 268.67);
+  --dark-shadow-disabled: oklch(0.62 0.18 268.67);
+}
+
+@media (prefers-color-scheme:light) {
+
+#theme-toggle:before {
+  color:var(--accent-color);
+  content: 'Change Theme: 🌙';
+  display: block;
+  width: 20ch; 
+}
+
+:root:has(#theme-toggle:checked) #theme-toggle:before {
+  content: 'Change Theme: ☀️'; 
+}
+
+
+  :root{
+  --bg-canv: linear-gradient(135deg, oklch(0.90 0 0) 0%, oklch(0.83 0 0) 14%, oklch(0.80 0 0) 100%);
+  --tertiary-color: linear-gradient(oklch(0.90 0 0 / 0.8),oklch(1 0 0 / 0.8));
+  --select-color:oklch(0.96 0 0);
+  --accent-color: oklch(0 0 0);
+  --focus-color : oklch(0 0 0 / 0.5);
+  --focus-color-gradient : linear-gradient(oklch(0 0 0 / 0.4),oklch(0 0 0 / 0.3));
+  --main-border : oklch(0.82 0 0);
+  --transparent-bg: oklch(0.98 0 0 / 0.45);
+  --slider-thumb-color : linear-gradient(oklch(0.85 0 0),oklch(0.90 0 0));
+  --input-bg-focus:linear-gradient(oklch(0.89 0 0 / 0.8),oklch(0.89 0.0268 106.93 / 0.9));
+  --toggle-bg: oklch(0.95 0 0 );
+  --indent-bg: linear-gradient(oklch(0.90 0 0 / 0.8),oklch(1 0 0 / 0.8));
+  --tab-bg:linear-gradient(290deg, oklch(1 0 0 / 0.35) 0%, oklch(1 0 0 / 0.4) 65%, oklch(1 0 0 / 0.5) 100%);
+  --glow:oklch(1 0 268.67);
+  --dark-shadow: oklch(0.5 0.22 268.67);
+  --dark-shadow-disabled: oklch(0.62 0.18 268.67);
+  }
+
+  :root:has(#theme-toggle:checked) {
+  --bg-canv: linear-gradient(135deg, oklch(0.40 0 0) 0%, oklch(0.35 0 0) 14%, oklch(0.22 0 0) 100%);
+  --select-color: oklch(0.15 0 0);
+  --accent-color: oklch(0.99 0.005 197.00);
+  --focus-color: oklch(1 0 0 / 0.5);
+  --main-border: oklch(0.35 0 0);
+  --transparent-bg: oklch(0.1 0 0 / 0.45);
+  --slider-thumb-color: linear-gradient(oklch(0.22 0 0),oklch(0.34 0 0));
+  --input-bg-focus: linear-gradient(oklch(0.22 0 0 / 0.9),oklch(0.22 0 0 / 0.8));
+  --toggle-bg: oklch(0.22 0 0 );
+  --indent-bg: linear-gradient(oklch(0 0 0 / 0.8),oklch(0.19125 0 0 / 0.8));
+  --tab-bg: linear-gradient(290deg, oklch(0.085 0 0 / 0.5) 0%, oklch(0.085 0 0 / 0.4) 65%, oklch(0.085 0 0 / 0.35) 100%);
+  --glow: oklch(0.80 0 0);
+  --dark-shadow: oklch(0.32 0.2 268.67);
+  --dark-shadow-disabled: oklch(0.27 0.16 268.67);
+  }
+
 }
 
 

@@ -32,10 +32,11 @@ import Tabs from '../components/Tabs.astro';
 
 		<div class="btn-group"> 
 					
-			<button id="copy_e" class="toggle-text first disabled" style="
-			background-color: var(--primery-transparent);
+			<button id="copy_e" class="toggle-text active first disabled" style="
+		/* 	background-color: var(--primery-transparent);
   		color: var(--accent-color);
-			box-shadow: 1px 3px 0px var(--dark-shadow) ;">Copy</button>
+			box-shadow: 1px 3px 0px var(--dark-shadow) ; */
+			">Copy</button>
 
 
 
@@ -43,11 +44,12 @@ import Tabs from '../components/Tabs.astro';
 			style="opacity: 0; pointer-events: none;position: absolute"/>
 
 			<label id= "l_show_e" aria-label="Show QR Code " for="show_e" 
-			data-menu-label="show_qr_code" class="toggle-text last last_e disabled" 
+			data-menu-label="show_qr_code" class="toggle-text last active last_e disabled" 
 			style="width: 17ch; 
-			background-color: var(--primery-transparent);
+/* 			background-color: var(--primery-transparent);
   		color: var(--accent-color);
-			box-shadow: 1px 3px 0px var(--dark-shadow) ; "> &nbsp </label>
+			box-shadow: 1px 3px 0px var(--dark-shadow) ; */ 
+			"> &nbsp </label>
 
 			<input type="checkbox" id= "show_qr_code_e" name="show_qr_code" data-menu="show_qr_code"
 			style="opacity: 0; pointer-events: none;position: absolute" checked/> 
@@ -72,10 +74,11 @@ import Tabs from '../components/Tabs.astro';
 
 		<div class="btn-group"> 
 					
-			<button id="copy_d" class="toggle-text first disabled" style="
-			background-color: var(--primery-transparent);
+			<button id="copy_d" class="toggle-text active first  disabled" style="
+/* 			background-color: var(--primery-transparent);
   		color: var(--accent-color);
-			box-shadow: 1px 3px 0px var(--dark-shadow) ;">Copy</button>
+			box-shadow: 1px 3px 0px var(--dark-shadow) ; */
+			">Copy</button>
 
 
 
@@ -83,11 +86,12 @@ import Tabs from '../components/Tabs.astro';
 			style="opacity: 0; pointer-events: none;position: absolute" checked/>
 
 			<label id="l_show_d" aria-label="Show QR Code" for="show_d" 
-			data-menu-label="show_qr_code" class="toggle-text last last_d disabled" 
+			data-menu-label="show_qr_code" class="toggle-text last active last_d disabled" 
 			style="width: 17ch;
-			background-color: var(--primery-transparent);
+/* 			background-color: var(--primery-transparent);
   		color: var(--accent-color);
-			box-shadow: 1px 3px 0px var(--dark-shadow) ; "> &nbsp </label>
+			box-shadow: 1px 3px 0px var(--dark-shadow) ;  */
+			"> &nbsp </label>
 
 			<input type="checkbox" id= "show_qr_code_d" name="show_qr_code" data-menu="show_qr_code"
 			style="opacity: 0; pointer-events: none;position: absolute" checked/> 
@@ -198,6 +202,45 @@ import Tabs from '../components/Tabs.astro';
 	align-items: center;
 	height: var(--portion);
 }
+
+
+.active{
+	position: relative;
+  background-color: var(--primery-transparent);
+  color: var(--accent-color);
+	box-shadow: 1px 3px 0px var(--dark-shadow) ;
+}
+
+.disabled{
+	box-shadow: 1px 3px 0px var(--dark-shadow-disabled) ;
+}
+
+.active::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;    
+  background-color: var(--glow);
+  scale: 0.65;
+  border-radius: 3ch;
+  filter: blur(10px);
+  mix-blend-mode: soft-light;
+}
+
+.active:active::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;    
+  background-color: white;
+  scale: 0.65;
+  border-radius: 3ch;
+  filter: blur(10px);
+  mix-blend-mode: soft-light;
+}
+
+
+
 
 :root:has(#auto_pass:checked) #plain_text {
 	opacity: 0.5;
