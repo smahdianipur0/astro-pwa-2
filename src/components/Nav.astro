@@ -1,13 +1,19 @@
-<div class="glass" style="
+<div class="glass drw-bg" style="
+z-index: var(--z-layer-higher);
+width: 100%;
+position: fixed;
+top: 0px;
+left: 0px;
+background-color: var(--transparent-bg);">
+
+<div  style="
 height: var(--portion);
-z-index: var(--z-layed-top);
 font-size: var(--regular-font);
 width: 100%;
 position: fixed;
 top: 0px;
 left: 0px;
 padding: 1ch;
-background-color: var(--transparent-bg);
 display: flex;
 align-items: center;
 gap: 1ch;">
@@ -38,17 +44,17 @@ gap: 1ch;">
 
   </label>
 </div>
+</div>
 
 
-<div id="drawer" class="glass drw" 
+<div id="drawer" class=" drw" 
 style="position: fixed; 
 left: 0; 
 width: 100%; 
 height: 100%; 
 padding: 10px;
 flex-direction: column;
-z-index: var(--z-layer-higher);
-background-color: var(--transparent-bg);">
+z-index: var(--z-layer-top);">
 
   <slot />
 
@@ -60,12 +66,23 @@ background-color: var(--transparent-bg);">
 	display: flex;
 	block-size: 0;
 	top: -100% ;
+	opacity: 0;
 	transition-duration:0.2s;
 }
 
 :root:has(#menu:checked) .drw {
     top: var(--portion) ;
+    opacity: 1;
+}
 
+
+.drw-bg{
+	height: var(--portion);
+	transition-duration:0.2s;
+}
+
+:root:has(#menu:checked) .drw-bg {
+    height: 100% ;  
 }
 
 [data-menu=menu]:focus-visible ~ [data-menu-label=menu] {
