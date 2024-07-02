@@ -1,22 +1,22 @@
 <div class="glass drw-bg" style="
 z-index: var(--z-layer-higher);
+background-color: var(--transparent-bg);
 width: 100%;
 position: fixed;
-top: 0px;
-left: 0px;
-background-color: var(--transparent-bg);">
+top: 0;
+left: 0">
 
 <div  style="
 height: var(--portion);
 font-size: var(--regular-font);
+align-items: center;
+gap: 1ch;
 width: 100%;
-position: fixed;
-top: 0px;
-left: 0px;
 padding: 1ch;
 display: flex;
-align-items: center;
-gap: 1ch;">
+position: fixed;
+top: 0;
+left: 0">
 
 
   <div id="title" 
@@ -29,15 +29,15 @@ gap: 1ch;">
 	style="opacity: 0; pointer-events: none;position: absolute" />
 
   <label aria-label="Menu Drawer" for="menu" data-menu-label="menu" 
-	style="border: none;
-	background: none;
-	padding: 0;
-	cursor: pointer;
-	position: relative;
+	style="cursor: pointer;
 	width: var(--portion);
 	height: var(--portion);
+	background: 0 0;
+	border: none;
+	place-content: center;
+	padding: 0;
 	display: flex;
-	place-content: center;">
+	position: relative">
 
     <div id="line1" class="line line1"></div>
     <div id="line2" class="line line2"></div>
@@ -48,13 +48,12 @@ gap: 1ch;">
 
 
 <div id="drawer" class=" drw" 
-style="position: fixed; 
-left: 0; 
-width: 100%; 
-height: 100%; 
-padding: 10px;
+style="  z-index: var(--z-layer-top);
 flex-direction: column;
-z-index: var(--z-layer-top);">
+height: 100%;
+padding: 10px;
+position: fixed;
+left: 0">
 
   <slot />
 

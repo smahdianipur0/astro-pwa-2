@@ -21,9 +21,8 @@ import Tabs from '../components/Tabs.astro';
 	<fragment slot="tab1">
 
 		<label >
-		<input id="auto_pass" type="checkbox" style="margin-bottom: 2ch;
-		margin-top: 2ch;
-		accent-color: var(--primary);"> Use Password as Plain Text </label>
+		<input id="auto_pass" type="checkbox" style="
+		margin-bottom: 2ch; margin-top: 2ch;"> Use Password as Plain Text </label>
 		<textarea id="plain_text" class="txt-area glass dent-shadow" rows="2" placeholder="Plain Text"></textarea>
 
 		<p style="margin-top: 3ch; margin-bottom: 1ch; font-size: var(--extra-small-font); opacity: 0.6;">Encrypted Text : </p>
@@ -32,11 +31,7 @@ import Tabs from '../components/Tabs.astro';
 
 		<div class="btn-group"> 
 					
-			<button id="copy_e" class="toggle-text active first disabled" style="
-		/* 	background-color: var(--primery-transparent);
-  		color: var(--accent-color);
-			box-shadow: 1px 3px 0px var(--dark-shadow) ; */
-			">Copy</button>
+			<button id="copy_e" class="toggle-text active first disabled" >Copy</button>
 
 
 
@@ -45,11 +40,7 @@ import Tabs from '../components/Tabs.astro';
 
 			<label id= "l_show_e" aria-label="Show QR Code " for="show_e" 
 			data-menu-label="show_qr_code" class="toggle-text last active last_e disabled" 
-			style="width: 17ch; 
-/* 			background-color: var(--primery-transparent);
-  		color: var(--accent-color);
-			box-shadow: 1px 3px 0px var(--dark-shadow) ; */ 
-			"> &nbsp </label>
+			style="width: 17ch;"> &nbsp </label>
 
 			<input type="checkbox" id= "show_qr_code_e" name="show_qr_code" data-menu="show_qr_code"
 			style="opacity: 0; pointer-events: none;position: absolute" checked/> 
@@ -74,11 +65,7 @@ import Tabs from '../components/Tabs.astro';
 
 		<div class="btn-group"> 
 					
-			<button id="copy_d" class="toggle-text active first  disabled" style="
-/* 			background-color: var(--primery-transparent);
-  		color: var(--accent-color);
-			box-shadow: 1px 3px 0px var(--dark-shadow) ; */
-			">Copy</button>
+			<button id="copy_d" class="toggle-text active first  disabled" >Copy</button>
 
 
 
@@ -87,11 +74,7 @@ import Tabs from '../components/Tabs.astro';
 
 			<label id="l_show_d" aria-label="Show QR Code" for="show_d" 
 			data-menu-label="show_qr_code" class="toggle-text last active last_d disabled" 
-			style="width: 17ch;
-/* 			background-color: var(--primery-transparent);
-  		color: var(--accent-color);
-			box-shadow: 1px 3px 0px var(--dark-shadow) ;  */
-			"> &nbsp </label>
+			style="width: 17ch;"> &nbsp </label>
 
 			<input type="checkbox" id= "show_qr_code_d" name="show_qr_code" data-menu="show_qr_code"
 			style="opacity: 0; pointer-events: none;position: absolute" checked/> 
@@ -208,11 +191,11 @@ import Tabs from '../components/Tabs.astro';
 	position: relative;
   background-color: var(--primery-transparent);
   color: var(--accent-color);
-	box-shadow: 1px 3px 0px var(--dark-shadow) ;
+	box-shadow: 1px 2.5px 0px var(--dark-shadow) ;
 }
 
 .disabled{
-	box-shadow: 1px 3px 0px var(--dark-shadow-disabled) ;
+	box-shadow: 1px 2.5px 0px var(--dark-shadow-disabled) ;
 }
 
 .active::before{

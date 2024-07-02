@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Generate from '../components/Generate.astro'; 
 import Card from '../components/Card.astro';
+import Generate from '../components/Generate.astro'; 
 import Encdec from '../components/Encdec.astro';
 import Varification from '../components/Varification.astro';
 import GenerateQR from '../components/GenerateQR.astro'; 
@@ -119,7 +119,7 @@ allTabRadios.forEach((radio) => {
 <style>
 	
 .grid-layout-350 {
-	margin-top: var(--portion);
+	margin: var(--portion) 1ch;
 	display: grid;
 	gap:var(--bigger-gap);
 	grid-template-columns: repeat(auto-fit, clamp(200px, 350px, 100% ) )  ;
