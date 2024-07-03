@@ -107,6 +107,7 @@ const { title } = Astro.props;
   --card-bg-color: linear-gradient(290deg, oklch(0.58742 0.17443 277.74) 0%, oklch(0.61088 0.16236 274.98) 65%, oklch(0.69733 0.125 261.28) 100%);
   --drop-shadow: 0 0 5px oklch(0.65554 0.14152 268.67 / 0.7);
   --light-reflection: oklch(1 0 0/ 0.25);
+  --success: oklch(64% 0.12 174);
 
 
   --portion: 6ch;
@@ -154,6 +155,36 @@ textarea{
 
 input{
   accent-color: var(--primary);
+}
+
+textarea{
+  background-color: transparent; 
+  font-size: var(--regular-font);
+  font-family: inherit;
+  width: 100%;
+  padding: var(--default-padding);
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: var(--radiu-a);
+  resize: vertical;
+  border-bottom: 1px solid var(--primary);
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  color: var(--accent-color);
+}
+
+
+textarea:focus {
+  border: 1px solid var(--primary);
+  border-radius: var(--radiu-a);
+  outline: none;
+}
+
+a {
+  text-decoration: none; 
+  height: 25px;
+  margin:10px var(--portion); 
+  margin: 100px;
 }
 
 .glass {
@@ -205,6 +236,11 @@ input{
   to {
     background-position-x: -20%;
   }
+}
+
+.skeleton-parrent{
+  line-height: var(--text-height); 
+  overflow: hidden;
 }
 
 .card-bg{
@@ -277,7 +313,8 @@ button.main::after {
   mix-blend-mode: soft-light;
 }
 
-button.main:active::before {
+button.main:active::before ,
+.active:active::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -292,6 +329,7 @@ button.main:active::before {
 button.disabled , label.disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  box-shadow: 1px 2.5px 0px var(--dark-shadow-disabled) ;
 }
 
 button.disabled::before , label.disabled::before ,
@@ -311,15 +349,16 @@ button.disabled:active::before , label.disabled:active::before{
  border-radius: var(--radiu-b);
  border: 1px solid  var(--main-border);
  bottom: -100%;
- width: 250px; 
- left: calc(50% - 125px ); 
+ width: 200px; 
+ left: calc(50% - 100px ); 
  align-items: center;
  justify-content: center;
- height: var(--portion); 
- padding: 10px;
+/*  height: var(--portion);  */
+ padding: var(--default-padding);
  box-sizing: border-box;
  transition: bottom 0.15s ease-out;  
  z-index: var(--z-layer-higher);
+ color: var(--success);
 }
 
 .gg-check-o {

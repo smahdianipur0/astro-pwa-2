@@ -47,10 +47,10 @@ import ToggleGroup from '../components/ToggleGroup.astro';
    </Tabs>
 
   <div style="font-size: var(--regular-font); margin-top:2ch; margin-bottom: 2ch; overflow: hidden">
-    <div id = "gu" style="line-height: var(--text-height); overflow: hidden;">  <div style="width:15ch;" class = "skeleton"> </div> </div>
+    <div id = "gu" class="skeleton-parrent">  <div style="width:15ch;" class = "skeleton"> </div> </div>
     <p id="box" class="box"></p>
-    <div id = "s1" style="line-height: var(--text-height); overflow: hidden;">  <div style="width:80%;"class = "skeleton"> </div> </div>
-    <div id = "s2" style="line-height: var(--text-height); overflow: hidden;">  <div style="width:65%;"class = "skeleton"> </div> </div>
+    <div id = "s1" class="skeleton-parrent">  <div style="width:80%;"class = "skeleton"> </div> </div>
+    <div id = "s2" class="skeleton-parrent">  <div style="width:65%;"class = "skeleton"> </div> </div>
   </div>
 
 
@@ -63,7 +63,6 @@ import ToggleGroup from '../components/ToggleGroup.astro';
 #manual:after {
   content: 'Manual';
 }
-
 
 
 :root:has(#random:checked) { 

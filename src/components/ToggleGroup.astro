@@ -105,7 +105,8 @@ style="opacity: 0; pointer-events: none;position: absolute" checked/>
 
 :root:has(#capitalize_first_letter:checked) #l_capitalize_first_letter,
 :root:has(#add_number:checked) #l_add_number ,
-:root:has(#add_special_cha:checked) #l_add_special_cha {
+:root:has(#add_special_cha:checked) #l_add_special_cha,
+.active {
 	position: relative;
   background-color: var(--primery-transparent);
   color: var(--accent-color);
@@ -115,7 +116,8 @@ style="opacity: 0; pointer-events: none;position: absolute" checked/>
 
 :root:has(#capitalize_first_letter:checked) #l_capitalize_first_letter::before ,
 :root:has(#add_number:checked)  #l_add_number::before ,
-:root:has(#add_special_cha:checked) #l_add_special_cha::before {
+:root:has(#add_special_cha:checked) #l_add_special_cha::before ,
+.active::before {
 	content: "";
 	position: absolute;
 	inset: 0;

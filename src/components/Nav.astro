@@ -4,75 +4,56 @@ background-color: var(--transparent-bg);
 width: 100%;
 position: fixed;
 top: 0;
-left: 0">
-
-<div  style="
-height: var(--portion);
-font-size: var(--regular-font);
-align-items: center;
-gap: 1ch;
-width: 100%;
-padding: 1ch;
+left: 0;
 display: flex;
-position: fixed;
-top: 0;
-left: 0">
+flex-direction: column;
+">
+
+	<div  style="
+	height: var(--portion);
+	font-size: var(--regular-font);
+	align-items: center;
+	gap: 1ch;
+	width: 100%;
+	padding: 1ch;
+	display: flex;
+	position: fixed;
+	top: 0;
+	left: 0">
 
 
-  <div id="title" 
-	style="margin-inline: calc((var(--portion) - var(--small-clickable)) / 4 ); 
-	margin-right: auto;
-	font-size:var(--big-font);">
+		<div id="title" style="
+		margin-inline: calc((var(--portion) - var(--small-clickable)) / 4 ); 
+		margin-right: auto;
+		font-size:var(--big-font);">
+		</div>
+
+		<input type="checkbox" name="menu" id="menu" data-menu="menu" 
+		style="opacity: 0; pointer-events: none;position: absolute" />
+
+		<label aria-label="Menu Drawer" for="menu" data-menu-label="menu" style="
+		cursor: pointer;
+		width: var(--portion);
+		height: var(--portion);
+		background: 0 0;
+		border: none;
+		place-content: center;
+		padding: 0;
+		display: flex;
+		position: relative">
+
+			<div id="line1" class="line line1"></div>
+			<div id="line2" class="line line2"></div>
+	    </label>
 	</div>
 
-  <input type="checkbox" name="menu" id="menu" data-menu="menu" 
-	style="opacity: 0; pointer-events: none;position: absolute" />
-
-  <label aria-label="Menu Drawer" for="menu" data-menu-label="menu" 
-	style="cursor: pointer;
-	width: var(--portion);
-	height: var(--portion);
-	background: 0 0;
-	border: none;
-	place-content: center;
-	padding: 0;
-	display: flex;
-	position: relative">
-
-    <div id="line1" class="line line1"></div>
-    <div id="line2" class="line line2"></div>
-
-  </label>
-</div>
-</div>
-
-
-<div id="drawer" class=" drw" 
-style="  z-index: var(--z-layer-top);
-flex-direction: column;
-height: 100%;
-padding: 10px;
-position: fixed;
-left: 0">
-
-  <slot />
+	<slot/>
 
 </div>
+
+
 
 <style is:global>
-
-.drw{
-	display: flex;
-	block-size: 0;
-	top: -100% ;
-	opacity: 0;
-	transition-duration:0.2s;
-}
-
-:root:has(#menu:checked) .drw {
-    top: var(--portion) ;
-    opacity: 1;
-}
 
 
 .drw-bg{

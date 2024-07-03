@@ -23,11 +23,11 @@ import Tabs from '../components/Tabs.astro';
 		<label >
 		<input id="auto_pass" type="checkbox" style="
 		margin-bottom: 2ch; margin-top: 2ch;"> Use Password as Plain Text </label>
-		<textarea id="plain_text" class="txt-area glass dent-shadow" rows="2" placeholder="Plain Text"></textarea>
+		<textarea id="plain_text" class=" glass dent-shadow" rows="2" placeholder="Plain Text"></textarea>
 
 		<p style="margin-top: 3ch; margin-bottom: 1ch; font-size: var(--extra-small-font); opacity: 0.6;">Encrypted Text : </p>
 
-		<textarea id="result_e"  class="txt-area" style="border: 0px solid transparent;" rows="2" readonly> </textarea>
+		<textarea id="result_e"  style="border: 0px solid transparent;" rows="2" readonly> </textarea>
 
 		<div class="btn-group"> 
 					
@@ -56,12 +56,12 @@ import Tabs from '../components/Tabs.astro';
 
 	<fragment slot="tab2">
 
-		<textarea id="cipher_text"  class="txt-area glass dent-shadow" rows="2" placeholder="Cipher Text"
+		<textarea id="cipher_text"  class="glass dent-shadow" rows="2" placeholder="Cipher Text"
 		style="margin-top:2ch"></textarea>
 
 		<p style="margin-top: 3ch; margin-bottom: 1ch; font-size: var(--extra-small-font); opacity: 0.6;">Decrypted Text : </p>
 
-		<textarea id="result_d"  class="txt-area" style="border: 0px solid transparent;" rows="2" readonly> </textarea>
+		<textarea id="result_d"  style="border: 0px solid transparent;" rows="2" readonly> </textarea>
 
 		<div class="btn-group"> 
 					
@@ -103,7 +103,7 @@ import Tabs from '../components/Tabs.astro';
 
 :root:has(#dec:checked) {
  #cdec {display: block;} 
- 	#encdec { transform: translate3d(5ch, 0, 0);}
+ #encdec { transform: translate3d(5ch, 0, 0);}
 }
 
 
@@ -140,42 +140,19 @@ import Tabs from '../components/Tabs.astro';
  
 .k:focus,
 .v:focus{
-	  background-color:var(--select-color) ;
-	  outline: none;
-  	background: var(--input-bg-focus);
+  background-color:var(--select-color) ;
+  outline: none;
+	background: var(--input-bg-focus);
 }
 
 .key-indicator {
-  	font-size: var(--regular-font);
-  	line-height: 2ch;
-    position: absolute;
-    right: 1.5ch;
-		top: 0.95ch;
-    color: #777;
-    pointer-events: none;
-  }
-
-.txt-area{
-  background-color: transparent; 
-  font-size: var(--regular-font);
-  font-family: inherit;
-  width: 100%;
-  padding: var(--default-padding);
-  display: inline-block;
-  border: 1px solid transparent;
-  border-radius: var(--radiu-a);
-  resize: vertical;
-  border-bottom: 1px solid var(--primary);
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  color: var(--accent-color);
-}
-
-
-.txt-area:focus {
-	border: 1px solid var(--primary);
-	border-radius: var(--radiu-a);
-	outline: none;
+	font-size: var(--regular-font);
+	line-height: 2ch;
+  position: absolute;
+  right: 1.5ch;
+	top: 0.95ch;
+  color: #777;
+  pointer-events: none;
 }
 
 
@@ -185,44 +162,6 @@ import Tabs from '../components/Tabs.astro';
 	align-items: center;
 	height: var(--portion);
 }
-
-
-.active{
-	position: relative;
-  background-color: var(--primery-transparent);
-  color: var(--accent-color);
-	box-shadow: 1px 2.5px 0px var(--dark-shadow) ;
-}
-
-.disabled{
-	box-shadow: 1px 2.5px 0px var(--dark-shadow-disabled) ;
-}
-
-.active::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;    
-  background-color: var(--glow);
-  scale: 0.65;
-  border-radius: 3ch;
-  filter: blur(10px);
-  mix-blend-mode: soft-light;
-}
-
-.active:active::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;    
-  background-color: white;
-  scale: 0.65;
-  border-radius: 3ch;
-  filter: blur(10px);
-  mix-blend-mode: soft-light;
-}
-
-
 
 
 :root:has(#auto_pass:checked) #plain_text {

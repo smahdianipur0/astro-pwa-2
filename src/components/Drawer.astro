@@ -32,60 +32,52 @@ name="theme" style="" tabindex="-1">
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
+  width: 25ch;
   font-size:var(--regular-font);
   transition-duration: 0.2s;
 }
 
-#one:after {
-  content: 'Home';
+.sub-route::after{
   color:var(--accent-color);
   display: block;
   width: 20ch; 
+}
+
+#one:after {
+  content: 'Home';
 }
 
 #two:after {
   content: 'QR Code Generator';
-  color:var(--accent-color); 
-  display: block;
-  width: 20ch; 
 }
 
 #three:after {
-  content: 'Varification Code';
-  color:var(--accent-color);
-  display: block;
-  width: 20ch;  
+  content: 'Varification Code'; 
 }
 
 #four:after {
-  content: 'About';
-  color:var(--accent-color);
-  display: block;
-  width: 20ch;  
+  content: 'About'; 
 }
 
-
-
-
-a {
-  text-decoration: none; 
-  height: 25px;
-  margin:10px var(--portion); 
-  margin: 100px;
-}
 
 .drw-list {
   display: flex;
   flex-direction: column;
   gap: 1ch;
-  opacity: 0.1;
-  transform: translateX(-50px);
+  opacity: 0;
+  transform: translateX(-30ch);
+  margin-top: var(--portion);
+  padding: 10px;
+  width: 25ch;
 }
 
 .bottom{
-    margin-bottom: 8ch; 
+    margin-bottom: var(--portion); 
     margin-top: auto;
-    transform: translateX(-50px);
+    padding: 10px;
+    opacity: 0;
+    width: 25ch;
+    transform: translateX(-30ch);
 }
 
 
@@ -174,6 +166,5 @@ checkbox.addEventListener("change", (e) => {
       tabindexoff();
     }
 });
-
 
 </script>
