@@ -23,7 +23,7 @@ import ToggleGroup from '../components/ToggleGroup.astro';
             margin-top: 2ch; margin-bottom: 2ch;">↻
           </button> 
           <p id="ttc" class="hint" style="
-            margin-top: 2ch; margin-bottom: 2ch;
+            margin-top: var(--bigger-gap); margin-bottom: var(--bigger-gap);
             position: absolute;
             width: 18ch;
             right: calc(50% - 9ch );
@@ -37,10 +37,11 @@ import ToggleGroup from '../components/ToggleGroup.astro';
       <fragment slot="tab2">
         <div class="flex" style="margin:var(--bigger-gap) 0">
           <form autocomplete="off">
-            <input id="mPassword" type="text" class="input glass dent-shadow" 
-            placeholder="Password" >
+            <input id="mPassword" type="text" class="input glass dent-shadow" style="
+            margin-bottom: var(--gap);" placeholder="Password" >
           </form>
-          <button id="copyMPassword" class="main disabled" > Copy </button>  
+          <button id="copyMPassword" class="toggle-button active single disabled" style="
+          margin-bottom:var(--gap);"> Copy </button> 
         </div>
       </fragment>
 

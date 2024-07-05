@@ -31,7 +31,7 @@ import Tabs from '../components/Tabs.astro';
 
 		<div class="btn-group"> 
 					
-			<button id="copy_e" class="toggle-text active first disabled" >Copy</button>
+			<button id="copy_e" class="toggle-button active first disabled" >Copy</button>
 
 
 
@@ -39,7 +39,7 @@ import Tabs from '../components/Tabs.astro';
 			style="opacity: 0; pointer-events: none;position: absolute"/>
 
 			<label id= "l_show_e" aria-label="Show QR Code " for="show_e" 
-			data-menu-label="show_qr_code" class="toggle-text last active last_e disabled" 
+			data-menu-label="show_qr_code" class="toggle-button last active disabled" 
 			style="width: 17ch;"> &nbsp </label>
 
 			<input type="checkbox" id= "show_qr_code_e" name="show_qr_code" data-menu="show_qr_code"
@@ -65,7 +65,7 @@ import Tabs from '../components/Tabs.astro';
 
 		<div class="btn-group"> 
 					
-			<button id="copy_d" class="toggle-text active first  disabled" >Copy</button>
+			<button id="copy_d" class="toggle-button active first  disabled" >Copy</button>
 
 
 
@@ -73,7 +73,7 @@ import Tabs from '../components/Tabs.astro';
 			style="opacity: 0; pointer-events: none;position: absolute" checked/>
 
 			<label id="l_show_d" aria-label="Show QR Code" for="show_d" 
-			data-menu-label="show_qr_code" class="toggle-text last active last_d disabled" 
+			data-menu-label="show_qr_code" class="toggle-button last active disabled" 
 			style="width: 17ch;"> &nbsp </label>
 
 			<input type="checkbox" id= "show_qr_code_d" name="show_qr_code" data-menu="show_qr_code"
@@ -105,7 +105,6 @@ import Tabs from '../components/Tabs.astro';
  #cdec {display: block;} 
  #encdec { transform: translate3d(5ch, 0, 0);}
 }
-
 
 
 .k{
@@ -145,6 +144,7 @@ import Tabs from '../components/Tabs.astro';
 	background: var(--input-bg-focus);
 }
 
+
 .key-indicator {
 	font-size: var(--regular-font);
 	line-height: 2ch;
@@ -169,7 +169,7 @@ import Tabs from '../components/Tabs.astro';
 }
 
 
-.last_e::after{
+#l_show_e::after{
 	content: "Show QR Code"; 
 	text-align: center;
 	inset: 0;
@@ -177,11 +177,11 @@ import Tabs from '../components/Tabs.astro';
 
 }
 
-:root:has(#show_e:checked) .last_e::after{
+:root:has(#l_show_e:checked) #l_show_e::after{
 	content: "Hide QR Code"; 
 }
 
-.last_d::after{
+#l_show_d::after{
 	content: "Show QR Code"; 
 	text-align: center;
 	inset: 0;
@@ -189,13 +189,13 @@ import Tabs from '../components/Tabs.astro';
 
 }
 
-:root:has(#show_d:checked) .last_d::after{
+:root:has(#show_d:checked) #l_show_d::after{
 	content: "Hide QR Code"; 
 }
 
 
-:root:has(#show_d:focus-visible) .last_d,
-:root:has(#show_e:focus-visible) .last_e {
+:root:has(#show_d:focus-visible) #l_show_d,
+:root:has(#show_e:focus-visible) #l_show_e {
 	outline: Highlight auto 1px;
   outline: -webkit-focus-ring-color auto 1px;
 }

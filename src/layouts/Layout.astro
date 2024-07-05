@@ -1,6 +1,5 @@
 ---
 import Nav from '../components/Nav.astro';
-import Drawer from '../components/Drawer.astro';
 
 interface Props {
 	title: string;
@@ -70,22 +69,19 @@ const { title } = Astro.props;
 	</head>
   
 <body id="page" style="background: var(--bg-canv);
-  border: .1px solid #0000;
-  min-height: 100vh;
-  transition: color .2s ease-out">
+border: .1px solid #0000;
+min-height: 100vh;
+transition: color .2s ease-out">
 
-  <Nav>
-    <Drawer/>
-  </Nav>
+  <Nav/>
 
   <slot/>
 
+  <div id="toast" class="toast glass">
+    <span class="gg-check-o"/>
+    <span>&nbsp Copied</span>
   </div>
-    <div id="toast" class="toast glass">
-      <span class="gg-check-o"/>
-      <span>&nbsp Copied</span>
-    </div>
-  <div>
+
 </body>
 
 
@@ -264,7 +260,6 @@ a {
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
   color: var(--accent-color);
-  margin-bottom: 1ch;
 }
 
 .input:focus {
@@ -274,55 +269,6 @@ a {
   outline: none;
 }
 
-button.main{
-  background: none;
-  font-size: var(--regular-font);
-  padding:var(--default-padding);
-  border-radius: var(--radiu-a);  
-  border: 0px solid  transparent;
-  color: var(--accent-color);
-  margin-bottom: 1ch;
-  box-shadow: 1px 3px 0px var(--transparent-bg);
-  background-color: var(--primery-transparent);
-  box-shadow: 1px 1px 0px 1px var(--dark-shadow) ;
-  position: relative;
-  cursor: pointer;
-}
-
-button.main::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;    
-  background-color: var(--glow);
-  scale: 0.65;
-  border-radius: 3ch;
-  filter: blur(10px);
-  mix-blend-mode: soft-light;
-}
-
-button.main::after {
-  content: "";
-  inset: 0;
-  border-radius: var(--radiu-a);
-  position: absolute;
-  border:0.2px solid var(--light-reflection);
-  box-shadow:  inset 0px 0.4px 0px 0px var(--light-reflection);
-  mix-blend-mode: soft-light;
-}
-
-button.main:active::before ,
-.active:active::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;    
-  background-color: white;
-  scale: 0.65;
-  border-radius: 3ch;
-  filter: blur(10px);
-  mix-blend-mode: soft-light;
-}
 
 button.disabled , label.disabled {
   opacity: 0.6;
@@ -351,7 +297,6 @@ button.disabled:active::before , label.disabled:active::before{
  left: calc(50% - 100px ); 
  align-items: center;
  justify-content: center;
-/*  height: var(--portion);  */
  padding: var(--default-padding);
  box-sizing: border-box;
  transition: bottom 0.15s ease-out;  

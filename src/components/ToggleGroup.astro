@@ -1,21 +1,21 @@
-<div class="tgl-group " >
+<div class="toggle-group " >
 
 <label  id= "l_capitalize_first_letter" aria-label="Capitalize First Letter" for="capitalize_first_letter" 
-data-menu-label="capitalize" class="toggle-text first">
+data-menu-label="capitalize" class="toggle-button first">
 Capitalize</label>
 
 <input type="checkbox" id= "capitalize_first_letter" name="pass-ops" data-menu="capitalize"
 style="opacity: 0; pointer-events: none;position: absolute" checked/>
 
 <label id= "l_add_number" aria-label="Add Number" for="add_number" 
-data-menu-label="add_number" class="toggle-text middle">
+data-menu-label="add_number" class="toggle-button middle">
 Number</label>
 
 <input type="checkbox" id= "add_number" name="pass-ops"
 style="opacity: 0; pointer-events: none;position: absolute" checked />
 
 <label id="l_add_special_cha" aria-label="Special Character" for="add_special_cha" 
-data-menu-label="add_special_cha" class="toggle-text last">
+data-menu-label="add_special_cha" class="toggle-button last">
 !@#$%&...</label>
 
 <input type="checkbox" id="add_special_cha" name="pass-ops" data-menu="add special cha"
@@ -25,7 +25,7 @@ style="opacity: 0; pointer-events: none;position: absolute" checked/>
 
 <style is:global>
 
-.tgl-group {
+.toggle-group {
 	position: relative;
 	display: flex;
 	justify-content: center;
@@ -34,23 +34,22 @@ style="opacity: 0; pointer-events: none;position: absolute" checked/>
 	margin-top: var(--gap);
 }
  
-.toggle-text {
-	position: relative;
-	background: none ;
-	font-size: var(--regular-font);
-	padding: var(--default-padding);	
-	user-select: none; 
-	cursor: pointer;
-	color: var(--focus-color);
-	background-color: var(--toggle-bg);
-	opacity: 1;
-	box-shadow: 1px 3px 0px var(--transparent-bg) ;
-	border: none;
-	border-radius: 0px;
-
+.toggle-button {
+	font-size:var(--regular-font);
+	padding:var(--default-padding);
+	user-select:none;
+	cursor:pointer;
+	color:var(--focus-color);
+	background:0 0;
+	background-color:var(--toggle-bg);
+	opacity:1;
+	box-shadow:1px 3px 0px var(--transparent-bg);
+	border:none;
+	border-radius:0;
+	position:relative
 }
 
-.toggle-text::before{
+.toggle-button::before{
   content: "";
 	position: absolute;
 	inset: 0;
@@ -62,7 +61,7 @@ style="opacity: 0; pointer-events: none;position: absolute" checked/>
 	mix-blend-mode: soft-light;
 }
 
-.toggle-text::after{
+.toggle-button::after{
 	border: none;
 	content: "";
 	position: absolute;
@@ -72,7 +71,6 @@ style="opacity: 0; pointer-events: none;position: absolute" checked/>
 	border-radius: 0px;
 	inset: 0;
 	mix-blend-mode: hard-light;
-
 }
 
 
@@ -89,7 +87,7 @@ style="opacity: 0; pointer-events: none;position: absolute" checked/>
 }
 
 .last{
-		border-top-right-radius: var(--radiu-a);
+	border-top-right-radius: var(--radiu-a);
 	border-bottom-right-radius: var(--radiu-a);
 }
 
@@ -98,7 +96,16 @@ style="opacity: 0; pointer-events: none;position: absolute" checked/>
 	border-top-right-radius: var(--radiu-a);
 	border-bottom-right-radius: var(--radiu-a);
 	border-right: 0.2px solid var(--light-reflection) ;
+}
 
+.single{
+	border-radius: var(--radiu-a);
+}
+
+.single::after{
+	border-radius: var(--radiu-a);
+	border-right: 0.2px solid var(--light-reflection) ;
+	border-left: 0.2px solid var(--light-reflection) ;
 }
 
 
@@ -136,6 +143,16 @@ style="opacity: 0; pointer-events: none;position: absolute" checked/>
   outline: -webkit-focus-ring-color auto 1px;
 }
 
+.active:active::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;    
+  background-color: white;
+  scale: 0.65;
+  border-radius: 3ch;
+  filter: blur(10px);
+  mix-blend-mode: soft-light;
+}
 
-	
 </style>
