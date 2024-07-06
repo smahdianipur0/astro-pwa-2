@@ -14,13 +14,13 @@ import ToggleGroup from '../components/ToggleGroup.astro';
 
         <div class="center" style="overflow: hidden;" >
           <button  id = "gp" class=" unstyle-button copy" 
-          style="margin-top: 2ch; margin-bottom: 2ch; line-height: var(--text-height);">
+          style="margin-top: var(--bigger-gap); margin-bottom: var(--bigger-gap); line-height: var(--text-height);">
             <div class = "skeleton" style="width:15ch"> </div> 
           </button>
 
           <button  id = "redo" class=" unstyle-button redo_container" 
             style="font-size:var(--big-font); font-weight: 300; 
-            margin-top: 2ch; margin-bottom: 2ch;">↻
+            margin-top: var(--bigger-gap); margin-bottom: var(--bigger-gap);">↻
           </button> 
           <p id="ttc" class="hint" style="
             margin-top: var(--bigger-gap); margin-bottom: var(--bigger-gap);
@@ -50,8 +50,8 @@ import ToggleGroup from '../components/ToggleGroup.astro';
   <div style="font-size: var(--regular-font); margin-top:2ch; margin-bottom: 2ch; overflow: hidden">
     <div id = "gu" class="skeleton-parrent">  <div style="width:15ch;" class = "skeleton"> </div> </div>
     <p id="box" class="box"></p>
-    <div id = "s1" class="skeleton-parrent">  <div style="width:80%;"class = "skeleton"> </div> </div>
-    <div id = "s2" class="skeleton-parrent">  <div style="width:65%;"class = "skeleton"> </div> </div>
+    <div id = "s1" class="skeleton-parrent">  <div style="width:80% ;" class = "skeleton"> </div> </div>
+    <div id = "s2" class="skeleton-parrent">  <div style="width:65% ;" class = "skeleton"> </div> </div>
   </div>
 
 
@@ -107,7 +107,7 @@ import ToggleGroup from '../components/ToggleGroup.astro';
   place-content: center;
   border: 1px solid oklch(1 0 0 /0.0);
   border-radius: var(--radiu-a);
-  line-height: 2ch;
+  line-height: var(--text-height);
   position: absolute;
   right: 0ch;
   padding: var(--thin-padding);
@@ -136,7 +136,7 @@ import ToggleGroup from '../components/ToggleGroup.astro';
 .box {
     display: flex;
     align-items: center;
-    transition: width 0.5s, background-color 0.5s, background-position 0.5s ;
+    transition: width 0.2s, background-color 0.2s, background-position 0.2s ;
     border-radius: var(--radiu-a);
     background-color: red; 
     margin-bottom: 10px;

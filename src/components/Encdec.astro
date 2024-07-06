@@ -10,7 +10,7 @@ import Tabs from '../components/Tabs.astro';
 		<span id="key_indic" class="key-indicator"></span>
 	</div>
 	
-	<div  style ="margin-bottom: 2ch; position: relative;"> 
+	<div  style ="position: relative; margin-bottom: var(--bigger-gap);"> 
 		<input id="iv" type="text" class="v glass dent-shadow " name="IV" placeholder="IV">
 		<span id="iv_indic" class="key-indicator"></span>
 	</div>
@@ -22,10 +22,11 @@ import Tabs from '../components/Tabs.astro';
 
 		<label >
 		<input id="auto_pass" type="checkbox" style="
-		margin-bottom: 2ch; margin-top: 2ch;"> Use Password as Plain Text </label>
-		<textarea id="plain_text" class=" glass dent-shadow" rows="2" placeholder="Plain Text"></textarea>
+		margin-bottom: var(--bigger-gap); margin-top: var(--bigger-gap);"> Use Password as Plain Text </label>
+		<textarea id="plain_text" class=" glass dent-shadow" style="
+		margin-bottom: var(--bigger-gap);" rows="2" placeholder="Plain Text"></textarea>
 
-		<p style="margin-top: 3ch; margin-bottom: 1ch; font-size: var(--extra-small-font); opacity: 0.6;">Encrypted Text : </p>
+		<p style=" margin-bottom: var(--gap); font-size: var(--extra-small-font); opacity: 0.6;">Encrypted Text : </p>
 
 		<textarea id="result_e"  style="border: 0px solid transparent;" rows="2" readonly> </textarea>
 
@@ -57,9 +58,9 @@ import Tabs from '../components/Tabs.astro';
 	<fragment slot="tab2">
 
 		<textarea id="cipher_text"  class="glass dent-shadow" rows="2" placeholder="Cipher Text"
-		style="margin-top:2ch"></textarea>
+		style="margin-top:var(--bigger-gap); margin-bottom: var(--bigger-gap);"></textarea>
 
-		<p style="margin-top: 3ch; margin-bottom: 1ch; font-size: var(--extra-small-font); opacity: 0.6;">Decrypted Text : </p>
+		<p style="margin-bottom: var(--gap); font-size: var(--extra-small-font); opacity: 0.6;">Decrypted Text : </p>
 
 		<textarea id="result_d"  style="border: 0px solid transparent;" rows="2" readonly> </textarea>
 
@@ -147,7 +148,7 @@ import Tabs from '../components/Tabs.astro';
 
 .key-indicator {
 	font-size: var(--regular-font);
-	line-height: 2ch;
+	line-height: var(--text-height);
   position: absolute;
   right: 1.5ch;
 	top: 0.95ch;

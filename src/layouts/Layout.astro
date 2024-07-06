@@ -92,9 +92,9 @@ transition: color .2s ease-out">
 :root {
 
   font-family: system-ui;
-  --big-font: 130%;
+  --big-font: 128%;
   --regular-font: 100%;
-  --extra-small-font: 80%;
+  --extra-small-font: 78.125%;
 
 
   --primary: oklch(0.65 0.142 268.67);
@@ -108,6 +108,7 @@ transition: color .2s ease-out">
 
   --portion: 6ch;
   --small-clickable: 3.5ch;
+  --compensate : calc((var(--portion) - var(--small-clickable)) / 2 );
   --default-padding: 0.7ch 1.5ch;
   --thin-padding: 0.2ch 1ch;
   --slider-width: 97.5%;
@@ -241,7 +242,7 @@ a {
 
 .card-bg{
   height: 7.7125ch;
-  width: calc( 100% + 4ch ) ;
+  width: 100%  ;
   position: absolute; 
   margin: -2ch -2ch;
   background: var(--card-bg-color);
