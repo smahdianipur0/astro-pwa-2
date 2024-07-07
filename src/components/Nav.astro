@@ -13,9 +13,9 @@ flex-direction: column;
 	height: var(--portion);
 	font-size: var(--regular-font);
 	align-items: center;
-	gap: 1ch;
+	gap: var(--gap);
 	width: 100%;
-	padding: 1ch;
+	padding: var(--gap) var(--bigger-gap);
 	display: flex;
 	position: fixed;
 	top: 0;
@@ -23,7 +23,6 @@ flex-direction: column;
 
 
 		<div id="title" style="
-		margin-inline: calc(var(--compensate) * 0.78123); 
 		margin-right: auto;
 		font-size:var(--big-font);">
 		</div>
@@ -35,6 +34,7 @@ flex-direction: column;
 		cursor: pointer;
 		width: var(--portion);
 		height: var(--portion);
+        margin-inline: calc((var(--small-clickable) - var(--portion)) / 2 );
 		background: 0 0;
 		border: none;
 		place-content: center;
@@ -84,7 +84,7 @@ flex-direction: column;
 .line {
   position: absolute;
   width: var(--small-clickable);
-  height: 2px;
+  height: 1.4px;
   background: var(--accent-color);
   transition: transform 0.3s ease;
   border-radius: 2ch;
@@ -184,15 +184,15 @@ top: calc(50% + 5px);
   gap: 1ch;
   opacity: 0;
   transform: translateX(-30ch);
-  margin-top: var(--portion);
-  padding: var(--compensate);
+  margin-top: calc(var(--portion) + var(--bigger-gap));
+  margin-inline: var(--bigger-gap);
   width: 25ch;
 }
 
 .bottom{
     margin-bottom: var(--portion); 
     margin-top: auto;
-    padding: var(--compensate);
+    margin-inline: var(--bigger-gap);
     opacity: 0;
     width: 25ch;
     transform: translateX(-30ch);
@@ -200,14 +200,14 @@ top: calc(50% + 5px);
 }
 
 :root:has(#menu:checked) .drw-list {
-    transform: translateX(var(--compensate));
+    transform: translateX(0);
     opacity: 1;
     transition-delay: 0.2s;
     transition-duration: 0.2s;   
 }
 
 :root:has(#menu:checked) .bottom {
-    transform: translateX(var(--compensate));
+    transform: translateX(0);
     opacity: 1;
     transition-delay: 0.2s;
     transition-duration: 0.32s;  

@@ -106,15 +106,14 @@ transition: color .2s ease-out">
   --success: oklch(64% 0.12 174);
 
 
-  --portion: 6ch;
-  --small-clickable: 3.5ch;
-  --compensate : calc((var(--portion) - var(--small-clickable)) / 2 );
-  --default-padding: 0.7ch 1.5ch;
-  --thin-padding: 0.2ch 1ch;
-  --slider-width: 97.5%;
   --gap: 1ch;
   --bigger-gap: 2ch;
   --text-height: 2.4ch;
+  --small-clickable: 3.15ch;
+  --portion: 6ch;
+  
+  --default-padding: 0.7ch 1.5ch;
+  --thin-padding: 0.2ch 1ch;
 
 
   --radiu-a: 0.85ch;
@@ -242,6 +241,7 @@ a {
 
 .card-bg{
   height: 7.7125ch;
+  height: 8.032ch;
   width: 100%  ;
   position: absolute; 
   margin: -2ch -2ch;
@@ -387,7 +387,7 @@ button.disabled:active::before , label.disabled:active::before{
   color:var(--accent-color);
   content: 'Change Theme: 🌙';
   display: block;
-  width: 20ch; 
+  width: 20ch;
 }
 
 :root:has(#theme-toggle:checked) #theme-toggle:before {
