@@ -1,9 +1,11 @@
 import { createSignal, createEffect } from 'solid-js';
+import {
+   generate_password,
+   calculate_password_strength,
+   calculate_password_strength2,
+   guessable,
+} from "../pkg/rust_lib";
 
-import { generate_password }            from "../pkg/rust_lib";
-import { calculate_password_strength }  from "../pkg/rust_lib";
-import { calculate_password_strength2 } from "../pkg/rust_lib";
-import { guessable }                    from "../pkg/rust_lib";
 
 
 const [password, setPassword]       = createSignal(generate_password(16, true, true, true));
@@ -146,9 +148,7 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
 
 
 
-import { encrypt } from "../pkg/rust_lib";
-import { decrypt } from "../pkg/rust_lib";
-import { count_characters }  from "../pkg/rust_lib";
+import { encrypt, decrypt, count_characters } from "../pkg/rust_lib";
 
 const [key, setKey]                 = createSignal("");
 const [iv, setIv]                   = createSignal("");
@@ -157,9 +157,6 @@ const [fbPlainText, setFbPlainText] = createSignal("");
 const [cipherText, setCipherText]   = createSignal("");
 const [resultE, setResultE]         = createSignal("");
 const [resultD, setResultD]         = createSignal("");
-
-
-
 
 
 
@@ -201,8 +198,9 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
    }
 });
 
-import QRCode from 'qrcode'
 
+
+import QRCode from 'qrcode'
 
 createEffect(() => {
    setResultE(encrypt(key(), iv(), plainText()));
@@ -292,6 +290,8 @@ document.getElementById("encryption")!.addEventListener("click",(e)=>{
    }
 });
 
+
+
 import { TOTP } from "totp-generator";
 
 const [sKey, setSkey]           = createSignal("");
@@ -366,9 +366,6 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
             sKey() !== "") { activateVarif() } else {deactivateVarif()}
       }
    }
-});
-
-document.getElementById("encryption")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
       if ((e.target as HTMLInputElement).checked) {
          if ((document.getElementById("enc")! as HTMLInputElement).checked){ deactivateVarif() }
@@ -377,6 +374,8 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
       }
    }
 });
+
+
 
 function updateOtp() {
    createEffect(() => {
