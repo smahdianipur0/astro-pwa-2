@@ -12,7 +12,7 @@ export default defineConfig({
     ],
   vite: {
     plugins: [wasm(), topLevelAwait()],
-    css: { transformer: 'lightningcss' },
+    // css: { transformer: 'lightningcss' },
   },
   build: {
     assetsInlineLimit: 51200,

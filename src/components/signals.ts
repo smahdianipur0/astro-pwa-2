@@ -292,32 +292,32 @@ document.getElementById("encryption")!.addEventListener("click",(e)=>{
 
 
 
-// import { TOTP } from "totp-generator";
+import { TOTP } from "totp-generator";
 
-// const [sKey, setSkey]           = createSignal("");
-// const [otpRe, setOtpRe]         = createSignal("");
-// const [countDown, setCountDown] = createSignal("");
+const [sKey, setSkey]           = createSignal("");
+const [otpRe, setOtpRe]         = createSignal("");
+const [countDown, setCountDown] = createSignal("");
 
-// function updateCountDown(){
-//    const currentTime = Math.round(new Date().getTime() / 1000);
-//    const remainingSeconds = 30 - (currentTime % 30);
-//    setCountDown(remainingSeconds.toString().padStart(2, '0'));   
-// }
-// setInterval(updateCountDown, 1000)
+function updateCountDown(){
+   const currentTime = Math.round(new Date().getTime() / 1000);
+   const remainingSeconds = 30 - (currentTime % 30);
+   setCountDown(remainingSeconds.toString().padStart(2, '0'));   
+}
+setInterval(updateCountDown, 1000)
 
 
-// document.getElementById("encryption")!.addEventListener("change",(e)=>{
-//    if ((e!.target as HTMLInputElement).matches("#enc")) {
-//       if ((e.target as HTMLInputElement).checked) {
-//          setSkey(fbPlainText());
-//       }
-//    }
-//    if ((e!.target as HTMLInputElement).matches("#dec")) {
-//       if ((e.target as HTMLInputElement).checked) {
-//          setSkey(resultD());
-//       }
-//    }
-// });
+document.getElementById("encryption")!.addEventListener("change",(e)=>{
+   if ((e!.target as HTMLInputElement).matches("#enc")) {
+      if ((e.target as HTMLInputElement).checked) {
+         setSkey(fbPlainText());
+      }
+   }
+   if ((e!.target as HTMLInputElement).matches("#dec")) {
+      if ((e.target as HTMLInputElement).checked) {
+         setSkey(resultD());
+      }
+   }
+});
 
 function activateVarif() {
    (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
@@ -333,117 +333,117 @@ function deactivateVarif() {
 };
 
 
-// document.getElementById("encryption")!.addEventListener("input",(e)=>{
-//    if((e!.target as HTMLInputElement).matches("#plain_text")){
-//       const value = (e!.target as HTMLInputElement).value;
-//       setSkey(value.toString());
-//       if(sKey() !== "" ) { activateVarif() } else {deactivateVarif()}
-//    }
-//    if((e!.target as HTMLInputElement).matches("#cipher_text, #key, #iv")){
-//       if ((document.getElementById("dec")! as HTMLInputElement).checked){
-//          setSkey(decrypt(key(), iv(), cipherText()));
-//          if(sKey() !== "IV is not 16 Characters" &&
-//             sKey() !== "Key is not 16 Characters" &&
-//             sKey() !== "Invalid Credentials" &&
-//             sKey() !== "") { activateVarif() } else {deactivateVarif()}
-//       }
-//    }
-// });
+document.getElementById("encryption")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#plain_text")){
+      const value = (e!.target as HTMLInputElement).value;
+      setSkey(value.toString());
+      if(sKey() !== "" ) { activateVarif() } else {deactivateVarif()}
+   }
+   if((e!.target as HTMLInputElement).matches("#cipher_text, #key, #iv")){
+      if ((document.getElementById("dec")! as HTMLInputElement).checked){
+         setSkey(decrypt(key(), iv(), cipherText()));
+         if(sKey() !== "IV is not 16 Characters" &&
+            sKey() !== "Key is not 16 Characters" &&
+            sKey() !== "Invalid Credentials" &&
+            sKey() !== "") { activateVarif() } else {deactivateVarif()}
+      }
+   }
+});
 
-// document.getElementById("encryption")!.addEventListener("change",(e)=>{
-//    if ((e!.target as HTMLInputElement).matches("#enc")) {
-//       if ((e.target as HTMLInputElement).checked) {
-//          if(sKey() !== "" && 
-//          (document.getElementById("auto_pass")! as HTMLInputElement).checked === false )
-//            { activateVarif() } else {deactivateVarif()}
-//       }
-//    }
-//    if ((e!.target as HTMLInputElement).matches("#dec")) {
-//       if ((e.target as HTMLInputElement).checked) {
-//          if(sKey() !== "IV is not 16 Characters" &&
-//             sKey() !== "Key is not 16 Characters" &&
-//             sKey() !== "Invalid Credentials" &&
-//             sKey() !== "") { activateVarif() } else {deactivateVarif()}
-//       }
-//    }
-//    if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
-//       if ((e.target as HTMLInputElement).checked) {
-//          if ((document.getElementById("enc")! as HTMLInputElement).checked){ deactivateVarif() }
-//       } else {
-//          if(sKey() !== "" ) { activateVarif() } else { deactivateVarif() } 
-//       }
-//    }
-// });
-
-
-
-// function updateOtp() {
-//    createEffect(() => {
-//       try { const { otp, expires } = TOTP.generate(sKey());
-//          setOtpRe(otp.toString());
-//       } catch (error) {
-//          setOtpRe("The provided key is not valid.");   
-//       }
-//    });
-// }
-// setInterval(updateOtp, 1000);
+document.getElementById("encryption")!.addEventListener("change",(e)=>{
+   if ((e!.target as HTMLInputElement).matches("#enc")) {
+      if ((e.target as HTMLInputElement).checked) {
+         if(sKey() !== "" && 
+         (document.getElementById("auto_pass")! as HTMLInputElement).checked === false )
+           { activateVarif() } else {deactivateVarif()}
+      }
+   }
+   if ((e!.target as HTMLInputElement).matches("#dec")) {
+      if ((e.target as HTMLInputElement).checked) {
+         if(sKey() !== "IV is not 16 Characters" &&
+            sKey() !== "Key is not 16 Characters" &&
+            sKey() !== "Invalid Credentials" &&
+            sKey() !== "") { activateVarif() } else {deactivateVarif()}
+      }
+   }
+   if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
+      if ((e.target as HTMLInputElement).checked) {
+         if ((document.getElementById("enc")! as HTMLInputElement).checked){ deactivateVarif() }
+      } else {
+         if(sKey() !== "" ) { activateVarif() } else { deactivateVarif() } 
+      }
+   }
+});
 
 
 
-// createEffect(() => {
-//    if(otpRe() !== "The provided key is not valid." ){
-//       document.getElementById("varif_detail")!.textContent = "Varification Code:"
-//       document.getElementById("varif_detail_re")!.textContent = otpRe();
-
-//       document.getElementById("varif_hint")!.textContent = 
-//       "This code is valid for the next ".concat( countDown().toString(), " seconds.");
-//       document.getElementById("varif_copy_hint")!.textContent = "Tap to copy";
-//    } else {
-//       document.getElementById("varif_detail")!.textContent = otpRe();
-//       document.getElementById("varif_detail_re")!.textContent = "";
-//       document.getElementById("varif_hint")!.textContent = "";
-//       document.getElementById("varif_copy_hint")!.textContent = "";
-//    } 
-// });
-
-// document.getElementById("varification")!.addEventListener("click",(e)=>{
-//    if((e!.target as HTMLInputElement).matches(
-//       "#varif_detail ,#varif_detail_re, #varif_copy_hint")){
-//       if(otpRe() !== "The provided key is not valid." ){
-//       navigator.clipboard.writeText(otpRe());  
-//       // showToast(); 
-//      }
-//   }
-// });
+function updateOtp() {
+   createEffect(() => {
+      try { const { otp, expires } = TOTP.generate(sKey());
+         setOtpRe(otp.toString());
+      } catch (error) {
+         setOtpRe("The provided key is not valid.");   
+      }
+   });
+}
+setInterval(updateOtp, 1000);
 
 
 
-// import { onMount } from 'solid-js';
+createEffect(() => {
+   if(otpRe() !== "The provided key is not valid." ){
+      document.getElementById("varif_detail")!.textContent = "Varification Code:"
+      document.getElementById("varif_detail_re")!.textContent = otpRe();
 
-// let timeoutId: number | undefined;
+      document.getElementById("varif_hint")!.textContent = 
+      "This code is valid for the next ".concat( countDown().toString(), " seconds.");
+      document.getElementById("varif_copy_hint")!.textContent = "Tap to copy";
+   } else {
+      document.getElementById("varif_detail")!.textContent = otpRe();
+      document.getElementById("varif_detail_re")!.textContent = "";
+      document.getElementById("varif_hint")!.textContent = "";
+      document.getElementById("varif_copy_hint")!.textContent = "";
+   } 
+});
 
-// function showToast() {
-//   const toastElement = document.getElementById('toast')!;
-//   if (toastElement) {
-//     toastElement.style.bottom = 'var(--portion)';
-//     timeoutId = window.setTimeout(() => {
-//       toastElement.style.bottom = '-100%';
-//     }, 2000);
-//   }
-// }
+document.getElementById("varification")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches(
+      "#varif_detail ,#varif_detail_re, #varif_copy_hint")){
+      if(otpRe() !== "The provided key is not valid." ){
+      navigator.clipboard.writeText(otpRe());  
+      // showToast(); 
+     }
+  }
+});
 
-// function clearToastTimeout() {
-//   if (timeoutId !== undefined) {
-//     clearTimeout(timeoutId);
-//     timeoutId = undefined;
-//   }
-// }
 
-// onMount(() => {
-//    return () => {
-//       clearToastTimeout();
-//    };
-// });
+
+import { onMount } from 'solid-js';
+
+let timeoutId: number | undefined;
+
+function showToast() {
+  const toastElement = document.getElementById('toast')!;
+  if (toastElement) {
+    toastElement.style.bottom = 'var(--portion)';
+    timeoutId = window.setTimeout(() => {
+      toastElement.style.bottom = '-100%';
+    }, 2000);
+  }
+}
+
+function clearToastTimeout() {
+  if (timeoutId !== undefined) {
+    clearTimeout(timeoutId);
+    timeoutId = undefined;
+  }
+}
+
+onMount(() => {
+   return () => {
+      clearToastTimeout();
+   };
+});
 
 
 
@@ -464,55 +464,55 @@ document.getElementById("generateQR")!.addEventListener("input",(e)=>{
 });
 
 
-// const [otpReO, setOtpReO] = createSignal("");
-// const [keyO, setKeyO] = createSignal("");
+const [otpReO, setOtpReO] = createSignal("");
+const [keyO, setKeyO] = createSignal("");
 
-// document.getElementById("varificationOnly")!.addEventListener("input",(e)=>{
-//    if((e!.target as HTMLInputElement).matches("#text_for_varif")){
-//       const value = (e!.target as HTMLInputElement).value;
-//       setKeyO(value.toString())
-//    }
-// });
+document.getElementById("varificationOnly")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#text_for_varif")){
+      const value = (e!.target as HTMLInputElement).value;
+      setKeyO(value.toString())
+   }
+});
 
 
-// function updateOtpO() {
-//    createEffect(() => {
-//       try { const { otp, expires } = TOTP.generate(keyO());
-//          setOtpReO(otp.toString());
-//       } catch (error) {
-//          setOtpReO("The provided key is not valid.");   
-//       }
-//    });
-// }
-// setInterval(updateOtpO, 1000);
+function updateOtpO() {
+   createEffect(() => {
+      try { const { otp, expires } = TOTP.generate(keyO());
+         setOtpReO(otp.toString());
+      } catch (error) {
+         setOtpReO("The provided key is not valid.");   
+      }
+   });
+}
+setInterval(updateOtpO, 1000);
 
-// createEffect(() => {
-//    if (keyO() === "") {
-//       document.getElementById("varif_detail_o")!.textContent = "";
-//       document.getElementById("varif_detail_re_o")!.textContent = "";
-//       document.getElementById("varif_hint_o")!.textContent = "";
-//       document.getElementById("varif_copy_hint_o")!.textContent = "";
-//    } else {
-//       if (otpReO() !== "The provided key is not valid.") {
-//          document.getElementById("varif_detail_o")!.textContent = "Varification Code:";
-//          document.getElementById("varif_detail_re_o")!.textContent = otpReO();
+createEffect(() => {
+   if (keyO() === "") {
+      document.getElementById("varif_detail_o")!.textContent = "";
+      document.getElementById("varif_detail_re_o")!.textContent = "";
+      document.getElementById("varif_hint_o")!.textContent = "";
+      document.getElementById("varif_copy_hint_o")!.textContent = "";
+   } else {
+      if (otpReO() !== "The provided key is not valid.") {
+         document.getElementById("varif_detail_o")!.textContent = "Varification Code:";
+         document.getElementById("varif_detail_re_o")!.textContent = otpReO();
 
-//          document.getElementById("varif_hint_o")!.textContent =
-//             "This code is valid for the next ".concat(countDown().toString()," seconds.",);
-//          document.getElementById("varif_copy_hint_o")!.textContent = "Tap to copy"
+         document.getElementById("varif_hint_o")!.textContent =
+            "This code is valid for the next ".concat(countDown().toString()," seconds.",);
+         document.getElementById("varif_copy_hint_o")!.textContent = "Tap to copy"
 
-//          document.getElementById("varificationOnly")!.addEventListener("click", (e) => {
-//             if ((e!.target as HTMLInputElement).matches(
-//                "#varif_detail_o ,#varif_detail_re_o, #varif_copy_hint_o ",)) {
-//                navigator.clipboard.writeText(otpReO());
-//                // showToast();
-//             }
-//          });
-//       } else {
-//          document.getElementById("varif_detail_o")!.textContent = otpReO();
-//          document.getElementById("varif_detail_re_o")!.textContent = "";
-//          document.getElementById("varif_hint_o")!.textContent = "";
-//          document.getElementById("varif_copy_hint_o")!.textContent = "";
-//       }
-//    }
-// });
+         document.getElementById("varificationOnly")!.addEventListener("click", (e) => {
+            if ((e!.target as HTMLInputElement).matches(
+               "#varif_detail_o ,#varif_detail_re_o, #varif_copy_hint_o ",)) {
+               navigator.clipboard.writeText(otpReO());
+               // showToast();
+            }
+         });
+      } else {
+         document.getElementById("varif_detail_o")!.textContent = otpReO();
+         document.getElementById("varif_detail_re_o")!.textContent = "";
+         document.getElementById("varif_hint_o")!.textContent = "";
+         document.getElementById("varif_copy_hint_o")!.textContent = "";
+      }
+   }
+});
