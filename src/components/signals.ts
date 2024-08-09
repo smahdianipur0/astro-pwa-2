@@ -4,7 +4,13 @@ import {
    calculate_password_strength,
    calculate_password_strength2,
    guessable,
+   encrypt,
+   decrypt,
+   count_characters
 } from "../pkg/rust_lib";
+import QRCode from 'qrcode'
+import { TOTP } from "totp-generator";
+
 
 
 
@@ -16,15 +22,6 @@ const [length, setLength]                               = createSignal(16);
 const [addSpecialCha, setAddSpecialCha]                 = createSignal(true);
 const [addNumber, setAddNumber]                         = createSignal(true);
 const [capitalizeFirstLetter, setCapitalizeFirstLetter] = createSignal(true);
-
-createEffect(() => { setPassword(generate_password(
-      length(),
-      addSpecialCha(),
-      addNumber(),
-      capitalizeFirstLetter(),
-   ));
-   setCurrentPass(password())
-});
 
 
 document.getElementById("generate")!.addEventListener("input",(e)=>{
@@ -76,8 +73,16 @@ document.getElementById("generate")!.addEventListener("change",(e)=>{
 
 });
 
-createEffect(() => { document.getElementById("gp")!
-   .textContent = password() });
+createEffect(() => { 
+   setPassword(generate_password(
+      length(),
+      addSpecialCha(),
+      addNumber(),
+      capitalizeFirstLetter(),
+   ));
+   document.getElementById("gp")!.textContent = password();
+   setCurrentPass(password())
+});
 
 createEffect(() => { document.getElementById("gu")!
    .textContent = guessable(currentPass()) });
@@ -88,7 +93,7 @@ createEffect(() => { document.getElementById("s1")!
 createEffect(() => { 
    if(calculate_password_strength2(currentPass()) !== "Zxcvbn cannot evaluate a blank password") {
     document.getElementById("s2")!
-   .textContent = calculate_password_strength2(currentPass())  
+   .textContent = calculate_password_strength2(currentPass())
    } else {
       document.getElementById("s2")!
       .textContent = ""  
@@ -124,13 +129,13 @@ createEffect(() => {
 document.getElementById("generate")!.addEventListener("click",(e)=>{
    if((e!.target as HTMLInputElement).matches("#gp ,#ttc")){
       navigator.clipboard.writeText(password());  
-      // showToast(); 
+      showToast(); 
    }
 
    if((e!.target as HTMLInputElement).matches("#copyMPassword")){
       if(mpassword() !== "") {
          navigator.clipboard.writeText(mpassword());  
-         // showToast(); 
+         showToast(); 
       }
    }
 
@@ -147,8 +152,6 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
 
 
 
-
-import { encrypt, decrypt, count_characters } from "../pkg/rust_lib";
 
 const [key, setKey]                 = createSignal("");
 const [iv, setIv]                   = createSignal("");
@@ -200,7 +203,6 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
 
 
 
-import QRCode from 'qrcode'
 
 createEffect(() => {
    setResultE(encrypt(key(), iv(), plainText()));
@@ -256,7 +258,7 @@ document.getElementById("encryption")!.addEventListener("click",(e)=>{
          resultE() !== "Key is not 16 Characters" &&
          resultE() !== "") {
          navigator.clipboard.writeText(resultE());  
-         // showToast();
+         showToast();
       } 
    }
 });
@@ -285,14 +287,13 @@ document.getElementById("encryption")!.addEventListener("click",(e)=>{
          resultD() !== "Invalid Credentials"&&
          resultD() !== "") {
          navigator.clipboard.writeText(resultD());  
-         // showToast();
+         showToast();
       } 
    }
 });
 
 
 
-import { TOTP } from "totp-generator";
 
 const [sKey, setSkey]           = createSignal("");
 const [otpRe, setOtpRe]         = createSignal("");
@@ -411,14 +412,12 @@ document.getElementById("varification")!.addEventListener("click",(e)=>{
       "#varif_detail ,#varif_detail_re, #varif_copy_hint")){
       if(otpRe() !== "The provided key is not valid." ){
       navigator.clipboard.writeText(otpRe());  
-      // showToast(); 
+      showToast(); 
      }
   }
 });
 
 
-
-import { onMount } from 'solid-js';
 
 let timeoutId: number | undefined;
 
@@ -431,19 +430,6 @@ function showToast() {
     }, 2000);
   }
 }
-
-function clearToastTimeout() {
-  if (timeoutId !== undefined) {
-    clearTimeout(timeoutId);
-    timeoutId = undefined;
-  }
-}
-
-onMount(() => {
-   return () => {
-      clearToastTimeout();
-   };
-});
 
 
 

@@ -148,3 +148,18 @@ createEffect(() => {
       // function (error) { if (error) console.error(error);console.log("success!");},
    );
 });
+
+
+//extra toast
+function clearToastTimeout() {
+  if (timeoutId !== undefined) {
+    clearTimeout(timeoutId);
+    timeoutId = undefined;
+  }
+}
+
+onMount(() => {
+   return () => {
+      clearToastTimeout();
+   };
+});
