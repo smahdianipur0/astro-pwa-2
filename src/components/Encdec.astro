@@ -107,7 +107,6 @@ import Tabs from '../components/Tabs.astro';
   width: 100%;
   display: inline-block;
   color: var(--accent-color);
-
 	background: var(--transparent-bg);
 	border: none;
 	border-radius: var(--radiu-a);
@@ -123,13 +122,12 @@ import Tabs from '../components/Tabs.astro';
   width: 100%;
   display: inline-block;
   color: var(--accent-color);
-
 	background: var(--transparent-bg);
 	border: none;
 	border-radius: var(--radiu-a);
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
-	padding: 0.95ch 1.5ch;
+	padding: var(--gap) 1.62ch;
 }
  
 .k:focus,
@@ -144,8 +142,8 @@ import Tabs from '../components/Tabs.astro';
 	font-size: var(--regular-font);
 	line-height: var(--text-height);
   position: absolute;
-  right: 1.5ch;
-	top: 0.95ch;
+  right: 1.62ch;
+	top: var(--gap);
   color: #777;
   pointer-events: none;
 }

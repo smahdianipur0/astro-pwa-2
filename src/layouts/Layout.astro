@@ -356,12 +356,12 @@ button.disabled:active::before , label.disabled:active::before{
 }
 
 :root{
-  --bg-canv: linear-gradient(135deg, oklch(28% 0 0) 0%, oklch(23% 0 0) 14%, oklch(10% 0 0) 100%);
+  --bg-canv: linear-gradient(135deg, oklch(24% 0 0) 0%, oklch(19% 0 0) 14%, oklch(8% 0 0) 100%);
   --select-color: oklch(15% 0 0);
   --accent-color: oklch(99% 0.005 197.00);
   --focus-color: oklch(100% 0 0 / 0.5);
   --main-border: oklch(35% 0 0);
-  --transparent-bg: oklch(25% 0 0 / 0.45);
+  --transparent-bg: oklch(0% 0 0 / 0.55);
   --slider-thumb-color: linear-gradient(oklch(22% 0 0),oklch(34% 0 0));
   --input-bg-focus: linear-gradient(oklch(22% 0 0 / 0.9),oklch(22% 0 0 / 0.8));
   --toggle-bg: oklch(22% 0 0 );
@@ -370,17 +370,18 @@ button.disabled:active::before , label.disabled:active::before{
   --glow: oklch(80% 0 0);
   --dark-shadow: oklch(32% 0.2 268.67);
   --dark-shadow-disabled: oklch(27% 0.16 268.67);
+  --border: linear-gradient(135deg, oklch(20% 0 0) 0%, oklch(30% 0 0) 25%, oklch(20% 0 0) 100%);
 }
 
 :root:has(#theme-toggle:checked) {
-  --bg-canv: linear-gradient(135deg, oklch(90% 0 0) 0%, oklch(83% 0 0) 14%, oklch(80% 0 0) 100%);
+  --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 14%, oklch(89% 0 0) 100%);
   --tertiary-color: linear-gradient(oklch(90% 0 0 / 0.8),oklch(100% 0 0 / 0.8));
   --select-color:oklch(96% 0 0);
   --accent-color: oklch(0% 0 0);
   --focus-color : oklch(0% 0 0 / 0.5);
   --focus-color-gradient : linear-gradient(oklch(0% 0 0 / 0.4),oklch(0% 0 0 / 0.3));
   --main-border : oklch(82% 0 0);
-  --transparent-bg: oklch(98% 0 0 / 0.45);
+  --transparent-bg: oklch(90% 0 0 / 0.55);
   --slider-thumb-color : linear-gradient(oklch(85% 0 0),oklch(90% 0 0));
   --input-bg-focus:linear-gradient(oklch(89% 0 0 / 0.8),oklch(89% 0.0268 106.93 / 0.9));
   --toggle-bg: oklch(95% 0 0 );
@@ -389,6 +390,7 @@ button.disabled:active::before , label.disabled:active::before{
   --glow:oklch(100% 0 268.67);
   --dark-shadow: oklch(50% 0.22 268.67);
   --dark-shadow-disabled: oklch(62% 0.18 268.67);
+  --border: linear-gradient(135deg, oklch(80% 0 0) 0%, oklch(95% 0 0) 25%, oklch(80% 0 0) 100%);
 }
 
 @media (prefers-color-scheme:light) {
@@ -406,14 +408,14 @@ button.disabled:active::before , label.disabled:active::before{
 
 
   :root{
-  --bg-canv: linear-gradient(135deg, oklch(90% 0 0) 0%, oklch(83% 0 0) 14%, oklch(80% 0 0) 100%);
+  --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 14%, oklch(89% 0 0) 100%);
   --tertiary-color: linear-gradient(oklch(90% 0 0 / 0.8),oklch(100% 0 0 / 0.8));
   --select-color:oklch(96% 0 0);
   --accent-color: oklch(0% 0 0);
   --focus-color : oklch(0% 0 0 / 0.5);
   --focus-color-gradient : linear-gradient(oklch(0% 0 0 / 0.4),oklch(0% 0 0 / 0.3));
   --main-border : oklch(82% 0 0);
-  --transparent-bg: oklch(98% 0 0 / 0.45);
+  --transparent-bg: oklch(90% 0 0 / 0.55);
   --slider-thumb-color : linear-gradient(oklch(85% 0 0),oklch(90% 0 0));
   --input-bg-focus:linear-gradient(oklch(89% 0 0 / 0.8),oklch(89% 0.0268 106.93 / 0.9));
   --toggle-bg: oklch(95% 0 0 );
@@ -422,15 +424,16 @@ button.disabled:active::before , label.disabled:active::before{
   --glow:oklch(100% 0 268.67);
   --dark-shadow: oklch(50% 0.22 268.67);
   --dark-shadow-disabled: oklch(62% 0.18 268.67);
+  --border: linear-gradient(135deg, oklch(80% 0 0) 0%, oklch(95% 0 0) 25%, oklch(80% 0 0) 100%);
   }
 
   :root:has(#theme-toggle:checked) {
-  --bg-canv: linear-gradient(135deg, oklch(40% 0 0) 0%, oklch(35% 0 0) 14%, oklch(22% 0 0) 100%);
+  --bg-canv: linear-gradient(135deg, oklch(24% 0 0) 0%, oklch(19% 0 0) 14%, oklch(8% 0 0) 100%);
   --select-color: oklch(15% 0 0);
   --accent-color: oklch(99% 0.005 197.00);
   --focus-color: oklch(100% 0 0 / 0.5);
   --main-border: oklch(35% 0 0);
-  --transparent-bg: oklch(10% 0 0 / 0.45);
+  --transparent-bg: oklch(0% 0 0 / 0.55);
   --slider-thumb-color: linear-gradient(oklch(22% 0 0),oklch(34% 0 0));
   --input-bg-focus: linear-gradient(oklch(22% 0 0 / 0.9),oklch(22% 0 0 / 0.8));
   --toggle-bg: oklch(22% 0 0 );
@@ -439,6 +442,7 @@ button.disabled:active::before , label.disabled:active::before{
   --glow: oklch(80% 0 0);
   --dark-shadow: oklch(32% 0.2 268.67);
   --dark-shadow-disabled: oklch(27% 0.16 268.67);
+  --border: linear-gradient(135deg, oklch(20% 0 0) 0%, oklch(30% 0 0) 25%, oklch(20% 0 0) 100%);
   }
 
 }
