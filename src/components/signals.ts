@@ -491,7 +491,7 @@ createEffect(() => {
             if ((e!.target as HTMLInputElement).matches(
                "#varif_detail_o ,#varif_detail_re_o, #varif_copy_hint_o ",)) {
                navigator.clipboard.writeText(otpReO());
-               // showToast();
+               showToast();
             }
          });
       } else {
