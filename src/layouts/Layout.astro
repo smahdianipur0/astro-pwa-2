@@ -1,5 +1,6 @@
 ---
 import Nav from '../components/Nav.astro';
+import BottomNav from '../components/BottomNav.astro';
 
 interface Props {
 	title: string;
@@ -73,6 +74,7 @@ min-height: 100vh;
 transition: color .2s ease-out">
 
   <Nav/>
+  <!-- <BottomNav/> -->
 
   <slot/>
 
@@ -100,6 +102,7 @@ transition: color .2s ease-out">
   --x5: 3.33;
   --x6: 4.23;
   --x7: 5.39;
+  --x8: 6.84;
 
   --regular-font: 100%;
   --big-font: calc(var(--regular-font) * var(--x1));
@@ -120,6 +123,7 @@ transition: color .2s ease-out">
   --text-height: calc(var(--gap) * var(--x4));;
   --small-clickable: calc(var(--gap) * var(--x5));
   --portion: calc(var(--gap) * var(--x7));
+  --bigger-portion: calc(var(--gap) * var(--x8));
 
 
   --default-padding: 0.81ch 1.62ch;
@@ -260,7 +264,6 @@ a {
 
 
 .input {
-  background-color: var(--transparent-bg);
   font-size: var(--regular-font);
   padding: var(--default-padding);
   width: 100%;
@@ -357,7 +360,7 @@ button.disabled:active::before , label.disabled:active::before{
 
 :root{
   --bg-canv: linear-gradient(135deg, oklch(24% 0 0) 0%, oklch(19% 0 0) 14%, oklch(8% 0 0) 100%);
-  --select-color: oklch(15% 0 0);
+  --select-color: oklch(0% 0 0);
   --accent-color: oklch(99% 0.005 197.00);
   --focus-color: oklch(100% 0 0 / 0.5);
   --main-border: oklch(35% 0 0);
@@ -376,7 +379,7 @@ button.disabled:active::before , label.disabled:active::before{
 :root:has(#theme-toggle:checked) {
   --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 14%, oklch(89% 0 0) 100%);
   --tertiary-color: linear-gradient(oklch(90% 0 0 / 0.8),oklch(100% 0 0 / 0.8));
-  --select-color:oklch(96% 0 0);
+  --select-color:oklch(100% 0 0);
   --accent-color: oklch(0% 0 0);
   --focus-color : oklch(0% 0 0 / 0.5);
   --focus-color-gradient : linear-gradient(oklch(0% 0 0 / 0.4),oklch(0% 0 0 / 0.3));
@@ -410,7 +413,7 @@ button.disabled:active::before , label.disabled:active::before{
   :root{
   --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 14%, oklch(89% 0 0) 100%);
   --tertiary-color: linear-gradient(oklch(90% 0 0 / 0.8),oklch(100% 0 0 / 0.8));
-  --select-color:oklch(96% 0 0);
+  --select-color:oklch(100% 0 0);
   --accent-color: oklch(0% 0 0);
   --focus-color : oklch(0% 0 0 / 0.5);
   --focus-color-gradient : linear-gradient(oklch(0% 0 0 / 0.4),oklch(0% 0 0 / 0.3));
@@ -429,7 +432,7 @@ button.disabled:active::before , label.disabled:active::before{
 
   :root:has(#theme-toggle:checked) {
   --bg-canv: linear-gradient(135deg, oklch(24% 0 0) 0%, oklch(19% 0 0) 14%, oklch(8% 0 0) 100%);
-  --select-color: oklch(15% 0 0);
+  --select-color: oklch(0% 0 0);
   --accent-color: oklch(99% 0.005 197.00);
   --focus-color: oklch(100% 0 0 / 0.5);
   --main-border: oklch(35% 0 0);
