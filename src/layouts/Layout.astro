@@ -317,6 +317,7 @@ button.disabled:active::before , label.disabled:active::before{
  transition: bottom 0.15s ease-out;  
  z-index: var(--z-layer-higher);
  color: var(--success);
+ margin-bottom: var(--bigger-gap);
 }
 
 .gg-check-o {
@@ -345,7 +346,43 @@ button.disabled:active::before , label.disabled:active::before{
   border-style: solid;
   transform-origin: bottom left;
   transform: rotate(45deg)
+}
 
+@media only screen and (min-width: 450px) {
+  .bottom-nav{
+    bottom: auto;
+    top: var(--gap);
+    height: var(--portion);
+    border-radius: var(--radus-c);
+    box-shadow: 4px 6px 20px 2px oklch(0% 0 0/.2);
+    width: calc(100% - var(--bigger-gap) - var(--bigger-gap));
+    left: unset;
+    right: var(--bigger-gap);
+  }
+
+  .grid-layout{
+    margin-top: var(--bigger-portion);
+  }
+
+  .nav-div {
+  flex-direction: row;
+  height: var(--small-clickable);
+  width: calc( var(--bigger-portion) + var(--bigger-gap));
+  margin-top: auto;
+  margin-bottom: auto;
+  }
+
+  .nav-text{
+    font-size: var(--small-font);
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 15ch;
+    text-align: start;
+  }
+
+  .toast {
+    margin-bottom: 0;
+  }
 }
 
 #theme-toggle:before {

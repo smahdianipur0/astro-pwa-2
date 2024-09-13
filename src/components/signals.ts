@@ -424,7 +424,7 @@ let timeoutId: number | undefined;
 function showToast() {
   const toastElement = document.getElementById('toast')!;
   if (toastElement) {
-    toastElement.style.bottom = 'var(--portion)';
+    toastElement.style.bottom = 'var(--bigger-portion)';
     timeoutId = window.setTimeout(() => {
       toastElement.style.bottom = '-100%';
     }, 2000);
