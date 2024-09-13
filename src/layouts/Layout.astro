@@ -16,7 +16,7 @@ const { title } = Astro.props;
     <meta name="description" content="gives you the tools to create secure passwords and encrypt them with AES without relying on anyone else" />
     <meta name="color-scheme" content="dark light" />
     <meta name="theme-color" content="#090909" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#e0e0e0" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#f8f8f8" media="(prefers-color-scheme: light)">
     <meta name="apple-touch-fullscreen" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="KeyPass" />
@@ -105,7 +105,8 @@ transition: color .2s ease-out">
 
   --regular-font: 100%;
   --big-font: calc(var(--regular-font) * var(--x1));
-  --extra-small-font: calc(var(--regular-font) / var(--x1));
+  --small-font: calc(var(--regular-font) / var(--x1));
+  --extra-small-font: calc(var(--small-font) / var(--x1));
 
 
   --primary: oklch(65% 0.142 268.67);
@@ -273,6 +274,7 @@ a {
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
   color: var(--accent-color);
+  background-color: var(--transparent-bg);
 }
 
 .input:focus {
@@ -358,7 +360,7 @@ button.disabled:active::before , label.disabled:active::before{
 }
 
 :root{
-  --bg-canv: linear-gradient(135deg, oklch(24% 0 0) 0%, oklch(19% 0 0) 14%, oklch(8% 0 0) 100%);
+  --bg-canv: linear-gradient(135deg, oklch(14% 0 0) 0%, oklch(20% 0 0) 14%, oklch(8% 0 0) 100%);
   --select-color: oklch(0% 0 0);
   --accent-color: oklch(99% 0.005 197.00);
   --focus-color: oklch(100% 0 0 / 0.5);
@@ -430,7 +432,7 @@ button.disabled:active::before , label.disabled:active::before{
   }
 
   :root:has(#theme-toggle:checked) {
-  --bg-canv: linear-gradient(135deg, oklch(24% 0 0) 0%, oklch(19% 0 0) 14%, oklch(8% 0 0) 100%);
+  --bg-canv: linear-gradient(135deg, oklch(14% 0 0) 0%, oklch(20% 0 0) 14%, oklch(8% 0 0) 100%);
   --select-color: oklch(0% 0 0);
   --accent-color: oklch(99% 0.005 197.00);
   --focus-color: oklch(100% 0 0 / 0.5);
