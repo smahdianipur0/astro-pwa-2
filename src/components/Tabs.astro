@@ -53,13 +53,13 @@ const {name, tab1 , tab2, content1, content2} = Astro.props;
 	line-height: var(--text-height);
 	width: 10ch;	
 	cursor: pointer; 
-	z-index: 2;
+	z-index: var(--z-layer-middle);
 	text-align: center;
 	justify-self: center;
 	align-items: center;
 	transition: color 200ms ease-out;
 	color: var(--focus-color);
-	margin-bottom: 2ch;
+	margin-bottom: var(--bigger-gap);
 }
 
 
@@ -92,16 +92,6 @@ const {name, tab1 , tab2, content1, content2} = Astro.props;
 
 
 
-
-/*  .tab input#one:checked ~ .tab__indicator { 
-	 transform: translate3d(-5ch, 0, 0);
-
-}
-
- .tab input#two:checked ~ .tab__indicator {
-	 transform: translate3d(5ch, 0, 0);
-
-} */
  
 
 </style>

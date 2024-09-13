@@ -50,7 +50,8 @@ import ToggleGroup from '../components/ToggleGroup.astro';
 
    </Tabs>
 
-  <div style="font-size: var(--regular-font); margin-top:2ch; margin-bottom: 2ch; overflow: hidden">
+  <div style="font-size: var(--regular-font); margin-top:var(--bigger-gap); 
+  margin-bottom: var(--bigger-gap); overflow: hidden">
     <div id = "gu" class="skeleton-parrent">  <div style="width:15ch;" class = "skeleton"> </div> </div>
     <p id="box"></p>
     <div id = "s1" class="skeleton-parrent">  <div style="width:80% ;" class = "skeleton"> </div> </div>
@@ -98,7 +99,7 @@ import ToggleGroup from '../components/ToggleGroup.astro';
   border: 1px solid oklch(100% 0 0 /0.0);
   border-radius: var(--radiu-a);
   padding: var(--thin-padding);
-  line-height: 2ch;
+  line-height: var(--bigger-gap);
   font-weight: 300;
   font-size:var(--big-font);
 }
@@ -143,7 +144,7 @@ import ToggleGroup from '../components/ToggleGroup.astro';
   margin-top: 0.5ch;
   background-image: linear-gradient(to right, #f21616, #f02f11, #d47a20, #719deb, #6977e3, #7643b1, #5d43b1);
   background-clip: content-box;
-  background-size: 300% 1ch;
+  background-size: 300% var(--gap);
   --box-w: 36%;
   --box-p: 0%;
   width: var(--box-w);

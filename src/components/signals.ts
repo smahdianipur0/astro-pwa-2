@@ -297,14 +297,14 @@ document.getElementById("encryption")!.addEventListener("click",(e)=>{
 
 const [sKey, setSkey]           = createSignal("");
 const [otpRe, setOtpRe]         = createSignal("");
-const [countDown, setCountDown] = createSignal("");
+export const [countDown, setCountDown] = createSignal("");
 
 function updateCountDown(){
    const currentTime = Math.round(new Date().getTime() / 1000);
    const remainingSeconds = 30 - (currentTime % 30);
    setCountDown(remainingSeconds.toString().padStart(2, '0'));   
 }
-setInterval(updateCountDown, 1000)
+setInterval(updateCountDown, 1000);
 
 
 document.getElementById("encryption")!.addEventListener("change",(e)=>{
@@ -418,7 +418,6 @@ document.getElementById("varification")!.addEventListener("click",(e)=>{
 });
 
 
-
 let timeoutId: number | undefined;
 
 function showToast() {
@@ -430,75 +429,3 @@ function showToast() {
     }, 2000);
   }
 }
-
-
-
-document.getElementById("generateQR")!.addEventListener("input",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#text_for_qr")){
-      const value = (e!.target as HTMLInputElement).value;
-      if (value === "") {
-          document.getElementById("gqr")!.style.height = "0"
-      } else {
-      document.getElementById("gqr")!.style.height = "160px"
-      QRCode.toCanvas(
-         document.getElementById("gqr")!,
-         value,
-         { width: 160, margin: 1 },
-         );
-      }
-   }
-});
-
-
-const [otpReO, setOtpReO] = createSignal("");
-const [keyO, setKeyO] = createSignal("");
-
-document.getElementById("varificationOnly")!.addEventListener("input",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#text_for_varif")){
-      const value = (e!.target as HTMLInputElement).value;
-      setKeyO(value.toString())
-   }
-});
-
-
-function updateOtpO() {
-   createEffect(() => {
-      try { const { otp, expires } = TOTP.generate(keyO());
-         setOtpReO(otp.toString());
-      } catch (error) {
-         setOtpReO("The provided key is not valid.");   
-      }
-   });
-}
-setInterval(updateOtpO, 1000);
-
-createEffect(() => {
-   if (keyO() === "") {
-      document.getElementById("varif_detail_o")!.textContent = "";
-      document.getElementById("varif_detail_re_o")!.textContent = "";
-      document.getElementById("varif_hint_o")!.textContent = "";
-      document.getElementById("varif_copy_hint_o")!.textContent = "";
-   } else {
-      if (otpReO() !== "The provided key is not valid.") {
-         document.getElementById("varif_detail_o")!.textContent = "Varification Code:";
-         document.getElementById("varif_detail_re_o")!.textContent = otpReO();
-
-         document.getElementById("varif_hint_o")!.textContent =
-            "This code is valid for the next ".concat(countDown().toString()," seconds.",);
-         document.getElementById("varif_copy_hint_o")!.textContent = "Tap to copy"
-
-         document.getElementById("varificationOnly")!.addEventListener("click", (e) => {
-            if ((e!.target as HTMLInputElement).matches(
-               "#varif_detail_o ,#varif_detail_re_o, #varif_copy_hint_o ",)) {
-               navigator.clipboard.writeText(otpReO());
-               showToast();
-            }
-         });
-      } else {
-         document.getElementById("varif_detail_o")!.textContent = otpReO();
-         document.getElementById("varif_detail_re_o")!.textContent = "";
-         document.getElementById("varif_hint_o")!.textContent = "";
-         document.getElementById("varif_copy_hint_o")!.textContent = "";
-      }
-   }
-});

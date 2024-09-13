@@ -4,3 +4,25 @@ placeholder="Please enter some text"></textarea>
 <div class="qr">
 	<canvas id="gqr" style="width: 0;"></canvas>
 </div>
+
+
+<script>
+import QRCode from 'qrcode'
+	
+document.getElementById("generateQR")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#text_for_qr")){
+      const value = (e!.target as HTMLInputElement).value;
+      if (value === "") {
+          document.getElementById("gqr")!.style.height = "0"
+      } else {
+      document.getElementById("gqr")!.style.height = "160px"
+      QRCode.toCanvas(
+         document.getElementById("gqr")!,
+         value,
+         { width: 160, margin: 1 },
+         );
+      }
+   }
+});
+
+</script>

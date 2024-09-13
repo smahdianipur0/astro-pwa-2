@@ -92,7 +92,7 @@ transition: color .2s ease-out">
 
   font-family: system-ui;
 
-
+  --half: 0.81;
   --x1: 1.27;
   --x2: 1.62;
   --x3: 2.05;
@@ -126,8 +126,8 @@ transition: color .2s ease-out">
   --bigger-portion: calc(var(--gap) * var(--x9));
 
 
-  --default-padding: 0.81ch 1.62ch;
-  --thin-padding: 0.2ch 1ch;
+  --default-padding: calc(var(--gap) * var(--half)) calc(var(--gap) * var(--x2));
+  --thin-padding: 0.1ch 1ch;
 
 
   --radiu-a: 0.85ch;
@@ -219,7 +219,13 @@ a {
   position: relative;
   justify-content: space-between;
   align-items: center;
-  gap: 1ch;
+  gap: var(--gap);
+}
+
+.hide-checkbox{
+  opacity: 0; 
+  pointer-events: none;
+  position: absolute
 }
 
 .skeleton{
@@ -397,7 +403,7 @@ button.disabled:active::before , label.disabled:active::before{
 }
 
 :root{
-  --bg-canv: linear-gradient(135deg, oklch(14% 0 0) 0%, oklch(20% 0 0) 14%, oklch(8% 0 0) 100%);
+  --bg-canv: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%);
   --select-color: oklch(0% 0 0);
   --accent-color: oklch(99% 0.005 197.00);
   --focus-color: oklch(100% 0 0 / 0.5);
@@ -415,7 +421,7 @@ button.disabled:active::before , label.disabled:active::before{
 }
 
 :root:has(#theme-toggle:checked) {
-  --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 14%, oklch(89% 0 0) 100%);
+  --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 35%, oklch(89% 0 0) 100%);
   --tertiary-color: linear-gradient(oklch(90% 0 0 / 0.8),oklch(100% 0 0 / 0.8));
   --select-color:oklch(100% 0 0);
   --accent-color: oklch(0% 0 0);
@@ -431,7 +437,7 @@ button.disabled:active::before , label.disabled:active::before{
   --glow:oklch(100% 0 268.67);
   --dark-shadow: oklch(50% 0.22 268.67);
   --dark-shadow-disabled: oklch(62% 0.18 268.67);
-  --border: linear-gradient(135deg, oklch(80% 0 0) 0%, oklch(95% 0 0) 25%, oklch(80% 0 0) 100%);
+  --border: linear-gradient(135deg, oklch(95% 0 0) 0%, oklch(100% 0 0) 25%, oklch(97% 0 0) 100%);
 }
 
 @media (prefers-color-scheme:light) {

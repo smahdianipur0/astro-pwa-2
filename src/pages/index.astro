@@ -3,9 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
 import Generate from '../components/Generate.astro'; 
 import Encdec from '../components/Encdec.astro';
-import Varification from '../components/Varification.astro';
+import VarificationCard from '../components/VarificationCard.astro';
 import GenerateQR from '../components/GenerateQR.astro'; 
-import VarificationOnly from '../components/VarificationOnly.astro';
+import VarificationTab from '../components/VarificationTab.astro';
 import About from '../components/About.astro';
 
 ---
@@ -13,48 +13,49 @@ import About from '../components/About.astro';
 <Layout title="Generate and encrypt Passwords">
 
 
+	<div  class="tab-content one" > 
+	  <div class="grid-layout">
+	     
+			<Card title = "Generate Password" iden='generate'>
+				<Generate/>
+			</Card>	
 
-<div class="tab-content one" > 
-  <div class="grid-layout">
-     
-	<Card title = "Generate Password" iden='generate'>
-		<Generate/>
-	</Card>	
+			<Card title = "Encryption and Decryption" iden='encryption'>
+				<Encdec/>
+			</Card>
 
-	<Card title = "Encryption and Decryption" iden='encryption'>
-		<Encdec/>
-	</Card>
+			<Card title = "Varification Code" iden='varification'>
+				<VarificationCard/> 
+		 	</Card>  
 
-	<Card title = "Varification Code" iden='varification'>
-		<Varification/> 
- 	</Card>  
-
-  </div> 
-</div>
-
-<div class="tab-content two">
-	<div class="grid-layout"> 
-
-		<Card title = "Generate QR Code" iden='generateQR'>
-			<GenerateQR/> 
- 		</Card> 
-
+	  </div> 
 	</div>
-</div>
 
-<div class="tab-content three"> 
-	<div class="grid-layout" > 
 
-		<Card title = "Varification Code" iden='varificationOnly'>
-			<VarificationOnly/> 
- 		</Card> 
 
+	<div class="tab-content two">
+		<div class="grid-layout"> 
+
+			<Card title = "Generate QR Code" iden='generateQR'>
+				<GenerateQR/> 
+	 		</Card> 
+
+		</div>
 	</div>
-</div>
 
-<div class="tab-content four"> 
-    <About/>
-</div>
+	<div class="tab-content three"> 
+		<div class="grid-layout" > 
+
+			<Card title = "Varification Code" iden='varificationOnly'>
+				<VarificationTab/> 
+	 		</Card> 
+
+		</div>
+	</div>
+
+	<div id="testAbout" class="tab-content four"> 
+	    <About/>
+	</div>
     
 </Layout>
 
@@ -121,7 +122,6 @@ allTabRadios.forEach((radio) => {
 <style>
 	
 .grid-layout {
-/* 	margin: var(--portion) 1ch; */
 	display: grid;
 	gap:var(--bigger-gap);
 	grid-template-columns: repeat(auto-fit, clamp(200px, 350px, 100% ) )  ;
