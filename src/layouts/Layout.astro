@@ -1,5 +1,4 @@
 ---
-import Nav from '../components/Nav.astro';
 import BottomNav from '../components/BottomNav.astro';
 
 interface Props {
@@ -73,8 +72,7 @@ border: .1px solid #0000;
 min-height: 100vh;
 transition: color .2s ease-out">
 
-  <Nav/>
-  <!-- <BottomNav/> -->
+  <BottomNav/>
 
   <slot/>
 
@@ -103,6 +101,7 @@ transition: color .2s ease-out">
   --x6: 4.23;
   --x7: 5.39;
   --x8: 6.84;
+  --x9: 8.68;
 
   --regular-font: 100%;
   --big-font: calc(var(--regular-font) * var(--x1));
@@ -123,7 +122,7 @@ transition: color .2s ease-out">
   --text-height: calc(var(--gap) * var(--x4));;
   --small-clickable: calc(var(--gap) * var(--x5));
   --portion: calc(var(--gap) * var(--x7));
-  --bigger-portion: calc(var(--gap) * var(--x8));
+  --bigger-portion: calc(var(--gap) * var(--x9));
 
 
   --default-padding: 0.81ch 1.62ch;

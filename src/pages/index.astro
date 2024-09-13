@@ -6,6 +6,8 @@ import Encdec from '../components/Encdec.astro';
 import Varification from '../components/Varification.astro';
 import GenerateQR from '../components/GenerateQR.astro'; 
 import VarificationOnly from '../components/VarificationOnly.astro';
+import About from '../components/About.astro';
+
 ---
 
 <Layout title="Generate and encrypt Passwords">
@@ -13,7 +15,7 @@ import VarificationOnly from '../components/VarificationOnly.astro';
 
 
 <div class="tab-content one" > 
-  <div class="grid-layout-350">
+  <div class="grid-layout">
      
 	<Card title = "Generate Password" iden='generate'>
 		<Generate/>
@@ -31,7 +33,7 @@ import VarificationOnly from '../components/VarificationOnly.astro';
 </div>
 
 <div class="tab-content two">
-	<div class="grid-layout-350"> 
+	<div class="grid-layout"> 
 
 		<Card title = "Generate QR Code" iden='generateQR'>
 			<GenerateQR/> 
@@ -41,7 +43,7 @@ import VarificationOnly from '../components/VarificationOnly.astro';
 </div>
 
 <div class="tab-content three"> 
-	<div class="grid-layout-350" > 
+	<div class="grid-layout" > 
 
 		<Card title = "Varification Code" iden='varificationOnly'>
 			<VarificationOnly/> 
@@ -51,7 +53,7 @@ import VarificationOnly from '../components/VarificationOnly.astro';
 </div>
 
 <div class="tab-content four"> 
-    <div>About tab</div>
+    <About/>
 </div>
     
 </Layout>
@@ -118,12 +120,13 @@ allTabRadios.forEach((radio) => {
 
 <style>
 	
-.grid-layout-350 {
-	margin: var(--portion) 1ch;
+.grid-layout {
+/* 	margin: var(--portion) 1ch; */
 	display: grid;
 	gap:var(--bigger-gap);
 	grid-template-columns: repeat(auto-fit, clamp(200px, 350px, 100% ) )  ;
 	justify-content: center;
+	padding-bottom: calc( var(--bigger-portion) + var(--bigger-gap)) ;
 }
 
 </style>
