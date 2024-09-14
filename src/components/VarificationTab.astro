@@ -17,7 +17,8 @@ style="margin-bottom: var(--gap);" placeholder="Please enter your key." autocomp
 <script>
 import { createSignal, createEffect } from 'solid-js';
 import { TOTP } from "totp-generator";
-import{countDown, setCountDown} from "../components/signals.ts"
+import {countDown, setCountDown} from "../components/signals.ts" 
+import {showToast} from "../components/signals.ts" 
 
 const [otpReO, setOtpReO] = createSignal("");
 const [keyO, setKeyO] = createSignal("");

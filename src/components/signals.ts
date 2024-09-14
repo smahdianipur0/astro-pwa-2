@@ -420,7 +420,7 @@ document.getElementById("varification")!.addEventListener("click",(e)=>{
 
 let timeoutId: number | undefined;
 
-function showToast() {
+export function showToast() {
   const toastElement = document.getElementById('toast')!;
   if (toastElement) {
     toastElement.style.bottom = 'var(--bigger-portion)';
