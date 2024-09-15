@@ -19,16 +19,29 @@ const [mpassword, setMPassword]     = createSignal("");
 const [currentPass, setCurrentPass] = createSignal("");
 
 const [length, setLength]                               = createSignal(16);
+
+
+
 const [addSpecialCha, setAddSpecialCha]                 = createSignal(true);
 const [addNumber, setAddNumber]                         = createSignal(true);
 const [capitalizeFirstLetter, setCapitalizeFirstLetter] = createSignal(true);
 
 
 document.getElementById("generate")!.addEventListener("input",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#rangeInput")){
+   // if((e!.target as HTMLInputElement).matches("#rangeInput")){
+   //    const value = (e!.target as HTMLInputElement).value;
+   //    setLength(Number(value));      
+   // }
+
+   if((e!.target as HTMLInputElement).matches("#char_input")){
       const value = (e!.target as HTMLInputElement).value;
-      setLength(Number(value));      
+      setLength(Number(value));
+      if (value=== null) {
+         document.getElementById("char_input")!.value = length();
+         console.log("hi")
+      }
    }
+
    if((e!.target as HTMLInputElement).matches("#mPassword")){
       const value = (e!.target as HTMLInputElement).value;
       setMPassword(value.toString());
@@ -41,6 +54,14 @@ document.getElementById("generate")!.addEventListener("input",(e)=>{
    }
 });
 
+document.getElementById("generate")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#plus_chars")){
+      setLength( length => length + 1 ); 
+   }
+    if((e!.target as HTMLInputElement).matches("#minus_chars")){
+      setLength( length => length - 1 ); 
+   }
+});
 
 document.getElementById("generate")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#random")) {
@@ -71,6 +92,21 @@ document.getElementById("generate")!.addEventListener("change",(e)=>{
       }
    }
 
+});
+
+
+createEffect(() => {
+   document.getElementById("char_input")!.value = length();
+   if (length() >= 20) {
+      (document.getElementById("plus_chars")! as HTMLElement).disabled  = true;
+   } else {
+      (document.getElementById("plus_chars")! as HTMLElement).disabled  = false;
+   }
+   if (length() <= 12) {
+      (document.getElementById("minus_chars")! as HTMLElement).disabled  = true;
+   } else {
+      (document.getElementById("minus_chars")! as HTMLElement).disabled  = false;
+   }
 });
 
 createEffect(() => { 

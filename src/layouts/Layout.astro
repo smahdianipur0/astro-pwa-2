@@ -92,7 +92,6 @@ transition: color .2s ease-out">
 
   font-family: system-ui;
 
-  --half: 0.81;
   --x1: 1.27;
   --x2: 1.62;
   --x3: 2.05;
@@ -126,7 +125,8 @@ transition: color .2s ease-out">
   --bigger-portion: calc(var(--gap) * var(--x9));
 
 
-  --default-padding: calc(var(--gap) * var(--half)) calc(var(--gap) * var(--x2));
+  --default-padding: calc(var(--gap) * var(--x2) / 2) calc(var(--gap) * var(--x2));
+  --medium-padding: calc(var(--gap)  / 2) calc(var(--gap));
   --thin-padding: 0.1ch 1ch;
 
 
@@ -259,9 +259,17 @@ a {
   overflow: hidden;
 }
 
+.unstyle-button{
+  background: none;
+  border: none;
+  box-shadow: none;
+  color:var(--accent-color);
+  cursor: pointer;
+}
+
 .card-bg{
-  height: 7.7125ch;
-  height: 8.032ch;
+  font-size: var(--regular-font);
+  height: calc( (var(--small-clickable) * var(--x1)) + (var(--bigger-gap) * 2 ) );
   width: 100%  ;
   position: absolute; 
   margin: -2ch -2ch;
@@ -403,6 +411,7 @@ button.disabled:active::before , label.disabled:active::before{
 }
 
 :root{
+  --gray-fore-100:100% 0 0 ;
   --bg-canv: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%);
   --select-color: oklch(0% 0 0);
   --accent-color: oklch(99% 0.005 197.00);
