@@ -51,10 +51,10 @@ document.getElementById("generate")!.addEventListener("input",(e)=>{
 });
 
 document.getElementById("generate")!.addEventListener("click",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#plus_chars")){
+   if((e!.target as HTMLInputElement).matches("#plus_chars , #plus_chars_icon")){
       setLength( length => length + 1 ); 
    }
-    if((e!.target as HTMLInputElement).matches("#minus_chars")){
+    if((e!.target as HTMLInputElement).matches("#minus_chars, #minus_chars_icon")){
       setLength( length => length - 1 ); 
    }
 });

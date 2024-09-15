@@ -2,7 +2,11 @@
 import Tabs from '../components/Tabs.astro';
 ---
 
-<div class="card-bg" style="height: 18.7195ch;"></div> 
+<div class="card-bg" 
+style=" font-size: var(--regular-font);
+	height: calc( (var(--small-clickable) * var(--x1)) 
+	+ (var(--bigger-gap) * 4 )
+	+ ((var(--text-height) + var(--gap)) *2  ) );"></div> 
 <form autocomplete="off">
 	
 	<div style="position: relative;">
@@ -110,9 +114,10 @@ import Tabs from '../components/Tabs.astro';
 	border-radius: var(--radiu-a);
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
-	padding: var(--default-padding);
+	padding: var(--gap) var(--bigger-gap);
 	margin-bottom: 0;
 	border-bottom: 0.1px solid var(--primary);
+	line-height: var(--text-height);
 }
 
 .v{
@@ -125,7 +130,8 @@ import Tabs from '../components/Tabs.astro';
 	border-radius: var(--radiu-a);
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
-	padding: var(--default-padding);
+	padding: var(--gap) var(--bigger-gap);
+	line-height: var(--text-height);
 }
  
 .k:focus,
@@ -141,7 +147,7 @@ import Tabs from '../components/Tabs.astro';
 	line-height: var(--text-height);
   position: absolute;
   right: calc(var(--gap) * var(--x2));
-	top: calc(var(--gap) * var(--half));
+	top: var(--gap);
   color: #777;
   pointer-events: none;
 }
