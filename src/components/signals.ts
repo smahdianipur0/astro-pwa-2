@@ -36,10 +36,6 @@ document.getElementById("generate")!.addEventListener("input",(e)=>{
    if((e!.target as HTMLInputElement).matches("#char_input")){
       const value = (e!.target as HTMLInputElement).value;
       setLength(Number(value));
-      if (value=== null) {
-         document.getElementById("char_input")!.value = length();
-         console.log("hi")
-      }
    }
 
    if((e!.target as HTMLInputElement).matches("#mPassword")){
@@ -96,16 +92,16 @@ document.getElementById("generate")!.addEventListener("change",(e)=>{
 
 
 createEffect(() => {
-   document.getElementById("char_input")!.value = length();
+   (document.getElementById("char_input")!as HTMLInputElement).value = length().toString();
    if (length() >= 20) {
-      (document.getElementById("plus_chars")! as HTMLElement).disabled  = true;
+      (document.getElementById("plus_chars")! as HTMLInputElement).disabled  = true;
    } else {
-      (document.getElementById("plus_chars")! as HTMLElement).disabled  = false;
+      (document.getElementById("plus_chars")! as HTMLInputElement).disabled  = false;
    }
    if (length() <= 12) {
-      (document.getElementById("minus_chars")! as HTMLElement).disabled  = true;
+      (document.getElementById("minus_chars")! as HTMLInputElement).disabled  = true;
    } else {
-      (document.getElementById("minus_chars")! as HTMLElement).disabled  = false;
+      (document.getElementById("minus_chars")! as HTMLInputElement).disabled  = false;
    }
 });
 
