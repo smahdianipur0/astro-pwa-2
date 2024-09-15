@@ -412,7 +412,7 @@ button.disabled:active::before , label.disabled:active::before{
 
 :root{
   --gray-fore-100:100% 0 0 ;
-  --gray-fore-35:35% 0 0 ;
+  --gray-back-70:35% 0 0 ;
   --bg-canv: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%);
   --select-color: oklch(0% 0 0);
   --accent-color: oklch(99% 0.005 197.00);
@@ -431,6 +431,8 @@ button.disabled:active::before , label.disabled:active::before{
 }
 
 :root:has(#theme-toggle:checked) {
+  --gray-fore-100:0% 0 0 ;
+  --gray-back-70:85% 0 0 ;
   --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 35%, oklch(89% 0 0) 100%);
   --tertiary-color: linear-gradient(oklch(90% 0 0 / 0.8),oklch(100% 0 0 / 0.8));
   --select-color:oklch(100% 0 0);

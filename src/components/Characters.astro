@@ -8,7 +8,7 @@
 			id="char_input"
 			class="number-input"
 			name="chars"
-			style="margin-right: var(--gap);" >
+			style="margin-right: var(--gap); padding-left:calc( var(--gap) / var(--x1);" >
 				<option value="12"> 12 </option>
 				<option value="13"> 13 </option>
 				<option value="14"> 14 </option>
@@ -20,14 +20,17 @@
 				<option value="20"> 20 </option>
 			</select>
 
-			<button id="plus_chars" class="unstyle-button char-button"
-			style="	border-top-right-radius: 0; border-bottom-right-radius: 0;">
-			<svg id="plus_chars_icon" style="padding:5px;" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path  d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff"/></svg>
-		</button>
+			
+
+			</button>
 			<button id="minus_chars" class="unstyle-button char-button"
+			style="	border-top-right-radius: 0; border-bottom-right-radius: 0;">
+			<svg id="minus_chars_icon" style="padding:3px;" width="24" height="24" fill="none" viewBox="0 0 24 24" ><path class= "char-icon" d="M3.997 13H20a1 1 0 1 0 0-2H3.997a1 1 0 1 0 0 2Z" fill="#ffffff"/></svg>
+			</button>
+
+			<button id="plus_chars" class="unstyle-button char-button"
 			style="	border-top-left-radius: 0; border-bottom-left-radius: 0;">
-			<svg id="minus_chars_icon" style="padding:5px;" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3.997 13H20a1 1 0 1 0 0-2H3.997a1 1 0 1 0 0 2Z" fill="#ffffff"/></svg>
-		</button>
+			<svg id="plus_chars_icon" style="padding:3px;" width="24" height="24" fill="none" viewBox="0 0 24 24" ><path class= "char-icon" d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" /></svg>
 
 		</div>
 
@@ -48,24 +51,23 @@ input[type=number] {
 
 .number-input{
 	font-size: var(--regular-font);
-	padding: var(--medium-padding);
+	padding: var(--default-padding);
 	display: inline-block;
 	border: 1px solid transparent;
 	width: calc( var(--small-clickable) * 2);
 	border-radius: var(--radiu-a);
 	color: var(--accent-color);
-	background-color: oklch(var(--gray-fore-35) / 0.8);
+	background-color: oklch(var(--gray-back-70) / 0.8);
 	text-align: center;
 }
 
 .number-input:focus{
-	background-color: oklch(var(--gray-fore-35) / 1);
+	background-color: oklch(var(--gray-back-70) / 1);
 	outline: 1px solid transparent;
 }
 
 .char-button{
 	font-size: var(--regular-font);
-	padding: var(--small-padding);
 	width: var(--small-clickable);
 	display: flex;
     flex-wrap: wrap;
@@ -73,7 +75,7 @@ input[type=number] {
 	border: 1px solid transparent;
 	border-radius: var(--radiu-a);
 	color: var(--accent-color);
-	background-color: oklch(var(--gray-fore-35) / 0.8);
+	background-color: oklch(var(--gray-back-70) / 0.8);
 	text-align: center;
 	margin: 0;
 }
@@ -82,7 +84,9 @@ input[type=number] {
 	opacity: 50%;
 }
 
-
+.char-icon {
+	fill: oklch(var(--gray-fore-100) / 1);
+}
 
 </style>
 
