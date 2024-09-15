@@ -35,11 +35,11 @@ class="hide-checkbox" checked/>
 	padding:var(--default-padding);
 	user-select:none;
 	cursor:pointer;
-	color:var(--focus-color);
+	color:oklch(var(--gray-fore-100) / 0.5);
 	background:0 0;
-	background-color:var(--toggle-bg);
+	background-color:(var(--gray-back-90) / 1);
 	opacity:1;
-	box-shadow:1px 3px 0px var(--transparent-bg);
+	box-shadow:1px 3px 0px oklch(var(--gray-back-100) / 0.5);
 	border:none;
 	border-radius:0;
 	position:relative
@@ -50,7 +50,7 @@ class="hide-checkbox" checked/>
 	position: absolute;
 	inset: 0;
 	z-index: -1;		
-	background-color: var(--transparent-bg);
+	background-color: oklch(var(--gray-back-100) / 0.5);
 	scale: 0.65;
   border-radius: 3ch;
 	filter: blur(10px);
@@ -112,7 +112,7 @@ class="hide-checkbox" checked/>
 .active {
 	position: relative;
   background-color: var(--primery-transparent);
-  color: var(--accent-color);
+  color: oklch(var(--gray-fore-100) / 1);
 	box-shadow: 1px 2.5px 0px var(--dark-shadow) ;
 
 }

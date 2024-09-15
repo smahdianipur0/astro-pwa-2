@@ -153,7 +153,7 @@ transition: color .2s ease-out">
 
 html,
 body {
-  color: var(--accent-color);
+  color: oklch(var(--gray-fore-100) / 1);
 }
 
 input,
@@ -180,7 +180,7 @@ textarea{
   border-bottom: 1px solid var(--primary);
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  color: var(--accent-color);
+  color: oklch(var(--gray-fore-100) / 1);
 }
 
 
@@ -263,7 +263,7 @@ a {
   background: none;
   border: none;
   box-shadow: none;
-  color:var(--accent-color);
+  color:oklch(var(--gray-fore-100) / 1);
   cursor: pointer;
 }
 
@@ -287,14 +287,14 @@ a {
   border-bottom: 1px solid var(--primary);
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  color: var(--accent-color);
-  background-color: var(--transparent-bg);
+  color: oklch(var(--gray-fore-100) / 1);
+  background-color: oklch(var(--gray-back-100) / 0.5);
 }
 
 .input:focus {
   border: 1px solid var(--primary);
   border-radius: var(--radiu-a);
-  background-color:var(--select-color) ;
+  background-color:oklch(var(--gray-back-100) / 1); 
   outline: none;
 }
 
@@ -318,9 +318,9 @@ button.disabled:active::before , label.disabled:active::before{
 .toast {
  display: flex;
  position: fixed; 
- background-color: var(--transparent-bg);
+ background-color: oklch(var(--gray-back-100) / 0.5);
  border-radius: var(--radiu-b);
- border: 1px solid  var(--main-border);
+ border: 1px solid  oklch(var(--gray-back-70) / 1);
  bottom: -100%;
  width: 200px; 
  left: calc(50% - 100px ); 
@@ -400,7 +400,7 @@ button.disabled:active::before , label.disabled:active::before{
 }
 
 #theme-toggle:before {
-  color:var(--accent-color);
+  color:oklch(var(--gray-fore-100) / 1);
   content: 'Change Theme: ☀️';
   display: block;
   width: 20ch; 
@@ -412,16 +412,12 @@ button.disabled:active::before , label.disabled:active::before{
 
 :root{
   --gray-fore-100:100% 0 0 ;
+  --gray-back-100:0% 0 0 ;
   --gray-back-70:35% 0 0 ;
+  --gray-back-90:22% 0 0 ;
   --bg-canv: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%);
-  --select-color: oklch(0% 0 0);
-  --accent-color: oklch(99% 0.005 197.00);
-  --focus-color: oklch(100% 0 0 / 0.5);
-  --main-border: oklch(35% 0 0);
-  --transparent-bg: oklch(0% 0 0 / 0.50);
   --slider-thumb-color: linear-gradient(oklch(22% 0 0),oklch(34% 0 0));
   --input-bg-focus: linear-gradient(oklch(22% 0 0 / 0.9),oklch(22% 0 0 / 0.8));
-  --toggle-bg: oklch(22% 0 0 );
   --indent-bg: linear-gradient(oklch(0% 0 0 / 0.8),oklch(19% 0 0 / 0.8));
   --tab-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.5) 0%, oklch(8.5% 0 0 / 0.4) 65%, oklch(8.5% 0 0 / 0.35) 100%);
   --glow: oklch(80% 0 0);
@@ -432,21 +428,15 @@ button.disabled:active::before , label.disabled:active::before{
 
 :root:has(#theme-toggle:checked) {
   --gray-fore-100:0% 0 0 ;
+  --gray-back-100:100% 0 0 ;
   --gray-back-70:85% 0 0 ;
+  --gray-back-90:95% 0 0 ;
   --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 35%, oklch(89% 0 0) 100%);
-  --tertiary-color: linear-gradient(oklch(90% 0 0 / 0.8),oklch(100% 0 0 / 0.8));
-  --select-color:oklch(100% 0 0);
-  --accent-color: oklch(0% 0 0);
-  --focus-color : oklch(0% 0 0 / 0.5);
-  --focus-color-gradient : linear-gradient(oklch(0% 0 0 / 0.4),oklch(0% 0 0 / 0.3));
-  --main-border : oklch(82% 0 0);
-  --transparent-bg: oklch(90% 0 0 / 0.50);
   --slider-thumb-color : linear-gradient(oklch(85% 0 0),oklch(90% 0 0));
   --input-bg-focus:linear-gradient(oklch(89% 0 0 / 0.8),oklch(89% 0.0268 106.93 / 0.9));
-  --toggle-bg: oklch(95% 0 0 );
   --indent-bg: linear-gradient(oklch(90% 0 0 / 0.8),oklch(100% 0 0 / 0.8));
   --tab-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.35) 0%, oklch(100% 0 0 / 0.4) 65%, oklch(100% 0 0 / 0.5) 100%);
-  --glow:oklch(100% 0 268.67);
+  --glow:oklch(100% 0 0);
   --dark-shadow: oklch(50% 0.22 268.67);
   --dark-shadow-disabled: oklch(62% 0.18 268.67);
   --border: linear-gradient(135deg, oklch(95% 0 0) 0%, oklch(100% 0 0) 25%, oklch(97% 0 0) 100%);
@@ -455,7 +445,7 @@ button.disabled:active::before , label.disabled:active::before{
 @media (prefers-color-scheme:light) {
 
 #theme-toggle:before {
-  color:var(--accent-color);
+  color:oklch(var(--gray-fore-100) / 1);
   content: 'Change Theme: 🌙';
   display: block;
   width: 20ch;
@@ -467,35 +457,29 @@ button.disabled:active::before , label.disabled:active::before{
 
 
   :root{
-  --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 14%, oklch(89% 0 0) 100%);
-  --tertiary-color: linear-gradient(oklch(90% 0 0 / 0.8),oklch(100% 0 0 / 0.8));
-  --select-color:oklch(100% 0 0);
-  --accent-color: oklch(0% 0 0);
-  --focus-color : oklch(0% 0 0 / 0.5);
-  --focus-color-gradient : linear-gradient(oklch(0% 0 0 / 0.4),oklch(0% 0 0 / 0.3));
-  --main-border : oklch(82% 0 0);
-  --transparent-bg: oklch(90% 0 0 / 0.50);
+  --gray-fore-100:0% 0 0 ;
+  --gray-back-100:100% 0 0 ;
+  --gray-back-70:85% 0 0 ;
+  --gray-back-90:95% 0 0 ;
+  --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 35%, oklch(89% 0 0) 100%);
   --slider-thumb-color : linear-gradient(oklch(85% 0 0),oklch(90% 0 0));
   --input-bg-focus:linear-gradient(oklch(89% 0 0 / 0.8),oklch(89% 0.0268 106.93 / 0.9));
-  --toggle-bg: oklch(95% 0 0 );
   --indent-bg: linear-gradient(oklch(90% 0 0 / 0.8),oklch(100% 0 0 / 0.8));
   --tab-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.35) 0%, oklch(100% 0 0 / 0.4) 65%, oklch(100% 0 0 / 0.5) 100%);
-  --glow:oklch(100% 0 268.67);
+  --glow:oklch(100% 0 0);
   --dark-shadow: oklch(50% 0.22 268.67);
   --dark-shadow-disabled: oklch(62% 0.18 268.67);
-  --border: linear-gradient(135deg, oklch(80% 0 0) 0%, oklch(95% 0 0) 25%, oklch(80% 0 0) 100%);
+  --border: linear-gradient(135deg, oklch(95% 0 0) 0%, oklch(100% 0 0) 25%, oklch(97% 0 0) 100%);
   }
 
   :root:has(#theme-toggle:checked) {
-  --bg-canv: linear-gradient(135deg, oklch(14% 0 0) 0%, oklch(20% 0 0) 14%, oklch(8% 0 0) 100%);
-  --select-color: oklch(0% 0 0);
-  --accent-color: oklch(99% 0.005 197.00);
-  --focus-color: oklch(100% 0 0 / 0.5);
-  --main-border: oklch(35% 0 0);
-  --transparent-bg: oklch(0% 0 0 / 0.50);
+  --gray-fore-100:100% 0 0 ;
+  --gray-back-100:0% 0 0 ;
+  --gray-back-70:35% 0 0 ;
+  --gray-back-90:22% 0 0 ;
+  --bg-canv: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%);
   --slider-thumb-color: linear-gradient(oklch(22% 0 0),oklch(34% 0 0));
   --input-bg-focus: linear-gradient(oklch(22% 0 0 / 0.9),oklch(22% 0 0 / 0.8));
-  --toggle-bg: oklch(22% 0 0 );
   --indent-bg: linear-gradient(oklch(0% 0 0 / 0.8),oklch(19% 0 0 / 0.8));
   --tab-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.5) 0%, oklch(8.5% 0 0 / 0.4) 65%, oklch(8.5% 0 0 / 0.35) 100%);
   --glow: oklch(80% 0 0);

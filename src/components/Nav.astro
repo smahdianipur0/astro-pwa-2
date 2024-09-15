@@ -1,6 +1,6 @@
 <div class="glass drw-bg" style="
 z-index: var(--z-layer-higher);
-background-color: var(--transparent-bg);
+background-color: oklch(var(--gray-back-100) / 0.5);
 width: 100%;
 position: fixed;
 top: 0;
@@ -81,7 +81,7 @@ flex-direction: column;
   position: absolute;
   width: var(--small-clickable);
   height: 1.4px;
-  background: var(--accent-color);
+  background: oklch(var(--gray-back-100) / 1);
   transition: transform 0.3s ease;
   border-radius: var(--bigger-gap);
 }
@@ -113,7 +113,7 @@ top: calc(50% + 5px);
 }
 
 .sub-route::after{
-  color:var(--accent-color);
+  color:oklch(var(--gray-back-100) / 1);
   display: block;
   width: 20ch; 
   background-color: transparent;
