@@ -109,7 +109,7 @@ transition: color .2s ease-out">
 
 
   --primary: oklch(65% 0.142 268.67);
-  --primery-transparent: oklch(65% 0.185 268.67 / 0.72);
+  --primery-transparent: oklch(69% 0.185 268.67 / 0.72);
   --secondary: oklch(62% 0.152 273.00);
   --card-bg-color: linear-gradient(110deg, 
     oklch(60% 0.16 265) 0%, 
@@ -275,7 +275,7 @@ a {
   height: calc( (var(--small-clickable) * var(--x1)) + (var(--bigger-gap) * 2 ) );
   width: 100%  ;
   position: absolute; 
-  margin: -2ch -2ch;
+  margin: calc( var(--bigger-gap) * -1) calc( var(--bigger-gap) * -1);
   background: var(--card-bg-color);
 }
 
@@ -420,10 +420,8 @@ button.disabled:active::before , label.disabled:active::before{
   --gray-back-90:22% 0 0 ;
   --bg-canv: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%);
   --slider-thumb-color: linear-gradient(oklch(22% 0 0),oklch(34% 0 0));
-  --input-bg-focus: linear-gradient(oklch(22% 0 0 / 0.9),oklch(22% 0 0 / 0.8));
-  --indent-bg: linear-gradient(oklch(0% 0 0 / 0.8),oklch(19% 0 0 / 0.8));
   --tab-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.5) 0%, oklch(8.5% 0 0 / 0.4) 65%, oklch(8.5% 0 0 / 0.35) 100%);
-  --glow: oklch(80% 0 0);
+  --glow: oklch(85% 0 0);
   --dark-shadow: oklch(32% 0.2 268.67);
   --dark-shadow-disabled: oklch(27% 0.16 268.67);
   --border: linear-gradient(135deg, oklch(28% 0 0) 0%, oklch(40% 0 0) 25%, oklch(32% 0 0) 100%);
@@ -436,8 +434,6 @@ button.disabled:active::before , label.disabled:active::before{
   --gray-back-90:95% 0 0 ;
   --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 35%, oklch(89% 0 0) 100%);
   --slider-thumb-color : linear-gradient(oklch(85% 0 0),oklch(90% 0 0));
-  --input-bg-focus:linear-gradient(oklch(89% 0 0 / 0.8),oklch(89% 0.0268 106.93 / 0.9));
-  --indent-bg: linear-gradient(oklch(90% 0 0 / 0.8),oklch(100% 0 0 / 0.8));
   --tab-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.35) 0%, oklch(100% 0 0 / 0.4) 65%, oklch(100% 0 0 / 0.5) 100%);
   --glow:oklch(100% 0 0);
   --dark-shadow: oklch(50% 0.22 268.67);
@@ -466,8 +462,6 @@ button.disabled:active::before , label.disabled:active::before{
   --gray-back-90:95% 0 0 ;
   --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 35%, oklch(89% 0 0) 100%);
   --slider-thumb-color : linear-gradient(oklch(85% 0 0),oklch(90% 0 0));
-  --input-bg-focus:linear-gradient(oklch(89% 0 0 / 0.8),oklch(89% 0.0268 106.93 / 0.9));
-  --indent-bg: linear-gradient(oklch(90% 0 0 / 0.8),oklch(100% 0 0 / 0.8));
   --tab-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.35) 0%, oklch(100% 0 0 / 0.4) 65%, oklch(100% 0 0 / 0.5) 100%);
   --glow:oklch(100% 0 0);
   --dark-shadow: oklch(50% 0.22 268.67);
@@ -482,8 +476,6 @@ button.disabled:active::before , label.disabled:active::before{
   --gray-back-90:22% 0 0 ;
   --bg-canv: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%);
   --slider-thumb-color: linear-gradient(oklch(22% 0 0),oklch(34% 0 0));
-  --input-bg-focus: linear-gradient(oklch(22% 0 0 / 0.9),oklch(22% 0 0 / 0.8));
-  --indent-bg: linear-gradient(oklch(0% 0 0 / 0.8),oklch(19% 0 0 / 0.8));
   --tab-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.5) 0%, oklch(8.5% 0 0 / 0.4) 65%, oklch(8.5% 0 0 / 0.35) 100%);
   --glow: oklch(80% 0 0);
   --dark-shadow: oklch(32% 0.2 268.67);
