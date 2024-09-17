@@ -1,7 +1,7 @@
 <div class="glass drw-bg bottom-nav" >
-    <input type="radio" name="tab" class="sub-route hide-checkbox" id="one" checked/>
+    <input type="radio" name="tab" class="sub-route hide-checkbox" id="one" tabindex="1" checked/>
 
-    <label class="nav-div" for="one">
+    <label class="nav-div" for="one" id="l_one">
         <svg style="
             width: var(--bigger-portion);
             height: var(--small-clickable);
@@ -14,7 +14,7 @@
 
     <input type="radio" name="tab" class="sub-route hide-checkbox" id="two"/>
 
-    <label class="nav-div" for="two">
+    <label class="nav-div" for="two" id="l_two">
         <svg style="
             width: var(--bigger-portion);
             height: var(--small-clickable);
@@ -24,7 +24,7 @@
 
 <input type="radio" name="tab" class="sub-route hide-checkbox" id="three"/>
 
-    <label class="nav-div" for="three">
+    <label class="nav-div" for="three" id="l_three">
         <svg style="
             width: var(--bigger-portion);
             height: var(--small-clickable);
@@ -34,7 +34,7 @@
 
 <input type="radio" name="tab" class="sub-route hide-checkbox" id="four" />
 
-    <label class="nav-div" for="four">
+    <label class="nav-div" for="four" id="l_four">
         <svg style="
             width: var(--bigger-portion);
             height: var(--small-clickable);
@@ -158,5 +158,14 @@
 
 :root:has(#four:checked) .tab-content.four {
     display: block;
+}
+
+
+:root:has(#one:focus-visible) #l_one,
+:root:has(#two:focus-visible)  #l_two ,
+:root:has(#three:focus-visible) #l_three,
+:root:has(#four:focus-visible)  #l_four  {
+    outline: Highlight auto 1px;
+  outline: -webkit-focus-ring-color auto 1px;
 }
 </style>

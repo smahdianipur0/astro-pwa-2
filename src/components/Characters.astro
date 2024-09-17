@@ -1,8 +1,8 @@
 <div class="flex" style="margin-top: var(--bigger-gap); margin-bottom: var(--bigger-gap);">
 
-	<div style="font: var(--regular-font); 
+	<label for="char_input" style="font: var(--regular-font); 
 	padding:var(--default-padding);
-	padding-left:0;">Characters:</div>	
+	padding-left:0;">Characters:</label>	
 
 		<div style=" display: flex; gap: 0;">
 
@@ -69,6 +69,11 @@ input[type=number] {
 	outline: 1px solid transparent;
 }
 
+.number-input:focus-visible {
+	outline: Highlight auto 1px;
+  outline: -webkit-focus-ring-color auto 1px;
+}
+
 .char-button{
 	font-size: var(--regular-font);
 	width: var(--small-clickable);
@@ -90,6 +95,8 @@ input[type=number] {
 .char-icon {
 	fill: oklch(var(--gray-fore-100) / 1);
 }
+
+
 
 </style>
 
