@@ -111,7 +111,11 @@ transition: color .2s ease-out">
   --primary: oklch(65% 0.142 268.67);
   --primery-transparent: oklch(65% 0.185 268.67 / 0.72);
   --secondary: oklch(62% 0.152 273.00);
-  --card-bg-color: linear-gradient(290deg, oklch(58% 0.17443 277.74) 0%, oklch(61% 0.16236 274.98) 65%, oklch(69% 0.125 261.28) 100%);
+  --card-bg-color: linear-gradient(110deg, 
+    oklch(60% 0.155 265) 0%, 
+    oklch(67% 0.135 268) 20%,
+    oklch(64% 0.145 270) 65%, 
+    oklch(60% 0.155 271) 100%);
   --drop-shadow: 0 0 5px oklch(65% 0.14152 268.67 / 0.7);
   --light-reflection: oklch(100% 0 0/ 0.25);
   --success: oklch(65% 0.12 174);
@@ -125,7 +129,7 @@ transition: color .2s ease-out">
   --bigger-portion: calc(var(--gap) * var(--x9));
 
 
-  --default-padding: calc(var(--gap) * var(--x2) / 2) calc(var(--gap) * var(--x2));
+  --default-padding: calc(var(--gap) * var(--x1) / 2) calc(var(--gap) * var(--x2));
   --medium-padding: calc(var(--gap)  / 2) calc(var(--gap));
   --thin-padding: 0.1ch 1ch;
 
@@ -218,7 +222,6 @@ a {
   display: flex;
   position: relative;
   justify-content: space-between;
-  align-items: center;
   gap: var(--gap);
 }
 

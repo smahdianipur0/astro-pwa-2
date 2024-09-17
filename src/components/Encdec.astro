@@ -4,9 +4,9 @@ import Tabs from '../components/Tabs.astro';
 
 <div class="card-bg" 
 style=" font-size: var(--regular-font);
-	height: calc( (var(--small-clickable) * var(--x1)) 
-	+ (var(--bigger-gap) * 4 )
-	+ ((var(--text-height) + var(--gap)) *2  ) );"></div> 
+	height: calc( (var(--text-height) * 2 ) + ((var(--gap) * var(--x1) / 2) * 4 ) 
+	+ (var(--bigger-gap) * 3 ) + (var(--small-clickable) * var(--x1)) )
+	"></div> 
 <form autocomplete="off">
 	
 	<div style="position: relative;">
@@ -115,6 +115,7 @@ style=" font-size: var(--regular-font);
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
 	padding: var(--gap) var(--bigger-gap);
+	padding: var(--default-padding);
 	margin-bottom: 0;
 	border-bottom: 0.1px solid var(--primary);
 	line-height: var(--text-height);
@@ -131,6 +132,7 @@ style=" font-size: var(--regular-font);
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 	padding: var(--gap) var(--bigger-gap);
+	padding: var(--default-padding);
 	line-height: var(--text-height);
 }
  
@@ -146,7 +148,7 @@ style=" font-size: var(--regular-font);
 	line-height: var(--text-height);
   position: absolute;
   right: calc(var(--gap) * var(--x2));
-	top: var(--gap);
+	top: calc(var(--gap) * var(--x1) / 2);
   color: #777;
   pointer-events: none;
 }
