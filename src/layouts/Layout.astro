@@ -92,20 +92,20 @@ transition: color .2s ease-out">
 
   font-family: system-ui;
 
-  --x1: 1.27;
-  --x2: 1.62;
-  --x3: 2.05;
-  --x4: 2.62;
-  --x5: 3.33;
-  --x6: 4.23;
-  --x7: 5.39;
-  --x8: 6.84;
-  --x9: 8.68;
+  --x2: 1.27;
+  --x3: 1.62;
+  --x4: 2.05;
+  --x5: 2.62;
+  --x6: 3.33;
+  --x7: 4.23;
+  --x8: 5.39;
+  --x9: 6.84;
+  --x10: 8.68;
 
   --regular-font: 100%;
-  --big-font: calc(var(--regular-font) * var(--x1));
-  --small-font: calc(var(--regular-font) / var(--x1));
-  --extra-small-font: calc(var(--small-font) / var(--x1));
+  --big-font: calc(var(--regular-font) * var(--x2));
+  --small-font: calc(var(--regular-font) / var(--x2));
+  --extra-small-font: calc(var(--small-font) / var(--x2));
 
 
   --primary: oklch(65% 0.142 268.67);
@@ -114,7 +114,7 @@ transition: color .2s ease-out">
   --card-bg-color: linear-gradient(110deg, 
     oklch(60% 0.16 265) 0%, 
     oklch(67% 0.14 268) 20%,
-    oklch(64% 0.15 270) 65%, 
+    oklch(64% 0.15 270) 65%,  
     oklch(60% 0.16 271) 100%);
   --drop-shadow: 0 0 5px oklch(65% 0.14152 268.67 / 0.7);
   --light-reflection: oklch(100% 0 0/ 0.25);
@@ -122,14 +122,14 @@ transition: color .2s ease-out">
 
 
   --gap: 1ch;
-  --bigger-gap: calc(var(--gap) * var(--x3));
-  --text-height: calc(var(--gap) * var(--x4));;
-  --small-clickable: calc(var(--gap) * var(--x5));
-  --portion: calc(var(--gap) * var(--x7));
-  --bigger-portion: calc(var(--gap) * var(--x9));
+  --bigger-gap: calc(var(--gap) * var(--x4));
+  --text-height: calc(var(--gap) * var(--x5));;
+  --small-clickable: calc(var(--gap) * var(--x6));
+  --portion: calc(var(--gap) * var(--x8));
+  --bigger-portion: calc(var(--gap) * var(--x10));
 
 
-  --default-padding: calc(var(--gap) * var(--x2) / 2) calc(var(--gap) * var(--x2));
+  --default-padding: calc(var(--gap) * var(--x3) / 2) calc(var(--gap) * var(--x3));
   --medium-padding: calc(var(--gap)  / 2) calc(var(--gap));
   --thin-padding: 0.1ch 1ch;
 
@@ -272,7 +272,7 @@ a {
 
 .card-bg{
   font-size: var(--regular-font);
-  height: calc( (var(--small-clickable) * var(--x1)) + (var(--bigger-gap) * 2 ) );
+  height: calc( (var(--small-clickable) * var(--x2)) + (var(--bigger-gap) * 2 ) );
   width: 100%  ;
   position: absolute; 
   margin: calc( var(--bigger-gap) * -1) calc( var(--bigger-gap) * -1);
