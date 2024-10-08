@@ -92,20 +92,20 @@ transition: color .2s ease-out">
 
   font-family: system-ui;
 
-  --x2: 1.27;
-  --x3: 1.62;
-  --x4: 2.05;
-  --x5: 2.62;
-  --x6: 3.33;
-  --x7: 4.23;
-  --x8: 5.39;
-  --x9: 6.84;
-  --xx1: 8.68;
+  --x02: 1.27;
+  --x03: 1.62;
+  --x04: 2.05;
+  --x05: 2.62;
+  --x06: 3.33;
+  --x07: 4.23;
+  --x08: 5.39;
+  --x09: 6.84;
+  --x10: 8.68;
 
   --regular-font: 100%;
-  --big-font: calc(var(--regular-font) * var(--x2));
-  --small-font: calc(var(--regular-font) / var(--x2));
-  --extra-small-font: calc(var(--small-font) / var(--x2));
+  --big-font: calc(var(--regular-font) * var(--x02));
+  --small-font: calc(var(--regular-font) / var(--x02));
+  --extra-small-font: calc(var(--small-font) / var(--x02));
 
 
   --primary: oklch(65% 0.142 268.67);
@@ -122,14 +122,14 @@ transition: color .2s ease-out">
 
 
   --gap: 1ch;
-  --gap-x4: calc(var(--gap) * var(--x4));
-  --gap-x5: calc(var(--gap) * var(--x5));;
-  --gap-x6: calc(var(--gap) * var(--x6));
-  --gap-x8: calc(var(--gap) * var(--x8));
-  --gap-xx1: calc(var(--gap) * var(--xx1));
+  --gap-x04: calc(var(--gap) * var(--x04));
+  --gap-x05: calc(var(--gap) * var(--x05));
+  --gap-x06: calc(var(--gap) * var(--x06));
+  --gap-x08: calc(var(--gap) * var(--x08));
+  --gap-x10: calc(var(--gap) * var(--x10));
 
 
-  --default-padding: calc(var(--gap) * var(--x3) / 2) calc(var(--gap) * var(--x3));
+  --default-padding: calc(var(--gap) * var(--x03) / 2) calc(var(--gap) * var(--x03));
   --medium-padding: calc(var(--gap)  / 2) calc(var(--gap));
   --thin-padding: 0.1ch 1ch;
 
@@ -197,7 +197,7 @@ textarea:focus {
 a {
   text-decoration: none; 
   height: 25px;
-  margin:10px var(--gap-x8); 
+  margin:10px var(--gap-x08); 
   margin: 100px;
 }
 
@@ -236,7 +236,7 @@ a {
    font-family: inherit;
    height: 1.5ch;
    width: 30ch;
-   margin: calc( (var(--gap-x5) - 1.5ch) / 2 ) 0;
+   margin: calc( (var(--gap-x05) - 1.5ch) / 2 ) 0;
    border-radius: 4ch;
    background-color: oklch(80% 0 0 / 0.4);
    background: linear-gradient(
@@ -258,7 +258,7 @@ a {
 }
 
 .skeleton-parrent{
-  line-height: var(--gap-x5); 
+  line-height: var(--gap-x05); 
   overflow: hidden;
 }
 
@@ -272,10 +272,10 @@ a {
 
 .card-bg{
   font-size: var(--regular-font);
-  height: calc( (var(--gap-x6) * var(--x2)) + (var(--gap-x4) * 2 ) );
+  height: calc( (var(--gap-x06) * var(--x02)) + (var(--gap-x04) * 2 ) );
   width: 100%  ;
   position: absolute; 
-  margin: calc( var(--gap-x4) * -1) calc( var(--gap-x4) * -1);
+  margin: calc( var(--gap-x04) * -1) calc( var(--gap-x04) * -1);
   background: var(--card-bg-color);
 }
 
@@ -334,7 +334,7 @@ button.disabled:active::before , label.disabled:active::before{
  transition: bottom 0.15s ease-out;  
  z-index: var(--z-layer-higher);
  color: var(--success);
- margin-bottom: var(--gap-x4);
+ margin-bottom: var(--gap-x04);
 }
 
 .gg-check-o {
@@ -369,22 +369,22 @@ button.disabled:active::before , label.disabled:active::before{
   .bottom-nav{
     bottom: auto;
     top: var(--gap);
-    height: var(--gap-x8);
+    height: var(--gap-x08);
     border-radius: var(--radus-c);
     box-shadow: 4px 6px 20px 2px oklch(0% 0 0/.2);
-    width: calc(100% - var(--gap-x4) - var(--gap-x4));
+    width: calc(100% - var(--gap-x04) - var(--gap-x04));
     left: unset;
-    right: var(--gap-x4);
+    right: var(--gap-x04);
   }
 
   .grid-layout{
-    margin-top: var(--gap-xx1);
+    margin-top: var(--gap-x10);
   }
 
   .nav-div {
   flex-direction: row;
-  height: var(--gap-x6);
-  width: calc( var(--gap-xx1) + var(--gap-x4));
+  height: var(--gap-x06);
+  width: calc( var(--gap-x10) + var(--gap-x04));
   margin-top: auto;
   margin-bottom: auto;
   }

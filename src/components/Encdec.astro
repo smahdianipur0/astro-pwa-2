@@ -4,8 +4,8 @@ import Tabs from '../components/Tabs.astro';
 
 <div class="card-bg" 
 style=" font-size: var(--regular-font);
-	height: calc( (var(--gap-x5) * 2 ) + ((var(--gap) * var(--x3) / 2) * 4 ) 
-	+ (var(--gap-x4) * 3 ) + (var(--gap-x6) * var(--x2)) )
+	height: calc( (var(--gap-x05) * 2 ) + ((var(--gap) * var(--x03) / 2) * 4 ) 
+	+ (var(--gap-x04) * 3 ) + (var(--gap-x06) * var(--x02)) )
 	"></div> 
 <form autocomplete="off">
 	
@@ -14,7 +14,7 @@ style=" font-size: var(--regular-font);
 		<span id="key_indic" class="key-indicator"></span>
 	</div>
 	
-	<div  style ="position: relative; margin-bottom: var(--gap-x4);"> 
+	<div  style ="position: relative; margin-bottom: var(--gap-x04);"> 
 		<input id="iv" type="text" class="v glass dent-shadow " name="IV" placeholder="IV">
 		<span id="iv_indic" class="key-indicator"></span>
 	</div>
@@ -26,9 +26,9 @@ style=" font-size: var(--regular-font);
 
 		<label >
 		<input id="auto_pass" type="checkbox" style="
-		margin-bottom: var(--gap-x4); margin-top: var(--gap-x4);"> Use Password as Plain Text </label>
+		margin-bottom: var(--gap-x04); margin-top: var(--gap-x04);"> Use Password as Plain Text </label>
 		<textarea id="plain_text" class=" glass dent-shadow" style="
-		margin-bottom: var(--gap-x4);" rows="2" placeholder="Plain Text"></textarea>
+		margin-bottom: var(--gap-x04);" rows="2" placeholder="Plain Text"></textarea>
 
 		<p style=" margin-bottom: var(--gap); font-size: var(--small-font); opacity: 0.6;">Encrypted Text : </p>
 
@@ -58,7 +58,7 @@ style=" font-size: var(--regular-font);
 	<fragment slot="tab2">
 
 		<textarea id="cipher_text"  class="glass dent-shadow" rows="2" placeholder="Cipher Text"
-		style="margin-top:var(--gap-x4); margin-bottom: var(--gap-x4);"></textarea>
+		style="margin-top:var(--gap-x04); margin-bottom: var(--gap-x04);"></textarea>
 
 		<p style="margin-bottom: var(--gap); font-size: var(--small-font); opacity: 0.6;">Decrypted Text : </p>
 
@@ -114,11 +114,11 @@ style=" font-size: var(--regular-font);
 	border-radius: var(--radiu-a);
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
-	padding: var(--gap) var(--gap-x4);
+	padding: var(--gap) var(--gap-x04);
 	padding: var(--default-padding);
 	margin-bottom: 0;
 	border-bottom: 0.1px solid var(--primary);
-	line-height: var(--gap-x5);
+	line-height: var(--gap-x05);
 }
 
 .v{
@@ -131,9 +131,9 @@ style=" font-size: var(--regular-font);
 	border-radius: var(--radiu-a);
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
-	padding: var(--gap) var(--gap-x4);
+	padding: var(--gap) var(--gap-x04);
 	padding: var(--default-padding);
-	line-height: var(--gap-x5);
+	line-height: var(--gap-x05);
 }
  
 .k:focus,
@@ -145,10 +145,10 @@ style=" font-size: var(--regular-font);
 
 .key-indicator {
 	font-size: var(--regular-font);
-	line-height: var(--gap-x5);
+	line-height: var(--gap-x05);
   position: absolute;
-  right: calc(var(--gap) * var(--x3));
-	top: calc(var(--gap) * var(--x3) / 2);
+  right: calc(var(--gap) * var(--x03));
+	top: calc(var(--gap) * var(--x03) / 2);
   color: #777;
   pointer-events: none;
 }
@@ -158,7 +158,7 @@ style=" font-size: var(--regular-font);
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: var(--gap-x8);
+	height: var(--gap-x08);
 }
 
 
@@ -217,7 +217,7 @@ style=" font-size: var(--regular-font);
 
 .qr{
 	margin-left: calc(50% - 80px);
-	margin-top: var(--gap-x4);
+	margin-top: var(--gap-x04);
 }
 	
 </style>
