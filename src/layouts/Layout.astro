@@ -67,19 +67,19 @@ const { title } = Astro.props;
 
 	</head>
   
-<body style="background: var(--bg-canv);
-border: .1px solid #0000;
-min-height: 100vh;
-transition: color .2s ease-out">
+  <body style="background: var(--bg-canv);
+  border: .1px solid #0000;
+  min-height: 100vh;
+  transition: color .2s ease-out">
 
-  <BottomNav/>
+    <BottomNav/>
 
-  <slot/>
+    <slot/>
 
-  <div id="toast" class="toast glass">
-    <span class="gg-check-o"/>
-    <span>&nbsp Copied</span>
-  </div>
+    <div id="toast" class="toast glass">
+      <span class="gg-check-o"/>
+      <span>&nbsp Copied</span>
+    </div>
 
 </body>
 
@@ -108,28 +108,16 @@ transition: color .2s ease-out">
   --extra-small-font: calc(var(--small-font) / var(--x02));
 
 
-  --primary: oklch(65% 0.142 268.67);
-  --primery-transparent: oklch(69% 0.185 268.67 / 0.72);
-  --secondary: oklch(62% 0.152 273.00);
-  --card-bg-color: linear-gradient(110deg, 
-    oklch(60% 0.16 265) 0%, 
-    oklch(67% 0.14 268) 20%,
-    oklch(64% 0.15 270) 65%,  
-    oklch(60% 0.16 271) 100%);
-  --drop-shadow: 0 0 5px oklch(65% 0.14152 268.67 / 0.7);
-  --light-reflection: oklch(100% 0 0/ 0.25);
-  --success: oklch(65% 0.12 174);
-
-
   --gap: 1ch;
+  --gap-x03: calc(var(--gap) * var(--x03));
   --gap-x04: calc(var(--gap) * var(--x04));
   --gap-x05: calc(var(--gap) * var(--x05));
   --gap-x06: calc(var(--gap) * var(--x06));
   --gap-x08: calc(var(--gap) * var(--x08));
-  --gap-x10: calc(var(--gap) * var(--x10));
+  --gap-xx1: calc(var(--gap) * var(--x10));
 
 
-  --default-padding: calc(var(--gap) * var(--x03) / 2) calc(var(--gap) * var(--x03));
+  --default-padding: calc( var(--gap-x03) / 2) calc( var(--gap-x03));
   --medium-padding: calc(var(--gap)  / 2) calc(var(--gap));
   --thin-padding: 0.1ch 1ch;
 
@@ -140,7 +128,20 @@ transition: color .2s ease-out">
 
   --z-layer-top: 4;
   --z-layer-higher: 3;
-  --z-layer-middle: 2
+  --z-layer-middle: 2;
+
+
+  --primary: oklch(65% 0.142 268.67);
+  --primery-transparent: oklch(69% 0.185 268.67 / 0.72);
+  --secondary: oklch(62% 0.152 273.00);
+  --card-bg-color: linear-gradient(110deg, 
+    oklch(60% 0.16 265) 0%, 
+    oklch(67% 0.14 268) 30%,
+    oklch(64% 0.15 270) 65%,  
+    oklch(60% 0.16 271) 100%);
+  --drop-shadow: 0 0 5px oklch(65% 0.14152 268.67 / 0.7);
+  --light-reflection: oklch(100% 0 0/ 0.25);
+  --success: oklch(65% 0.12 174);  
 }
 
 * {
@@ -365,42 +366,7 @@ button.disabled:active::before , label.disabled:active::before{
   transform: rotate(45deg)
 }
 
-@media only screen and (min-width: 450px) {
-  .bottom-nav{
-    bottom: auto;
-    top: var(--gap);
-    height: var(--gap-x08);
-    border-radius: var(--radus-c);
-    box-shadow: 4px 6px 20px 2px oklch(0% 0 0/.2);
-    width: calc(100% - var(--gap-x04) - var(--gap-x04));
-    left: unset;
-    right: var(--gap-x04);
-  }
 
-  .grid-layout{
-    margin-top: var(--gap-x10);
-  }
-
-  .nav-div {
-  flex-direction: row;
-  height: var(--gap-x06);
-  width: calc( var(--gap-x10) + var(--gap-x04));
-  margin-top: auto;
-  margin-bottom: auto;
-  }
-
-  .nav-text{
-    font-size: var(--small-font);
-    margin-top: auto;
-    margin-bottom: auto;
-    width: 15ch;
-    text-align: start;
-  }
-
-  .toast {
-    margin-bottom: 0;
-  }
-}
 
 #theme-toggle:before {
   color:oklch(var(--gray-fore-100) / 1);
@@ -414,76 +380,104 @@ button.disabled:active::before , label.disabled:active::before{
 }
 
 :root{
-  --gray-fore-100:100% 0 0 ;
-  --gray-back-100:0% 0 0 ;
-  --gray-back-70:35% 0 0 ;
-  --gray-back-90:22% 0 0 ;
-  --bg-canv: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%);
-  --slider-thumb-color: linear-gradient(oklch(22% 0 0),oklch(34% 0 0));
-  --tab-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.5) 0%, oklch(8.5% 0 0 / 0.4) 65%, oklch(8.5% 0 0 / 0.35) 100%);
-  --glow: oklch(85% 0 0);
-  --dark-shadow: oklch(32% 0.2 268.67);
-  --dark-shadow-disabled: oklch(27% 0.16 268.67);
-  --border: linear-gradient(135deg, oklch(28% 0 0) 0%, oklch(40% 0 0) 25%, oklch(32% 0 0) 100%);
+
+  --gray-fore-100-dark:100% 0 0 ;
+  --gray-fore-100-light:0% 0 0 ;
+
+  --gray-back-100-dark:0% 0 0 ;
+  --gray-back-100-light:100% 0 0 ;
+
+  --gray-back-70-dark:35% 0 0 ;
+  --gray-back-70-light:85% 0 0 ;
+
+  --gray-back-90-dark:22% 0 0 ;
+  --gray-back-90-light:95% 0 0 ;
+
+  --bg-canv-dark: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%);
+  --bg-canv-light: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 35%, oklch(89% 0 0) 100%);
+
+  --tab-bg-dark: linear-gradient(290deg, oklch(8.5% 0 0 / 0.5) 0%, oklch(8.5% 0 0 / 0.4) 65%, oklch(8.5% 0 0 / 0.35) 100%);
+  --tab-bg-light: linear-gradient(290deg, oklch(100% 0 0 / 0.35) 0%, oklch(100% 0 0 / 0.4) 65%, oklch(100% 0 0 / 0.5) 100%);
+
+  --glow-dark: oklch(85% 0 0);
+  --glow-light:oklch(100% 0 0);
+
+  --dark-shadow-dark: oklch(32% 0.2 268.67);
+  --dark-shadow-light: oklch(50% 0.22 268.67);
+
+  --dark-shadow-disabled-dark: oklch(27% 0.16 268.67);
+  --dark-shadow-disabled-light: oklch(62% 0.18 268.67);
+
+  --border-dark: linear-gradient(135deg, oklch(28% 0 0) 0%, oklch(40% 0 0) 25%, oklch(32% 0 0) 100%);
+  --border-light: linear-gradient(135deg, oklch(95% 0 0) 0%, oklch(100% 0 0) 25%, oklch(97% 0 0) 100%);
+
+
+
+  --gray-fore-100:var(--gray-fore-100-dark) ;
+  --gray-back-100:var(--gray-back-100-dark) ;
+  --gray-back-70:var(--gray-back-70-dark) ;
+  --gray-back-90:var(--gray-back-90-dark) ;
+  --bg-canv: var(--bg-canv-dark) ;
+  --tab-bg: var(--tab-bg-dark);
+  --glow: var(--glow-dark);
+  --dark-shadow: var(--dark-shadow-dark);
+  --dark-shadow-disabled: var(--dark-shadow-disabled-dark);
+  --border: var(--border-dark);
 }
 
 :root:has(#theme-toggle:checked) {
-  --gray-fore-100:0% 0 0 ;
-  --gray-back-100:100% 0 0 ;
-  --gray-back-70:85% 0 0 ;
-  --gray-back-90:95% 0 0 ;
-  --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 35%, oklch(89% 0 0) 100%);
-  --slider-thumb-color : linear-gradient(oklch(85% 0 0),oklch(90% 0 0));
-  --tab-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.35) 0%, oklch(100% 0 0 / 0.4) 65%, oklch(100% 0 0 / 0.5) 100%);
-  --glow:oklch(100% 0 0);
-  --dark-shadow: oklch(50% 0.22 268.67);
-  --dark-shadow-disabled: oklch(62% 0.18 268.67);
-  --border: linear-gradient(135deg, oklch(95% 0 0) 0%, oklch(100% 0 0) 25%, oklch(97% 0 0) 100%);
+  --gray-fore-100:var(--gray-fore-100-light) ;
+  --gray-back-100:var(--gray-back-100-light) ;
+  --gray-back-70:var(--gray-back-70-light) ;
+  --gray-back-90:var(--gray-back-90-light) ;
+  --bg-canv:var(--bg-canv-light) ;
+  --tab-bg:var(--tab-bg-light);
+  --glow:var(--glow-light);
+  --dark-shadow: var(--dark-shadow-light);
+  --dark-shadow-disabled: var(--dark-shadow-disabled-light);
+  --border: var(--border-light);
 }
 
 @media (prefers-color-scheme:light) {
 
-#theme-toggle:before {
-  color:oklch(var(--gray-fore-100) / 1);
-  content: 'Change Theme: 🌙';
-  display: block;
-  width: 20ch;
-}
+  #theme-toggle:before {
+    color:oklch(var(--gray-fore-100) / 1);
+    content: 'Change Theme: 🌙';
+    display: block;
+    width: 20ch;
+  }
 
-:root:has(#theme-toggle:checked) #theme-toggle:before {
-  content: 'Change Theme: ☀️'; 
-}
+  :root:has(#theme-toggle:checked) #theme-toggle:before {
+    content: 'Change Theme: ☀️'; 
+  }
 
 
   :root{
-  --gray-fore-100:0% 0 0 ;
-  --gray-back-100:100% 0 0 ;
-  --gray-back-70:85% 0 0 ;
-  --gray-back-90:95% 0 0 ;
-  --bg-canv: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 35%, oklch(89% 0 0) 100%);
-  --slider-thumb-color : linear-gradient(oklch(85% 0 0),oklch(90% 0 0));
-  --tab-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.35) 0%, oklch(100% 0 0 / 0.4) 65%, oklch(100% 0 0 / 0.5) 100%);
-  --glow:oklch(100% 0 0);
-  --dark-shadow: oklch(50% 0.22 268.67);
-  --dark-shadow-disabled: oklch(62% 0.18 268.67);
-  --border: linear-gradient(135deg, oklch(95% 0 0) 0%, oklch(100% 0 0) 25%, oklch(97% 0 0) 100%);
+  --gray-fore-100:var(--gray-fore-100-light) ;
+  --gray-back-100:var(--gray-back-100-light) ;
+  --gray-back-70:var(--gray-back-70-light) ;
+  --gray-back-90:var(--gray-back-90-light) ;
+  --bg-canv:var(--bg-canv-light) ;
+  --tab-bg:var(--tab-bg-light);
+  --glow:var(--glow-light);
+  --dark-shadow: var(--dark-shadow-light);
+  --dark-shadow-disabled: var(--dark-shadow-disabled-light);
+  --border: var(--border-light);
   }
 
   :root:has(#theme-toggle:checked) {
-  --gray-fore-100:100% 0 0 ;
-  --gray-back-100:0% 0 0 ;
-  --gray-back-70:35% 0 0 ;
-  --gray-back-90:22% 0 0 ;
-  --bg-canv: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%);
-  --slider-thumb-color: linear-gradient(oklch(22% 0 0),oklch(34% 0 0));
-  --tab-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.5) 0%, oklch(8.5% 0 0 / 0.4) 65%, oklch(8.5% 0 0 / 0.35) 100%);
-  --glow: oklch(80% 0 0);
-  --dark-shadow: oklch(32% 0.2 268.67);
-  --dark-shadow-disabled: oklch(27% 0.16 268.67);
-  --border: linear-gradient(135deg, oklch(28% 0 0) 0%, oklch(40% 0 0) 25%, oklch(32% 0 0) 100%);
+    --gray-fore-100:var(--gray-fore-100-dark) ;
+  --gray-back-100:var(--gray-back-100-dark) ;
+  --gray-back-70:var(--gray-back-70-dark) ;
+  --gray-back-90:var(--gray-back-90-dark) ;
+  --bg-canv: var(--bg-canv-dark) ;
+  --tab-bg: var(--tab-bg-dark);
+  --glow: var(--glow-dark);
+  --dark-shadow: var(--dark-shadow-dark);
+  --dark-shadow-disabled: var(--dark-shadow-disabled-dark);
+  --border: var(--border-dark);
   }
 
 }
-
 
 </style>
