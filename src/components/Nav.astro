@@ -10,12 +10,12 @@ flex-direction: column;
 ">
 
 	<div  style="
-	height: var(--portion);
+	height: var(--gap-x8);
 	font-size: var(--regular-font);
 	align-items: center;
 	gap: var(--gap);
 	width: 100%;
-	padding: var(--bigger-gap);
+	padding: var(--gap-x4);
 	display: flex;
 	position: fixed;
 	top: 0;
@@ -30,9 +30,9 @@ flex-direction: column;
 
 		<label aria-label="Menu Drawer" for="menu" data-menu-label="menu" style="
 		cursor: pointer;
-		width: var(--portion);
-		height: var(--portion);
-        margin-inline: calc((var(--small-clickable) - var(--portion)) / 2 );
+		width: var(--gap-x8);
+		height: var(--gap-x8);
+        margin-inline: calc((var(--gap-x6) - var(--gap-x8)) / 2 );
 		background: 0 0;
 		border: none;
 		place-content: center;
@@ -63,7 +63,7 @@ flex-direction: column;
 <style is:global>
 
 .drw-bg{
-  height: var(--portion);
+  height: var(--gap-x8);
   transition-duration:0.2s;
 }
 
@@ -79,11 +79,11 @@ flex-direction: column;
 
 .line {
   position: absolute;
-  width: var(--small-clickable);
+  width: var(--gap-x6);
   height: 1.4px;
   background: oklch(var(--gray-back-100) / 1);
   transition: transform 0.3s ease;
-  border-radius: var(--bigger-gap);
+  border-radius: var(--gap-x4);
 }
 
 .line1 {
@@ -125,15 +125,15 @@ top: calc(50% + 5px);
   gap: var(--gap);
   opacity: 0;
   transform: translateX(-30ch);
-  margin-top: calc(var(--portion) + var(--bigger-gap));
-  margin-inline: var(--bigger-gap);
+  margin-top: calc(var(--gap-x8) + var(--gap-x4));
+  margin-inline: var(--gap-x4);
   width: 25ch;
 }
 
 .bottom{
-    margin-bottom: var(--portion); 
+    margin-bottom: var(--gap-x8); 
     margin-top: auto;
-    margin-inline: var(--bigger-gap);
+    margin-inline: var(--gap-x4);
     opacity: 0;
     width: 25ch;
     transform: translateX(-30ch);

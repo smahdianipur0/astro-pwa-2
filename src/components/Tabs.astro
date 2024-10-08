@@ -49,8 +49,8 @@ const {name, tab1 , tab2, content1, content2} = Astro.props;
 	background-color: transparent;
 	font-size: var(--big-font);
 	display: grid;
-	height: var(--small-clickable);
-	line-height: var(--text-height);
+	height: var(--gap-x6);
+	line-height: var(--gap-x5);
 	width: 10ch;	
 	cursor: pointer; 
 	z-index: var(--z-layer-middle);
@@ -59,7 +59,7 @@ const {name, tab1 , tab2, content1, content2} = Astro.props;
 	align-items: center;
 	transition: color 200ms ease-out;
 	color: oklch(var(--gray-fore-100) / 0.5);
-	margin-bottom: calc( var(--bigger-gap) / var(--x2));
+	margin-bottom: calc( var(--gap-x4) / var(--x2));
 }
 
 
@@ -82,7 +82,7 @@ const {name, tab1 , tab2, content1, content2} = Astro.props;
  display: inline-block;
  justify-content: center;
  align-items: center;
- height: var(--small-clickable);
+ height: var(--gap-x6);
  position: absolute;
  top:0;
  background: var(--tab-bg) ;

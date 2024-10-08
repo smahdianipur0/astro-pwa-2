@@ -100,7 +100,7 @@ transition: color .2s ease-out">
   --x7: 4.23;
   --x8: 5.39;
   --x9: 6.84;
-  --x10: 8.68;
+  --xx1: 8.68;
 
   --regular-font: 100%;
   --big-font: calc(var(--regular-font) * var(--x2));
@@ -122,11 +122,11 @@ transition: color .2s ease-out">
 
 
   --gap: 1ch;
-  --bigger-gap: calc(var(--gap) * var(--x4));
-  --text-height: calc(var(--gap) * var(--x5));;
-  --small-clickable: calc(var(--gap) * var(--x6));
-  --portion: calc(var(--gap) * var(--x8));
-  --bigger-portion: calc(var(--gap) * var(--x10));
+  --gap-x4: calc(var(--gap) * var(--x4));
+  --gap-x5: calc(var(--gap) * var(--x5));;
+  --gap-x6: calc(var(--gap) * var(--x6));
+  --gap-x8: calc(var(--gap) * var(--x8));
+  --gap-xx1: calc(var(--gap) * var(--xx1));
 
 
   --default-padding: calc(var(--gap) * var(--x3) / 2) calc(var(--gap) * var(--x3));
@@ -197,7 +197,7 @@ textarea:focus {
 a {
   text-decoration: none; 
   height: 25px;
-  margin:10px var(--portion); 
+  margin:10px var(--gap-x8); 
   margin: 100px;
 }
 
@@ -236,7 +236,7 @@ a {
    font-family: inherit;
    height: 1.5ch;
    width: 30ch;
-   margin: calc( (var(--text-height) - 1.5ch) / 2 ) 0;
+   margin: calc( (var(--gap-x5) - 1.5ch) / 2 ) 0;
    border-radius: 4ch;
    background-color: oklch(80% 0 0 / 0.4);
    background: linear-gradient(
@@ -258,7 +258,7 @@ a {
 }
 
 .skeleton-parrent{
-  line-height: var(--text-height); 
+  line-height: var(--gap-x5); 
   overflow: hidden;
 }
 
@@ -272,10 +272,10 @@ a {
 
 .card-bg{
   font-size: var(--regular-font);
-  height: calc( (var(--small-clickable) * var(--x2)) + (var(--bigger-gap) * 2 ) );
+  height: calc( (var(--gap-x6) * var(--x2)) + (var(--gap-x4) * 2 ) );
   width: 100%  ;
   position: absolute; 
-  margin: calc( var(--bigger-gap) * -1) calc( var(--bigger-gap) * -1);
+  margin: calc( var(--gap-x4) * -1) calc( var(--gap-x4) * -1);
   background: var(--card-bg-color);
 }
 
@@ -334,7 +334,7 @@ button.disabled:active::before , label.disabled:active::before{
  transition: bottom 0.15s ease-out;  
  z-index: var(--z-layer-higher);
  color: var(--success);
- margin-bottom: var(--bigger-gap);
+ margin-bottom: var(--gap-x4);
 }
 
 .gg-check-o {
@@ -369,22 +369,22 @@ button.disabled:active::before , label.disabled:active::before{
   .bottom-nav{
     bottom: auto;
     top: var(--gap);
-    height: var(--portion);
+    height: var(--gap-x8);
     border-radius: var(--radus-c);
     box-shadow: 4px 6px 20px 2px oklch(0% 0 0/.2);
-    width: calc(100% - var(--bigger-gap) - var(--bigger-gap));
+    width: calc(100% - var(--gap-x4) - var(--gap-x4));
     left: unset;
-    right: var(--bigger-gap);
+    right: var(--gap-x4);
   }
 
   .grid-layout{
-    margin-top: var(--bigger-portion);
+    margin-top: var(--gap-xx1);
   }
 
   .nav-div {
   flex-direction: row;
-  height: var(--small-clickable);
-  width: calc( var(--bigger-portion) + var(--bigger-gap));
+  height: var(--gap-x6);
+  width: calc( var(--gap-xx1) + var(--gap-x4));
   margin-top: auto;
   margin-bottom: auto;
   }
