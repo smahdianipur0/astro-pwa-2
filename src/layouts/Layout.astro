@@ -90,8 +90,6 @@ const { title } = Astro.props;
 
 :root {
 
-  font-family: system-ui;
-
   --x02: 1.27;
   --x03: 1.62;
   --x04: 2.05;
@@ -131,6 +129,11 @@ const { title } = Astro.props;
   --z-layer-middle: 2;
 
 
+  font-family: system-ui;
+  line-height: var(--gap-x05);
+  font-size: 100%;
+
+
   --primary: oklch(65% 0.142 268.67);
   --primery-transparent: oklch(69% 0.185 268.67 / 0.72);
   --secondary: oklch(62% 0.152 273.00);
@@ -153,7 +156,8 @@ const { title } = Astro.props;
 *,
 :after,
 :before {
-  box-sizing: border-box
+  box-sizing: border-box;
+
 }
 
 html,
@@ -167,6 +171,7 @@ label,
 textarea{
   font-family: system-ui;
 }
+
 
 input{
   accent-color: var(--primary);
@@ -201,6 +206,8 @@ a {
   margin:10px var(--gap-x08); 
   margin: 100px;
 }
+
+
 
 .glass {
   -webkit-backdrop-filter: blur(20px);
