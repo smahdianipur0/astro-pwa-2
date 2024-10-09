@@ -121,9 +121,9 @@ const { title } = Astro.props;
   --thin-padding: 0.1ch 1ch;
 
 
-  --radiu-a: 0.85ch;
-  --radiu-b: 2.1ch;
-  --radus-c: 2.5ch;
+  --radius-a: 0.85ch;
+  --radius-b: 2.1ch;
+  --radius-c: 2.5ch;
 
   --z-layer-top: 4;
   --z-layer-higher: 3;
@@ -185,7 +185,7 @@ textarea{
   padding: var(--default-padding);
   display: inline-block;
   border: 1px solid transparent;
-  border-radius: var(--radiu-a);
+  border-radius: var(--radius-a);
   resize: vertical;
   border-bottom: 1px solid var(--primary);
   border-bottom-left-radius: 0px;
@@ -196,7 +196,7 @@ textarea{
 
 textarea:focus {
   border: 1px solid var(--primary);
-  border-radius: var(--radiu-a);
+  border-radius: var(--radius-a);
   outline: none;
 }
 
@@ -294,7 +294,7 @@ a {
   width: 100%;
   display: inline-block;
   border: 1px solid transparent;
-  border-radius: var(--radiu-a);
+  border-radius: var(--radius-a);
   border-bottom: 1px solid var(--primary);
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -304,7 +304,7 @@ a {
 
 .input:focus {
   border: 1px solid var(--primary);
-  border-radius: var(--radiu-a);
+  border-radius: var(--radius-a);
   background-color:oklch(var(--gray-back-100) / 1); 
   outline: none;
 }
@@ -330,7 +330,7 @@ button.disabled:active::before , label.disabled:active::before{
  display: flex;
  position: fixed; 
  background-color: oklch(var(--gray-back-100) / 0.5);
- border-radius: var(--radiu-b);
+ border-radius: var(--radius-b);
  border: 1px solid  oklch(var(--gray-back-70) / 1);
  bottom: -100%;
  width: 200px; 
