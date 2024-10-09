@@ -30,16 +30,15 @@ class="hide-checkbox" checked/>
 <style is:global>
  
 .toggle-button {
-	font-size:var(--regular-font);
 	padding:var(--default-padding);
-	line-height: var(--gap-x05);
+	line-height: var(--gap-x04);
 	user-select:none;
 	cursor:pointer;
 	color:oklch(var(--gray-fore-100) / 0.5);
 	background:0 0;
 	background-color:(var(--gray-back-90) / 1);
 	opacity:1;
-	box-shadow:1px 3px 0px oklch(var(--gray-back-100) / 0.5);
+	box-shadow:1px 3px 0px oklch(var(--gray-back-90) / 0.6);
 	border:none;
 	border-radius:0;
 	position:relative
@@ -50,7 +49,7 @@ class="hide-checkbox" checked/>
 	position: absolute;
 	inset: 0;
 	z-index: -1;		
-	background-color: oklch(var(--gray-back-100) / 0.5);
+
 	scale: 0.65;
   border-radius: 3ch;
 	filter: blur(10px);
@@ -61,9 +60,9 @@ class="hide-checkbox" checked/>
 	border: none;
 	content: "";
 	position: absolute;
-	border-top:0.2px solid var(--light-reflection);
-	border-bottom:0.2px solid var(--light-reflection);
-	box-shadow:  inset 0px 0.4px 0px 0px var(--light-reflection);
+	border-top:0.2px solid var(--rim-light);
+	border-bottom:0.2px solid var(--rim-light);
+	box-shadow:  inset 0px 0.4px 0px 0px var(--rim-light);
 	border-radius: 0px;
 	inset: 0;
 	mix-blend-mode: hard-light;
@@ -79,7 +78,7 @@ class="hide-checkbox" checked/>
 	content: "";
 	border-top-left-radius: var(--radius-a);
 	border-bottom-left-radius: var(--radius-a);
-	border-left: 0.2px solid var(--light-reflection) ;
+	border-left: 0.2px solid var(--rim-light) ;
 }
 
 .last{
@@ -91,7 +90,7 @@ class="hide-checkbox" checked/>
 	content: "";
 	border-top-right-radius: var(--radius-a);
 	border-bottom-right-radius: var(--radius-a);
-	border-right: 0.2px solid var(--light-reflection) ;
+	border-right: 0.2px solid var(--rim-light) ;
 }
 
 .single{
@@ -100,8 +99,8 @@ class="hide-checkbox" checked/>
 
 .single::after{
 	border-radius: var(--radius-a);
-	border-right: 0.2px solid var(--light-reflection) ;
-	border-left: 0.2px solid var(--light-reflection) ;
+	border-right: 0.2px solid var(--rim-light) ;
+	border-left: 0.2px solid var(--rim-light) ;
 }
 
 

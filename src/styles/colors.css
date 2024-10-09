@@ -1,0 +1,75 @@
+:root {
+  --primary: oklch(65% 0.142 268.67);
+  --primery-transparent: oklch(69% 0.185 268.67 / 0.72);
+  --secondary: oklch(62% 0.152 273.00);
+  --card-bg-color: linear-gradient(110deg, 
+    oklch(60% 0.19 265) 0%, 
+    oklch(66% 0.175 268) 25%,
+    oklch(63% 0.18 272) 65%,  
+    oklch(60% 0.19 276) 100%);
+  --drop-shadow: 0 0 5px oklch(65% 0.14152 268.67 / 0.7);
+  --rim-light:oklch(88% 0 0 / 0.26);
+  --success: oklch(65% 0.12 174);  
+
+
+  color-scheme: only dark;
+  --gray-fore-100:100% 0 0 ;
+  --gray-back-100:0% 0 0 ;
+  --gray-back-70:35% 0 0 ;
+  --gray-back-90:22% 0 0 ;
+  --bg-canv: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%) ;
+  --tab-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.5) 0%, oklch(8.5% 0 0 / 0.4) 65%, oklch(8.5% 0 0 / 0.35) 100%);
+  --glow: oklch(85% 0 0);
+  --dark-shadow: oklch(37% 0.17 268.67);
+  --dark-shadow-disabled: oklch(27% 0.16 268.67);
+  --border: linear-gradient(135deg, oklch(28% 0 0) 0%, oklch(40% 0 0) 25%, oklch(32% 0 0) 100%);
+}
+
+
+:root:has(#theme-toggle:checked) {
+  color-scheme: only light;
+  --gray-fore-100:0% 0 0 ;
+  --gray-back-100:100% 0 0 ;
+  --gray-back-70:85% 0 0 ;
+  --gray-back-90:95% 0 0 ;
+  --bg-canv:linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 35%, oklch(89% 0 0) 100%) ;
+  --tab-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.35) 0%, oklch(100% 0 0 / 0.4) 65%, oklch(100% 0 0 / 0.5) 100%);
+  --glow:oklch(100% 0 0);
+  --dark-shadow: oklch(60% 0.16 268.67);
+  --dark-shadow-disabled: oklch(62% 0.18 268.67);
+  --border: linear-gradient(135deg, oklch(95% 0 0) 0%, oklch(100% 0 0) 25%, oklch(97% 0 0) 100%);
+}
+
+
+
+@media (prefers-color-scheme:light) {
+
+  :root:has(#theme-toggle:checked) {
+  color-scheme: only dark;
+  --gray-fore-100:100% 0 0 ;
+  --gray-back-100:0% 0 0 ;
+  --gray-back-70:35% 0 0 ;
+  --gray-back-90:22% 0 0 ;
+  --bg-canv: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%) ;
+  --tab-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.5) 0%, oklch(8.5% 0 0 / 0.4) 65%, oklch(8.5% 0 0 / 0.35) 100%);
+  --glow: oklch(85% 0 0);
+  --dark-shadow: oklch(32% 0.2 268.67);
+  --dark-shadow-disabled: oklch(27% 0.16 268.67);
+  --border: linear-gradient(135deg, oklch(28% 0 0) 0%, oklch(40% 0 0) 25%, oklch(32% 0 0) 100%);;
+  }
+
+  :root{ 
+  color-scheme: only light;
+  --gray-fore-100:0% 0 0 ;
+  --gray-back-100:100% 0 0 ;
+  --gray-back-70:85% 0 0 ;
+  --gray-back-90:95% 0 0 ;
+  --bg-canv:linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 35%, oklch(89% 0 0) 100%) ;
+  --tab-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.35) 0%, oklch(100% 0 0 / 0.4) 65%, oklch(100% 0 0 / 0.5) 100%);
+  --glow:oklch(100% 0 0);
+  --dark-shadow: oklch(50% 0.22 268.67);
+  --dark-shadow-disabled: oklch(62% 0.18 268.67);
+  --border: linear-gradient(135deg, oklch(95% 0 0) 0%, oklch(100% 0 0) 25%, oklch(97% 0 0) 100%);
+  }
+
+}

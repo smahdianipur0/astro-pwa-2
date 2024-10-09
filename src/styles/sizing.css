@@ -1,0 +1,42 @@
+:root {
+
+  --x02: 1.27;
+  --x03: 1.61;
+  --x04: 2.04;
+  --x05: 2.60;
+  --x06: 3.30;
+  --x07: 4.20;
+  --x08: 5.32;
+  --x09: 6.76;
+  --x10: 8.60;
+
+
+  --big-font: calc(100% * var(--x02));
+  --small-font: calc(100% / var(--x02));
+  --extra-small-font: calc(var(--small-font) / var(--x02));
+
+
+  --gap: 1.05ch;
+  --gap-x03: calc(var(--gap) * var(--x03));
+  --gap-x04: calc(var(--gap) * var(--x04));
+  --gap-x05: calc(var(--gap) * var(--x05));
+  --gap-x06: calc(var(--gap) * var(--x06));
+  --gap-x07: calc(var(--gap) * var(--x07));
+  --gap-x08: calc(var(--gap) * var(--x08));
+  --gap-x10: calc(var(--gap) * var(--x10));
+
+
+  --default-padding: calc( var(--gap-x03) / 2) calc( var(--gap-x03));
+  --medium-padding: calc(var(--gap)  / 2) calc(var(--gap));
+  --thin-padding: 0.1ch 1ch;
+
+
+  --radius-a: 0.85ch;
+  --radius-b: 2.1ch;
+  --radius-c: 2.5ch;
+
+  --z-layer-top: 4;
+  --z-layer-higher: 3;
+  --z-layer-middle: 2;
+
+}
