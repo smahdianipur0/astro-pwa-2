@@ -42,8 +42,8 @@ import ToggleGroup from '../components/ToggleGroup.astro';
             <input id="mPassword" type="text" class="input glass dent-shadow" style="
             margin-bottom: var(--gap);" placeholder="Password" >
           </form>
-          <button id="copyMPassword" class="toggle-button active single disabled" style="
-          margin-bottom:var(--gap);"> Copy </button> 
+          <button id="copyMPassword" class="toggle-button" style="
+          margin-bottom:var(--gap);" disabled> Copy </button> 
         </div>
       </fragment>
 
@@ -110,12 +110,12 @@ import ToggleGroup from '../components/ToggleGroup.astro';
 
 .redo_container:focus,
 .redo_container:hover{
-  border: 1px solid oklch(var(--gray-back-70) / 1);
+  border: 1px solid oklch(var(--gray-25) / 1);
 }
 
 .copy:focus,
 .copy:hover{
-  border: 1px solid oklch(var(--gray-back-70) / 1);
+  border: 1px solid oklch(var(--gray-25) / 1);
   border-radius: var(--radius-a);
 }
 

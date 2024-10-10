@@ -38,5 +38,6 @@
   --z-layer-top: 4;
   --z-layer-higher: 3;
   --z-layer-middle: 2;
+  --z-layer-beneath: -1;
 
 }

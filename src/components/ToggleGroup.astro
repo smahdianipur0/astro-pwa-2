@@ -12,7 +12,7 @@ Capitalize</label>
 class="hide-checkbox" checked/>
 
 <label id= "l_add_number" aria-label="Add Number" for="add_number" 
-data-menu-label="add_number" class="toggle-button middle">
+data-menu-label="add_number" class="toggle-button btn-middle">
 Number</label>
 
 <input type="checkbox" id= "add_number" name="pass-ops"
@@ -30,106 +30,100 @@ class="hide-checkbox" checked/>
 <style is:global>
  
 .toggle-button {
+	position: relative;
 	padding:var(--default-padding);
 	line-height: var(--gap-x04);
 	user-select:none;
 	cursor:pointer;
-	color:oklch(var(--gray-fore-100) / 0.5);
-	background:0 0;
-	background-color:(var(--gray-back-90) / 1);
-	opacity:1;
-	box-shadow:1px 3px 0px oklch(var(--gray-back-90) / 0.6);
-	border:none;
-	border-radius:0;
-	position:relative
+	border-radius:var(--radius-a);
+	background-color: var(--primery-transparent);
+  color: oklch(var(--gray-95) / 1);
+	box-shadow: 1px 2.5px 0px var(--primary-shadow) ;
+}
+
+:root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter,
+:root:not(:has(#add_number:checked)) #l_add_number ,
+:root:not(:has(#add_special_cha:checked)) #l_add_special_cha,
+.toggle-button:disabled{
+	background-color: transparent;
+	color:oklch(var(--gray-95) / 0.5);
+	box-shadow:1px 2.5px 0px oklch(var(--gray-15) / 0.6);
 }
 
 .toggle-button::before{
-  content: "";
+	content: "";
 	position: absolute;
 	inset: 0;
-	z-index: -1;		
-
-	scale: 0.65;
+	z-index: var(--z-layer-middle);		
+	background-color: var(--glow);
+  scale: 0.65;
   border-radius: 3ch;
 	filter: blur(10px);
-	mix-blend-mode: soft-light;
+}
+
+:root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter::before ,
+:root:not(:has(#add_number:checked))  #l_add_number::before ,
+:root:not(:has(#add_special_cha:checked)) #l_add_special_cha::before ,
+.toggle-button:disabled::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: var(--z-layer-beneath);
+	transform: scaleX(1.2);	
+  border-radius: 3ch;
+	filter: blur(10px);
+	mix-blend-mode: screen ;
+
 }
 
 .toggle-button::after{
-	border: none;
 	content: "";
+	border: none;
+	z-index: var(--z-layer-beneath);
+	background: oklch(var(--gray-15) / 1);
 	position: absolute;
-	border-top:0.2px solid var(--rim-light);
-	border-bottom:0.2px solid var(--rim-light);
+	border:0.2px solid var(--rim-light);
 	box-shadow:  inset 0px 0.4px 0px 0px var(--rim-light);
-	border-radius: 0px;
+	border-radius: var(--radius-a);
 	inset: 0;
-	mix-blend-mode: hard-light;
 }
 
 
+
 .first{
-	border-top-left-radius: var(--radius-a);
-	border-bottom-left-radius: var(--radius-a);
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
 }
 
 .first::after{
 	content: "";
-	border-top-left-radius: var(--radius-a);
-	border-bottom-left-radius: var(--radius-a);
-	border-left: 0.2px solid var(--rim-light) ;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border-right: 0 ;
 }
 
 .last{
-	border-top-right-radius: var(--radius-a);
-	border-bottom-right-radius: var(--radius-a);
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
 }
 
 .last::after{
 	content: "";
-	border-top-right-radius: var(--radius-a);
-	border-bottom-right-radius: var(--radius-a);
-	border-right: 0.2px solid var(--rim-light) ;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-left: 0 ;
 }
 
-.single{
-	border-radius: var(--radius-a);
+.btn-middle{
+	border-radius: 0;
 }
 
-.single::after{
-	border-radius: var(--radius-a);
-	border-right: 0.2px solid var(--rim-light) ;
-	border-left: 0.2px solid var(--rim-light) ;
+.btn-middle::after{
+	border-radius: 0;
+	border-right: 0 ;
+	border-left: 0 ;
 }
 
-
-
-:root:has(#capitalize_first_letter:checked) #l_capitalize_first_letter,
-:root:has(#add_number:checked) #l_add_number ,
-:root:has(#add_special_cha:checked) #l_add_special_cha,
-.active {
-	position: relative;
-  background-color: var(--primery-transparent);
-  color: oklch(var(--gray-fore-100) / 1);
-	box-shadow: 1px 2.5px 0px var(--dark-shadow) ;
-
-}
-
-:root:has(#capitalize_first_letter:checked) #l_capitalize_first_letter::before ,
-:root:has(#add_number:checked)  #l_add_number::before ,
-:root:has(#add_special_cha:checked) #l_add_special_cha::before ,
-.active::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	z-index: -1;		
-	background-color: var(--glow);
-  transform: scaleX(1.2);
-  border-radius: 3ch;
-	filter: blur(10px);
-
-}
 
 :root:has(#capitalize_first_letter:focus-visible) #l_capitalize_first_letter,
 :root:has(#add_number:focus-visible)  #l_add_number ,
@@ -138,16 +132,17 @@ class="hide-checkbox" checked/>
   outline: -webkit-focus-ring-color auto 1px;
 }
 
-.active:active::before {
+.toggle-button:active::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;    
-  background-color: white;
   scale: 0.65;
   border-radius: 3ch;
   filter: blur(10px);
   mix-blend-mode: soft-light;
 }
+
+
 
 </style>

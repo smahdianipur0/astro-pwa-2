@@ -36,14 +36,14 @@ style="
 
 		<div class="btn-group"> 
 					
-			<button id="copy_e" class="toggle-button active first disabled" >Copy</button>
+			<button id="copy_e" class="toggle-button  first " disabled>Copy</button>
 
 
 
 			<input type="checkbox" id= "show_e"  data-menu="show_e" class="hide-checkbox"/>
 
 			<label id= "l_show_e" aria-label="Show QR Code " for="show_e" 
-			data-menu-label="show_qr_code" class="toggle-button last active disabled" 
+			data-menu-label="show_qr_code" class="toggle-button last disabled" 
 			style="width: 17ch;"> &nbsp </label>
 
 		</div>
@@ -66,14 +66,14 @@ style="
 
 		<div class="btn-group"> 
 					
-			<button id="copy_d" class="toggle-button active first  disabled" >Copy</button>
+			<button id="copy_d" class="toggle-button first " disabled>Copy</button>
 
 
 
 			<input type="checkbox" id= "show_d"  data-menu="show_d" class="hide-checkbox" checked/>
 
 			<label id="l_show_d" aria-label="Show QR Code" for="show_d" 
-			data-menu-label="show_qr_code" class="toggle-button last active disabled" 
+			data-menu-label="show_qr_code" class="toggle-button last disabled" 
 			style="width: 17ch;"> &nbsp </label>
 
 		</div>
@@ -107,8 +107,8 @@ style="
 .k{
   width: 100%;
   display: inline-block;
-  color: oklch(var(--gray-fore-100) / 1);
-	background: oklch(var(--gray-back-100) / 0.5);
+  color: oklch(var(--gray-95) / 1);
+	background: oklch(var(--gray-10) / 0.5);
 	border: none;
 	border-radius: var(--radius-a);
 	border-bottom-left-radius: 0;
@@ -123,8 +123,8 @@ style="
 .v{
   width: 100%;
   display: inline-block;
-  color: oklch(var(--gray-fore-100) / 1);
-	background: oklch(var(--gray-back-100) / 0.5);
+  color: oklch(var(--gray-95) / 1);
+	background: oklch(var(--gray-10) / 0.5);
 	border: none;
 	border-radius: var(--radius-a);
 	border-top-left-radius: 0;
@@ -136,7 +136,7 @@ style="
  
 .k:focus,
 .v:focus{
-  background-color:oklch(var(--gray-back-100) / 1); ;
+  background-color:oklch(var(--gray-10) / 1); ;
   outline: none;
 }
 
@@ -167,9 +167,14 @@ style="
 #l_show_e::after{
 	content: "Show QR Code"; 
 	text-align: center;
+	z-index: 2;
 	inset: 0;
 	padding:var(--default-padding);	
+	background-color: transparent;
+}
 
+#l_show_e.disabled::after{
+	background: oklch(var(--gray-15) / 1);
 }
 
 :root:has(#show_e:checked) #l_show_e::after{
@@ -179,9 +184,14 @@ style="
 #l_show_d::after{
 	content: "Show QR Code"; 
 	text-align: center;
+	z-index: 2;
 	inset: 0;
-	padding:var(--default-padding);	
+	padding:var(--default-padding);
+	background-color: transparent;	
+}
 
+#l_show_d.disabled::after{
+	background: oklch(var(--gray-15) / 1);
 }
 
 :root:has(#show_d:checked) #l_show_d::after{
@@ -194,6 +204,22 @@ style="
 	outline: Highlight auto 1px;
   outline: -webkit-focus-ring-color auto 1px;
 }
+
+label.disabled {
+  background-color: transparent;
+	color:oklch(var(--gray-95) / 0.5);
+	box-shadow:1px 2.5px 0px oklch(var(--gray-15) / 0.6);
+}
+
+label.disabled::before ,
+label.disabled:active::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1; 
+  background-color: transparent;
+}
+
 
 #eqr {
 	display: none;

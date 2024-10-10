@@ -70,7 +70,7 @@ const { title } = Astro.props;
 
 	</head>
   
-  <body style="background: var(--bg-canv);
+  <body style="background: var(--bg-gray-15);
   border: .1px solid #0000;
   min-height: 100vh;
   transition: color .2s ease-out">
@@ -80,7 +80,7 @@ const { title } = Astro.props;
     <slot/>
 
     <div id="toast" class="toast glass">
-      <span class="gg-check-o"/>
+      <svg style="padding: 1px;" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.75 2a2.25 2.25 0 0 1 2.236 2.002V4L17.75 4A2.25 2.25 0 0 1 20 6.25v5.248a6.452 6.452 0 0 0-1.5-.422V6.25a.75.75 0 0 0-.75-.75h-2.129c-.404.603-1.091 1-1.871 1h-3.5c-.78 0-1.467-.397-1.871-1H6.25a.75.75 0 0 0-.75.75v13.5c0 .414.336.75.75.75h5.482A6.518 6.518 0 0 0 12.81 22H6.25A2.25 2.25 0 0 1 4 19.75V6.25A2.25 2.25 0 0 1 6.25 4h1.764a2.25 2.25 0 0 1 2.236-2h3.5Zm2.245 2.096L16 4.25c0-.052-.002-.103-.005-.154ZM13.75 3.5h-3.5a.75.75 0 0 0 0 1.5h3.5a.75.75 0 0 0 0-1.5Zm9.25 14a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0Zm-2.146-2.354a.5.5 0 0 0-.708 0L16.5 18.793l-1.646-1.647a.5.5 0 0 0-.708.708l2 2a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708Z" fill="var(--success)"/></svg>
       <span>&nbsp Copied</span>
     </div>
 
@@ -108,7 +108,7 @@ textarea{
   border-bottom: 1px solid var(--primary);
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  color: oklch(var(--gray-fore-100) / 1);
+  color: oklch(var(--gray-95) / 1);
 }
 
 
@@ -184,7 +184,7 @@ textarea:focus {
   background: none;
   border: none;
   box-shadow: none;
-  color:oklch(var(--gray-fore-100) / 1);
+  color:oklch(var(--gray-95) / 1);
   cursor: pointer;
 }
 
@@ -193,7 +193,7 @@ textarea:focus {
   width: 100%  ;
   position: absolute; 
   margin: calc( var(--gap-x04) * -1) calc( var(--gap-x04) * -1);
-  background: var(--card-bg-color);
+  background: var(--primary-bg);
 }
 
 
@@ -206,41 +206,26 @@ textarea:focus {
   border-bottom: 1px solid var(--primary);
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  color: oklch(var(--gray-fore-100) / 1);
-  background-color: oklch(var(--gray-back-100) / 0.5);
+  color: oklch(var(--gray-95) / 1);
+  background-color: oklch(var(--gray-10) / 0.5);
   line-height: var(--gap-x04);
 }
 
 .input:focus {
   border: 1px solid var(--primary);
   border-radius: var(--radius-a);
-  background-color:oklch(var(--gray-back-100) / 1); 
+  background-color:oklch(var(--gray-10) / 1); 
   outline: none;
 }
 
-
-button.disabled , label.disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  box-shadow: 1px 2.5px 0px var(--dark-shadow-disabled) ;
-}
-
-button.disabled::before , label.disabled::before ,
-button.disabled:active::before , label.disabled:active::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1; 
-  background-color: transparent;
-}
 
 
 .toast {
  display: flex;
  position: fixed; 
- background-color: oklch(var(--gray-back-100) / 0.5);
+ background-color: oklch(var(--gray-10) / 0.5);
  border-radius: var(--radius-b);
- border: 1px solid  oklch(var(--gray-back-70) / 1);
+ border: 1px solid  oklch(var(--gray-25) / 1);
  bottom: -100%;
  width: 200px; 
  left: calc(50% - 100px ); 
@@ -253,62 +238,5 @@ button.disabled:active::before , label.disabled:active::before{
  color: var(--success);
  margin-bottom: var(--gap-x04);
 }
-
-.gg-check-o {
-  box-sizing: border-box;
-  position: relative;
-  display: block;
-  transform: scale(0.7);
-  width: 22px;
-  height: 22px;
-  border: 2px solid;
-  border-radius: 100px
-
-}
-
-.gg-check-o::after {
-  content: "";
-  display: block;
-  box-sizing: border-box;
-  position: absolute;
-  left: 3px;
-  top: -1px;
-  width: 6px;
-  height: 10px;
-  border-color: currentColor;
-  border-width: 0 2px 2px 0;
-  border-style: solid;
-  transform-origin: bottom left;
-  transform: rotate(45deg)
-}
-
-
-
-#theme-toggle:before {
-  color:oklch(var(--gray-fore-100) / 1);
-  content: 'Change Theme: ☀️';
-  display: block;
-  width: 20ch; 
-}
-
-:root:has(#theme-toggle:checked) #theme-toggle:before {
-  content: 'Change Theme: 🌙'; 
-}
-
-@media (prefers-color-scheme:light) {
-
-  #theme-toggle:before {
-    color:oklch(var(--gray-fore-100) / 1);
-    content: 'Change Theme: 🌙';
-    display: block;
-    width: 20ch;
-  }
-
-  :root:has(#theme-toggle:checked) #theme-toggle:before {
-    content: 'Change Theme: ☀️'; 
-  }
-
-}
-
 
 </style>

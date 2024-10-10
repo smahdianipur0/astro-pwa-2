@@ -43,9 +43,9 @@ document.getElementById("generate")!.addEventListener("input",(e)=>{
       setMPassword(value.toString());
       setCurrentPass(mpassword()) 
       if(mpassword() === "") {
-         (document.getElementById("copyMPassword")! as HTMLInputElement).classList.add("disabled")  
+         (document.getElementById("copyMPassword")! as HTMLInputElement).disabled  = true;  
           } else {
-         (document.getElementById("copyMPassword")! as HTMLInputElement).classList.remove("disabled") 
+         (document.getElementById("copyMPassword")! as HTMLInputElement).disabled  = false; 
       }   
    }
 });
@@ -273,11 +273,11 @@ createEffect(() => {
    if(resultE() !== "IV is not 16 Characters" &&
       resultE() !== "Key is not 16 Characters" &&
       resultE() !== "") {
-      document.getElementById("copy_e")!.classList.remove("disabled");
+      (document.getElementById("copy_e")! as HTMLInputElement).disabled  = false;
       document.getElementById("l_show_e")!.classList.remove("disabled");
       (document.getElementById("show_e")! as HTMLInputElement).disabled  = false;
    } else{
-      document.getElementById("copy_e")!.classList.add("disabled");
+      (document.getElementById("copy_e")! as HTMLInputElement).disabled  = true;;
       document.getElementById("l_show_e")!.classList.add("disabled");
       (document.getElementById("show_e")! as HTMLInputElement).checked   = false; 
       (document.getElementById("show_e")! as HTMLInputElement).disabled  = true;
@@ -301,11 +301,11 @@ createEffect(() => {
       resultD() !== "Key is not 16 Characters" &&
       resultD() !== "Invalid Credentials"&&
       resultD() !== "") {
-      document.getElementById("copy_d")!.classList.remove("disabled");
+      (document.getElementById("copy_d")! as HTMLInputElement).disabled  = false;
       document.getElementById("l_show_d")!.classList.remove("disabled");
       (document.getElementById("show_d")! as HTMLInputElement).disabled  = false;
    } else{
-      document.getElementById("copy_d")!.classList.add("disabled");
+      (document.getElementById("copy_d")! as HTMLInputElement).disabled  = true;
       document.getElementById("l_show_d")!.classList.add("disabled");
       (document.getElementById("show_d")! as HTMLInputElement).checked   = false; 
       (document.getElementById("show_d")! as HTMLInputElement).disabled  = true;
