@@ -13,7 +13,6 @@
     "@astrojs/check": "^0.9.1",
     "@astrojs/solid-js": "^4.4.0",
     "astro": "^4.13.1",
-    "lightningcss": "^1.25.1",
     "qrcode": "^1.5.3",
     "solid-js": "^1.8.17",
     "totp-generator": "^1.0.0",
@@ -21,6 +20,7 @@
   },
   "devDependencies": {
     "@types/qrcode": "^1.5.5",
+    "lightningcss": "^1.27.0",
     "vite-plugin-top-level-await": "^1.4.1",
     "vite-plugin-wasm": "^3.3.0"
   }

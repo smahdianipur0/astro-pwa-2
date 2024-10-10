@@ -2,10 +2,10 @@
   --primary: oklch(65% 0.142 268.67);
   --primery-transparent: oklch(69% 0.185 268.67 / 0.72);
   --primary-bg: linear-gradient(110deg, 
-    oklch(60% 0.19 265) 0%, 
-    oklch(66% 0.175 268) 25%,
-    oklch(63% 0.18 272) 65%,  
-    oklch(60% 0.19 276) 100%);
+    oklch(60% 0.18 265) 0%, 
+    oklch(66% 0.165 268) 25%,
+    oklch(63% 0.17 272) 65%,  
+    oklch(60% 0.18 276) 100%);
   --rim-light:oklch(88% 0 0 / 0.3);
   --glow: oklch(100% 0 0 / 0.22);
   --success: oklch(65% 0.12 174);  
@@ -15,6 +15,9 @@
   --gray-10:0% 0 0 ;
   --gray-15:22% 0 0 ;
   --gray-25:35% 0 0 ;
+  --gray-50:45% 0 0;
+  --gray-75:70% 0 0;
+  --gray-85:85% 0 0;
   --gray-95:100% 0 0 ;
   --primary-shadow: oklch(37% 0.17 268.67);
   --bg-gray-15: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%) ;
@@ -28,6 +31,9 @@
   --gray-10:100% 0 0 ;
   --gray-15:95% 0 0 ;
   --gray-25:85% 0 0 ;
+  --gray-50:45% 0 0;
+  --gray-75:35% 0 0;
+  --gray-85:22% 0 0;
   --gray-95:0% 0 0 ;
   --primary-shadow: oklch(60% 0.16 268.67);
   --bg-gray-15:linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 35%, oklch(89% 0 0) 100%) ;
