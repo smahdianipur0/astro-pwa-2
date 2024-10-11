@@ -16,7 +16,7 @@
   --gray-15:22% 0 0 ;
   --gray-25:35% 0 0 ;
   --gray-50:45% 0 0;
-  --gray-75:70% 0 0;
+  --gray-75:65% 0 0;
   --gray-85:85% 0 0;
   --gray-95:100% 0 0 ;
   --primary-shadow: oklch(37% 0.17 268.67);
@@ -50,6 +50,9 @@
   --gray-10:0% 0 0 ;
   --gray-15:22% 0 0 ;
   --gray-25:35% 0 0 ;
+  --gray-50:45% 0 0;
+  --gray-75:65% 0 0;
+  --gray-85:85% 0 0;
   --gray-95:100% 0 0 ;
   --primary-shadow: oklch(37% 0.17 268.67);
   --bg-gray-15: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%) ;
@@ -58,10 +61,13 @@
   }
 
   :root{ 
-  color-scheme: only light;
+  color-scheme: only light; 
   --gray-10:100% 0 0 ;
   --gray-15:95% 0 0 ;
   --gray-25:85% 0 0 ;
+  --gray-50:45% 0 0;
+  --gray-75:35% 0 0;
+  --gray-85:22% 0 0;
   --gray-95:0% 0 0 ;
   --primary-shadow: oklch(60% 0.16 268.67);
   --bg-gray-15:linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(91% 0 0) 35%, oklch(89% 0 0) 100%) ;

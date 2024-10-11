@@ -17,6 +17,10 @@
 
 
   --gap: 1.05ch;
+  --gap-3xs: calc(var(--gap) / var(--x05));
+  --gap-xxs: calc(var(--gap) / var(--x04));
+  --gap-xs:  calc(var(--gap) / var(--x03));
+  --gap-x02: calc(var(--gap) * var(--x02));
   --gap-x03: calc(var(--gap) * var(--x03));
   --gap-x04: calc(var(--gap) * var(--x04));
   --gap-x05: calc(var(--gap) * var(--x05));
