@@ -36,14 +36,14 @@ style="
 
 		<div class="btn-group"> 
 					
-			<button id="copy_e" class="toggle-button  first " disabled>Copy</button>
+			<button id="copy_e" class="prose-btn  first-btn " disabled>Copy</button>
 
 
 
 			<input type="checkbox" id= "show_e"  data-menu="show_e" class="hide-checkbox"/>
 
 			<label id= "l_show_e" aria-label="Show QR Code " for="show_e" 
-			data-menu-label="show_qr_code" class="toggle-button last disabled" 
+			data-menu-label="show_qr_code" class="prose-btn last-btn disabled" 
 			style="width: 17ch;"> &nbsp </label>
 
 		</div>
@@ -66,14 +66,14 @@ style="
 
 		<div class="btn-group"> 
 					
-			<button id="copy_d" class="toggle-button first " disabled>Copy</button>
+			<button id="copy_d" class="prose-btn first-btn " disabled>Copy</button>
 
 
 
 			<input type="checkbox" id= "show_d"  data-menu="show_d" class="hide-checkbox" checked/>
 
 			<label id="l_show_d" aria-label="Show QR Code" for="show_d" 
-			data-menu-label="show_qr_code" class="toggle-button last disabled" 
+			data-menu-label="show_qr_code" class="prose-btn last-btn disabled" 
 			style="width: 17ch;"> &nbsp </label>
 
 		</div>
@@ -166,15 +166,8 @@ style="
 
 #l_show_e::after{
 	content: "Show QR Code"; 
-	text-align: center;
-	z-index: 2;
-	inset: 0;
-	padding:var(--default-padding);	
-	background-color: transparent;
-}
-
-#l_show_e.disabled::after{
-	background: oklch(var(--gray-15) / 1);
+	padding:var(--default-padding);
+	mix-blend-mode: normal;
 }
 
 :root:has(#show_e:checked) #l_show_e::after{
@@ -183,19 +176,42 @@ style="
 
 #l_show_d::after{
 	content: "Show QR Code"; 
-	text-align: center;
-	z-index: 2;
-	inset: 0;
 	padding:var(--default-padding);
-	background-color: transparent;	
-}
-
-#l_show_d.disabled::after{
-	background: oklch(var(--gray-15) / 1);
+	mix-blend-mode: normal;	
 }
 
 :root:has(#show_d:checked) #l_show_d::after{
 	content: "Hide QR Code"; 
+}
+
+#l_show_e.disabled, 
+#l_show_d.disabled{
+	background: oklch(var(--gray-25) / 1);
+	color:oklch(var(--gray-95) / 0.6);
+	box-shadow: 
+  	1px 1.5px 1.5px oklch(var(--gray-50) / 0.6) ,
+ 		1px 2.5px 0px oklch(var(--gray-25) / 0.6 ) ;
+}
+
+
+#l_show_e.disabled::before, 
+#l_show_d.disabled::before{
+	position: absolute;
+	inset: 0;
+	background-color: transparent;
+}
+
+#l_show_e.disabled::after, 
+#l_show_d.disabled::after{
+  z-index: var(--z-layer-middle);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+   oklch(0% 0 0 / 0.25) 0%, 
+   oklch(40% 0 0 / 0) 8%, 
+   oklch(40% 0 0 / 0) 97%,
+   oklch(100% 0 0 / 0.1) 100%);
+  mix-blend-mode: normal;
 }
 
 
@@ -204,22 +220,6 @@ style="
 	outline: Highlight auto 1px;
   outline: -webkit-focus-ring-color auto 1px;
 }
-
-label.disabled {
-  background-color: transparent;
-	color:oklch(var(--gray-95) / 0.5);
-	box-shadow:1px 2.5px 0px oklch(var(--gray-15) / 0.6);
-}
-
-label.disabled::before ,
-label.disabled:active::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1; 
-  background-color: transparent;
-}
-
 
 #eqr {
 	display: none;

@@ -5,21 +5,21 @@
 	align-items: center;" >
 
 <label  id= "l_capitalize_first_letter" aria-label="Capitalize First Letter" for="capitalize_first_letter" 
-data-menu-label="capitalize" class="toggle-button first">
+data-menu-label="capitalize" class="prose-btn first-btn">
 Capitalize</label>
 
 <input type="checkbox" id= "capitalize_first_letter" name="pass-ops" data-menu="capitalize"
 class="hide-checkbox" checked/>
 
 <label id= "l_add_number" aria-label="Add Number" for="add_number" 
-data-menu-label="add_number" class="toggle-button btn-middle">
+data-menu-label="add_number" class="prose-btn middle-btn">
 Number</label>
 
 <input type="checkbox" id= "add_number" name="pass-ops"
 class="hide-checkbox" checked />
 
 <label id="l_add_special_cha" aria-label="Special Character" for="add_special_cha" 
-data-menu-label="add_special_cha" class="toggle-button last">
+data-menu-label="add_special_cha" class="prose-btn last-btn">
 !@#$%&...</label>
 
 <input type="checkbox" id="add_special_cha" name="pass-ops" data-menu="add special cha"
@@ -29,99 +29,77 @@ class="hide-checkbox" checked/>
 
 <style is:global>
  
-.toggle-button {
-	position: relative;
-	padding:var(--default-padding);
-	line-height: var(--gap-x04);
-	user-select:none;
-	cursor:pointer;
-	border-radius:var(--radius-a);
-	background-color: var(--primery-transparent);
-  color: oklch(var(--gray-95) / 1);
-	box-shadow: 1px 2.5px 0px var(--primary-shadow) ;
-}
+
 
 :root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter,
 :root:not(:has(#add_number:checked)) #l_add_number ,
-:root:not(:has(#add_special_cha:checked)) #l_add_special_cha,
-.toggle-button:disabled{
-	background-color: transparent;
-	color:oklch(var(--gray-95) / 0.5);
-	box-shadow:1px 2.5px 0px oklch(var(--gray-15) / 0.6);
+:root:not(:has(#add_special_cha:checked)) #l_add_special_cha{
+	background: oklch(var(--gray-25) / 1);
+	color:oklch(var(--gray-95) / 0.6);
+		 box-shadow: 
+  1px 1.5px 1.5px oklch(var(--gray-50) / 0.6) ,
+  1px 2.5px 0px oklch(var(--gray-25) / 0.6 ) ;
 }
 
-.toggle-button::before{
-	content: "";
-	position: absolute;
-	inset: 0;
-	z-index: var(--z-layer-middle);		
-	background-color: var(--glow);
-  scale: 0.65;
-  border-radius: 3ch;
-	filter: blur(10px);
-}
+
 
 :root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter::before ,
 :root:not(:has(#add_number:checked))  #l_add_number::before ,
-:root:not(:has(#add_special_cha:checked)) #l_add_special_cha::before ,
-.toggle-button:disabled::before {
+:root:not(:has(#add_special_cha:checked)) #l_add_special_cha::before {
 	content: "";
 	position: absolute;
 	inset: 0;
-	z-index: var(--z-layer-beneath);
-	transform: scaleX(1.2);	
-  border-radius: 3ch;
-	filter: blur(10px);
-	mix-blend-mode: screen ;
-
-}
-
-.toggle-button::after{
-	content: "";
-	border: none;
-	z-index: var(--z-layer-beneath);
-	background: oklch(var(--gray-15) / 1);
-	position: absolute;
-	border:0.2px solid var(--rim-light);
-	box-shadow:  inset 0px 0.4px 0px 0px var(--rim-light);
-	border-radius: var(--radius-a);
-	inset: 0;
+	background-color: transparent;
 }
 
 
 
-.first{
+:root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter::after ,
+:root:not(:has(#add_number:checked))  #l_add_number::after ,
+:root:not(:has(#add_special_cha:checked)) #l_add_special_cha::after {
+  content: "";
+  z-index: var(--z-layer-middle);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+   oklch(0% 0 0 / 0.25) 0%, 
+   oklch(40% 0 0 / 0) 8%, 
+   oklch(40% 0 0 / 0) 97%,
+   oklch(100% 0 0 / 0.1) 100%);
+  mix-blend-mode: overlay;
+}
+
+
+
+.first-btn{
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
 
-.first::after{
-	content: "";
+
+.first-btn::after{
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
-	border-right: 0 ;
 }
 
-.last{
+.last-btn{
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
 }
 
-.last::after{
-	content: "";
+
+.last-btn::after{
 	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
-	border-left: 0 ;
+	border-bottom-left-radius: 0;;
 }
 
-.btn-middle{
+.middle-btn{
 	border-radius: 0;
 }
 
-.btn-middle::after{
+
+.middle-btn::after{
 	border-radius: 0;
-	border-right: 0 ;
-	border-left: 0 ;
 }
 
 

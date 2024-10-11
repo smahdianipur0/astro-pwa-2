@@ -3,6 +3,74 @@
   max-width: 65ch
 }
 
+.prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *)), .prose-btn {
+  position: relative;
+  padding:var(--default-padding);
+  line-height: var(--gap-x04);
+  user-select:none;
+  cursor:pointer;
+  border-radius:var(--radius-a);
+  background-color: var(--primery-transparent);
+  color: oklch(var(--gray-95) / 1);
+  box-shadow: 
+    1px 1.5px 1.5px oklch(65% 0.142 268.67 / 0.5) ,
+    1px 2.5px 0px var(--primary-shadow) ;      
+  overflow: clip;;
+}
+
+.prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *)), .prose-btn:disabled {
+  background: oklch(var(--gray-25) / 1);
+  color:oklch(var(--gray-95) / 0.6);
+     box-shadow: 
+  1px 1.5px 1.5px oklch(var(--gray-50) / 0.6) ,
+  1px 2.5px 0px oklch(var(--gray-25) / 0.6 ) ;
+}
+
+.prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *))::before, .prose-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-layer-middle);   
+  background-color: var(--glow);
+  border-radius: 3ch;
+  transform: scaleX(0.7) scaleY(0.4);
+  filter: blur(20px);
+  mix-blend-mode: overlay;
+}
+
+.prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *))::before, .prose-btn:disabled::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: transparent;
+}
+
+.prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *))::after, .prose-btn::after {
+  content: "";
+  z-index: var(--z-layer-middle);
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-a);
+  background: linear-gradient(180deg,
+   oklch(100% 0 0 / 0.15) 0%, 
+   oklch(40% 0 0 / 0) 8%, 
+   oklch(40% 0 0 / 0) 97%,
+   oklch(100% 0 0 / 0.1) 100%);
+  mix-blend-mode: overlay;
+}
+
+.prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *))::after, .prose-btn:disabled::after {
+  content: "";
+  z-index: var(--z-layer-middle);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+   oklch(0% 0 0 / 0.25) 0%, 
+   oklch(40% 0 0 / 0) 8%, 
+   oklch(40% 0 0 / 0) 97%,
+   oklch(100% 0 0 / 0.1) 100%);
+  mix-blend-mode: overlay;
+}
 
 .prose :where(select):not(:where([class~=not-prose],[class~=not-prose] *)) {
   display: inline-block;
