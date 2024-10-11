@@ -56,7 +56,7 @@
    oklch(40% 0 0 / 0) 8%, 
    oklch(40% 0 0 / 0) 97%,
    oklch(100% 0 0 / 0.1) 100%);
-  mix-blend-mode: overlay;
+/*   mix-blend-mode: overlay; */
 }
 
 .prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *))::after, .prose-btn:disabled::after {
@@ -65,11 +65,11 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg,
-   oklch(0% 0 0 / 0.25) 0%, 
+   oklch(0% 0 0 / 0.05) 0%, 
    oklch(40% 0 0 / 0) 8%, 
    oklch(40% 0 0 / 0) 97%,
    oklch(100% 0 0 / 0.1) 100%);
-  mix-blend-mode: overlay;
+/*   mix-blend-mode: overlay; */
 }
 
 .prose :where(select):not(:where([class~=not-prose],[class~=not-prose] *)) {
@@ -91,6 +91,44 @@
 .prose :where(select):not(:where([class~=not-prose],[class~=not-prose] *)):focus-visible {
   outline: Highlight auto 1px;
   outline: -webkit-focus-ring-color auto 1px;
+}
+
+.prose :where(input[type="text"]):not(:where([class~=not-prose],[class~=not-prose] *)),
+.prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)){
+  padding: var(--default-padding);
+  width: 100%;
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: var(--radius-a);
+  border-bottom: 1px solid var(--primary);
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  color: oklch(var(--gray-95) / 1);
+  background-color: oklch(var(--gray-10) / 0.35);
+  line-height: var(--gap-x04);
+}
+
+.prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)){
+  line-height: var(--gap-x05);
+}
+
+.prose :where(input[type="text"]):not(:where([class~=not-prose],[class~=not-prose] *)):focus,
+.prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)):focus {
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-a);
+  background-color:oklch(var(--gray-10) / 0.75); 
+  outline: none;
+}
+
+.prose :where(input[type="text"]):not(:where([class~=not-prose],[class~=not-prose] *)):read-only,
+.prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)):read-only{
+  cursor: default;
+  color: oklch(var(--gray-85) );
+}
+
+.prose :where(input[type="text"]):not(:where([class~=not-prose],[class~=not-prose] *)):focus:read-only,
+.prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)):focus:read-only{
+  background-color: oklch(var(--gray-10) / 0.35);
 }
 
 .prose :where(p):not(:where([class~=not-prose],[class~=not-prose] *)) {

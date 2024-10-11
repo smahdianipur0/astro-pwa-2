@@ -97,28 +97,6 @@ input{
   accent-color: var(--primary);
 }
 
-textarea{
-  background-color: transparent; 
-  font-family: inherit;
-  width: 100%;
-  padding: var(--default-padding);
-  display: inline-block;
-  border: 1px solid transparent;
-  border-radius: var(--radius-a);
-  resize: vertical;
-  border-bottom: 1px solid var(--primary);
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  color: oklch(var(--gray-95) / 1);
-}
-
-
-textarea:focus {
-  border: 1px solid var(--primary);
-  border-radius: var(--radius-a);
-  outline: none;
-}
-
 
 .glass {
   -webkit-backdrop-filter: blur(20px);
@@ -195,28 +173,6 @@ textarea:focus {
   position: absolute; 
   margin: calc( var(--gap-x04) * -1) calc( var(--gap-x04) * -1);
   background: var(--primary-bg);
-}
-
-
-.input {
-  padding: var(--default-padding);
-  width: 100%;
-  display: inline-block;
-  border: 1px solid transparent;
-  border-radius: var(--radius-a);
-  border-bottom: 1px solid var(--primary);
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  color: oklch(var(--gray-95) / 1);
-  background-color: oklch(var(--gray-10) / 0.5);
-  line-height: var(--gap-x04);
-}
-
-.input:focus {
-  border: 1px solid var(--primary);
-  border-radius: var(--radius-a);
-  background-color:oklch(var(--gray-10) / 1); 
-  outline: none;
 }
 
 

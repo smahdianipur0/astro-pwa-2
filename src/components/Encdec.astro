@@ -22,12 +22,12 @@ style="
 </form>
 
 <Tabs name="encdec" tab1="enc" tab2="dec" content1="cenc" content2="cdec">
-	<fragment slot="tab1">
+	<fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab1">
 
 		<label >
 		<input id="auto_pass" type="checkbox" style="
 		margin-bottom: var(--gap-x04); margin-top: var(--gap-x04);"> Use Password as Plain Text </label>
-		<textarea id="plain_text" class=" glass dent-shadow" style="
+		<textarea id="plain_text" class=" dent-shadow" style="
 		margin-bottom: var(--gap-x04);" rows="2" placeholder="Plain Text"></textarea>
 
 		<p style=" margin-bottom: var(--gap); font-size: var(--small-font); opacity: 0.6;">Encrypted Text : </p>
@@ -55,9 +55,9 @@ style="
 	</fragment>
 
 
-	<fragment slot="tab2">
+	<fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab2">
 
-		<textarea id="cipher_text"  class="glass dent-shadow" rows="2" placeholder="Cipher Text"
+		<textarea id="cipher_text"  class="dent-shadow" rows="2" placeholder="Cipher Text"
 		style="margin-top:var(--gap-x04); margin-bottom: var(--gap-x04);"></textarea>
 
 		<p style="margin-bottom: var(--gap); font-size: var(--small-font); opacity: 0.6;">Decrypted Text : </p>
@@ -207,11 +207,10 @@ style="
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg,
-   oklch(0% 0 0 / 0.25) 0%, 
+   oklch(0% 0 0 / 0.05) 0%, 
    oklch(40% 0 0 / 0) 8%, 
    oklch(40% 0 0 / 0) 97%,
    oklch(100% 0 0 / 0.1) 100%);
-  mix-blend-mode: normal;
 }
 
 

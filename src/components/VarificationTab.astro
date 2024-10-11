@@ -2,6 +2,7 @@
 import VarificationComponent from '../components/VarificationComponent.astro';
 ---
 
+<div class="prose">
 <input id= "text_for_varif" type="text" class="input glass dent-shadow" 
 style="margin-bottom: var(--gap);" placeholder="Please enter your key." autocomplete="off">
 
@@ -12,7 +13,7 @@ style="margin-bottom: var(--gap);" placeholder="Please enter your key." autocomp
 	varification_hint = "varif_hint_o"
 	varification_copy = "varif_copy_hint_o"/>
 
-
+</div>
 
 <script>
 import { createSignal, createEffect } from 'solid-js';
