@@ -73,8 +73,7 @@
     line-height: 1;
     font-size: var(--extra-small-font); 
     text-align: center;
-    color: oklch(var(--gray-95) / 1);
-    opacity: 50%;
+    color: oklch(var(--gray-95) / 0.5);
 }
 
 .home-icon,
@@ -82,49 +81,40 @@
 .auth-icon,
 .about-icon
  {
-  fill: oklch(var(--gray-95) / 1); 
-  opacity: 50%;
+  fill: oklch(var(--gray-95) / 0.5); 
 }
 
 :root:has(#one:checked) .home-icon {
-  fill: var(--primary);
-  opacity: 100%;
+  fill: oklch(var(--primary) );
 }
 
 :root:has(#one:checked) .nav-text-one {
-  color: var(--primary);
-  opacity: 100%
+  color: oklch(var(--primary) );
 }
 
 
 :root:has(#two:checked) .qr-icon {
-  fill: var(--primary);
-  opacity: 100%;
+  fill: oklch(var(--primary) );
 }
 
 :root:has(#two:checked) .nav-text-two {
-  color: var(--primary); 
-  opacity: 100%;
+  color: oklch(var(--primary) ); 
 }
 
 :root:has(#three:checked) .auth-icon {
-  fill: var(--primary); 
-  opacity: 100%;
+  fill: oklch(var(--primary) ); 
 }
 
 :root:has(#three:checked) .nav-text-three {
-  color: var(--primary); 
-  opacity: 100%;
+  color: oklch(var(--primary) ); 
 }
 
 :root:has(#four:checked) .about-icon {
-  fill: var(--primary);
-  opacity: 100%;
+  fill: oklch(var(--primary) );
 }
 
 :root:has(#four:checked) .nav-text-four {
-  color: var(--primary);
-  opacity: 100%;
+  color: oklch(var(--primary) );
 }
 
 

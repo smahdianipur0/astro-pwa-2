@@ -19,11 +19,11 @@
 }
 
 .prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *)), .prose-btn:disabled {
-  background: oklch(var(--gray-25) / 1);
+  background: oklch(var(--gray-15) / 1);
   color:oklch(var(--gray-95) / 0.6);
      box-shadow: 
-  1px 1.5px 1.5px oklch(var(--gray-50) / 0.6) ,
-  1px 2.5px 0px oklch(var(--gray-25) / 0.6 ) ;
+  1px 1.5px 1.5px oklch(var(--gray-25) / 0.6) ,
+  1px 2.5px 0px oklch(var(--gray-15) / 0.6 ) ;
 }
 
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *))::before, .prose-btn::before {
@@ -52,11 +52,10 @@
   inset: 0;
   border-radius: var(--radius-a);
   background: linear-gradient(180deg,
-   oklch(100% 0 0 / 0.15) 0%, 
+   oklch(var(--rim-light) / 0.3) 0%, 
    oklch(40% 0 0 / 0) 8%, 
    oklch(40% 0 0 / 0) 97%,
    oklch(100% 0 0 / 0.1) 100%);
-/*   mix-blend-mode: overlay; */
 }
 
 .prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *))::after, .prose-btn:disabled::after {
@@ -69,7 +68,6 @@
    oklch(40% 0 0 / 0) 8%, 
    oklch(40% 0 0 / 0) 97%,
    oklch(100% 0 0 / 0.1) 100%);
-/*   mix-blend-mode: overlay; */
 }
 
 .prose :where(select):not(:where([class~=not-prose],[class~=not-prose] *)) {
@@ -93,42 +91,47 @@
   outline: -webkit-focus-ring-color auto 1px;
 }
 
-.prose :where(input[type="text"]):not(:where([class~=not-prose],[class~=not-prose] *)),
+.prose :where(input[type="text"], input[type="url"], input[type="password"]):not(:where([class~=not-prose],[class~=not-prose] *)),
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)){
   padding: var(--default-padding);
   width: 100%;
   display: inline-block;
   border: 1px solid transparent;
   border-radius: var(--radius-a);
-  border-bottom: 1px solid var(--primary);
+  border-bottom: 1px solid oklch(var(--primary) );
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
   color: oklch(var(--gray-95) / 1);
-  background-color: oklch(var(--gray-10) / 0.35);
+  background-color: oklch(var(--gray-10) / 0.45);
   line-height: var(--gap-x04);
+  box-shadow: inset 0px 1px 5px oklch(0% 0 0 / 0.1) , 
+                    0px 1px 2px oklch(100% 0 0 / 0.1) , 
+                    0px 0px 1px 0.5px oklch(100% 0 0 / 0.1) ;
 }
 
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)){
   line-height: var(--gap-x05);
 }
 
-.prose :where(input[type="text"]):not(:where([class~=not-prose],[class~=not-prose] *)):focus,
+.prose :where(input[type="text"], input[type="url"], input[type="password"]):not(:where([class~=not-prose],[class~=not-prose] *)):focus,
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)):focus {
-  border: 1px solid var(--primary);
+  border: 1px solid oklch(var(--primary) );
   border-radius: var(--radius-a);
   background-color:oklch(var(--gray-10) / 0.75); 
   outline: none;
 }
 
-.prose :where(input[type="text"]):not(:where([class~=not-prose],[class~=not-prose] *)):read-only,
+.prose :where(input[type="text"], input[type="url"], input[type="password"]):not(:where([class~=not-prose],[class~=not-prose] *)):read-only,
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)):read-only{
   cursor: default;
+  background-color: oklch(var(--gray-10) / 0.25);
   color: oklch(var(--gray-85) );
+  box-shadow: none
 }
 
-.prose :where(input[type="text"]):not(:where([class~=not-prose],[class~=not-prose] *)):focus:read-only,
+.prose :where(input[type="text"], input[type="url"], input[type="password"]):not(:where([class~=not-prose],[class~=not-prose] *)):focus:read-only,
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)):focus:read-only{
-  background-color: oklch(var(--gray-10) / 0.35);
+  background-color: oklch(var(--gray-10) / 0.25);
 }
 
 .prose :where(p):not(:where([class~=not-prose],[class~=not-prose] *)) {
