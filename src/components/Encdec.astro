@@ -25,11 +25,13 @@ import Tabs from '../components/Tabs.astro';
   <fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab1">
 
     <input id="auto_pass" type="checkbox" style="
-			margin-bottom: var(--gap-x04); margin-top: var(--gap-x04);"> Use Password as Plain Text </label>
+			margin-bottom: var(--gap-x04); margin-top: var(--gap-x04);"> 
+			<label for="auto_pass"> Use Password as Plain Text </label>
+
     <textarea id="plain_text" class=" dent-shadow" style="
 			margin-bottom: var(--gap-x04);" rows="2" placeholder="Plain Text"></textarea>
 
-    <p style=" margin-bottom: var(--gap); font-size: var(--small-font); opacity: 0.6;">Encrypted Text : </p>
+    <label for="result_e" style=" margin-bottom: var(--gap); font-size: var(--small-font); opacity: 0.6;">Encrypted Text : </label>
 
     <textarea id="result_e" rows="2" readonly> </textarea>
 
@@ -55,7 +57,7 @@ import Tabs from '../components/Tabs.astro';
     <textarea id="cipher_text" rows="2" placeholder="Cipher Text"
       style="margin-top:var(--gap-x04); margin-bottom: var(--gap-x04);"></textarea>
 
-    <p style="margin-bottom: var(--gap); font-size: var(--small-font); opacity: 0.6;">Decrypted Text : </p>
+    <label for="result_d" style="margin-bottom: var(--gap); font-size: var(--small-font); opacity: 0.6;">Decrypted Text : </label>
 
     <textarea id="result_d" rows="2" readonly> </textarea>
 

@@ -17,7 +17,7 @@
   --extra-small-font: calc(100% / var(--x04));
 
 
-  --gap: 1ch;
+  --gap: 1.05ch;
   --gap-3xs: calc(var(--gap) / var(--x05));
   --gap-xxs: calc(var(--gap) / var(--x04));
   --gap-xs:  calc(var(--gap) / var(--x03));
