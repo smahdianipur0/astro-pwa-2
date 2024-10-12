@@ -127,7 +127,7 @@
   background-color: oklch(var(--gray-10) / 0.25);
   color: oklch(var(--gray-85) );
   box-shadow: none;
-  border: none;
+  border: 1px solid transparent;
 }
 
 
