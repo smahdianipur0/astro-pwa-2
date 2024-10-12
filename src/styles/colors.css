@@ -1,13 +1,13 @@
 :root {
   --primary:65% 0.142 268.67 ;
-  --primery-transparent: oklch(65% 0.185 268.67 / 0.82);
+  --primery-transparent: oklch(65% 0.185 268.67 / 0.77);
   --primary-bg: linear-gradient(110deg, 
     oklch(60% 0.18 265) 0%, 
     oklch(66% 0.165 268) 25%,
     oklch(63% 0.17 272) 65%,  
     oklch(60% 0.18 276) 100%);
   --rim-light:84% 0.078 273 ;
-  --glow: oklch(100% 0 0 / 0.45);
+  --glow: oklch(100% 0 0 / 0.40);
   --success: oklch(65% 0.12 174);  
 
 

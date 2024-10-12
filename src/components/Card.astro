@@ -9,15 +9,13 @@ interface Props {
 const { title , iden } = Astro.props;
 ---
 
-<div id={iden}>
+<div class="prose" style="color: oklch(var(--gray-95) );" id={iden}>
 	
-<p style="
-font-weight: bold; 
-font-size: var(--big-font); 
+<h2 style="
 margin-top: var(--gap);
 margin-bottom: var(--gap);
-text-align: center;">
-{ title }</p>
+text-align: center; ">
+{ title }</h2>
 
 <div style="
 background: var(--border);	
@@ -34,7 +32,6 @@ height: auto;
 	box-shadow: 4px 6px 20px 2px oklch(0% 0 0/.2);
 	width: auto;
 	height: auto" >
-
 <slot/>
 
 </div>

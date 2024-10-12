@@ -10,12 +10,12 @@ style="
 <form autocomplete="off">
 	
 	<div style="position: relative;">
-		<input id="key" type="text" class="k glass dent-shadow " name="Key" placeholder="Key">
+		<input id="key" type="text" class="k glass" name="Key" placeholder="Key">
 		<span id="key_indic" class="key-indicator"></span>
 	</div>
 	
 	<div  style ="position: relative; margin-bottom: var(--gap-x04);"> 
-		<input id="iv" type="text" class="v glass dent-shadow " name="IV" placeholder="IV">
+		<input id="iv" type="text" class="v glass" name="IV" placeholder="IV">
 		<span id="iv_indic" class="key-indicator"></span>
 	</div>
 
@@ -34,9 +34,9 @@ style="
 
 		<textarea id="result_e"  style="border: 0px solid transparent;" rows="2" readonly> </textarea>
 
-		<div class="btn-group"> 
+		<div class="flex-center-childs" style="height: var(--gap-x08);"> 
 					
-			<button id="copy_e" class="prose-btn  first-btn " disabled>Copy</button>
+			<button id="copy_e" class="first-btn " disabled>Copy</button>
 
 
 
@@ -57,16 +57,16 @@ style="
 
 	<fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab2">
 
-		<textarea id="cipher_text"  class="dent-shadow" rows="2" placeholder="Cipher Text"
+		<textarea id="cipher_text"  rows="2" placeholder="Cipher Text"
 		style="margin-top:var(--gap-x04); margin-bottom: var(--gap-x04);"></textarea>
 
 		<p style="margin-bottom: var(--gap); font-size: var(--small-font); opacity: 0.6;">Decrypted Text : </p>
 
 		<textarea id="result_d"  style="border: 0px solid transparent;" rows="2" readonly> </textarea>
 
-		<div class="btn-group"> 
+		<div class="flex-center-childs" style="height: var(--gap-x08);"> 
 					
-			<button id="copy_d" class="prose-btn first-btn " disabled>Copy</button>
+			<button id="copy_d" class="first-btn " disabled>Copy</button>
 
 
 
@@ -105,45 +105,34 @@ style="
 
 
 .k{
-  width: 100%;
-  display: inline-block;
-  color: oklch(var(--gray-95) / 1);
-	background: oklch(var(--gray-10) / 0.5);
 	border: none;
-	border-radius: var(--radius-a);
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
-	padding: var(--gap) var(--gap-x04);
-	padding: var(--default-padding);
-	margin-bottom: 0;
 	border-bottom: 0.1px solid oklch(var(--primary) );
 	line-height: var(--gap-x05);
-	  box-shadow: inset 0px 1px 5px oklch(0% 0 0 / 0.1) , 
-                    0px 1px 2px oklch(100% 0 0 / 0.1) , 
-                    0px 0px 1px 0.5px oklch(100% 0 0 / 0.1) ;
+}
+
+.k:focus{
+	border: none;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	border-bottom: 0.1px solid oklch(var(--primary) );
 }
 
 .v{
-  width: 100%;
-  display: inline-block;
-  color: oklch(var(--gray-95) / 1);
-	background: oklch(var(--gray-10) / 0.5);
 	border: none;
-	border-radius: var(--radius-a);
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
-	padding: var(--gap) var(--gap-x04);
-	padding: var(--default-padding);
+	border-bottom-left-radius: var(--radius-a);
+	border-bottom-right-radius: var(--radius-a);
 	line-height: var(--gap-x05);
-	  box-shadow: inset 0px 1px 5px oklch(0% 0 0 / 0.1) , 
-                    0px 1px 2px oklch(100% 0 0 / 0.1) , 
-                    0px 0px 1px 0.5px oklch(100% 0 0 / 0.1) ;
 }
  
-.k:focus,
+
 .v:focus{
-  background-color:oklch(var(--gray-10) / 1); ;
-  outline: none;
+	border: none;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
 }
 
 
@@ -155,14 +144,6 @@ style="
   color: #777;
   pointer-events: none;
 
-}
-
-
-.btn-group {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: var(--gap-x08);
 }
 
 

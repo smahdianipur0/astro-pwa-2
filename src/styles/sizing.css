@@ -10,10 +10,11 @@
   --x09: 6.76;
   --x10: 8.60;
 
-
+  --bigest-font: calc(100% * var(--x04));
+  --extra-big-font: calc(100% * var(--x03));
   --big-font: calc(100% * var(--x02));
   --small-font: calc(100% / var(--x02));
-  --extra-small-font: calc(var(--small-font) / var(--x02));
+  --extra-small-font: calc(100% / var(--x04));
 
 
   --gap: 1.05ch;

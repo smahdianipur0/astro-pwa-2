@@ -91,7 +91,7 @@
   outline: -webkit-focus-ring-color auto 1px;
 }
 
-.prose :where(input[type="text"], input[type="url"], input[type="password"]):not(:where([class~=not-prose],[class~=not-prose] *)),
+.prose :where(input[type="text"], input[type="url"], input[type="password"], input[type="email"]):not(:where([class~=not-prose],[class~=not-prose] *)),
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)){
   padding: var(--default-padding);
   width: 100%;
@@ -113,7 +113,7 @@
   line-height: var(--gap-x05);
 }
 
-.prose :where(input[type="text"], input[type="url"], input[type="password"]):not(:where([class~=not-prose],[class~=not-prose] *)):focus,
+.prose :where(input[type="text"], input[type="url"], input[type="password"], input[type="email"]):not(:where([class~=not-prose],[class~=not-prose] *)):focus,
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)):focus {
   border: 1px solid oklch(var(--primary) );
   border-radius: var(--radius-a);
@@ -121,7 +121,7 @@
   outline: none;
 }
 
-.prose :where(input[type="text"], input[type="url"], input[type="password"]):not(:where([class~=not-prose],[class~=not-prose] *)):read-only,
+.prose :where(input[type="text"], input[type="url"], input[type="password"], input[type="email"]):not(:where([class~=not-prose],[class~=not-prose] *)):read-only,
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)):read-only{
   cursor: default;
   background-color: oklch(var(--gray-10) / 0.25);
@@ -129,7 +129,7 @@
   box-shadow: none
 }
 
-.prose :where(input[type="text"], input[type="url"], input[type="password"]):not(:where([class~=not-prose],[class~=not-prose] *)):focus:read-only,
+.prose :where(input[type="text"], input[type="url"], input[type="password"], input[type="email"]):not(:where([class~=not-prose],[class~=not-prose] *)):focus:read-only,
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)):focus:read-only{
   background-color: oklch(var(--gray-10) / 0.25);
 }
@@ -257,7 +257,7 @@
 .prose :where(h1):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: oklch(var(--gray-85) );
   font-weight: 800;
-  font-size: var(--gap-x07);
+  font-size: var(--bigest-font);
   margin-top: 0;
   margin-bottom: var(--gap-x03);
   line-height: var(--gap-x04)
@@ -271,7 +271,7 @@
 .prose :where(h2):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: oklch(var(--gray-85) );
   font-weight: 700;
-  font-size: var(--gap-x05);
+  font-size: var(--extra-big-font);
   margin-top: var(--gap-x06);
   margin-bottom: var(--gap-x04);
   line-height: var(--gap-x05)
@@ -285,7 +285,7 @@
 .prose :where(h3):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: oklch(var(--gray-85) );
   font-weight: 600;
-  font-size: var(--gap-x04);
+  font-size: var(--big-font);
   margin-top: var(--gap-x05);
   margin-bottom: var(--gap);
   line-height: var(--gap-x06)
@@ -330,7 +330,7 @@
   font-family: inherit;
   color: oklch(var(--gray-85) );
   box-shadow: 0 0 0 1px oklch(var(--gray-85) / 0.1),0 3px oklch(var(--gray-85) / 0.1);
-  font-size: var(--gap-x03);
+  font-size: var(--small-font);
   border-radius: var(--gap-xs);
   padding-top: var(--gap-3xs);
   padding-inline-end: var(--gap-xs);
@@ -341,7 +341,7 @@
 .prose :where(code):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: oklch(var(--gray-85) );
   font-weight: 600;
-  font-size: var(--gap-x03)
+  font-size: var(--small-font)
 }
 
 .prose :where(code):not(:where([class~=not-prose],[class~=not-prose] *)):before {
@@ -362,12 +362,12 @@
 
 .prose :where(h2 code):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: inherit;
-  font-size: var(--gap-x03)
+  font-size: var(--small-font)
 }
 
 .prose :where(h3 code):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: inherit;
-  font-size: var(--gap-x03)
+  font-size: var(--small-font)
 }
 
 .prose :where(h4 code):not(:where([class~=not-prose],[class~=not-prose] *)) {
@@ -387,7 +387,7 @@
   background-color: oklch(var(--gray-75) );
   overflow-x: auto;
   font-weight: 400;
-  font-size: var(--gap-x03);
+  font-size: var(--small-font);
   line-height: var(--gap-x06);
   margin-top: var(--gap-x06);
   margin-bottom: var(--gap-x06);
@@ -423,7 +423,7 @@
   table-layout: auto;
   margin-top: var(--gap-x06);
   margin-bottom: var(--gap-x06);
-  font-size: var(--gap-x03);
+  font-size: var(--small-font);
   line-height: var(--gap-x06)
 }
 
@@ -474,14 +474,9 @@
 
 .prose :where(figcaption):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: oklch (var(--gray-50) );
-  font-size: var(--gap-x03);
+  font-size: var(--small-font);
   line-height: var(--gap-x05);
   margin-top: var(--gap-x03)
-}
-
-.prose {
-  font-size: 100%;
-  line-height: var(--gap-x06)
 }
 
 .prose :where(picture>img):not(:where([class~=not-prose],[class~=not-prose] *)) {

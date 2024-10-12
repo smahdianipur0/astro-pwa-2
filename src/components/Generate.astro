@@ -14,13 +14,13 @@ import ToggleGroup from '../components/ToggleGroup.astro';
        </div>
        
 
-        <div class="center" style="overflow: hidden;" >
-          <button  id = "gp" class=" unstyle-button copy" style="
+        <div class="flex-center-childs" style="overflow: hidden; position: relative;" >
+          <button  id = "gp" class="not-prose copy" style="
           margin-top: var(--gap-x04); margin-bottom: var(--gap-x04); line-height: var(--gap-x05);">
             <div class = "skeleton" style="width:15ch"> </div> 
           </button>
 
-          <button  id = "redo" class=" unstyle-button redo_container" style="
+          <button  id = "redo" class=" not-prose redo_container" style="
             font-size:var(--big-font); font-weight: 300; 
             margin-top: var(--gap-x04); margin-bottom: var(--gap-x04);">↻
           </button> 
@@ -39,7 +39,7 @@ import ToggleGroup from '../components/ToggleGroup.astro';
       <fragment slot="tab2">
         <div class="flex prose" style="margin:var(--gap-x04) 0">
           <form autocomplete="off">
-            <input id="mPassword" type="text" class="dent-shadow" style="
+            <input id="mPassword" type="text" style="
             margin-bottom: var(--gap);" placeholder="Password" >
           </form>
           <button id="copyMPassword" 
@@ -79,14 +79,13 @@ import ToggleGroup from '../components/ToggleGroup.astro';
   #pass { transform: translate3d(5ch, 0, 0);}
 }
 
-.center {
+.flex-center-childs{
   display: flex;
   position: relative;
   justify-content: center;
   align-items: center;
 
 }
-
 
 .copy{
   border: 1px solid oklch(100% 0 0 /0.0);
