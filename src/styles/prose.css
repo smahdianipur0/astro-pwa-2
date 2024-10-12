@@ -126,13 +126,10 @@
   cursor: default;
   background-color: oklch(var(--gray-10) / 0.25);
   color: oklch(var(--gray-85) );
-  box-shadow: none
+  box-shadow: none;
+  border: none;
 }
 
-.prose :where(input[type="text"], input[type="url"], input[type="password"], input[type="email"]):not(:where([class~=not-prose],[class~=not-prose] *)):focus:read-only,
-.prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)):focus:read-only{
-  background-color: oklch(var(--gray-10) / 0.25);
-}
 
 .prose :where(p):not(:where([class~=not-prose],[class~=not-prose] *)) {
   margin-top: var(--gap-x04);

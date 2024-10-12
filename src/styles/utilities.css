@@ -1,0 +1,69 @@
+.glass {
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px)
+}
+
+.hide-checkbox{
+  opacity: 0; 
+  pointer-events: none;
+  position: absolute
+}
+
+.skeleton{
+   font-size: inherit;
+   font-family: inherit;
+   height: 1.5ch;
+   width: 30ch;
+   margin: calc( (var(--gap-x05) - 1.5ch) / 2 ) 0;
+   border-radius: 4ch;
+   background-color: oklch(80% 0 0 / 0.4);
+   background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, .5) 50%,
+    rgba(255, 255, 255, 0) 60%
+  ) oklch(0.8 0 0 / 0.4);
+  background-size: 200% 100%;
+  background-position-x: 180%;
+  animation: 1s loading ease-in-out infinite;
+
+}
+
+@keyframes loading {
+  to {
+    background-position-x: -20%;
+  }
+}
+
+.skeleton-parrent{
+  line-height: var(--gap-x05); 
+  overflow: hidden;
+}
+
+.unstyle-button{
+  background: none;
+  border: none;
+  box-shadow: none;
+  color:oklch(var(--gray-95) / 1);
+  cursor: pointer;
+}
+
+.hint{
+  border: 1px solid oklch(100% 0 0 /0.0);
+  opacity: 0.6;
+  font-size:var(--small-font);
+  line-height: var(--gap-x04); 
+  font-weight: 300; 
+}
+
+.flex-center-childs{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto
+}

@@ -4,58 +4,70 @@ import Characters from '../components/Characters.astro';
 import ToggleGroup from '../components/ToggleGroup.astro'; 
 ---
 
-  <div class="card-bg"> </div>
-   <Tabs name="pass" tab1="random" tab2="manual" content1="crandom" content2="cmanual">
+<div class="card-bg"> </div>
+<Tabs name="pass" tab1="random" tab2="manual" content1="crandom" content2="cmanual">
 
-      <fragment slot="tab1">
-       <Characters/>
-       <div style="margin-top:var(--gap);">
-         <ToggleGroup/>
-       </div>
-       
-
-        <div class="flex-center-childs" style="overflow: hidden; position: relative;" >
-          <button  id = "gp" class="not-prose copy" style="
-          margin-top: var(--gap-x04); margin-bottom: var(--gap-x04); line-height: var(--gap-x05);">
-            <div class = "skeleton" style="width:15ch"> </div> 
-          </button>
-
-          <button  id = "redo" class=" not-prose redo_container" style="
-            font-size:var(--big-font); font-weight: 300; 
-            margin-top: var(--gap-x04); margin-bottom: var(--gap-x04);">↻
-          </button> 
-          <p id="ttc" class="hint" style="
-            margin-top: var(--gap-x04); margin-bottom: var(--gap-x04);
-            position: absolute;
-            width: 18ch;
-            right: calc(50% - 9ch );
-            text-align: center;
-            top : 5.5ch;"> tap to copy </p>
-        </div>
-      </fragment>
+  <fragment slot="tab1">
+    <Characters />
+    <div style="margin-top:var(--gap);">
+      <ToggleGroup />
+    </div>
 
 
+    <div class="flex-center-childs" style="overflow: hidden; position: relative;">
+      <button id="gp" class="not-prose copy" style="
+        margin-top: var(--gap-x04); margin-bottom: var(--gap-x04); line-height: var(--gap-x05);">
+        <div class="skeleton" style="width:15ch"> </div>
+      </button>
 
-      <fragment slot="tab2">
-        <div class="flex prose" style="margin:var(--gap-x04) 0">
-          <form autocomplete="off">
-            <input id="mPassword" type="text" style="
-            margin-bottom: var(--gap);" placeholder="Password" >
-          </form>
-          <button id="copyMPassword" 
-          style="margin-bottom:var(--gap);" disabled> Copy </button> 
-        </div>
-      </fragment>
+      <button id="redo" class=" not-prose redo_container" style="
+          font-size:var(--big-font); font-weight: 300; 
+          margin-top: var(--gap-x04); margin-bottom: var(--gap-x04);">↻
+      </button>
+      <p id="ttc" class="hint" style="
+          margin-top: var(--gap-x04); margin-bottom: var(--gap-x04);
+          position: absolute;
+          width: 18ch;
+          right: calc(50% - 9ch );
+          text-align: center;
+          line-height: var(--gap-x06);
+          top : calc(var(--gap-x07) * var(--x02));"> tap to copy </p>
+    </div>
+  </fragment>
 
-   </Tabs>
 
-  <div style=" margin-top:var(--gap-x04); 
-  margin-bottom: var(--gap); overflow: hidden">
-    <div id = "gu" class="skeleton-parrent">  <div style="width:15ch;" class = "skeleton"> </div> </div>
-    <p id="box"></p>
-    <div id = "s1" class="skeleton-parrent">  <div style="width:80% ;" class = "skeleton"> </div> </div>
-    <div id = "s2" class="skeleton-parrent">  <div style="width:65% ;" class = "skeleton"> </div> </div>
+  <fragment slot="tab2">
+    <div class="flex prose" style="
+        display: flex;
+        justify-content: space-between;
+        margin:var(--gap-x04) 0">
+      <form autocomplete="off">
+        <input id="mPassword" type="text" style="
+          margin-bottom: var(--gap);" placeholder="Password">
+      </form>
+      <button id="copyMPassword" style="margin-bottom:var(--gap);" disabled> Copy </button>
+    </div>
+  </fragment>
+
+</Tabs>
+
+<div style=" margin-top:var(--gap-x04); margin-bottom: var(--gap); overflow: hidden">
+
+  <div id="gu" class="skeleton-parrent">
+    <div style="width:15ch;" class="skeleton"> </div>
   </div>
+
+  <p id="box"></p>
+
+  <div id="s1" class="skeleton-parrent">
+    <div style="width:80% ;" class="skeleton"> </div>
+  </div>
+  
+  <div id="s2" class="skeleton-parrent">
+    <div style="width:65% ;" class="skeleton"> </div>
+  </div>
+
+</div>
 
 
 <style is:global>
@@ -77,14 +89,6 @@ import ToggleGroup from '../components/ToggleGroup.astro';
 :root:has(#manual:checked) {
   #cmanual { display: block;} 
   #pass { transform: translate3d(5ch, 0, 0);}
-}
-
-.flex-center-childs{
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-
 }
 
 .copy{
@@ -116,13 +120,6 @@ import ToggleGroup from '../components/ToggleGroup.astro';
 .copy:hover{
   border: 1px solid oklch(var(--gray-25) / 1);
   border-radius: var(--radius-a);
-}
-
-.hint{
-  border: 1px solid oklch(100% 0 0 /0.0);
-  opacity: 0.6;
-  font-size:var(--small-font); 
-  font-weight: 300; 
 }
 
 #box {

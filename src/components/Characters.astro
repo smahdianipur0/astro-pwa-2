@@ -1,53 +1,58 @@
-<div class="flex" style="margin-top: var(--gap-x04); margin-bottom: var(--gap-x04);">
+<div class="flex" style="
+	display: flex;
+	justify-content: space-between;
+	margin-top: var(--gap-x04); 
+	margin-bottom: var(--gap-x04);">
 
-	<label for="char_input" style="line-height: var(--gap-x04); 
+
+  <label for="char_input" style="
+    line-height: var(--gap-x04); 
 	padding:var(--default-padding);
-	padding-left:0;">Characters:</label>	
+	padding-left:0;">Characters:</label>
 
-		<div class="prose" style=" display: flex; gap: 0;">
+  <div class="prose" style=" display: flex; gap: 0;">
 
-			<select 
-			id="char_input"
-			class="number-input"
-			name="chars"
-			style="width: calc( var(--gap-x06) * 2);
-			margin-right: var(--gap); 
-			padding-left:var(--gap-xs); 
-			padding-right:var(--gap-xs);" >
-				<option value="12"> 12 </option>
-				<option value="13"> 13 </option>
-				<option value="14"> 14 </option>
-				<option value="15"> 15 </option>
-				<option value="16" selected > 16 </option>
-				<option value="17"> 17 </option>
-				<option value="18"> 18 </option>
-				<option value="19"> 19 </option>
-				<option value="20"> 20 </option>
-			</select>
+    <select id="char_input" class="number-input" name="chars" style="
+		width: calc( var(--gap-x06) * 2);
+		margin-right: var(--gap); 
+		padding-left:var(--gap-xs); 
+		padding-right:var(--gap-xs);">
+	  <option value="12"> 12 </option>
+	  <option value="13"> 13 </option>
+	  <option value="14"> 14 </option>
+	  <option value="15"> 15 </option>
+	  <option value="16" selected> 16 </option>
+	  <option value="17"> 17 </option>
+	  <option value="18"> 18 </option>
+	  <option value="19"> 19 </option>
+	  <option value="20"> 20 </option>
+    </select>
 
-			
-			
-			<button id="minus_chars" class="not-prose char-button"
-			style="	border-top-right-radius: 0; border-bottom-right-radius: 0;">
-			<svg id="minus_chars_icon" style="padding:3px;" width="24" height="24" fill="none" viewBox="0 0 24 24" ><path class= "char-icon" d="M3.997 13H20a1 1 0 1 0 0-2H3.997a1 1 0 1 0 0 2Z" fill="#ffffff"/></svg>
-			</button>
 
-			<button id="plus_chars" class="not-prose char-button"
-			style="	border-top-left-radius: 0; border-bottom-left-radius: 0;">
-			<svg id="plus_chars_icon" style="padding:3px;" width="24" height="24" fill="none" viewBox="0 0 24 24" ><path class= "char-icon" d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" /></svg>
-			</button>
-		</div>
+    <button id="minus_chars" class="not-prose char-button"
+      style="	border-top-right-radius: 0; border-bottom-right-radius: 0;">
+      <svg id="minus_chars_icon" style="padding:3px;" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path class="char-icon" d="M3.997 13H20a1 1 0 1 0 0-2H3.997a1 1 0 1 0 0 2Z" fill="#ffffff" />
+      </svg>
+    </button>
 
-	</div>
+    <button id="plus_chars" class="not-prose char-button"
+      style="	border-top-left-radius: 0; border-bottom-left-radius: 0;">
+      <svg id="plus_chars_icon" style="padding:3px;" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path class="char-icon" d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" />
+      </svg>
+    </button>
+  </div>
+
+</div>
 
 <style>
-
 
 .char-button{
 	width: var(--gap-x06);
 	display: flex;
-  flex-wrap: wrap;
-  place-content: center;
+	flex-wrap: wrap;
+	place-content: center;
 	border: 1px solid transparent;
 	border-radius: var(--radius-a);
 	color: oklch(var(--gray-95) / 1);
@@ -64,9 +69,4 @@
 	fill: oklch(var(--gray-95) / 1);
 }
 
-
 </style>
-
-
-
-

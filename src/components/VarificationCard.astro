@@ -6,22 +6,20 @@ display: flex;
 flex-direction: row;
 align-items: flex-start;">
 
-<input id="use_varif" type="checkbox" style=" 
-height: var(--gap-x05); margin: 0 1ch 0 0;" disabled >
+  <input id="use_varif" type="checkbox" style=" 
+height: var(--gap-x05); margin: 0 1ch 0 0;" disabled>
 
-<label for="use_varif" id="use_varif_l" style="opacity: 0.6; ">
-Use plain text as key for varification code.</label>
+  <label for="use_varif" id="use_varif_l" style="opacity: 0.6; ">
+    Use plain text as key for varification code.</label>
 
 </div>
 
 <div class="varif_detail_cl">
- <VarificationComponent 
-	varification_detail = "varif_detail"
-	varification_detail_result = "varif_detail_re"
-	varification_hint = "varif_hint"
-	varification_copy = "varif_copy_hint"/>
+  <VarificationComponent varification_detail="varif_detail" varification_detail_result="varif_detail_re"
+    varification_hint="varif_hint" varification_copy="varif_copy_hint" />
 
 </div>
+
 <script>
 
 document.getElementById("encryption")!.addEventListener("change",(e)=>{
