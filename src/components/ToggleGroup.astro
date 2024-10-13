@@ -22,67 +22,45 @@
 
 <style is:global>
  
-
-
 :root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter,
 :root:not(:has(#add_number:checked)) #l_add_number ,
 :root:not(:has(#add_special_cha:checked)) #l_add_special_cha{
-	background: oklch(var(--gray-15) / 1);
-	color:oklch(var(--gray-95) / 0.6);
-		 box-shadow: 
-  1px 1.5px 1.5px oklch(var(--gray-25) / 0.6) ,
-  1px 2.5px 0px oklch(var(--gray-15) / 0.6 ) ;
+  background: oklch(var(--gray-15) / 0.3);
+  color:oklch(var(--gray-95) / 0.6);
+  box-shadow: none;
 }
 
 :root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter::before ,
 :root:not(:has(#add_number:checked))  #l_add_number::before ,
 :root:not(:has(#add_special_cha:checked)) #l_add_special_cha::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	background-color: transparent;
+  content: "";
+  background: linear-gradient(to bottom, oklch(45% 0 0 / 0.4) 0%, oklch(100% 0 0 / 0) 180%) border-box;
 }
 
 :root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter::after ,
 :root:not(:has(#add_number:checked))  #l_add_number::after ,
 :root:not(:has(#add_special_cha:checked)) #l_add_special_cha::after {
   content: "";
-  z-index: var(--z-layer-middle);
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg,
-   oklch(0% 0 0 / 0.05) 0%, 
-   oklch(40% 0 0 / 0) 8%, 
-   oklch(40% 0 0 / 0) 97%,
-   oklch(100% 0 0 / 0.1) 100%);
+  -webkit-mask: none;
+  background: none;
 }
 
-.first-btn{
+.first-btn,.first-btn::before, .first-btn::after{
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
+  border-right: 0;
 }
 
-.first-btn::after{
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-}
-
-.last-btn{
+.last-btn,.last-btn::before, .last-btn::after{
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
+  border-left: 0;
 }
 
-.last-btn::after{
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;;
-}
-
-.middle-btn{
+.middle-btn, .middle-btn::before, .middle-btn::after{
 	border-radius: 0;
-}
-
-.middle-btn::after{
-	border-radius: 0;
+  border-right: 0;
+  border-left: 0;
 }
 
 :root:has(#capitalize_first_letter:focus-visible) #l_capitalize_first_letter,

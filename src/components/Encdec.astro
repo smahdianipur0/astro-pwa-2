@@ -144,7 +144,8 @@ import Tabs from '../components/Tabs.astro';
 #l_show_e::after{
 	content: "Show QR Code"; 
 	padding:var(--default-padding);
-	mix-blend-mode: normal;
+	-webkit-mask: none;
+   background: none;
 }
 
 :root:has(#show_e:checked) #l_show_e::after{
@@ -154,7 +155,8 @@ import Tabs from '../components/Tabs.astro';
 #l_show_d::after{
 	content: "Show QR Code"; 
 	padding:var(--default-padding);
-	mix-blend-mode: normal;	
+	-webkit-mask: none;
+   background: none;
 }
 
 :root:has(#show_d:checked) #l_show_d::after{
@@ -163,31 +165,15 @@ import Tabs from '../components/Tabs.astro';
 
 #l_show_e.disabled, 
 #l_show_d.disabled{
-	background: oklch(var(--gray-15) / 1);
-	color:oklch(var(--gray-95) / 0.6);
-		 box-shadow: 
-  1px 1.5px 1.5px oklch(var(--gray-25) / 0.6) ,
-  1px 2.5px 0px oklch(var(--gray-15) / 0.6 ) ;
+  background: oklch(var(--gray-15) / 0.3);
+  color:oklch(var(--gray-95) / 0.6);
+  box-shadow: none;
 }
-
 
 #l_show_e.disabled::before, 
 #l_show_d.disabled::before{
-	position: absolute;
-	inset: 0;
-	background-color: transparent;
-}
-
-#l_show_e.disabled::after, 
-#l_show_d.disabled::after{
-  z-index: var(--z-layer-middle);
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg,
-   oklch(0% 0 0 / 0.05) 0%, 
-   oklch(40% 0 0 / 0) 8%, 
-   oklch(40% 0 0 / 0) 97%,
-   oklch(100% 0 0 / 0.1) 100%);
+  content: "";
+  background: linear-gradient(to bottom, oklch(45% 0 0 / 0.4) 0%, oklch(100% 0 0 / 0) 180%) ;
 }
 
 
