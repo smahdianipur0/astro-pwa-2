@@ -10,7 +10,7 @@
 
 
   color-scheme: only dark;
-  --primary-75:78% 0.1 268.67 ;
+  --primary-75:75% 0.12 268.67 ;
   --gray-10:0% 0 0 ;
   --gray-15:22% 0 0 ;
   --gray-25:35% 0 0 ;
@@ -27,7 +27,7 @@
 
 :root:has(#theme-toggle:checked) {
   color-scheme: only light;
-  --primary-75:55% 0.21 268.67 ;
+  --primary-75:45% 0.24 268.67 ;
   --gray-10:100% 0 0 ;
   --gray-15:95% 0 0 ;
   --gray-25:90% 0 0 ;
@@ -47,7 +47,7 @@
 
   :root:has(#theme-toggle:checked) {
   color-scheme: only dark;
-  --primary-75:78% 0.1 268.67 ;
+  --primary-75:75% 0.12 268.67 ;
   --gray-10:0% 0 0 ;
   --gray-15:22% 0 0 ;
   --gray-25:35% 0 0 ;
@@ -63,7 +63,7 @@
 
   :root{ 
   color-scheme: only light;
-  --primary-75:55% 0.21 268.67 ; 
+  --primary-75:45% 0.24 268.67 ; 
   --gray-10:100% 0 0 ;
   --gray-15:95% 0 0 ;
   --gray-25:85% 0 0 ;
