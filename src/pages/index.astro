@@ -61,64 +61,6 @@ import About from '../components/About.astro';
 
 <script src="../components/signals.ts"></script>
 
-<script>
-	
-const params: URLSearchParams = new URLSearchParams(window.location.search);
-
-function updateURL(): void {
-	params.set(
-		"theme",
-		(document.getElementById("theme-toggle")! as HTMLInputElement).checked.toString(),
-	);
-	window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
-}
-
-function getCheckboxState(id: string): boolean {
-	return params.get(id) === "true";
-}
-
-const checkboxElementOne: HTMLInputElement = document.getElementById(
-	"theme-toggle",
-) as HTMLInputElement;
-checkboxElementOne.checked = getCheckboxState("theme");
-checkboxElementOne.addEventListener("change", updateURL);
-
-
-
-
-function updateURLForRadios(): void {
-	if (document.querySelector('input[name="tab"]:checked')) {
-		params.set(
-			"tab",
-			(document.querySelector('input[name="tab"]:checked') as HTMLInputElement).id,
-		);
-	}
-
-	window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
-}
-
-function setInitialRadioStates(): void {
-	const tabValue = params.get("tab");
-
-	if (tabValue) {
-		const tabRadioToCheck = document.querySelector(
-			`input[name="tab"][id="${tabValue}"]`,
-		) as HTMLInputElement;
-		if (tabRadioToCheck) {
-			tabRadioToCheck.checked = true;
-		}
-	}
-}
-
-setInitialRadioStates();
-
-const allTabRadios = document.querySelectorAll('input[name="tab"]');
-allTabRadios.forEach((radio) => {
-	radio.addEventListener("change", updateURLForRadios);
-});
-
-</script>
-
 <style>
 	
 .grid-layout {

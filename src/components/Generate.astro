@@ -37,14 +37,13 @@ import ToggleGroup from '../components/ToggleGroup.astro';
 
 
   <fragment slot="tab2">
-    <div class="flex prose" style="
+    <div class=" prose" style="
         display: flex;
+        gap: var(--gap);
         justify-content: space-between;
         margin:var(--gap-x04) 0">
-      <form autocomplete="off">
-        <input id="mPassword" type="text" style="
+        <input autocomplete="off" id="mPassword" type="text" style="
           margin-bottom: var(--gap);" placeholder="Password">
-      </form>
       <button id="copyMPassword" style="margin-bottom:var(--gap);" disabled> Copy </button>
     </div>
   </fragment>

@@ -1,44 +1,11 @@
+---
+import ThemeToggle from '../components/ThemeToggle.astro';
+---
+
 </br>
 </br>
 </br>
-<input style="  
-appearance: none;
--webkit-appearance: none;
-cursor: pointer;
-background-color: transparent;
-margin: var(--gap);"
-aria-label="theme toggle" id="theme-toggle"  type="checkbox" 
-id="theme-toggle" name="theme" > 
-
-<style>
-
-#theme-toggle:before {
-  color:oklch(var(--gray-95) / 1);
-  content: 'Change Theme: ☀️';
-  display: block;
-  width: 20ch; 
-}
-
-	
-
-:root:has(#theme-toggle:checked) #theme-toggle:before {
-  content: 'Change Theme: 🌙'; 
-}
-
-@media (prefers-color-scheme:light) {
-
-  #theme-toggle:before {
-    color:oklch(var(--gray-95) / 1);
-    content: 'Change Theme: 🌙';
-    display: block;
-    width: 20ch;
-  }
-
-  :root:has(#theme-toggle:checked) #theme-toggle:before {
-    content: 'Change Theme: ☀️'; 
-  }
-
-}
+<ThemeToggle/>
+ 
 
 
-</style>

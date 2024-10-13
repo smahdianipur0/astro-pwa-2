@@ -42,6 +42,44 @@
 
 </div>
 
+<script>
+  
+const params: URLSearchParams = new URLSearchParams(window.location.search);
+
+
+function updateURLForRadios(): void {
+  if (document.querySelector('input[name="tab"]:checked')) {
+    params.set(
+      "tab",
+      (document.querySelector('input[name="tab"]:checked') as HTMLInputElement).id,
+    );
+  }
+
+  window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
+}
+
+function setInitialRadioStates(): void {
+  const tabValue = params.get("tab");
+
+  if (tabValue) {
+    const tabRadioToCheck = document.querySelector(
+      `input[name="tab"][id="${tabValue}"]`,
+    ) as HTMLInputElement;
+    if (tabRadioToCheck) {
+      tabRadioToCheck.checked = true;
+    }
+  }
+}
+
+setInitialRadioStates();
+
+const allTabRadios = document.querySelectorAll('input[name="tab"]');
+allTabRadios.forEach((radio) => {
+  radio.addEventListener("change", updateURLForRadios);
+});
+
+</script>
+
 <style is:global>
 
 

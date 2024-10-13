@@ -1,0 +1,66 @@
+<input style="  
+appearance: none;
+-webkit-appearance: none;
+cursor: pointer;
+background-color: transparent;
+margin: var(--gap);"
+aria-label="theme toggle" id="theme-toggle"  type="checkbox" 
+id="theme-toggle" name="theme" > 
+
+
+<script>
+  
+const params: URLSearchParams = new URLSearchParams(window.location.search);
+
+function updateURL(): void {
+  params.set(
+    "theme",
+    (document.getElementById("theme-toggle")! as HTMLInputElement).checked.toString(),
+  );
+  window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
+}
+
+function getCheckboxState(id: string): boolean {
+  return params.get(id) === "true";
+}
+
+const checkboxElementOne: HTMLInputElement = document.getElementById(
+  "theme-toggle",
+) as HTMLInputElement;
+checkboxElementOne.checked = getCheckboxState("theme");
+checkboxElementOne.addEventListener("change", updateURL);
+
+</script>
+
+
+<style>
+
+#theme-toggle:before {
+  color:oklch(var(--gray-95) / 1);
+  content: 'Change Theme: ☀️';
+  display: block;
+  width: 20ch; 
+}
+
+	
+
+:root:has(#theme-toggle:checked) #theme-toggle:before {
+  content: 'Change Theme: 🌙'; 
+}
+
+@media (prefers-color-scheme:light) {
+
+  #theme-toggle:before {
+    color:oklch(var(--gray-95) / 1);
+    content: 'Change Theme: 🌙';
+    display: block;
+    width: 20ch;
+  }
+
+  :root:has(#theme-toggle:checked) #theme-toggle:before {
+    content: 'Change Theme: ☀️'; 
+  }
+
+}
+
+</style>
