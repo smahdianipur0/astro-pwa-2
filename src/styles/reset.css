@@ -114,6 +114,10 @@ select {
   text-transform: none
 }
 
+select{
+  -webkit-appearance: none;
+}
+
 button,
 input:where([type=button]),
 input:where([type=reset]),
