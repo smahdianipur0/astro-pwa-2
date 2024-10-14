@@ -108,11 +108,9 @@
   padding-right:var(--gap-xs);
   border-radius: var(--radius-a);
   color: oklch(var(--gray-95) );
-  background-color: oklch(var(--gray-25) / 0.8);
+  background-color: oklch(var(--gray-25));
   text-align: center;
   position: relative;
-  box-shadow: inset -1px -4px 1px 3px oklch(var(--gray-25) / 0.8), 
-               inset 0 0 0 1px oklch(100% 0 0 / 0.2);
 }
 
 
