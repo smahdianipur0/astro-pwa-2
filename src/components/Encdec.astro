@@ -168,12 +168,13 @@ import Tabs from '../components/Tabs.astro';
   background: oklch(var(--gray-15) / 0.3);
   color:oklch(var(--gray-95) / 0.6);
   box-shadow: none;
+  cursor: not-allowed;
 }
 
 #l_show_e.disabled::before, 
 #l_show_d.disabled::before{
   content: "";
-  background: linear-gradient(to bottom, oklch(45% 0 0 / 0.4) 0%, oklch(100% 0 0 / 0) 180%) ;
+  background: linear-gradient(to bottom, oklch(45% 0 0 / 0.22) 0%, oklch(100% 0 0 / 0) 180%) ;
 }
 
 

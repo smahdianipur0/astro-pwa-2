@@ -2,7 +2,8 @@
 	display: flex;
 	justify-content: space-between;
 	margin-top: var(--gap-x04); 
-	margin-bottom: var(--gap-x04);">
+	margin-bottom: var(--gap-x04);
+	">
 
 
   <label for="char_input" style="
@@ -14,9 +15,7 @@
 
     <select id="char_input" class="number-input" name="chars" style="
 		width: calc( var(--gap-x06) * 2);
-		margin-right: var(--gap); 
-		padding-left:var(--gap-xs); 
-		padding-right:var(--gap-xs);">
+		margin-right: var(--gap); ">
 	  <option value="12"> 12 </option>
 	  <option value="13"> 13 </option>
 	  <option value="14"> 14 </option>
@@ -27,7 +26,6 @@
 	  <option value="19"> 19 </option>
 	  <option value="20"> 20 </option>
     </select>
-
 
     <button aria-label="Increase Word Count" id="minus_chars" class="not-prose char-button"
       style="	border-top-right-radius: 0; border-bottom-right-radius: 0;">
@@ -53,12 +51,13 @@
 	display: flex;
 	flex-wrap: wrap;
 	place-content: center;
-	border: 1px solid transparent;
 	border-radius: var(--radius-a);
 	color: oklch(var(--gray-95) / 1);
-	background-color: oklch(var(--gray-25) / 0.8);
+	background-color: oklch(var(--gray-25) / 1);
 	text-align: center;
 	margin: 0;
+	box-shadow: inset -1px -3px 1px 0px oklch(var(--gray-25) / .8), 
+							inset 0 0 0 1px lab(100% 0 0 / .15);
 }
 
 .char-button:disabled{
