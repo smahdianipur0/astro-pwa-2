@@ -19,20 +19,12 @@ const [mpassword, setMPassword]     = createSignal("");
 const [currentPass, setCurrentPass] = createSignal("");
 
 const [length, setLength]                               = createSignal(16);
-
-
-
 const [addSpecialCha, setAddSpecialCha]                 = createSignal(true);
 const [addNumber, setAddNumber]                         = createSignal(true);
 const [capitalizeFirstLetter, setCapitalizeFirstLetter] = createSignal(true);
 
 
 document.getElementById("generate")!.addEventListener("input",(e)=>{
-   // if((e!.target as HTMLInputElement).matches("#rangeInput")){
-   //    const value = (e!.target as HTMLInputElement).value;
-   //    setLength(Number(value));      
-   // }
-
    if((e!.target as HTMLInputElement).matches("#char_input")){
       const value = (e!.target as HTMLInputElement).value;
       setLength(Number(value));

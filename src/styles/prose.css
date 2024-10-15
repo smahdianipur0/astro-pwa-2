@@ -132,9 +132,6 @@
   display: inline-block;
   border: 1px solid transparent;
   border-radius: var(--radius-a);
-  border-bottom: 1px solid oklch(var(--primary) );
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
   color: oklch(var(--gray-95) / 1);
   background-color: oklch(var(--gray-10) / 0.45);
   line-height: var(--gap-x04);
