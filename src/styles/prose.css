@@ -11,16 +11,16 @@
   cursor: pointer;
   border-radius: var(--radius-a);
   color: oklch(var(--gray-95));
-  background: oklch(var(--primary) / 0.1);
+  background: oklch(var(--primary) / 0.15);
   border-width: 0;
   position: relative;
-  box-shadow: inset 0 -12px 10px -8px oklch(var(--primary) / 0.28);
+  box-shadow: inset 0 -12px 10px -8px oklch(var(--primary) / 0.35);
   transition: 0.2s;
 }
 
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *)):hover, .prose-btn:hover {
-  background: oklch(var(--primary) / 0.15);
-  box-shadow: inset 0 -12px 10px -8px oklch(var(--primary) / 0.35);
+  background: oklch(var(--primary) / 0.20);
+  box-shadow: inset 0 -12px 10px -8px oklch(var(--primary) / 0.40);
 }
 
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *)):active, .prose-btn:active {
@@ -83,7 +83,7 @@
     -webkit-mask-composite: destination-out;
     mask-composite: exclude;
     pointer-events: none;
-    background: radial-gradient(42.86% 42.86% at 50.55% -0%, oklch(100% 0 0 / 0.40) 0%, oklch(100% 0 0 / 0) 100%) border-box;
+    background: radial-gradient(42.86% 42.86% at 50.55% -0%, oklch(100% 0 0 / 0.30) 0%, oklch(100% 0 0 / 0) 100%) border-box;
 }
 
 .prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *))::after, .prose-btn:disabled::after {
