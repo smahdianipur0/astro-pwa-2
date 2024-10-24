@@ -146,16 +146,22 @@
 
 .prose :where(input[type="text"], input[type="url"], input[type="password"], input[type="email"]):not(:where([class~=not-prose],[class~=not-prose] *)):focus,
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)):focus {
-  border: 1px solid oklch(var(--primary) );
   border-radius: var(--radius-a);
   background-color:oklch(var(--gray-10) / 0.75); 
   outline: none;
+  background: linear-gradient( oklch(var(--gray-10)), oklch(var(--gray-10))) padding-box, 
+      radial-gradient(60% 90% at 50% 60%,
+        oklch(100% 0 0 / 0.9) 0%,
+        oklch(var(--primary) / 0.8) 60%);
+
 }
 
 .prose :where(input[type="text"], input[type="url"], input[type="password"], input[type="email"]):not(:where([class~=not-prose],[class~=not-prose] *)):read-only,
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)):read-only{
   cursor: default;
   background-color: oklch(var(--gray-10) / 0.25);
+  background: oklch(var(--gray-10) / 0.25);
+
   color: oklch(var(--gray-85) );
   box-shadow: none;
   border: 1px solid transparent;

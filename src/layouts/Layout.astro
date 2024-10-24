@@ -20,8 +20,8 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="gives you the tools to create secure passwords and encrypt them with AES without relying on anyone else" />
     <meta name="color-scheme" content="dark light" />
-    <meta name="theme-color" content="#090909" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#f8f8f8" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
     <meta name="apple-touch-fullscreen" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="KeyPass" />
@@ -72,7 +72,7 @@ const { title } = Astro.props;
 
 	</head>
   
-  <body style="background: var(--bg-gray-15);
+  <body style="background: oklch(var(--gray-10));
   border: .1px solid #0000;
   min-height: 100vh;
   transition: color .2s ease-out">

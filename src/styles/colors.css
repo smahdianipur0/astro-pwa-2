@@ -18,7 +18,6 @@
   --gray-85:85% 0 0;
   --gray-95:100% 0 0 ;
   --primary-shadow: oklch(37% 0.17 268.67);
-  --bg-gray-15: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%) ;
   --tab-indicator-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.5) 0%, oklch(8.5% 0 0 / 0.4) 65%, oklch(8.5% 0 0 / 0.35) 100%);
   --border: linear-gradient(135deg, oklch(28% 0 0) 0%, oklch(40% 0 0) 25%, oklch(32% 0 0) 100%);
 }
@@ -34,7 +33,6 @@
   --gray-85:22% 0 0;
   --gray-95:0% 0 0 ;
   --primary-shadow: oklch(60% 0.16 268.67);
-  --bg-gray-15:linear-gradient(135deg, oklch(100% 0 0) 0%, oklch(98% 0 0) 35%, oklch(96% 0 0) 100%) ;
   --tab-indicator-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.35) 0%, oklch(100% 0 0 / 0.4) 65%, oklch(100% 0 0 / 0.5) 100%);
   --border: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(88% 0 0) 25%, oklch(94% 0 0) 100%);
 }
@@ -53,7 +51,6 @@
   --gray-85:85% 0 0;
   --gray-95:100% 0 0 ;
   --primary-shadow: oklch(37% 0.17 268.67);
-  --bg-gray-15: linear-gradient(135deg, oklch(15% 0 0) 0%, oklch(18% 0 0) 35%, oklch(12% 0 0) 100%) ;
   --tab-indicator-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.5) 0%, oklch(8.5% 0 0 / 0.4) 65%, oklch(8.5% 0 0 / 0.35) 100%);
   --border: linear-gradient(135deg, oklch(28% 0 0) 0%, oklch(40% 0 0) 25%, oklch(32% 0 0) 100%);
   }
@@ -68,7 +65,6 @@
   --gray-85:22% 0 0;
   --gray-95:0% 0 0 ;
   --primary-shadow: oklch(60% 0.16 268.67);
-  --bg-gray-15:linear-gradient(135deg, oklch(100% 0 0) 0%, oklch(98% 0 0) 35%, oklch(96% 0 0) 100%) ;
   --tab-indicator-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.35) 0%, oklch(100% 0 0 / 0.4) 65%, oklch(100% 0 0 / 0.5) 100%);
   --border: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(94% 0 0) 25%, oklch(90% 0 0) 100%);
 
