@@ -12,9 +12,12 @@
   "dependencies": {
     "@astrojs/check": "^0.9.1",
     "@astrojs/solid-js": "^4.4.0",
+    "@corvu/drawer": "^0.2.2",
+    "@surrealdb/wasm": "^1.0.2",
     "astro": "^4.13.1",
     "qrcode": "^1.5.3",
     "solid-js": "^1.8.17",
+    "surrealdb": "^1.1.0",
     "totp-generator": "^1.0.0",
     "typescript": "^5.4.5"
   },

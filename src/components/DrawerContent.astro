@@ -1,0 +1,208 @@
+---
+
+---
+<div style="display: flex; flex-direction: column; align-items: center; gap: var(--gap-x04); margin-inline: var(--gap-x04)">
+  <div style="display: flex; flex-direction: column; width: 100%; gap: var(--gap-x04)" class="input-group prose">
+    <input type="text" id="titleInput" placeholder="Enter title"/>
+    <input type="text" id="passwordInput" placeholder="Enter username" />
+    <button id="addEntryButton" disabled>Add Entry </button>
+  </div>
+
+  <div class="entries-list" id="entriesList"></div>
+</div>
+
+<script>
+import {
+	createPasswordEntry,
+	getAllPasswordEntries,
+	deletePasswordEntry,
+	type PasswordEntry,} from "../utils/surrealdb";
+import { waitForElement } from "../utils/waitForElement";
+import { createSignal, createEffect } from "solid-js";
+
+
+// signals
+const [entries, setEntries] = createSignal<PasswordEntry[]>([])
+const [newTitle, setNewTitle] = createSignal('')
+const [newPassword, setPassword] = createSignal('');
+
+
+// initialize entries
+(async () => {setEntries(await getAllPasswordEntries() ?? []);})();
+
+
+// await elements
+(async () => {
+	const inputGroup = (await waitForElement(".input-group")) as HTMLElement;
+	const entriesList = (await waitForElement("#entriesList")) as HTMLElement;
+
+    // render entries based on signal
+	createEffect(() => {
+		entriesList.innerHTML = "";
+		[...(entries() ?? [])].reverse().forEach((entry) => {
+			const entryElement = document.createElement("div");
+			entryElement.className = "entry-item";
+			entryElement.innerHTML = `
+            <div>
+                <p class="hint">${entry.title}</p>
+                <p>${entry.password}</p>
+            </div>
+			<div class="s-container">
+				<details name="delete">
+					<summary></summary>
+					<button class="delete-button" id="${entry.id?.id ?? ''}"> Delete</button>
+				</details>
+			</div>
+            
+            `;
+			entriesList.appendChild(entryElement);
+		});
+	});
+
+    // delete entry
+	entriesList.addEventListener("click", (e) => {
+		const deleteButton = (e!.target as HTMLInputElement).closest(".delete-button");
+		if (deleteButton) {
+			(async () => {
+				await deletePasswordEntry(deleteButton.id);
+				setEntries((await getAllPasswordEntries()) ?? []);
+			})();
+		}
+	});
+
+    // add entry
+	inputGroup.addEventListener("click", (e) => {
+		if ((e!.target as HTMLInputElement).matches("#addEntryButton")) {
+			(async () => {
+				await createPasswordEntry(newTitle(), newPassword());
+				setNewTitle("");
+				setPassword("");
+				setEntries((await getAllPasswordEntries()) ?? []);
+			})();
+		}
+	});
+
+    // bind input values to signals
+	inputGroup.addEventListener("input", (e) => {
+        if ((e!.target as HTMLInputElement).matches("#titleInput")){
+			setNewTitle((e!.target as HTMLInputElement).value);
+		} else if ((e!.target as HTMLInputElement).matches("#passwordInput")) {
+			setPassword((e!.target as HTMLInputElement).value);
+		}
+	});
+
+	// bind signals to input values
+	createEffect(() => {
+		(document.getElementById("titleInput")! as HTMLInputElement).value = newTitle();
+	});
+
+	createEffect(() => {
+		(document.getElementById("passwordInput")! as HTMLInputElement).value = newPassword();
+	});
+
+	// update add entry button state
+	createEffect(() => {
+		if (!newTitle() || !newPassword()) {
+			(document.getElementById("addEntryButton")! as HTMLButtonElement).disabled = true;
+		} else {
+			(document.getElementById("addEntryButton")! as HTMLButtonElement).disabled = false;
+		}
+	});
+
+})();
+
+</script> 
+
+
+<style is:global>
+  .entries-list{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+  
+  .entry-item{
+    display: flex;
+    place-content: space-between;
+    width: min(100%, 65ch);
+    background-color: oklch(var(--gray-15) / 1);
+    border-radius: 0;
+    padding: var(--default-padding);
+    margin: 0 1ch;
+  }
+
+  .entries-list > :first-child{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-top: 1ch;
+  }
+
+  .entries-list > :last-child{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-bottom: 1ch;
+  }
+
+  .entries-list > :not(:last-child){
+    border-bottom:1px solid oklch(var(--gray-25) / 1);
+  }
+
+  .s-container  {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  }
+details {
+  margin: 0;
+  margin-right: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+details summary::-webkit-details-marker {
+  display:none;
+}
+
+summary {
+  display: flex;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  min-width: max-content;
+  align-items: center;
+}
+
+@keyframes details-show {
+  from {
+    opacity:0;
+    transform: var(--details-translate, translateX(0.5em));
+  }
+}
+
+details[open] > *:not(summary) {
+  animation: details-show 150ms ease-in-out;
+}
+
+summary::before {
+  content: '⛌';
+  color: var(--danger);
+  font-size: var(--small-font);
+}
+
+details[open] > summary::before {
+  content: 'Cancel';
+  color: oklch(var(--gray-95) / 1);
+  font-size: var(--small-font);
+}
+
+.delete-button {
+  margin-inline: 1ch;
+  color: var(--danger);
+  font-size: var(--small-font);
+}
+
+
+</style>

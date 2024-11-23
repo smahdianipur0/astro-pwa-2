@@ -2,6 +2,8 @@
 import Tabs from '../components/Tabs.astro';
 import Characters from '../components/Characters.astro';
 import ToggleGroup from '../components/ToggleGroup.astro'; 
+import Drawer from '../components/Drawer.tsx';
+import DrawerContent from '../components/DrawerContent.astro';
 ---
 
 <div class="card-bg"> </div>
@@ -14,13 +16,16 @@ import ToggleGroup from '../components/ToggleGroup.astro';
     </div>
 
 
-    <div class="flex-center-childs" style="overflow: hidden; position: relative;">
-      <button id="gp" class="not-prose copy" style="
+    <div class="flex-center-childs not-prose" style="overflow: hidden; position: relative;">
+      <Drawer client:load>
+        <DrawerContent />
+      </Drawer>
+      <button id="gp" class=" copy" style="
         margin-top: var(--gap-x04); margin-bottom: var(--gap-x04); line-height: var(--gap-x05);">
         <div class="skeleton" style="width:15ch"> </div>
       </button>
 
-      <button id="redo" class=" not-prose redo_container" style="
+      <button id="redo" class="redo_container" style="
           font-size:var(--big-font); font-weight: 300; 
           margin-top: var(--gap-x04); margin-bottom: var(--gap-x04);">↻
       </button>
@@ -101,7 +106,7 @@ import ToggleGroup from '../components/ToggleGroup.astro';
 
 .redo_container{
   place-content: center;
-  border: 1px solid oklch(100% 0 0 /0.0);
+  border: 1px solid oklch(--gray-95 /0.0);
   border-radius: var(--radius-a);
   line-height: var(--gap-x05);
   position: absolute;

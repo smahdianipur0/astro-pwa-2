@@ -6,7 +6,8 @@
     oklch(63% 0.17 272) 65%,  
     oklch(60% 0.18 276) 100%);
   --rim-light:84% 0.078 273 ;
-  --success: oklch(65% 0.12 174);  
+  --success: oklch(65% 0.12 174);
+  --danger: oklch(62.31% 0.246 27);
 
 
   color-scheme: only dark;

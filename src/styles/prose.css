@@ -133,6 +133,7 @@
   border: 1px solid transparent;
   border-radius: var(--radius-a);
   color: oklch(var(--gray-95) / 1);
+  background:none;
   background-color: oklch(var(--gray-10) / 0.45);
   line-height: var(--gap-x04);
   box-shadow: inset 0px 1px 5px oklch(0% 0 0 / 0.1) , 
@@ -149,10 +150,7 @@
   border-radius: var(--radius-a);
   background-color:oklch(var(--gray-10) / 0.75); 
   outline: none;
-  background: linear-gradient( oklch(var(--gray-10)), oklch(var(--gray-10))) padding-box, 
-      radial-gradient(60% 90% at 50% 60%,
-        oklch(100% 0 0 / 0.9) 0%,
-        oklch(var(--primary) / 0.8) 60%);
+  border: 1px solid oklch(var(--primary));
 
 }
 
