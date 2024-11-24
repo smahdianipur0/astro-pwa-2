@@ -14,9 +14,9 @@ import { TOTP } from "totp-generator";
 
 
 
-const [password, setPassword]       = createSignal(generate_password(16, true, true, true));
-const [mpassword, setMPassword]     = createSignal("");
-const [currentPass, setCurrentPass] = createSignal("");
+export const [password, setPassword] = createSignal(generate_password(16, true, true, true));
+const [mpassword, setMPassword]      = createSignal("");
+const [currentPass, setCurrentPass]  = createSignal("");
 
 const [length, setLength]                               = createSignal(16);
 const [addSpecialCha, setAddSpecialCha]                 = createSignal(true);

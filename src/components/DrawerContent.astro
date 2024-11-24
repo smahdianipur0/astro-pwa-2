@@ -3,9 +3,14 @@
 ---
 <div style="display: flex; flex-direction: column; align-items: center; gap: var(--gap-x04); margin-inline: var(--gap-x04)">
   <div style="display: flex; flex-direction: column; width: 100%; gap: var(--gap-x04)" class="input-group prose">
-    <input type="text" id="titleInput" placeholder="Enter title"/>
-    <input type="text" id="passwordInput" placeholder="Enter username" />
-    <button id="addEntryButton" disabled>Add Entry </button>
+    <div style="display: flex; flex-direction: row;">
+      <input id="auto-pass-entry" type="checkbox" style="
+        margin-bottom: var(--gap-x04); margin-top: var(--gap-x04);"> 
+      <label style="place-self: center; margin-left: var(--gap-x02);" for="auto-pass-entry">Enter Password Manually</label>
+    </div>
+    <input type="text" id="passwordInput" placeholder="Password" readonly />
+    <input type="text" id="titleInput" placeholder="Title"/>
+    <button id="addEntryButton" disabled>Add</button>
   </div>
 
   <div class="entries-list" id="entriesList"></div>
@@ -18,48 +23,57 @@ import {
 	deletePasswordEntry,
 	type PasswordEntry,} from "../utils/surrealdb";
 import { waitForElement } from "../utils/waitForElement";
+import { password } from "./signals";
 import { createSignal, createEffect } from "solid-js";
 
 
 // signals
 const [entries, setEntries] = createSignal<PasswordEntry[]>([])
 const [newTitle, setNewTitle] = createSignal('')
-const [newPassword, setPassword] = createSignal('');
+const [newPassword, setNewPassword] = createSignal('');
 
 
 // initialize entries
 (async () => {setEntries(await getAllPasswordEntries() ?? []);})();
 
+createEffect(() => {
+  setNewPassword(password());
+});
+
+
 
 // await elements
 (async () => {
-	const inputGroup = (await waitForElement(".input-group")) as HTMLElement;
-	const entriesList = (await waitForElement("#entriesList")) as HTMLElement;
+	const inputGroup    = (await waitForElement(".input-group"))   as HTMLElement;
+	const entriesList   = (await waitForElement("#entriesList"))   as HTMLElement;
+	const passwordInput = (await waitForElement("#passwordInput")) as HTMLInputElement;
+	const titleInput    = (await waitForElement("#titleInput"))    as HTMLInputElement;
 
-    // render entries based on signal
+
+
+  // render entries based on signal
 	createEffect(() => {
 		entriesList.innerHTML = "";
 		[...(entries() ?? [])].reverse().forEach((entry) => {
 			const entryElement = document.createElement("div");
 			entryElement.className = "entry-item";
 			entryElement.innerHTML = `
-            <div>
-                <p class="hint">${entry.title}</p>
-                <p>${entry.password}</p>
-            </div>
-			<div class="s-container">
-				<details name="delete">
-					<summary></summary>
-					<button class="delete-button" id="${entry.id?.id ?? ''}"> Delete</button>
-				</details>
-			</div>
-            
-            `;
+        <div>
+          <p class="hint">${entry.title}</p>
+          <p>${entry.password}</p>
+        </div>
+        <div class="s-container">
+          <details name="delete">
+            <summary></summary>
+            <button class="delete-button" id="${entry.id?.id ?? ''}"> Delete</button>
+          </details>
+        </div>
+      `;
 			entriesList.appendChild(entryElement);
 		});
 	});
 
-    // delete entry
+  // delete entry
 	entriesList.addEventListener("click", (e) => {
 		const deleteButton = (e!.target as HTMLInputElement).closest(".delete-button");
 		if (deleteButton) {
@@ -70,35 +84,50 @@ const [newPassword, setPassword] = createSignal('');
 		}
 	});
 
-    // add entry
+  // add entry
 	inputGroup.addEventListener("click", (e) => {
 		if ((e!.target as HTMLInputElement).matches("#addEntryButton")) {
 			(async () => {
 				await createPasswordEntry(newTitle(), newPassword());
 				setNewTitle("");
-				setPassword("");
+				setNewPassword("");
 				setEntries((await getAllPasswordEntries()) ?? []);
 			})();
 		}
+
+    // auto-pass entry
+    if ((e!.target as HTMLInputElement).matches("#auto-pass-entry")) {
+      if ((e.target as HTMLInputElement).checked) {
+         (document.getElementById("passwordInput")! as HTMLInputElement).readOnly = false;
+         setNewPassword('');
+      } else {
+        (document.getElementById("passwordInput")! as HTMLInputElement).readOnly = true;
+        createEffect(() => {
+          setNewPassword(password());
+        });
+      }
+   }
 	});
 
-    // bind input values to signals
-	inputGroup.addEventListener("input", (e) => {
-        if ((e!.target as HTMLInputElement).matches("#titleInput")){
-			setNewTitle((e!.target as HTMLInputElement).value);
-		} else if ((e!.target as HTMLInputElement).matches("#passwordInput")) {
-			setPassword((e!.target as HTMLInputElement).value);
-		}
-	});
+  // bind input values to signals
+  inputGroup.addEventListener("input", (e) => {
+    if ((e!.target as HTMLInputElement).matches("#titleInput")) {
+      setNewTitle((e!.target as HTMLInputElement).value);
+    } else if ((e!.target as HTMLInputElement).matches("#passwordInput")) {
+      setNewPassword((e!.target as HTMLInputElement).value);
+    }
+  });
+
 
 	// bind signals to input values
 	createEffect(() => {
-		(document.getElementById("titleInput")! as HTMLInputElement).value = newTitle();
+		titleInput.value = newTitle();
 	});
 
 	createEffect(() => {
-		(document.getElementById("passwordInput")! as HTMLInputElement).value = newPassword();
+		passwordInput.value = newPassword();
 	});
+
 
 	// update add entry button state
 	createEffect(() => {
@@ -155,15 +184,12 @@ const [newPassword, setPassword] = createSignal('');
   }
 details {
   margin: 0;
-  margin-right: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
+  position: relative;
+  display: inline-block;
 }
 
 details summary::-webkit-details-marker {
-  display:none;
+  display: none;
 }
 
 summary {
@@ -187,9 +213,9 @@ details[open] > *:not(summary) {
 }
 
 summary::before {
-  content: '⛌';
+  content: '🗑️';
   color: var(--danger);
-  font-size: var(--small-font);
+  font-size: 100%;
 }
 
 details[open] > summary::before {
@@ -204,5 +230,12 @@ details[open] > summary::before {
   font-size: var(--small-font);
 }
 
+details[open] .delete-button {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 0.5ch;
+}
 
 </style>
