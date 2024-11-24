@@ -7,7 +7,7 @@ const DrawerComponent: ParentComponent = (props) => {
     <Drawer breakPoints={[0.75]}>
       {(drawerProps) => (
         <>
-          <Drawer.Trigger> ⋯ </Drawer.Trigger>
+          <Drawer.Trigger> 🞢 </Drawer.Trigger>
           <Drawer.Portal>
             <Drawer.Overlay
               style={{

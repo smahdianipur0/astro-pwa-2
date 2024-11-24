@@ -1,17 +1,28 @@
 ---
-
+import Card from "../components/Card.astro";
 ---
-<div style="display: flex; flex-direction: column; align-items: center; gap: var(--gap-x04); margin-inline: var(--gap-x04)">
-  <div style="display: flex; flex-direction: column; width: 100%; gap: var(--gap-x04)" class="input-group prose">
+
+<div style="
+display: flex; 
+flex-direction: column; 
+align-items: center; 
+gap: var(--gap-x04); 
+margin-inline: var(--gap-x04)
+height: 85%;
+overflow-y: scroll;
+padding-top: var(--gap-x02);">
+  <Card iden="entries-list-card">
+  <div style="display: flex; flex-direction: column; width: 100%;" class="input-group prose">
     <div style="display: flex; flex-direction: row;">
-      <input id="auto-pass-entry" type="checkbox" style="
-        margin-bottom: var(--gap-x04); margin-top: var(--gap-x04);"> 
-      <label style="place-self: center; margin-left: var(--gap-x02);" for="auto-pass-entry">Enter Password Manually</label>
+      <input id="auto-pass-entry" type="checkbox" style="margin-top: var(--gap-x04); margin-bottom: var(--gap-x04);"> 
+      <label style="place-self: center; margin-left: var(--gap);" for="auto-pass-entry">Enter Password Manually</label>
     </div>
     <input type="text" id="passwordInput" placeholder="Password" readonly />
-    <input type="text" id="titleInput" placeholder="Title"/>
-    <button id="addEntryButton" disabled>Add</button>
+    <input style="margin-top: var(--gap-x03);" type="text" id="titleInput" placeholder="Title"/>
+    <button style="margin-top: var(--gap-x03);"id="addEntryButton">Add</button>
   </div>
+  </Card>
+
 
   <div class="entries-list" id="entriesList"></div>
 </div>
@@ -24,6 +35,7 @@ import {
 	type PasswordEntry,} from "../utils/surrealdb";
 import { waitForElement } from "../utils/waitForElement";
 import { password } from "./signals";
+import {showToast} from "../components/signals.ts" 
 import { createSignal, createEffect } from "solid-js";
 
 
@@ -59,8 +71,8 @@ createEffect(() => {
 			entryElement.className = "entry-item";
 			entryElement.innerHTML = `
         <div>
-          <p class="hint">${entry.title}</p>
-          <p>${entry.password}</p>
+          <p class="hint">${entry.title || 'untitled'}</p>
+          <button class="copy-button" id="${entry.password ?? ''}">${entry.password}</button>
         </div>
         <div class="s-container">
           <details name="delete">
@@ -80,6 +92,14 @@ createEffect(() => {
 			(async () => {
 				await deletePasswordEntry(deleteButton.id);
 				setEntries((await getAllPasswordEntries()) ?? []);
+			})();
+		}
+    
+    const copyButton = (e!.target as HTMLInputElement).closest(".copy-button");
+		if (copyButton) {
+			(async () => {
+				navigator.clipboard.writeText(copyButton.id);  
+         showToast();
 			})();
 		}
 	});
@@ -131,7 +151,7 @@ createEffect(() => {
 
 	// update add entry button state
 	createEffect(() => {
-		if (!newTitle() || !newPassword()) {
+		if (!newPassword()) {
 			(document.getElementById("addEntryButton")! as HTMLButtonElement).disabled = true;
 		} else {
 			(document.getElementById("addEntryButton")! as HTMLButtonElement).disabled = false;
@@ -159,18 +179,28 @@ createEffect(() => {
     border-radius: 0;
     padding: var(--default-padding);
     margin: 0 1ch;
+    position: relative;
   }
 
   .entries-list > :first-child{
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: var(--radius-b);
+    border-top-right-radius: var(--radius-b);
     margin-top: 1ch;
   }
 
   .entries-list > :last-child{
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    margin-bottom: 1ch;
+    border-bottom-left-radius: var(--radius-b);
+    border-bottom-right-radius: var(--radius-b);
+    margin-bottom: var(--gap-x06);
+  }
+
+  .entries-list > :last-child::after{
+    content: 'tap on passwords to copy';
+    position: absolute;
+    bottom: 0;
+    transform: translateY(var(--gap-x06));
+    font-size: var(--small-font);
+    color: oklch(var(--gray-50) / 1);
   }
 
   .entries-list > :not(:last-child){
@@ -182,6 +212,7 @@ createEffect(() => {
   justify-content: flex-end;
   align-items: center;
   }
+
 details {
   margin: 0;
   position: relative;
@@ -203,13 +234,17 @@ summary {
 
 @keyframes details-show {
   from {
-    opacity:0;
-    transform: var(--details-translate, translateX(0.5em));
+    opacity: 0;
+    transform: translateY(-50%) translateX(0.5em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
   }
 }
 
 details[open] > *:not(summary) {
-  animation: details-show 150ms ease-in-out;
+  animation: details-show 150ms ease-in-out forwards;
 }
 
 summary::before {
@@ -224,6 +259,12 @@ details[open] > summary::before {
   font-size: var(--small-font);
 }
 
+details[open] > .s-container {
+  width: 10ch;
+}
+
+
+
 .delete-button {
   margin-inline: 1ch;
   color: var(--danger);
@@ -235,7 +276,7 @@ details[open] .delete-button {
   right: 100%;
   top: 50%;
   transform: translateY(-50%);
-  margin-right: 0.5ch;
+  margin-right: var(--gap);
 }
 
 </style>

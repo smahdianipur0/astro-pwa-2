@@ -1,20 +1,24 @@
 ---
 interface Props {
-	title: string;
+	title?: string;
 	iden: string;
 }
 
 const { title , iden } = Astro.props;
 ---
 
-<div class="prose" style="color: oklch(var(--gray-95) );" id={iden}>
-
-  <h2 style="
-  font-weight: 600;
-	margin-top: var(--gap);
-	margin-bottom: var(--gap);
-	text-align: center; ">
-    { title }</h2>
+<div class="prose" style="color: oklch(var(--gray-95) );
+width: -moz-available;
+width: -webkit-fill-available;" id={iden}>
+  {title && (
+    <h2 style="
+      font-weight: 600;
+      margin-top: var(--gap);
+      margin-bottom: var(--gap);
+      text-align: center;">
+      {title}
+    </h2>
+  )}
 
   <div style="
 	background: var(--border);	
