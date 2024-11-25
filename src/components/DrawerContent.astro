@@ -12,13 +12,13 @@ height: 85%;
 overflow-y: scroll;
 padding-top: var(--gap-x02);
 padding-inline: var(--gap-x02);">
-  <Card iden="entries-list-card">
+  <Card iden="entries-list-card" >
   <div style="display: flex; flex-direction: column; width: 100%;" class="input-group prose">
     <div style="display: flex; flex-direction: row;">
-      <input id="auto-pass-entry" type="checkbox" style="margin-top: var(--gap-x04); margin-bottom: var(--gap-x04);"> 
+      <input id="auto-pass-entry" type="checkbox"> 
       <label style="place-self: center; margin-left: var(--gap);" for="auto-pass-entry">Enter Password Manually</label>
     </div>
-    <input type="text" id="passwordInput" placeholder="Password" readonly />
+    <input type="text" id="passwordInput" placeholder="Password" style="margin-top: var(--gap-x03);" readonly />
     <input style="margin-top: var(--gap-x03);" type="text" id="titleInput" placeholder="Title"/>
     <button style="margin-top: var(--gap-x03);"id="addEntryButton">Add</button>
   </div>
@@ -111,7 +111,9 @@ createEffect(() => {
 			(async () => {
 				await createPasswordEntry(newTitle(), newPassword());
 				setNewTitle("");
-				setNewPassword("");
+        if ((document.getElementById("auto-pass-entry") as HTMLInputElement).checked){
+				  setNewPassword("");
+				}
 				setEntries((await getAllPasswordEntries()) ?? []);
 			})();
 		}
