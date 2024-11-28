@@ -12,20 +12,27 @@ height: 85%;
 overflow-y: scroll;
 padding-top: var(--gap-x02);
 padding-inline: var(--gap-x02);">
+
   <Card iden="entries-list-card" >
-  <div style="display: flex; flex-direction: column; width: 100%;" class="input-group prose">
+  <div style="display: flex; flex-direction: column;" class="prose" id="input-group">
+    <input type="text" id="titleInput" placeholder="Title" style="margin-bottom: var(--gap-x03);"/>
     <div style="display: flex; flex-direction: row;">
-      <input id="auto-pass-entry" type="checkbox"> 
-      <label style="place-self: center; margin-left: var(--gap);" for="auto-pass-entry">Enter Password Manually</label>
+      <input id="auto-pass-entry" type="checkbox" style="margin-top: var(--gap-x03); margin-bottom: var(--gap-x03);"> 
+      <label style="
+      place-self: center; 
+      margin-left: var(--gap);
+      margin-top: var(--gap-x03);
+      margin-bottom: var(--gap-x03);" for="auto-pass-entry">Enter Password Manually</label>
     </div>
-    <input type="text" id="passwordInput" placeholder="Password" style="margin-top: var(--gap-x03);" readonly />
-    <input style="margin-top: var(--gap-x03);" type="text" id="titleInput" placeholder="Title"/>
+    <input type="text" id="passwordInput" placeholder="Password" readonly />
+    
     <button style="margin-top: var(--gap-x03);"id="addEntryButton">Add</button>
   </div>
   </Card>
 
 
-  <div class="entries-list" id="entriesList"></div>
+  <div class="entries-list" id="entries-list"></div>
+
 </div>
 
 <script>
@@ -57,8 +64,8 @@ createEffect(() => {
 
 // await elements
 (async () => {
-	const inputGroup    = (await waitForElement(".input-group"))   as HTMLElement;
-	const entriesList   = (await waitForElement("#entriesList"))   as HTMLElement;
+	const inputGroup    = (await waitForElement("#input-group"))   as HTMLElement;
+	const entriesList   = (await waitForElement("#entries-list"))   as HTMLElement;
 	const passwordInput = (await waitForElement("#passwordInput")) as HTMLInputElement;
 	const titleInput    = (await waitForElement("#titleInput"))    as HTMLInputElement;
 

@@ -5,7 +5,7 @@
     oklch(66% 0.165 268) 25%,
     oklch(63% 0.17 272) 65%,  
     oklch(60% 0.18 276) 100%);
-  --rim-light:84% 0.078 273 ;
+  
   --success: oklch(65% 0.12 174);
   --danger: oklch(62.31% 0.246 27);
 
@@ -19,7 +19,8 @@
   --gray-85:85% 0 0;
   --gray-95:100% 0 0 ;
   --primary-shadow: oklch(37% 0.17 268.67);
-  --tab-indicator-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.5) 0%, oklch(8.5% 0 0 / 0.4) 65%, oklch(8.5% 0 0 / 0.35) 100%);
+  --tab-indicator-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.05) 0%, oklch(100% 0 0 / 0.12) 65%, oklch(100% 0 0 / 0.2) 100%);
+  --rim-light:100% 0.0 273 / 0.2;
   --border: linear-gradient(135deg, oklch(28% 0 0) 0%, oklch(40% 0 0) 25%, oklch(32% 0 0) 100%);
 }
 
@@ -34,8 +35,10 @@
   --gray-85:22% 0 0;
   --gray-95:0% 0 0 ;
   --primary-shadow: oklch(60% 0.16 268.67);
-  --tab-indicator-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.35) 0%, oklch(100% 0 0 / 0.4) 65%, oklch(100% 0 0 / 0.5) 100%);
+  --tab-indicator-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.2) 0%, oklch(8.5% 0 0 / 0.12) 65%, oklch(8.5% 0 0 / 0.05) 100%);
+  --rim-light:100% 0.0 273 / 0.5 ;
   --border: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(88% 0 0) 25%, oklch(94% 0 0) 100%);
+
 }
 
 
@@ -52,9 +55,10 @@
   --gray-85:85% 0 0;
   --gray-95:100% 0 0 ;
   --primary-shadow: oklch(37% 0.17 268.67);
-  --tab-indicator-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.5) 0%, oklch(8.5% 0 0 / 0.4) 65%, oklch(8.5% 0 0 / 0.35) 100%);
+  --tab-indicator-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.05) 0%, oklch(100% 0 0 / 0.12) 65%, oklch(100% 0 0 / 0.2) 100%);
+  --rim-light:100% 0.0 273 / 0.2;
   --border: linear-gradient(135deg, oklch(28% 0 0) 0%, oklch(40% 0 0) 25%, oklch(32% 0 0) 100%);
-  }
+}
 
   :root{ 
   color-scheme: only light;
@@ -66,7 +70,8 @@
   --gray-85:22% 0 0;
   --gray-95:0% 0 0 ;
   --primary-shadow: oklch(60% 0.16 268.67);
-  --tab-indicator-bg:linear-gradient(290deg, oklch(100% 0 0 / 0.35) 0%, oklch(100% 0 0 / 0.4) 65%, oklch(100% 0 0 / 0.5) 100%);
-  --border: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(94% 0 0) 25%, oklch(90% 0 0) 100%);
-
+  --tab-indicator-bg: linear-gradient(290deg, oklch(8.5% 0 0 / 0.2) 0%, oklch(8.5% 0 0 / 0.12) 65%, oklch(8.5% 0 0 / 0.05) 100%);
+  --rim-light:100% 0.0 273 / 0.5 ;
+  --border: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(88% 0 0) 25%, oklch(94% 0 0) 100%);
+}
 }

@@ -4,7 +4,7 @@ import type { ParentComponent } from 'solid-js'
 
 const DrawerComponent: ParentComponent = (props) => {
   return (
-    <Drawer breakPoints={[0.85]}>
+    <Drawer breakPoints={[1]}>
       {(drawerProps) => (
         <>
           <Drawer.Trigger> 
