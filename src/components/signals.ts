@@ -13,7 +13,7 @@ import { TOTP } from "totp-generator";
 
 
 
-
+// password generator signals
 export const [password, setPassword] = createSignal(generate_password(16, true, true, true));
 const [mpassword, setMPassword]      = createSignal("");
 const [currentPass, setCurrentPass]  = createSignal("");
@@ -25,11 +25,13 @@ const [capitalizeFirstLetter, setCapitalizeFirstLetter] = createSignal(true);
 
 
 document.getElementById("generate")!.addEventListener("input",(e)=>{
+   // length input
    if((e!.target as HTMLInputElement).matches("#char_input")){
       const value = (e!.target as HTMLInputElement).value;
       setLength(Number(value));
    }
 
+   // manual password input
    if((e!.target as HTMLInputElement).matches("#mPassword")){
       const value = (e!.target as HTMLInputElement).value;
       setMPassword(value.toString());
@@ -42,6 +44,7 @@ document.getElementById("generate")!.addEventListener("input",(e)=>{
    }
 });
 
+// plus and minus buttons
 document.getElementById("generate")!.addEventListener("click",(e)=>{
    if((e!.target as HTMLInputElement).matches("#plus_chars , #plus_chars_icon")){
       setLength( length => length + 1 ); 
@@ -51,6 +54,7 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
    }
 });
 
+// checkboxes for password generator
 document.getElementById("generate")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#random")) {
          if ((e.target as HTMLInputElement).checked) {
@@ -82,7 +86,7 @@ document.getElementById("generate")!.addEventListener("change",(e)=>{
 
 });
 
-
+// plus and minus buttons disabler effect
 createEffect(() => {
    (document.getElementById("char_input")!as HTMLInputElement).value = length().toString();
    if (length() >= 20) {
@@ -97,6 +101,7 @@ createEffect(() => {
    }
 });
 
+// password generator
 createEffect(() => { 
    setPassword(generate_password(
       length(),
@@ -108,6 +113,8 @@ createEffect(() => {
    setCurrentPass(password())
 });
 
+
+// password strength measurements effect
 createEffect(() => { document.getElementById("gu")!
    .textContent = guessable(currentPass()) });
 
@@ -125,6 +132,7 @@ createEffect(() => {
 });    
 
 
+// password strength box effect
 createEffect(() => { 
    const gu= guessable(currentPass());
        if (gu === "Enter password") {
@@ -149,7 +157,7 @@ createEffect(() => {
 });
 
 
-
+// copy password and redo effect
 document.getElementById("generate")!.addEventListener("click",(e)=>{
    if((e!.target as HTMLInputElement).matches("#gp ,#ttc")){
       navigator.clipboard.writeText(password());  
@@ -176,7 +184,7 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
 
 
 
-
+// encryption signals
 const [key, setKey]                 = createSignal("");
 const [iv, setIv]                   = createSignal("");
 const [plainText, setPlainText]     = createSignal("");
@@ -186,7 +194,7 @@ const [resultE, setResultE]         = createSignal("");
 const [resultD, setResultD]         = createSignal("");
 
 
-
+// encryption inputs
 document.getElementById("encryption")!.addEventListener("input",(e)=>{
    if((e!.target as HTMLInputElement).matches("#key")){
       const value = (e!.target as HTMLInputElement).value;
@@ -212,7 +220,7 @@ document.getElementById("encryption")!.addEventListener("input",(e)=>{
    
 });
 
-
+// password as plain text
 document.getElementById("encryption")!.addEventListener("change",(e)=>{
    if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
       if ((e.target as HTMLInputElement).checked) {
@@ -226,8 +234,7 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
 });
 
 
-
-
+// encryption effect
 createEffect(() => {
    setResultE(encrypt(key(), iv(), plainText()));
    if ( key() !== "" && iv() !== "") {
@@ -244,6 +251,7 @@ createEffect(() => {
    );
 });
 
+// decryption effect
 createEffect(() => {
    setResultD(decrypt(key(), iv(), cipherText()));
    if ( key() !== "" && iv() !== "") {
@@ -260,7 +268,7 @@ createEffect(() => {
    );
 });
 
-
+// condition for copy and show encryption
 createEffect(() => {
    if(resultE() !== "IV is not 16 Characters" &&
       resultE() !== "Key is not 16 Characters" &&
@@ -276,6 +284,7 @@ createEffect(() => {
    }
 });
 
+// copy encryption
 document.getElementById("encryption")!.addEventListener("click",(e)=>{
    if((e!.target as HTMLInputElement).matches("#copy_e")){
        if(resultE() !== "IV is not 16 Characters" &&
@@ -287,7 +296,7 @@ document.getElementById("encryption")!.addEventListener("click",(e)=>{
    }
 });
 
-
+// condition for copy and show decryption
 createEffect(() => {
    if(resultD() !== "IV is not 16 Characters" &&
       resultD() !== "Key is not 16 Characters" &&
@@ -304,6 +313,7 @@ createEffect(() => {
    }
 });
 
+// copy decryption
 document.getElementById("encryption")!.addEventListener("click",(e)=>{
    if((e!.target as HTMLInputElement).matches("#copy_d")){
        if(resultD() !== "IV is not 16 Characters" &&
@@ -319,8 +329,8 @@ document.getElementById("encryption")!.addEventListener("click",(e)=>{
 
 
 
-const [sKey, setSkey]           = createSignal("");
-const [otpRe, setOtpRe]         = createSignal("");
+const [sKey, setSkey]                  = createSignal("");
+const [otpRe, setOtpRe]                = createSignal("");
 export const [countDown, setCountDown] = createSignal("");
 
 function updateCountDown(){
