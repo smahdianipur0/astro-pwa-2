@@ -14,7 +14,7 @@ import { insert } from 'solid-js/web';
 // signals
 const [newTitle, setNewTitle] = createSignal('')
 const [newPassword, setNewPassword] = createSignal('');
-const [entries, setEntries] = createSignal<PasswordEntry[]>([]) as const;
+const [entries, setEntries] = createSignal<PasswordEntry[]>([]) ;
 
 
 // initialize entries
