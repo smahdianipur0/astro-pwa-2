@@ -4,10 +4,9 @@ import {
 	deletePasswordEntry,
 	type PasswordEntry,} from "../utils/surrealdb";
 import { waitForElement } from "../utils/waitForElement";
-import { password } from "./signals";
-import {showToast} from "../components/signals.ts" 
+import { configureElement } from '../utils/elementCreator';
+import { password, showToast } from "../components/signals.ts";
 import { createSignal, createEffect } from "solid-js";
-import { insert } from 'solid-js/web';
 
 
 
@@ -37,59 +36,49 @@ createEffect(() => {
 // render entries based on signal
 createEffect(() => {
 	entriesList.textContent = '';
+	const fragment = document.createDocumentFragment();
+  
 	[...(entries() ?? [])].reverse().forEach((entry) => {
-		insert(entriesList, (() => {
-			const entryItem = document.createElement('div');
-			entryItem.className = 'entry-item';
-			insert(entryItem, [(() => { 
-
-				const div = document.createElement('div');
-				insert(div, [
-
-					(() => { 
-						const p = document.createElement('p');
-						p.className = 'hint';
-						p.textContent = entry.title || 'untitled';
-						return p;
-					})(),
-
-					(() => { 
-						const button = document.createElement('button');
-						button.className = 'copy-button';
-						button.id = button.textContent = entry.password ?? '';
-						return button;
-					})()]);
-
-				return div;
-			})(),
-
-			(() => { const div = document.createElement('div');
-				div.className = 's-container';
-				insert(div, (() => { 
-					const details = document.createElement('details');
-					details.setAttribute('name', 'delete');
-					insert(details, [ 
-
-						document.createElement('summary'),
-
-						(() => { 
-							const button = document.createElement('button');
-							button.className = 'delete-button';
-							button.id = entry.id?.id ?? '';
-							button.textContent = ' Delete';
-							return button;
-						})()]);
-
-					return details;
-				})());
-
-				return div;
-			})()]);
-			
-			return entryItem; 
-		})());
+	  fragment.append(
+		configureElement(document.createElement('div'), {
+		  className: 'entry-item',
+		  append: [
+			configureElement(document.createElement('div'), {
+			  append: [
+				configureElement(document.createElement('p'), {
+				  className: 'hint',
+				  textContent: entry.title || 'untitled'
+				}),
+				(() => configureElement(document.createElement('button'), {
+				  className: 'copy-button',
+				  id: entry.password ?? '',
+				  textContent: entry.password ?? ''
+				}))()
+			  ]
+			}),
+			configureElement(document.createElement('div'), {
+			  className: 's-container',
+			  append: [
+				configureElement(document.createElement('details'), {
+				  name: 'delete-item',
+				  append: [
+					document.createElement('summary'),
+					configureElement(document.createElement('button'), {
+					  className: 'delete-button',
+					  id: entry.id?.id ?? '',
+					  textContent: ' Delete'
+					})
+				  ]
+				})
+			  ]
+			})
+		  ]
+		})
+	  );
 	});
-});
+  
+	entriesList.append(fragment);
+  });
 
   // delete entry
 	entriesList.addEventListener("click", (e) => {
