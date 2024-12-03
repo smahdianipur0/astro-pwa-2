@@ -1,4 +1,4 @@
-<div class="glass drw-bg bottom-nav">
+<div class="bottom-nav glass drw-bg box-shadow ">
   <input type="radio" name="tab" class="sub-route hide-checkbox" id="one" tabindex="1" checked />
 
   <label class="nav-div" for="one" id="l_one">
@@ -86,19 +86,19 @@ allTabRadios.forEach((radio) => {
 .svg-icon{
     width: var(--gap-x06);
     height: var(--gap-x06);
-    padding: 1px;
+    padding: 2px;
 }
 
 .bottom-nav{
-    z-index: var(--z-layer-higher);
-    background-color: oklch(var(--gray-10) / 0.5);
-    height: var(--gap-x10);
-    justify-content: space-around;
-    width: 100%;
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0
+  z-index: var(--z-layer-higher);
+  background-color: oklch(var(--gray-10) / 0.5);
+  height: var(--gap-x10);
+  justify-content: space-around;
+  width: 100%;
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }
 
 .nav-div{
@@ -116,6 +116,7 @@ allTabRadios.forEach((radio) => {
     font-size: var(--extra-small-font); 
     text-align: center;
     color: oklch(var(--gray-95) / 0.5);
+    padding-top: 2px;
 }
 
 .home-icon, .qr-icon, .auth-icon, .about-icon {
@@ -173,10 +174,10 @@ allTabRadios.forEach((radio) => {
     top: var(--gap);
     height: var(--gap-x08);
     border-radius: var(--radius-c);
-    box-shadow: 2px 3px 20px 2px oklch(0% 0 0/.1);
     width: calc(100% - var(--gap-x04) - var(--gap-x04));
     left: unset;
     right: var(--gap-x04);
+    border: 1px solid oklch(var(--gray-95) / 0.04);
   }
 
   .grid-layout{

@@ -9,9 +9,13 @@ type ElementProps = {
 export const element = {
   configure: <T extends HTMLElement>(element: T, { append, ...props }: ElementProps): T => {
     if (append) {
-      Array.isArray(append)
-        ? element.append(...append)
-        : element.append(append);
+      if (Array.isArray(append)) {
+        for (const child of append) {
+          element.appendChild(child);
+        }
+      } else {
+        element.appendChild(append);
+      }
     }
     return Object.assign(element, props);
   },

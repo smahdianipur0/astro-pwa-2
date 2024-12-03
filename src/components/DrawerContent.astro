@@ -15,22 +15,22 @@ padding-top: var(--gap-x02);
 padding-inline: var(--gap-x02);">
 
   <Card iden="entries-list-card" >
-  <div style="display: flex; flex-direction: column;" class="prose" id="input-group">
-    <input type="text" id="title-input" placeholder="Title" style="margin-bottom: var(--gap-x03);"/>
-    <div style="display: flex; flex-direction: row;">
-      <input id="auto-pass-entry" type="checkbox" style="
-      margin-top: var(--gap-x03); 
-      margin-bottom: var(--gap-x03);"> 
-      <label style="
-      place-self: center; 
-      margin-left: var(--gap);
-      margin-top: var(--gap-x03);
-      margin-bottom: var(--gap-x03);" for="auto-pass-entry">Enter Password Manually</label>
+    <div style="display: flex; flex-direction: column;" class="prose" id="input-group">
+      <input type="text" id="title-input" placeholder="Title" style="margin-bottom: var(--gap-x03);"/>
+      <div style="display: flex; flex-direction: row;">
+        <input id="auto-pass-entry" type="checkbox" style="
+        margin-top: var(--gap-x03); 
+        margin-bottom: var(--gap-x03);"> 
+        <label style="
+        place-self: center; 
+        margin-left: var(--gap);
+        margin-top: var(--gap-x03);
+        margin-bottom: var(--gap-x03);" for="auto-pass-entry">Enter Password Manually</label>
+      </div>
+      <input type="text" id="password-input" placeholder="Password" readonly />
+      
+      <button style="margin-top: var(--gap-x03);"id="add-entry-button">Add</button>
     </div>
-    <input type="text" id="password-input" placeholder="Password" readonly />
-    
-    <button style="margin-top: var(--gap-x03);"id="add-entry-button">Add</button>
-  </div>
   </Card>
 
   <div class="entries-list" id="entries-list"></div>
@@ -61,13 +61,15 @@ const [listEntries, setListEntries]   = createSignal<PasswordEntry[]>([]);
 // initialize entries
 (async () => {setListEntries(await getAllPasswordEntries() ?? []);})();
 
-createEffect(() => {
-  setListPassword(password());
-});
+createEffect(() => { setListPassword(password()) });
 
 
 // await elements
 (async () => {
+	// Remove the blinking animation when JS loads
+	const drawerTrigger = await element.wait("#drawer-trigger");
+	drawerTrigger.style.animation = 'none';
+
 	const inputGroup     = (await element.wait("#input-group"))    as HTMLElement;
 	const entriesList    = (await element.wait("#entries-list"))   as HTMLElement;
 	const passwordInput  = (await element.wait("#password-input"))  as HTMLInputElement;
@@ -80,43 +82,43 @@ createEffect(() => {
 	entriesList.textContent = '';
 	const fragment = document.createDocumentFragment();
   
-	[...(listEntries() ?? [])].reverse().forEach((entry) => {
-	  fragment.append(
-		element.configure(document.createElement('div'), {
-		  className: 'entry-item',
-		  append: [
+	(listEntries() ?? []).reverse().forEach((entry) => {
+		fragment.append(
 			element.configure(document.createElement('div'), {
-			  append: [
-				element.configure(document.createElement('p'), {
-				  className: 'hint',
-				  textContent: entry.title || 'untitled'
-				}),
-				element.configure(document.createElement('button'), {
-				  className: 'copy-button',
-				  id: entry.password ?? '',
-				  textContent: entry.password ?? ''
-				})
-			  ]
-			}),
-			element.configure(document.createElement('div'), {
-			  className: 's-container',
-			  append: [
-				element.configure(document.createElement('details'), {
-				  name: 'delete-item',
-				  append: [
-					document.createElement('summary'),
-					element.configure(document.createElement('button'), {
-					  className: 'delete-button',
-					  id: entry.id?.id ?? '',
-					  textContent: ' Delete'
+				className: 'entry-item',
+				append: [
+					element.configure(document.createElement('div'), {
+						append: [
+							element.configure(document.createElement('p'), {
+								className: 'hint',
+								textContent: entry.title || 'untitled'
+							}),
+							element.configure(document.createElement('button'), {
+								className: 'copy-button',
+								id: entry.password ?? '',
+								textContent: entry.password ?? ''
+							})
+						]
+					}),
+					element.configure(document.createElement('div'), {
+						className: 's-container',
+						append: [
+							element.configure(document.createElement('details'), {
+								name: 'delete-item',
+								append: [
+									document.createElement('summary'),
+									element.configure(document.createElement('button'), {
+										className: 'delete-button',
+										id: entry.id?.id ?? '',
+										textContent: ' Delete'
+									})
+								]
+							})
+						]
 					})
-				  ]
-				})
-			  ]
+				]
 			})
-		  ]
-		})
-	  );
+		);
 	});
   
 	entriesList.append(fragment);
@@ -274,7 +276,7 @@ summary {
 @keyframes details-show {
   from {
     opacity: 0;
-    transform: translateY(-50%) translateX(0.5em);
+    transform: translateY(-50%) translateX(var(--gap-x02));
   }
   to {
     opacity: 1;
@@ -316,6 +318,17 @@ details[open] .delete-button {
   top: 50%;
   transform: translateY(-50%);
   margin-right: var(--gap);
+}
+
+@keyframes blink {
+  0% { opacity: 20%; }
+  50% { opacity: 60%; }
+  100% { opacity: 20%; }
+}
+
+#drawer-trigger {
+  opacity: 100%;
+  animation: blink 1s ease-in-out infinite;
 }
 
 </style>

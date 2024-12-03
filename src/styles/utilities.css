@@ -3,6 +3,19 @@
   backdrop-filter: blur(20px)
 }
 
+:root{
+  --box-shadow-opacity: 0.04;
+}
+
+.box-shadow{
+  box-shadow:
+oklch(28% 0.02 268 / var(--box-shadow-opacity)) 0px 1px 1px -0.5px, 
+oklch(28% 0.02 268 / var(--box-shadow-opacity)) 0px 3px 3px -1.5px, 
+oklch(28% 0.02 268 / var(--box-shadow-opacity)) 0px 6px 6px -3px, 
+oklch(32% 0.07 268 / var(--box-shadow-opacity)) 0px 12px 12px -6px, 
+oklch(32% 0.07 268 / var(--box-shadow-opacity)) 0px 24px 24px -12px; 
+}
+
 .hide-checkbox{
   opacity: 0; 
   pointer-events: none;

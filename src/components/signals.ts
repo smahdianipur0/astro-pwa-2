@@ -158,6 +158,8 @@ createEffect(() => {
 
 
 // copy password and redo effect
+document.getElementById("redo")!.style.animation = 'none';
+
 document.getElementById("generate")!.addEventListener("click",(e)=>{
    if((e!.target as HTMLInputElement).matches("#gp ,#ttc")){
       navigator.clipboard.writeText(password());  
