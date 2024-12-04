@@ -26,42 +26,40 @@ export type PasswordEntry = {
   password: string;
 }
 
-export async function createPasswordEntry(title: string, password: string): Promise<void> {
+async function createEntry(tableName: string, title: string, password: string): Promise<void> {
   const db = await getDb();
   if (!db) {
     console.error("Database not initialized");
     return;
   }
   try {
-    const entry = await db.create<PasswordEntry>("PasswordEntry", {
+    const entry = await db.create<PasswordEntry>(tableName, {
       title,
       password,
     });
   } catch (err: unknown) {
-    console.error("Failed to create password entry:", err instanceof Error ? err.message : String(err));
+    console.error(`Failed to create entry in ${tableName}:`, err instanceof Error ? err.message : String(err));
   } finally {
     await db.close();
   }
 }
 
-export async function deletePasswordEntry(id: string): Promise<void> {
+async function deleteEntry(tableName: string, id: string): Promise<void> {
   const db = await getDb();
   if (!db) {
     console.error("Database not initialized");
     return;
   }
   try {
-    await db.delete(new RecordId('PasswordEntry', id));
+    await db.delete(new RecordId(tableName, id));
   } catch (err: unknown) {
-    console.error("Failed to delete password entry:", err instanceof Error ? err.message : String(err));
+    console.error(`Failed to delete entry from ${tableName}:`, err instanceof Error ? err.message : String(err));
   } finally {
     await db.close();
   }
 }
 
-
-
-export async function getAllPasswordEntries(): Promise<PasswordEntry[] | undefined> {  
+async function getAllEntries(tableName: string): Promise<PasswordEntry[] | undefined> {  
     const db = await getDb();  
 
     if (!db) {  
@@ -70,13 +68,58 @@ export async function getAllPasswordEntries(): Promise<PasswordEntry[] | undefin
     }  
 
     try {  
-        const entries = await db.select<PasswordEntry>("PasswordEntry");  
+        const entries = await db.select<PasswordEntry>(tableName);  
         return entries;  
     } catch (err) {  
-        console.error("Failed to get password entries:", err);  
+        console.error(`Failed to get entries from ${tableName}:`, err);  
         return undefined;  
     } finally {  
         await db.close();  
     }  
-}  
- 
+}
+
+export async function getEntryById(tableName: string, recordId: string): Promise<PasswordEntry | undefined> {
+    const db = await getDb();
+
+    if (!db) {
+        console.error("Database not initialized");
+        return undefined;
+    }
+
+    try {
+        const entry = await db.select<PasswordEntry>(new RecordId(tableName, recordId));
+        return entry;
+    } catch (err) {
+        console.error(`Failed to get entry from ${tableName} with ID ${recordId}:`, err);
+        return undefined;
+    } finally {
+        await db.close();
+    }
+}
+
+export async function createPasswordEntry(title: string, password: string): Promise<void> {
+  await createEntry("PasswordEntry", title, password);
+}
+
+export async function deletePasswordEntry(id: string): Promise<void> {
+  await deleteEntry("PasswordEntry", id);
+}
+
+export async function getAllPasswordEntries(): Promise<PasswordEntry[] | undefined> {
+  return await getAllEntries("PasswordEntry");
+}
+
+
+
+
+export async function createRecentDelPass(title: string, password: string): Promise<void> {
+  await createEntry("RecentDelPass", title, password);
+}
+
+export async function deleteRecentDelPass(id: string): Promise<void> {
+  await deleteEntry("RecentDelPass", id);
+}
+
+export async function getAllRecentDelPass(): Promise<PasswordEntry[] | undefined> {
+  return await getAllEntries("RecentDelPass");
+}
