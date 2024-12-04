@@ -12,7 +12,9 @@ margin-inline: var(--gap-x04)
 height: 85%;
 overflow-y: scroll;
 padding-top: var(--gap-x02);
-padding-inline: var(--gap-x02);">
+padding-inline: var(--gap-x02);
+max-width: 100%;
+overflow-x: hidden;">
 
   <Card iden="entries-list-card" >
     <div style="display: flex; flex-direction: column;" class="prose" id="input-group">
@@ -41,7 +43,7 @@ padding-inline: var(--gap-x02);">
     border-radius: var(--radius-a)
     ">
     <DrawerFromRight client:load>
-      <div class="entries-list" id="recent-del-list">
+      <div class="entries-list" id="recent-del-list" style="padding-inline: var(--gap-x02);">
     </DrawerFromRight>
   </div>
 
