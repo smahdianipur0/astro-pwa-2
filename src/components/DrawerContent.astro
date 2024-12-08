@@ -3,7 +3,7 @@ import Card from "../components/Card.astro";
 import DrawerFromRight from '../components/DrawerFromRght.tsx';
 ---
 
-<div style="
+<div  style="
 display: flex; 
 flex-direction: column; 
 align-items: center; 
@@ -36,14 +36,12 @@ overflow-x: hidden;">
   </Card>
 
   <div class="entries-list" id="entries-list"></div>
-    <div style="
-    background-color: oklch(var(--gray-15) / 1);
-    width: min(100%, 65ch) ;
-    margin:var(--gap);
-    border-radius: var(--radius-a)
-    ">
+    <div class="menu-item" style="margin-bottom: var(--gap-x06);">
     <DrawerFromRight client:load>
-      <div class="entries-list" id="recent-del-list" style="padding-inline: var(--gap-x02);">
+      <div  data-corvu-no-drag class="entries-list" id="recent-del-list" style="
+      padding-inline: var(--gap-x02);
+      height:100%;
+      margin-left: var(--gap-x03);">
     </DrawerFromRight>
   </div>
 
@@ -69,7 +67,7 @@ overflow-x: hidden;">
     background-color: oklch(var(--gray-15) / 1);
     border-radius: 0;
     padding: var(--default-padding);
-    margin: 0 var(--gap);
+    margin: 0 var(--gap-x03);
     position: relative;
   }
 
@@ -96,6 +94,18 @@ overflow-x: hidden;">
 
   .entries-list > :not(:last-child){
     border-bottom:1px solid oklch(var(--gray-25) / 1);
+  }
+
+
+  .menu-item{
+    background-color: oklch(var(--gray-15) / 1);
+    width: min(100%, 65ch) ;
+    margin:var(--gap);
+    border-radius: var(--radius-a)
+  }
+
+  .menu-item:focus, .menu-item:hover{
+    background-color: oklch(var(--gray-25) / 1);
   }
 
   .s-container  {

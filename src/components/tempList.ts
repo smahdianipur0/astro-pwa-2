@@ -184,6 +184,7 @@ createEffect(() => {
 			fragment.append(
 				element.configure(document.createElement('div'), {
 					className: 'entry-item',
+					style: 'margin-left: calc(var(--gap-x03)* -1);',
 					append: [
 						element.configure(document.createElement('div'), {
 							append: [
