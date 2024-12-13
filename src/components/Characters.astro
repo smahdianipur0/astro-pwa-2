@@ -15,7 +15,6 @@
   	<div style="margin-right: var(--gap-xs);" class="rim-light">
 	    <select id="char_input" class="number-input" name="chars" style="
 				width: var(--gap-x08);
-				height: var(--gap-x05);
 				margin: 1px;">
 		  <option value="12"> 12 </option>
 		  <option value="13"> 13 </option>
@@ -50,17 +49,16 @@
 <style is:global>
 
 .rim-light{
-  height: calc(var(--gap-x05) +1px);
   display: inline-flex;  
   border-radius: calc( var(--radius-a) + 1px) ;
-  background: linear-gradient(to bottom, oklch(90% 0 0 /0.2) 0%, oklch(24% 0 0 / 0.2) 180%) border-box;
+  background: linear-gradient(to bottom, oklch(90% 0 0 /0.15) 0%, oklch(24% 0 0 / 0.2) 60%) border-box;
   position: relative;
 }
 
 
 .char-button{
 	width: var(--gap-x07);
-    height: var(--gap-x05);
+    height: calc(var(--gap-x06) - 3px);
 	display: flex;
 	flex-wrap: wrap;
 	place-content: center;
