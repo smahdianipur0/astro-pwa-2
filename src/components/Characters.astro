@@ -1,8 +1,8 @@
 <div style="
 	display: flex;
 	justify-content: space-between;
-	margin-top: var(--gap-x04); 
-	margin-bottom: var(--gap-x04);
+	margin-top: var(--gap-x02); 
+	margin-bottom: var(--gap-x02);
 	">
 
 
@@ -11,10 +11,11 @@
 		padding:var(--default-padding);
 		padding-left:0;">Characters:</label>
 
-  <div class="prose" style=" display: flex; gap: 0;">
-  	<div style="margin-right: var(--gap);" class="rim-light">
+  <div class="prose" style=" display: flex; gap: 0; margin-top: auto; margin-bottom: auto;">
+  	<div style="margin-right: var(--gap-xs);" class="rim-light">
 	    <select id="char_input" class="number-input" name="chars" style="
-				width: calc( var(--gap-x06) * 2);
+				width: var(--gap-x08);
+				height: var(--gap-x05);
 				margin: 1px;">
 		  <option value="12"> 12 </option>
 		  <option value="13"> 13 </option>
@@ -46,18 +47,20 @@
   </div>
 </div>
 
-<style>
+<style is:global>
 
 .rim-light{
+  height: calc(var(--gap-x05) +1px);
   display: inline-flex;  
-  background-color: oklch(var(--gray-25) / 0.1);
   border-radius: calc( var(--radius-a) + 1px) ;
-  box-shadow: inset -1px -4px 1px 2px oklch(var(--gray-15) / 0.8), 
-               inset 0 0 0 1.5px oklch(100% 0 0 / 0.23);
+  background: linear-gradient(to bottom, oklch(90% 0 0 /0.2) 0%, oklch(24% 0 0 / 0.2) 180%) border-box;
+  position: relative;
 }
 
+
 .char-button{
-	width: var(--gap-x06);
+	width: var(--gap-x07);
+    height: var(--gap-x05);
 	display: flex;
 	flex-wrap: wrap;
 	place-content: center;

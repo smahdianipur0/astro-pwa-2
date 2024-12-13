@@ -10,6 +10,7 @@ import {
 import { element } from '../utils/elementUtils';
 import { password, showToast } from "../components/signals.ts";
 import { createSignal, createEffect } from "solid-js";
+// import Fuse from 'fuse.js'
 
 
 
@@ -38,6 +39,14 @@ createEffect(() => { setListPassword(password()) });
 	const passwordInput  = (await element.wait("#password-input"))   as HTMLInputElement;
 	const titleInput     = (await element.wait("#title-input"))      as HTMLInputElement;
 	const addEntryButton = (await element.wait("#add-entry-button")) as HTMLButtonElement;
+
+
+
+	// const fuse = new Fuse(listEntries(), {
+	// 	keys: ['title']
+	//   })
+
+	// const searched = fuse.search('jon').map(entry => entry.item);
 
 
 // render entries based on signal
@@ -103,7 +112,8 @@ createEffect(() => {
 				setListEntries((await getAllPasswordEntries()) ?? []);
 			})();
 		}
-    
+
+  // copy password
     const copyButton = (e!.target as HTMLInputElement).closest(".copy-button");
 		if (copyButton) {
 			(async () => {
