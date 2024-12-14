@@ -190,6 +190,15 @@
   transition: .1s transform ease;
   color: oklch(var(--primary));
   font-weight: 600;
+  will-change: transform;
+}
+
+.prose :where(details:not([open])):not(:where([class~=not-prose],[class~=not-prose] *)) > summary:before {
+  transform: rotate(90deg) scale(1.5, 0.8);
+}
+
+.prose :where(details[open]):not(:where([class~=not-prose],[class~=not-prose] *)) > summary:before {
+  transform: rotate(180deg) scale(1.5, 0.8);
 }
 
 @keyframes details-show {
@@ -205,15 +214,6 @@
 
 .prose :where(details[open]):not(:where([class~=not-prose],[class~=not-prose] *)) > *:not(summary) {
   animation: details-show 100ms ease-in-out;
-}
-
-
-.prose :where(details:not([open])):not(:where([class~=not-prose],[class~=not-prose] *)) > summary:before {
-  transform: rotate(90deg) scale(1.5, 0.8);
-}
-
-.prose :where(details[open]):not(:where([class~=not-prose],[class~=not-prose] *)) > summary:before {
-  transform: rotate(180deg) scale(1.5, 0.8);
 }
 
 .prose :where(p):not(:where([class~=not-prose],[class~=not-prose] *)) {
