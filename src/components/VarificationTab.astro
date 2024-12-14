@@ -33,7 +33,7 @@ document.getElementById("varificationOnly")!.addEventListener("input",(e)=>{
 
 function updateOtpO() {
    createEffect(() => {
-      try { const { otp, expires } = TOTP.generate(keyO());
+      try { const { otp, expires } = TOTP.generate(keyO().replace(/\s/g, ""));
          setOtpReO(otp.toString());
       } catch (error) {
          setOtpReO("The provided key is not valid.");   

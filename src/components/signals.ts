@@ -11,7 +11,8 @@ import {
 import QRCode from 'qrcode'
 import { TOTP } from "totp-generator";
 
-
+// const out = "abc def ghi jkl mno pqr".replace(/\s/g, "");
+// console.log(out);
 
 // password generator signals
 export const [password, setPassword] = createSignal(generate_password(16, true, true, true));
@@ -194,10 +195,11 @@ const [fbPlainText, setFbPlainText] = createSignal("");
 const [cipherText, setCipherText]   = createSignal("");
 const [resultE, setResultE]         = createSignal("");
 const [resultD, setResultD]         = createSignal("");
+const [resultP, setResultP]         = createSignal("");
 
 
 // encryption inputs
-document.getElementById("encryption")!.addEventListener("input",(e)=>{
+document.getElementById("key-IV")!.addEventListener("input",(e)=>{
    if((e!.target as HTMLInputElement).matches("#key")){
       const value = (e!.target as HTMLInputElement).value;
       setKey(value.toString());
@@ -208,6 +210,10 @@ document.getElementById("encryption")!.addEventListener("input",(e)=>{
       setIv(value.toString());
       document.getElementById("iv_indic")!.textContent = count_characters(iv()).toString();
    }
+ 
+});
+
+document.getElementById("encryption")!.addEventListener("input",(e)=>{
 
    if((e!.target as HTMLInputElement).matches("#plain_text")){
       const value = (e!.target as HTMLInputElement).value;
@@ -222,18 +228,7 @@ document.getElementById("encryption")!.addEventListener("input",(e)=>{
    
 });
 
-// password as plain text
-document.getElementById("encryption")!.addEventListener("change",(e)=>{
-   if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
-      if ((e.target as HTMLInputElement).checked) {
-         (document.getElementById("plain_text")! as HTMLInputElement).readOnly = true;
-         createEffect(() => { setPlainText(currentPass()) })
-      } else {
-         setPlainText(fbPlainText().toString());
-         (document.getElementById("plain_text")! as HTMLInputElement).readOnly = false;
-      }
-   }
-});
+
 
 
 // encryption effect
@@ -251,6 +246,13 @@ createEffect(() => {
       resultE(),
       { width: 160, margin: 1 },
    );
+});
+
+
+// encryption effect for password
+createEffect(() => {
+   setResultP(encrypt(key(), iv(), currentPass()));
+      document.getElementById("encrypted-pass")!.textContent = resultP();
 });
 
 // decryption effect
@@ -388,13 +390,6 @@ document.getElementById("encryption")!.addEventListener("input",(e)=>{
 });
 
 document.getElementById("encryption")!.addEventListener("change",(e)=>{
-   if ((e!.target as HTMLInputElement).matches("#enc")) {
-      if ((e.target as HTMLInputElement).checked) {
-         if(sKey() !== "" && 
-         (document.getElementById("auto_pass")! as HTMLInputElement).checked === false )
-           { activateVarif() } else {deactivateVarif()}
-      }
-   }
    if ((e!.target as HTMLInputElement).matches("#dec")) {
       if ((e.target as HTMLInputElement).checked) {
          if(sKey() !== "IV is not 16 Characters" &&
@@ -403,20 +398,13 @@ document.getElementById("encryption")!.addEventListener("change",(e)=>{
             sKey() !== "") { activateVarif() } else {deactivateVarif()}
       }
    }
-   if ((e!.target as HTMLInputElement).matches("#auto_pass")) {
-      if ((e.target as HTMLInputElement).checked) {
-         if ((document.getElementById("enc")! as HTMLInputElement).checked){ deactivateVarif() }
-      } else {
-         if(sKey() !== "" ) { activateVarif() } else { deactivateVarif() } 
-      }
-   }
 });
 
 
 
 function updateOtp() {
    createEffect(() => {
-      try { const { otp, expires } = TOTP.generate(sKey());
+      try { const { otp, expires } = TOTP.generate(sKey().replace(/\s/g, ""));
          setOtpRe(otp.toString());
       } catch (error) {
          setOtpRe("The provided key is not valid.");   

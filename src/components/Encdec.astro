@@ -2,34 +2,13 @@
 import Tabs from '../components/Tabs.astro';
 ---
 
-<!-- <div class="card-bg" style=" 
-	height: calc( (var(--gap-x05) * 2 ) + ((var(--gap) * var(--x03) / 2) * 4 ) 
-	+ (var(--gap-x04) * 3 ) + (var(--gap-x06) * var(--x02)) )
-	"></div> -->
 
-<form autocomplete="off">
-
-  <div style="position: relative;">
-    <input id="key" type="text" class="k glass" name="Key" placeholder="Key">
-    <span id="key_indic" class="key-indicator"></span>
-  </div>
-
-  <div style="position: relative; margin-bottom: var(--gap-x04);">
-    <input id="iv" type="text" class="v glass" name="IV" placeholder="IV">
-    <span id="iv_indic" class="key-indicator"></span>
-  </div>
-
-</form>
 
 <Tabs name="encdec" tab1="enc" tab2="dec" content1="cenc" content2="cdec">
   <fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab1">
 
-    <input id="auto_pass" type="checkbox" style="
-			margin-bottom: var(--gap-x04); margin-top: var(--gap-x04);"> 
-			<label for="auto_pass"> Use Password as Plain Text </label>
-
     <textarea id="plain_text" class=" dent-shadow" style="
-			margin-bottom: var(--gap-x04);" rows="2" placeholder="Plain Text"></textarea>
+			margin-top: var(--gap-x02); margin-bottom: var(--gap-x04);" rows="2" placeholder="Plain Text"></textarea>
 
     <label for="result_e" style=" margin-bottom: var(--gap); font-size: var(--small-font); opacity: 0.6;">Encrypted Text : </label>
 
@@ -55,7 +34,7 @@ import Tabs from '../components/Tabs.astro';
   <fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab2">
 
     <textarea id="cipher_text" rows="2" placeholder="Cipher Text"
-      style="margin-top:var(--gap-x04); margin-bottom: var(--gap-x04);"></textarea>
+      style="margin-top: var(--gap-x02); margin-bottom: var(--gap-x04);"></textarea>
 
     <label for="result_d" style="margin-bottom: var(--gap); font-size: var(--small-font); opacity: 0.6;">Decrypted Text : </label>
 

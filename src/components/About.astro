@@ -1,7 +1,23 @@
 ---
 import ThemeToggle from '../components/ThemeToggle.astro';
+import Card from './Card.astro';
 ---
+<Card title = "Key and IV" iden='key-IV'>
+    <form autocomplete="off">
 
+        <div style="position: relative;">
+          <input id="key" type="text" class="k glass" name="Key" placeholder="Key">
+          <span id="key_indic" class="key-indicator"></span>
+        </div>
+      
+        <div style="position: relative; margin-bottom: var(--gap-x04);">
+          <input id="iv" type="text" class="v glass" name="IV" placeholder="IV">
+          <span id="iv_indic" class="key-indicator"></span>
+        </div>
+      
+    </form>
+
+</Card>
 </br>
 </br>
 </br>

@@ -2,12 +2,13 @@ import {
 	createPasswordEntry,
 	getAllPasswordEntries,
 	deletePasswordEntry,
-    createRecentDelPass,
-    getAllRecentDelPass,
-    deleteRecentDelPass,
-    getEntryById,
-	type PasswordEntry,} from "../utils/surrealdb";
-import { element } from '../utils/elementUtils';
+	createRecentDelPass,
+	getAllRecentDelPass,
+	deleteRecentDelPass,
+	getEntryById,
+	type PasswordEntry,
+} from "../utils/surrealdb";
+import { element } from "../utils/elementUtils";
 import { password, showToast } from "../components/signals.ts";
 import { createSignal, createEffect } from "solid-js";
 // import Fuse from 'fuse.js'
@@ -77,8 +78,11 @@ createEffect(() => {
 						append: [
 							element.configure(document.createElement('details'), {
 								name: 'delete-item',
+								className: 'right-to-left',
 								append: [
-									document.createElement('summary'),
+									element.configure(document.createElement('summary'),{
+										className: 'right-to-left',
+									}), 
 									element.configure(document.createElement('button'), {
 										className: 'delete-button',
 										id: entry.id?.id ?? '',
@@ -214,8 +218,11 @@ createEffect(() => {
 							append: [
 								element.configure(document.createElement('details'), {
 									name: 'delete-item',
+									className: 'right-to-left',
 									append: [
-										document.createElement('summary'),
+										element.configure(document.createElement('summary'), {
+											className: 'right-to-left',
+										}),
 										element.configure(document.createElement('button'), {
 											className: 'delete-button',
 											id: entry.id?.id ?? '',

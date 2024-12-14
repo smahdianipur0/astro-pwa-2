@@ -37,7 +37,8 @@ overflow-x: hidden;">
       <div  data-corvu-no-drag class="entries-list" id="recent-del-list" style="
       padding-inline: var(--gap-x02);
       height:100%;
-      margin-left: var(--gap-x03);">
+      margin-left: var(--gap-x03);
+      overflow-y: scroll;">
     </DrawerFromRight>
   </div>
 
@@ -49,78 +50,79 @@ overflow-x: hidden;">
 
 
 <style is:global>
-  .entries-list{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-  }
-  
-  .entry-item{
-    display: flex;
-    place-content: space-between;
-    width: min(100%, 65ch);
-    background-color: oklch(var(--gray-15) / 1);
-    border-radius: 0;
-    padding: var(--default-padding);
-    margin: 0 var(--gap-x03);
-    position: relative;
-  }
 
-  .entries-list > :first-child{
-    border-top-left-radius: var(--radius-a);
-    border-top-right-radius: var(--radius-a);
-    margin-top: var(--gap);
-  }
-
-  .entries-list > :last-child{
-    border-bottom-left-radius: var(--radius-a);
-    border-bottom-right-radius: var(--radius-a);
-    margin-bottom: var(--gap-x06);
-  }
-
-  .entries-list > :last-child::after{
-    content: 'tap on passwords to copy';
-    position: absolute;
-    bottom: 0;
-    transform: translateY(var(--gap-x06));
-    font-size: var(--small-font);
-    color: oklch(var(--gray-50) / 1);
-  }
-
-  .entries-list > :not(:last-child){
-    border-bottom:1px solid oklch(var(--gray-25) / 1);
-  }
-
-
-  .menu-item{
-    background-color: oklch(var(--gray-15) / 1);
-    width: min(100%, 65ch) ;
-    margin:var(--gap);
-    border-radius: var(--radius-a)
-  }
-
-  .menu-item:focus, .menu-item:hover{
-    background-color: oklch(var(--gray-25) / 1);
-  }
-
-  .s-container  {
+.entries-list{
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  width: 100%;
   align-items: center;
-  }
+}
 
-details {
+.entry-item{
+  display: flex;
+  place-content: space-between;
+  width: min(100%, 65ch);
+  background-color: oklch(var(--gray-15) / 1);
+  border-radius: 0;
+  padding: var(--default-padding);
+  margin: 0 var(--gap-x03);
+  position: relative;
+}
+
+.entries-list > :first-child{
+  border-top-left-radius: var(--radius-a);
+  border-top-right-radius: var(--radius-a);
+  margin-top: var(--gap);
+}
+
+.entries-list > :last-child{
+  border-bottom-left-radius: var(--radius-a);
+  border-bottom-right-radius: var(--radius-a);
+  margin-bottom: var(--gap-x06);
+}
+
+.entries-list > :last-child::after{
+  content: 'tap on passwords to copy';
+  position: absolute;
+  bottom: 0;
+  transform: translateY(var(--gap-x06));
+  font-size: var(--small-font);
+  color: oklch(var(--gray-50) / 1);
+}
+
+.entries-list > :not(:last-child){
+  border-bottom:1px solid oklch(var(--gray-25) / 1);
+}
+
+
+.menu-item{
+  background-color: oklch(var(--gray-15) / 1);
+  width: min(100%, 65ch) ;
+  margin:var(--gap);
+  border-radius: var(--radius-a)
+}
+
+.menu-item:focus, .menu-item:hover{
+  background-color: oklch(var(--gray-25) / 1);
+}
+
+.s-container  {
+display: flex;
+justify-content: flex-end;
+align-items: center;
+}
+
+details.right-to-left {
   margin: 0;
   position: relative;
   display: inline-block;
 }
 
-details summary::-webkit-details-marker {
+details.right-to-left summary::-webkit-details-marker {
   display: none;
 }
 
-summary {
+summary.right-to-left {
   display: flex;
   position: relative;
   cursor: pointer;
@@ -129,7 +131,7 @@ summary {
   align-items: center;
 }
 
-@keyframes details-show {
+@keyframes details-show-rtl {
   from {
     opacity: 0;
     transform: translateY(-50%) translateX(var(--gap-x02));
@@ -138,27 +140,27 @@ summary {
     opacity: 1;
     transform: translateY(-50%) translateX(0);
   }
-}
+} 
 
-details[open] > *:not(summary) {
-  animation: details-show 150ms ease-in-out forwards;
-}
+details.right-to-left[open] > *:not(summary) {
+  animation: details-show-rtl 150ms ease-in-out forwards;
+} 
 
-summary::before {
+summary.right-to-left::before {
   content: '🗑️';
   color: var(--danger);
   font-size: 100%;
-}
+} 
 
-details[open] > summary::before {
+details.right-to-left[open] > summary::before {
   content: 'Cancel';
   color: oklch(var(--gray-95) / 1);
   font-size: var(--small-font);
-}
+} 
 
-details[open] > .s-container {
+details.right-to-left[open] > .s-container {
   width: 10ch;
-}
+} 
 
 
 
@@ -166,21 +168,21 @@ details[open] > .s-container {
   margin-inline: var(--gap);
   color: var(--danger);
   font-size: var(--small-font);
-}
+} 
 
-details[open] .delete-button {
+details.right-to-left[open] .delete-button {
   position: absolute;
   right: 100%;
   top: 50%;
   transform: translateY(-50%);
   margin-right: var(--gap);
-}
+} 
 
 @keyframes blink {
   0% { opacity: 20%; }
   50% { opacity: 60%; }
   100% { opacity: 20%; }
-}
+} 
 
 
 </style>
