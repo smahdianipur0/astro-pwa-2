@@ -187,11 +187,8 @@
   position: absolute;
   right: var(--gap-xs);
   transform-origin: 50% 50%;
-  transition: .25s transform ease;
-  rotate: 180deg;
-  scale: 1.2;
+  transition: .1s transform ease;
   color: oklch(var(--primary));
-  rotate: 90deg;
   font-weight: 600;
 }
 
@@ -212,13 +209,11 @@
 
 
 .prose :where(details:not([open])):not(:where([class~=not-prose],[class~=not-prose] *)) > summary:before {
-  transition: transform 100ms ease-in;
-  transform: rotate(0deg) scale(1.5, 0.8);
+  transform: rotate(90deg) scale(1.5, 0.8);
 }
 
 .prose :where(details[open]):not(:where([class~=not-prose],[class~=not-prose] *)) > summary:before {
-  transition: transform 100ms ease-in;
-  transform: rotate(90deg) scale(1.5, 0.8);
+  transform: rotate(180deg) scale(1.5, 0.8);
 }
 
 .prose :where(p):not(:where([class~=not-prose],[class~=not-prose] *)) {
