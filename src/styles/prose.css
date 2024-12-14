@@ -192,7 +192,7 @@
   scale: 1.2;
   color: oklch(var(--primary));
   rotate: 90deg;
-  scale: 0.9;
+  font-weight: 600;
 }
 
 @keyframes details-show {
@@ -210,32 +210,15 @@
   animation: details-show 100ms ease-in-out;
 }
 
-@keyframes indicat-show {
-  0% {
-    transform: rotate(0deg) ;
-  }
-  100% {
-    transform: rotate(90deg) scale(1.5, 0.8);
-  }
-}
-
-@keyframes indicat-hide {
-  0% {
-    transform: rotate(90deg);
-  }
-  100% {
-    transform: rotate(0deg) scale(1.5, 0.8);
-  }
-}
 
 .prose :where(details:not([open])):not(:where([class~=not-prose],[class~=not-prose] *)) > summary:before {
-  animation: indicat-hide 100ms ease-in;
-  animation-fill-mode: both;
+  transition: transform 100ms ease-in;
+  transform: rotate(0deg) scale(1.5, 0.8);
 }
 
 .prose :where(details[open]):not(:where([class~=not-prose],[class~=not-prose] *)) > summary:before {
-  animation: indicat-show 100ms ease-in;
-  animation-fill-mode: both;
+  transition: transform 100ms ease-in;
+  transform: rotate(90deg) scale(1.5, 0.8);
 }
 
 .prose :where(p):not(:where([class~=not-prose],[class~=not-prose] *)) {
