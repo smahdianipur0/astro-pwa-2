@@ -5,7 +5,6 @@ import Generate from '../components/Generate.astro';
 import Encdec from '../components/Encdec.astro';
 import VarificationCard from '../components/VarificationCard.astro';
 import GenerateQR from '../components/GenerateQR.astro'; 
-import VarificationTab from '../components/VarificationTab.astro';
 import About from '../components/About.astro';
 
 ---
@@ -20,10 +19,6 @@ import About from '../components/About.astro';
 				<Generate/>
 			</Card>	
 
-			<Card title = "Encryption and Decryption" iden='encryption'>
-				<Encdec/>
-			</Card>
-
 			<Card title = "Varification Code" iden='varification'>
 				<VarificationCard/> 
 		 	</Card>  
@@ -36,9 +31,7 @@ import About from '../components/About.astro';
 	<div class="tab-content two">
 		<div class="grid-layout"> 
 
-			<Card title = "Generate QR Code" iden='generateQR'>
-				<GenerateQR/> 
-	 		</Card> 
+			<div>Building...</div>
 
 		</div>
 	</div>
@@ -46,8 +39,12 @@ import About from '../components/About.astro';
 	<div class="tab-content three"> 
 		<div class="grid-layout" > 
 
-			<Card title = "Varification Code" iden='varificationOnly'>
-				<VarificationTab/> 
+			<Card title = "Encryption and Decryption" iden='encryption'>
+				<Encdec/>
+			</Card>
+
+			<Card title = "Generate QR Code" iden='generateQR'>
+				<GenerateQR/> 
 	 		</Card> 
 
 		</div>

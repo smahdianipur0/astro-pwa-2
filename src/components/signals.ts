@@ -11,8 +11,36 @@ import {
 import QRCode from 'qrcode'
 import { TOTP } from "totp-generator";
 
-// const out = "abc def ghi jkl mno pqr".replace(/\s/g, "");
-// console.log(out);
+
+// Key and IV signals
+const [key, setKey]                 = createSignal("");
+const [iv, setIv]                   = createSignal("");
+const [keyIvIsValid, setKeyIvIsValid ] = createSignal(false)
+
+
+// encryption inputs
+document.getElementById("key-IV")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#key")){
+      const value = (e!.target as HTMLInputElement).value;
+      setKey(value.toString());
+      document.getElementById("key_indic")!.textContent = count_characters(key()).toString();
+   }
+   if((e!.target as HTMLInputElement).matches("#iv")){
+      const value = (e!.target as HTMLInputElement).value;
+      setIv(value.toString());
+      document.getElementById("iv_indic")!.textContent = count_characters(iv()).toString();
+   }
+});
+
+// check for Key and IV validity
+createEffect(() => {
+	setKeyIvIsValid(
+		count_characters(key()).toString() === "✔️" &&
+			count_characters(iv()).toString() === "✔️",
+	);
+});
+
+
 
 // password generator signals
 export const [password, setPassword] = createSignal(generate_password(16, true, true, true));
@@ -124,11 +152,9 @@ createEffect(() => { document.getElementById("s1")!
 
 createEffect(() => { 
    if(calculate_password_strength2(currentPass()) !== "Zxcvbn cannot evaluate a blank password") {
-    document.getElementById("s2")!
-   .textContent = calculate_password_strength2(currentPass())
+    document.getElementById("s2")!.textContent = calculate_password_strength2(currentPass())
    } else {
-      document.getElementById("s2")!
-      .textContent = ""  
+      document.getElementById("s2")!.textContent = ""  
    }
 });    
 
@@ -186,156 +212,44 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
 });
 
 
+// encryption for password
+const [resultP, setResultP] = createSignal("");
 
-// encryption signals
-const [key, setKey]                 = createSignal("");
-const [iv, setIv]                   = createSignal("");
-const [plainText, setPlainText]     = createSignal("");
-const [fbPlainText, setFbPlainText] = createSignal("");
-const [cipherText, setCipherText]   = createSignal("");
-const [resultE, setResultE]         = createSignal("");
-const [resultD, setResultD]         = createSignal("");
-const [resultP, setResultP]         = createSignal("");
-
-
-// encryption inputs
-document.getElementById("key-IV")!.addEventListener("input",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#key")){
-      const value = (e!.target as HTMLInputElement).value;
-      setKey(value.toString());
-      document.getElementById("key_indic")!.textContent = count_characters(key()).toString();
-   }
-   if((e!.target as HTMLInputElement).matches("#iv")){
-      const value = (e!.target as HTMLInputElement).value;
-      setIv(value.toString());
-      document.getElementById("iv_indic")!.textContent = count_characters(iv()).toString();
-   }
- 
-});
-
-document.getElementById("encryption")!.addEventListener("input",(e)=>{
-
-   if((e!.target as HTMLInputElement).matches("#plain_text")){
-      const value = (e!.target as HTMLInputElement).value;
-      setPlainText(value.toString());
-      setFbPlainText(value.toString());
-   }
-
-   if((e!.target as HTMLInputElement).matches("#cipher_text")){
-      const value = (e!.target as HTMLInputElement).value;
-      setCipherText(value.toString());
-   }
-   
-});
-
-
-
-
-// encryption effect
-createEffect(() => {
-   setResultE(encrypt(key(), iv(), plainText()));
-   if ( key() !== "" && iv() !== "") {
-      document.getElementById("result_e")!.textContent = resultE();
-   }
-
-   if (resultE() === "") {
-      document.getElementById("result_e")!.textContent = "Enter Plain Text";
-   }
-   QRCode.toCanvas(
-      document.getElementById("eqr")!,
-      resultE(),
-      { width: 160, margin: 1 },
-   );
-});
-
-
-// encryption effect for password
+//textContenyt and disabled Conditions for Encrypted Pasword
 createEffect(() => {
    setResultP(encrypt(key(), iv(), currentPass()));
-      document.getElementById("encrypted-pass")!.textContent = resultP();
-});
-
-// decryption effect
-createEffect(() => {
-   setResultD(decrypt(key(), iv(), cipherText()));
-   if ( key() !== "" && iv() !== "") {
-   document.getElementById("result_d")!.textContent = resultD();
-   }
-
-   if (resultD() === "") {
-      document.getElementById("result_d")!.textContent = "Enter Cipher Text";
-   }
-   QRCode.toCanvas(
-      document.getElementById("dqr")!,
-      resultD(),
-      { width: 160, margin: 1 },
-   );
-});
-
-// condition for copy and show encryption
-createEffect(() => {
-   if(resultE() !== "IV is not 16 Characters" &&
-      resultE() !== "Key is not 16 Characters" &&
-      resultE() !== "") {
-      (document.getElementById("copy_e")! as HTMLInputElement).disabled  = false;
-      document.getElementById("l_show_e")!.classList.remove("disabled");
-      (document.getElementById("show_e")! as HTMLInputElement).disabled  = false;
-   } else{
-      (document.getElementById("copy_e")! as HTMLInputElement).disabled  = true;;
-      document.getElementById("l_show_e")!.classList.add("disabled");
-      (document.getElementById("show_e")! as HTMLInputElement).checked   = false; 
-      (document.getElementById("show_e")! as HTMLInputElement).disabled  = true;
-   }
-});
-
-// copy encryption
-document.getElementById("encryption")!.addEventListener("click",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#copy_e")){
-       if(resultE() !== "IV is not 16 Characters" &&
-         resultE() !== "Key is not 16 Characters" &&
-         resultE() !== "") {
-         navigator.clipboard.writeText(resultE());  
-         showToast();
-      } 
-   }
-});
-
-// condition for copy and show decryption
-createEffect(() => {
-   if(resultD() !== "IV is not 16 Characters" &&
-      resultD() !== "Key is not 16 Characters" &&
-      resultD() !== "Invalid Credentials"&&
-      resultD() !== "") {
-      (document.getElementById("copy_d")! as HTMLInputElement).disabled  = false;
-      document.getElementById("l_show_d")!.classList.remove("disabled");
-      (document.getElementById("show_d")! as HTMLInputElement).disabled  = false;
-   } else{
-      (document.getElementById("copy_d")! as HTMLInputElement).disabled  = true;
-      document.getElementById("l_show_d")!.classList.add("disabled");
-      (document.getElementById("show_d")! as HTMLInputElement).checked   = false; 
-      (document.getElementById("show_d")! as HTMLInputElement).disabled  = true;
-   }
-});
-
-// copy decryption
-document.getElementById("encryption")!.addEventListener("click",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#copy_d")){
-       if(resultD() !== "IV is not 16 Characters" &&
-         resultD() !== "Key is not 16 Characters" &&
-         resultD() !== "Invalid Credentials"&&
-         resultD() !== "") {
-         navigator.clipboard.writeText(resultD());  
-         showToast();
-      } 
+   document.getElementById("encrypted-pass")!.textContent = resultP();
+   if(resultP() !== "" && keyIvIsValid() === true) {
+      (document.getElementById("encrypted-pass")! as HTMLButtonElement).disabled  = false;
+      (document.getElementById("encrypted-pass-copy")! as HTMLButtonElement).disabled  = false;
+      document.getElementById("encrypted-pass-copy")!.textContent = "tap to copy";
+   } else {
+      (document.getElementById("encrypted-pass")! as HTMLButtonElement).disabled  = true;
+      (document.getElementById("encrypted-pass-copy")! as HTMLButtonElement).disabled  = true;
+      document.getElementById("encrypted-pass-copy")!.textContent = "";  
    }
 });
 
 
+// copy Encrypted Pasword
+document.getElementById("generate")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#encrypted-pass, #encrypted-pass-copy")){
+      if(resultP() !== "" && keyIvIsValid() === true) {
+         navigator.clipboard.writeText(resultP());  
+         showToast(); 
+      }
+   }
+});
 
 
-const [sKey, setSkey]                  = createSignal("");
-const [otpRe, setOtpRe]                = createSignal("");
-export const [countDown, setCountDown] = createSignal("");
+//varifaction 
+const [inKey, setInKey]         = createSignal("");
+const [otpOps, setOtpOps]       = createSignal("");
+const [keyIsEnc, setKeyIsEnc]   = createSignal(false);
+const [sKey, setSkey]           = createSignal("");
+const [otpRe, setOtpRe]         = createSignal("");
+const [countDown, setCountDown] = createSignal("");
+
 
 function updateCountDown(){
    const currentTime = Math.round(new Date().getTime() / 1000);
@@ -345,62 +259,31 @@ function updateCountDown(){
 setInterval(updateCountDown, 1000);
 
 
-document.getElementById("encryption")!.addEventListener("change",(e)=>{
-   if ((e!.target as HTMLInputElement).matches("#enc")) {
-      if ((e.target as HTMLInputElement).checked) {
-         setSkey(fbPlainText());
-      }
-   }
-   if ((e!.target as HTMLInputElement).matches("#dec")) {
-      if ((e.target as HTMLInputElement).checked) {
-         setSkey(resultD());
-      }
-   }
-});
-
-function activateVarif() {
-   (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "1";
-   (document.getElementById("use_varif_l")! as HTMLInputElement).style.opacity = "1";
-   (document.getElementById("use_varif")! as HTMLInputElement).disabled  = false;
-};
-
-function deactivateVarif() {
-   (document.getElementById("use_varif")! as HTMLInputElement).style.opacity = "0.6";
-   (document.getElementById("use_varif_l")! as HTMLInputElement).style.opacity = "0.6";
-   (document.getElementById("use_varif")! as HTMLInputElement).checked   = false; 
-   (document.getElementById("use_varif")! as HTMLInputElement).disabled  = true;
-};
-
-
-document.getElementById("encryption")!.addEventListener("input",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#plain_text")){
+document.getElementById("varification")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#varification-key")){
       const value = (e!.target as HTMLInputElement).value;
-      setSkey(value.toString());
-      if(sKey() !== "" ) { activateVarif() } else {deactivateVarif()}
+      setInKey(value.toString());
    }
-   if((e!.target as HTMLInputElement).matches("#cipher_text, #key, #iv")){
-      if ((document.getElementById("dec")! as HTMLInputElement).checked){
-         setSkey(decrypt(key(), iv(), cipherText()));
-         if(sKey() !== "IV is not 16 Characters" &&
-            sKey() !== "Key is not 16 Characters" &&
-            sKey() !== "Invalid Credentials" &&
-            sKey() !== "") { activateVarif() } else {deactivateVarif()}
-      }
+   if((e!.target as HTMLInputElement).matches("#varification-key-ops")){
+      const value = (e!.target as HTMLInputElement).value;
+      setOtpOps(value.toString());
    }
 });
 
-document.getElementById("encryption")!.addEventListener("change",(e)=>{
-   if ((e!.target as HTMLInputElement).matches("#dec")) {
-      if ((e.target as HTMLInputElement).checked) {
-         if(sKey() !== "IV is not 16 Characters" &&
-            sKey() !== "Key is not 16 Characters" &&
-            sKey() !== "Invalid Credentials" &&
-            sKey() !== "") { activateVarif() } else {deactivateVarif()}
-      }
-   }
+//detect if key is encrypted or not
+createEffect(() => {
+   setKeyIsEnc(/[A-Z]/.test(inKey()) && /[a-z]/.test(inKey()));
 });
 
-
+// set sKey based on options and detection
+createEffect(() => {
+   if (otpOps() === "Plain" || keyIsEnc() === false ){
+      setSkey(inKey())
+   }
+   else if (otpOps() === "Encrypted" || keyIsEnc() === true ){
+      setSkey(decrypt(key(), iv(), inKey()))
+   }
+});
 
 function updateOtp() {
    createEffect(() => {
@@ -416,31 +299,47 @@ setInterval(updateOtp, 1000);
 
 
 createEffect(() => {
-   if(otpRe() !== "The provided key is not valid." ){
-      document.getElementById("varif_detail")!.textContent = "Varification Code:"
-      document.getElementById("varif_detail_re")!.textContent = otpRe();
-
-      document.getElementById("varif_hint")!.textContent = 
-      "This code is valid for the next ".concat( countDown().toString(), " seconds.");
-      document.getElementById("varif_copy_hint")!.textContent = "Tap to copy";
-   } else {
-      document.getElementById("varif_detail")!.textContent = otpRe();
+   if (sKey() === "") {
+      document.getElementById("varif_detail")!.textContent = "";
       document.getElementById("varif_detail_re")!.textContent = "";
       document.getElementById("varif_hint")!.textContent = "";
       document.getElementById("varif_copy_hint")!.textContent = "";
-   } 
+   } else {
+      if (keyIvIsValid() === false || sKey() === "Invalid Credentials"){
+         document.getElementById("varif_detail")!.textContent = sKey();
+         document.getElementById("varif_detail_re")!.textContent = "";
+         document.getElementById("varif_hint")!.textContent = "";
+         document.getElementById("varif_copy_hint")!.textContent = "";
+      } 
+      else if (otpRe() === "The provided key is not valid."){
+         document.getElementById("varif_detail")!.textContent = otpRe();
+         document.getElementById("varif_detail_re")!.textContent = "";
+         document.getElementById("varif_hint")!.textContent = "";
+         document.getElementById("varif_copy_hint")!.textContent = "";
+      }
+      else if (otpRe() !== "The provided key is not valid.")  {
+         document.getElementById("varif_detail")!.textContent = "Varification Code:";
+         document.getElementById("varif_detail_re")!.textContent = otpRe();
+
+         document.getElementById("varif_hint")!.textContent =
+            "This code is valid for the next ".concat(countDown().toString()," seconds.",);
+         document.getElementById("varif_copy_hint")!.textContent = "Tap to copy"
+
+      } 
+   }
 });
 
-document.getElementById("varification")!.addEventListener("click",(e)=>{
-   if((e!.target as HTMLInputElement).matches(
-      "#varif_detail ,#varif_detail_re, #varif_copy_hint")){
-      if(otpRe() !== "The provided key is not valid." ){
-      navigator.clipboard.writeText(otpRe());  
-      showToast(); 
-     }
-  }
+document.getElementById("varification")!.addEventListener("click", (e) => {
+   if (
+      (e!.target as HTMLInputElement).matches("#varif_detail ,#varif_detail, #varif_copy_hint",) &&
+      keyIvIsValid() === true &&
+      sKey() !== "Invalid Credentials" &&
+      otpRe() !== "The provided key is not valid."
+   ) {
+      navigator.clipboard.writeText(otpRe());
+      showToast();
+   }
 });
-
 
 let timeoutId: number | undefined;
 
@@ -453,3 +352,102 @@ export function showToast() {
     }, 2000);
   }
 }
+
+
+// encryption signals
+const [plainText, setPlainText]     = createSignal("");
+const [cipherText, setCipherText]   = createSignal("");
+const [resultE, setResultE]         = createSignal("");
+const [resultD, setResultD]         = createSignal("");
+
+
+document.getElementById("encryption")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#plain_text")){
+      const value = (e!.target as HTMLInputElement).value;
+      setPlainText(value.toString());
+   }
+
+   if((e!.target as HTMLInputElement).matches("#cipher_text")){
+      const value = (e!.target as HTMLInputElement).value;
+      setCipherText(value.toString());
+   }
+   
+});
+
+
+// encryption effect
+createEffect(() => {
+   setResultE(encrypt(key(), iv(), plainText()));
+   if ( key() !== "" && iv() !== "") {
+      document.getElementById("result_e")!.textContent = resultE();
+   }
+
+   if (resultE() === "") {
+      document.getElementById("result_e")!.textContent = "Enter Plain Text";
+   }
+});
+
+
+// decryption effect
+createEffect(() => {
+   setResultD(decrypt(key(), iv(), cipherText()));
+   if ( key() !== "" && iv() !== "") {
+   document.getElementById("result_d")!.textContent = resultD();
+   }
+
+   if (resultD() === "") {
+      document.getElementById("result_d")!.textContent = "Enter Cipher Text";
+   }
+});
+
+
+// condition for copy and show encryption
+createEffect(() => {
+   if(resultE() !== "IV is not 16 Characters" &&
+      resultE() !== "Key is not 16 Characters" &&
+      resultE() !== "") {
+      (document.getElementById("copy_e")! as HTMLInputElement).disabled  = false;
+   } else{
+      (document.getElementById("copy_e")! as HTMLInputElement).disabled  = true;;
+   }
+});
+
+
+// copy encryption
+document.getElementById("encryption")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#copy_e")){
+       if(resultE() !== "IV is not 16 Characters" &&
+         resultE() !== "Key is not 16 Characters" &&
+         resultE() !== "") {
+         navigator.clipboard.writeText(resultE());  
+         showToast();
+      } 
+   }
+});
+
+
+// condition for copy and show decryption
+createEffect(() => {
+   if(resultD() !== "IV is not 16 Characters" &&
+      resultD() !== "Key is not 16 Characters" &&
+      resultD() !== "Invalid Credentials"&&
+      resultD() !== "") {
+      (document.getElementById("copy_d")! as HTMLInputElement).disabled  = false;
+   } else{
+      (document.getElementById("copy_d")! as HTMLInputElement).disabled  = true;
+   }
+});
+
+
+// copy decryption
+document.getElementById("encryption")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#copy_d")){
+       if(resultD() !== "IV is not 16 Characters" &&
+         resultD() !== "Key is not 16 Characters" &&
+         resultD() !== "Invalid Credentials"&&
+         resultD() !== "") {
+         navigator.clipboard.writeText(resultD());  
+         showToast();
+      } 
+   }
+});

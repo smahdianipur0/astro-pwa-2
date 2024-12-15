@@ -2,8 +2,6 @@
 import Tabs from '../components/Tabs.astro';
 ---
 
-
-
 <Tabs name="encdec" tab1="enc" tab2="dec" content1="cenc" content2="cdec">
   <fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab1">
 
@@ -15,17 +13,7 @@ import Tabs from '../components/Tabs.astro';
     <textarea id="result_e" rows="2" readonly> </textarea>
 
     <div class="flex-center-childs" style="height: var(--gap-x08); margin-top: var(--gap-x04);">
-
-      <button id="copy_e" class="first-btn " disabled>Copy</button>
-
-      <input type="checkbox" id="show_e" data-menu="show_e" class="hide-checkbox" />
-      <label id="l_show_e" aria-label="Show QR Code " for="show_e" data-menu-label="show_qr_code"
-        class="prose-btn last-btn disabled" style="width: 17ch;"> &nbsp </label>
-
-    </div>
-
-    <div class="qr">
-      <canvas id="eqr"></canvas>
+      <button id="copy_e"  disabled>Copy</button>
     </div>
 
   </fragment>
@@ -41,17 +29,7 @@ import Tabs from '../components/Tabs.astro';
     <textarea id="result_d" rows="2" readonly> </textarea>
 
     <div class="flex-center-childs" style="height: var(--gap-x08); margin-top: var(--gap-x04);">
-
-      <button id="copy_d" class="first-btn " disabled>Copy</button>
-
-      <input type="checkbox" id="show_d" data-menu="show_d" class="hide-checkbox" checked />
-      <label id="l_show_d" aria-label="Show QR Code" for="show_d" data-menu-label="show_qr_code"
-        class="prose-btn last-btn disabled" style="width: 17ch;"> &nbsp </label>
-
-    </div>
-
-    <div class="qr">
-      <canvas id="dqr"></canvas>
+      <button id="copy_d"  disabled>Copy</button>
     </div>
 
   </fragment>
@@ -120,73 +98,5 @@ import Tabs from '../components/Tabs.astro';
 
 }
 
-:root:has(#auto_pass:checked) #plain_text {
-	opacity: 0.5;
-}
-
-#l_show_e::after{
-	content: "Show QR Code"; 
-	padding:var(--default-padding);
-	-webkit-mask: none;
-   background: none;
-}
-
-:root:has(#show_e:checked) #l_show_e::after{
-	content: "Hide QR Code"; 
-}
-
-#l_show_d::after{
-	content: "Show QR Code"; 
-	padding:var(--default-padding);
-	-webkit-mask: none;
-   background: none;
-}
-
-:root:has(#show_d:checked) #l_show_d::after{
-	content: "Hide QR Code"; 
-}
-
-#l_show_e.disabled, 
-#l_show_d.disabled{
-  background: oklch(var(--gray-15) / 0.3);
-  color:oklch(var(--gray-95) / 0.6);
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-#l_show_e.disabled::before, 
-#l_show_d.disabled::before{
-  content: "";
-  background: linear-gradient(to bottom, oklch(45% 0 0 / 0.22) 0%, oklch(100% 0 0 / 0) 180%) ;
-}
-
-
-:root:has(#show_d:focus-visible) #l_show_d,
-:root:has(#show_e:focus-visible) #l_show_e {
-	outline: Highlight auto 1px;
-  outline: -webkit-focus-ring-color auto 1px;
-}
-
-#eqr {
-	display: none;
-}
-
-:root:has(#show_e:checked) #eqr {
-	display: block;
-}
-
-#dqr {
-	display: none;
-}
-
-:root:has(#show_d:checked) #dqr {
-	display: block;
-}
-
-
-.qr{
-	margin-left: calc(50% - 80px);
-	margin-top: var(--gap-x04);
-}
 	
 </style>

@@ -1,20 +1,23 @@
 ---
 import VarificationComponent from '../components/VarificationComponent.astro';
 ---
-<div style="
-display: flex;
-flex-direction: row;
-align-items: flex-start;">
 
-  <input id="use_varif" type="checkbox" style=" 
-height: var(--gap-x05); margin: 0 1ch 0 0;" disabled>
-
-  <label for="use_varif" id="use_varif_l" style="opacity: 0.6; ">
-    Use plain text as key for varification code.</label>
-
+<div style="display: flex; place-content: space-between;">
+  <label for="varification-key-ops" class="hint">Enter Plain or Encrypted Varification Key</label>
+  <select id="varification-key-ops" class="hint" name="chars" style="
+  width: 15ch ;
+  height: calc((var(--gap-x06) - 3px) );
+  margin: 1px;">
+  <option>Auto</option>
+  <option>Plain</option>
+  <option>Encrypted</option>
+  </select>
 </div>
+<textarea id="varification-key" class=" dent-shadow" style="
+  margin-top: var(--gap-x02); margin-bottom: var(--gap-x04);" rows="2" placeholder="Varification Key">
+</textarea>
 
-<div class="varif_detail_cl">
+<div class="varif_detail_cl" style="display: block;">
   <VarificationComponent varification_detail="varif_detail" varification_detail_result="varif_detail_re"
     varification_hint="varif_hint" varification_copy="varif_copy_hint" />
 

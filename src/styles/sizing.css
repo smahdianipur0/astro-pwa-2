@@ -33,7 +33,7 @@
 
   --default-padding: calc( var(--gap-x03) / 2) calc( var(--gap-x03));
   --medium-padding: calc(var(--gap)  / 2) calc(var(--gap));
-  --thin-padding: 0.1ch 1ch;
+  --thin-padding: 0.1ch var(--gap);
 
 
   --radius-a: 0.85ch;

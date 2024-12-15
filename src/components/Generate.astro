@@ -75,9 +75,10 @@ import DrawerContent from '../components/DrawerContent.astro';
 
 <details name="encrypted password" class="prose" >
   <summary>Show Encrypted Password</summary>
-  <div id="encrypted-pass" class="skeleton-parrent">
+  <button id="encrypted-pass" class="skeleton-parrent not-prose" disabled>
     <div style="width:15ch;" class="skeleton"> </div>
-  </div>
+  </button>
+  <button id="encrypted-pass-copy" class="hint not-prose" style="display: block; color:oklch(var(--gray-95));"></button>
 </details>
 
 
@@ -134,11 +135,25 @@ import DrawerContent from '../components/DrawerContent.astro';
   animation: blink 1s ease-in-out infinite;
 }
 
+#encrypted-pass{
+  border: 1px solid transparent;
+  border-radius: var(--radius-a);
+  padding: var(--thin-padding);
+  color: oklch(var(--gray-95));
+  opacity: 1;
+  margin-left: calc( var(--gap) * -1);
+}
+#encrypted-pass:disabled{
+  opacity: 0.5;
+}
+
 
 #add-drawer-trigger:focus,
 #add-drawer-trigger:hover,
 #redo:focus,
-#redo:hover {
+#redo:hover,
+#encrypted-pass:focus,
+#encrypted-pass:hover {
   border: 1px solid oklch(var(--gray-25) / 1);
 }
 
