@@ -12,23 +12,23 @@
 		padding-left:0;">Characters:</label>
 
   <div class="prose" style=" display: flex; gap: 0; margin-top: auto; margin-bottom: auto;">
-  	<div style="margin-right: var(--gap-xs);" class="rim-light">
-	    <select id="char_input" class="number-input" name="chars" style="
-				width: var(--gap-x08);
-				margin: 1px;">
-		  <option value="12"> 12 </option>
-		  <option value="13"> 13 </option>
-		  <option value="14"> 14 </option>
-		  <option value="15"> 15 </option>
-		  <option value="16" selected> 16 </option>
-		  <option value="17"> 17 </option>
-		  <option value="18"> 18 </option>
-		  <option value="19"> 19 </option>
-		  <option value="20"> 20 </option>
-	    </select>
-    </div>
+	<select id="char_input" class="number-input box-shadow" name="chars" style="
+			width: var(--gap-x08);
+			margin: 1px;
+			margin-right: var(--gap-xs);">
+		<option value="12"> 12 </option>
+		<option value="13"> 13 </option>
+		<option value="14"> 14 </option>
+		<option value="15"> 15 </option>
+		<option value="16" selected> 16 </option>
+		<option value="17"> 17 </option>
+		<option value="18"> 18 </option>
+		<option value="19"> 19 </option>
+		<option value="20"> 20 </option>
+	</select>
 
-    <div class="rim-light">
+
+    <div class="box-shadow" style="  display: inline-flex; border-radius: calc( var(--radius-a) + 1px) ;  ">
 	    <button style="margin-right:0; border-top-right-radius:0; border-bottom-right-radius:0 " 
 	    	aria-label="Increase Word Count" id="minus_chars" class="not-prose char-button">
 	      <svg id="minus_chars_icon" style="padding:3px;" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -66,7 +66,6 @@
 	color: oklch(var(--gray-95) / 1);
 	background-color: oklch(var(--gray-25));
 	text-align: center;
-	margin: 1px;
 	position: relative;
 }
 

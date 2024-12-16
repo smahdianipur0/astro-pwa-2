@@ -335,6 +335,7 @@ document.getElementById("varification")!.addEventListener("click", (e) => {
       keyIvIsValid() === true &&
       sKey() !== "Invalid Credentials" &&
       otpRe() !== "The provided key is not valid."  ||
+      (e!.target as HTMLInputElement).matches("#varif_detail ,#varif_detail_res, #varif_copy_hint",) &&
       keyIsEnc() === false &&
       otpRe() !== "The provided key is not valid."
    ) {
