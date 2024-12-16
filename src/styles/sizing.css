@@ -28,6 +28,7 @@
   --gap-x06: calc(var(--gap) * var(--x06));
   --gap-x07: calc(var(--gap) * var(--x07));
   --gap-x08: calc(var(--gap) * var(--x08));
+  --gap-x09: calc(var(--gap) * var(--x09));
   --gap-x10: calc(var(--gap) * var(--x10));
 
 
