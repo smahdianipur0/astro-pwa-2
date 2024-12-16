@@ -63,7 +63,7 @@ oklch(32% 0.07 268 / var(--box-shadow-opacity)) 0px 24px 24px -12px;
 
 .hint{
   border: 1px solid oklch(100% 0 0 /0.0);
-  opacity: 0.6;
+  color: oklch(var(--gray-75));
   font-size:var(--small-font);
   line-height: var(--gap-x04); 
   font-weight: 300; 

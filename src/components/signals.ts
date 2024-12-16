@@ -301,25 +301,25 @@ setInterval(updateOtp, 1000);
 createEffect(() => {
    if (sKey() === "") {
       document.getElementById("varif_detail")!.textContent = "";
-      document.getElementById("varif_detail_re")!.textContent = "";
+      document.getElementById("varif_detail_res")!.textContent = "";
       document.getElementById("varif_hint")!.textContent = "";
       document.getElementById("varif_copy_hint")!.textContent = "";
    } else {
-      if (keyIvIsValid() === false || sKey() === "Invalid Credentials"){
+      if (keyIsEnc() === true && keyIvIsValid() === false || sKey() === "Invalid Credentials"){
          document.getElementById("varif_detail")!.textContent = sKey();
-         document.getElementById("varif_detail_re")!.textContent = "";
+         document.getElementById("varif_detail_res")!.textContent = "";
          document.getElementById("varif_hint")!.textContent = "";
          document.getElementById("varif_copy_hint")!.textContent = "";
       } 
       else if (otpRe() === "The provided key is not valid."){
          document.getElementById("varif_detail")!.textContent = otpRe();
-         document.getElementById("varif_detail_re")!.textContent = "";
+         document.getElementById("varif_detail_res")!.textContent = "";
          document.getElementById("varif_hint")!.textContent = "";
          document.getElementById("varif_copy_hint")!.textContent = "";
       }
       else if (otpRe() !== "The provided key is not valid.")  {
          document.getElementById("varif_detail")!.textContent = "Varification Code:";
-         document.getElementById("varif_detail_re")!.textContent = otpRe();
+         document.getElementById("varif_detail_res")!.textContent = otpRe();
 
          document.getElementById("varif_hint")!.textContent =
             "This code is valid for the next ".concat(countDown().toString()," seconds.",);
@@ -331,9 +331,11 @@ createEffect(() => {
 
 document.getElementById("varification")!.addEventListener("click", (e) => {
    if (
-      (e!.target as HTMLInputElement).matches("#varif_detail ,#varif_detail, #varif_copy_hint",) &&
+      (e!.target as HTMLInputElement).matches("#varif_detail ,#varif_detail_res, #varif_copy_hint",) &&
       keyIvIsValid() === true &&
       sKey() !== "Invalid Credentials" &&
+      otpRe() !== "The provided key is not valid."  ||
+      keyIsEnc() === false &&
       otpRe() !== "The provided key is not valid."
    ) {
       navigator.clipboard.writeText(otpRe());

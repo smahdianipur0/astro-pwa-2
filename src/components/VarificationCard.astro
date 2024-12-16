@@ -1,7 +1,3 @@
----
-import VarificationComponent from '../components/VarificationComponent.astro';
----
-
 <div style="display: flex; place-content: space-between;">
   <label for="varification-key-ops" class="hint">Enter Plain or Encrypted Varification Key</label>
   <select id="varification-key-ops" class="hint" name="chars" style="
@@ -17,33 +13,28 @@ import VarificationComponent from '../components/VarificationComponent.astro';
   margin-top: var(--gap-x02); margin-bottom: var(--gap-x04);" rows="2" placeholder="Varification Key">
 </textarea>
 
-<div class="varif_detail_cl" style="display: block;">
-  <VarificationComponent varification_detail="varif_detail" varification_detail_result="varif_detail_re"
-    varification_hint="varif_hint" varification_copy="varif_copy_hint" />
+<div style="overflow: hidden;">
+  <div style="
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;">
+
+  <div id="varif_detail" style="
+  	line-height: var(--gap-x05);
+    font-weight: 300;
+    font-size:var(--big-font);
+    height:var(--gap-x05);">
+    <div class="skeleton" style="width:10ch"></div>
+  </div>
+
+  <button id="varif_detail_res" class=" not-prose copy">
+    <div class="skeleton" style="width:5ch; font-variant-numeric: tabular-nums;"></div>
+  </button>
 
 </div>
 
-<script>
+<div id="varif_hint" class="hint" style="height:var(--gap-x04);" ></div>
+<div id="varif_copy_hint" class="hint" style="height:var(--gap-x04);"></div>
 
-document.getElementById("encryption")!.addEventListener("change",(e)=>{
-   if ((e!.target as HTMLInputElement).matches("#enc")) {
-   	document.getElementById("use_varif_l")!.textContent = "Use plain text as key for varification code.";
-   }if ((e!.target as HTMLInputElement).matches("#dec")){
-   	document.getElementById("use_varif_l")!.textContent = "Use Decrypted text as key for varification code.";
-   }
-});
-	
-
-</script>
-
-<style>
-	
-.varif_detail_cl{
-	display: none;
-	font-variant-numeric: tabular-nums;
-}
-
-:root:has(#use_varif:checked) .varif_detail_cl{
-	display: block;
-}
-</style>
+</div>

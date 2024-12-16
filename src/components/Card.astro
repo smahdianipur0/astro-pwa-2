@@ -10,15 +10,6 @@ const { title , iden } = Astro.props;
 <div class="prose" style="color: oklch(var(--gray-95) );
 width: -moz-available;
 width: -webkit-fill-available;" id={iden}>
-  {title && (
-    <h2 style="
-      font-weight: 600;
-      margin-top: var(--gap);
-      margin-bottom: var(--gap);
-      text-align: center;">
-      {title}
-    </h2>
-  )}
 
   <div style="
 	background: var(--border);	
@@ -35,6 +26,15 @@ width: -webkit-fill-available;" id={iden}>
 	background-color: oklch(var(--gray-10) / 0.5);
 	width: auto;
 	height: auto">
+	{title && (
+		<h2 style="
+		  line-height: var(--gap-x03);
+		  margin-top: 0;
+		  font-weight: 600;
+		  margin-bottom: var(--gap-x04);">
+		  {title}
+		</h2>
+	  )}
       <slot />
 
     </div>

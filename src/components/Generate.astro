@@ -74,7 +74,7 @@ import DrawerContent from '../components/DrawerContent.astro';
 </div>
 
 <details name="encrypted password" class="prose" >
-  <summary>Show Encrypted Password</summary>
+  <summary>Encrypted Password</summary>
   <button id="encrypted-pass" class="skeleton-parrent not-prose" disabled>
     <div style="width:15ch;" class="skeleton"> </div>
   </button>
@@ -144,7 +144,7 @@ import DrawerContent from '../components/DrawerContent.astro';
   margin-left: calc( var(--gap) * -1);
 }
 #encrypted-pass:disabled{
-  opacity: 0.5;
+  color: oklch(var(--gray-75));
 }
 
 
