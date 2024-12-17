@@ -8,7 +8,6 @@ import {
    decrypt,
    count_characters
 } from "../pkg/rust_lib";
-import QRCode from 'qrcode'
 import { TOTP } from "totp-generator";
 
 
@@ -39,7 +38,6 @@ createEffect(() => {
 			count_characters(iv()).toString() === "✔️",
 	);
 });
-
 
 
 // password generator signals
@@ -90,23 +88,22 @@ document.getElementById("generate")!.addEventListener("change",(e)=>{
             setCurrentPass(password());
          }
       }
-      if ((e!.target as HTMLInputElement).matches("#manual")) {
-         if ((e.target as HTMLInputElement).checked) {
-            setCurrentPass(mpassword());
-         }
+   if ((e!.target as HTMLInputElement).matches("#manual")) {
+      if ((e.target as HTMLInputElement).checked) {
+         setCurrentPass(mpassword());
       }
+   }
+
    if((e!.target as HTMLInputElement).matches("#add_special_cha")){
       if ((e!.target as HTMLInputElement).checked){ 
          setAddSpecialCha(true) } else { setAddSpecialCha(false) 
       }
    }
-
    if((e!.target as HTMLInputElement).matches("#add_number")){
       if ((e!.target as HTMLInputElement).checked){ 
          setAddNumber(true) } else { setAddNumber(false) 
       }
    }
-
    if((e!.target as HTMLInputElement).matches("#capitalize_first_letter")){
       if ((e!.target as HTMLInputElement).checked){ 
          setCapitalizeFirstLetter(true) } else { setCapitalizeFirstLetter(false) 
@@ -161,26 +158,25 @@ createEffect(() => {
 
 // password strength box effect
 createEffect(() => { 
-   const gu= guessable(currentPass());
-       if (gu === "Enter password") {
-      document.getElementById("box")!.style.setProperty("--box-w", "0%");
-      document.getElementById("box")!.style.setProperty("--box-p", "0%");
-   }   if (gu === "Too Guessable") {
-      document.getElementById("box")!.style.setProperty("--box-w", "36%");
-      document.getElementById("box")!.style.setProperty("--box-p", "0%");
-   }   if (gu === "Very Guessable") {
-      document.getElementById("box")!.style.setProperty("--box-w", "52%");
-      document.getElementById("box")!.style.setProperty("--box-p", "16%");
-   }   if (gu === "Somewhat Guessable") {
-      document.getElementById("box")!.style.setProperty("--box-w", "68%");
-      document.getElementById("box")!.style.setProperty("--box-p", "32%");
-   }   if (gu === "Safely Unguessable") {
-      document.getElementById("box")!.style.setProperty("--box-w", "84%");
-      document.getElementById("box")!.style.setProperty("--box-p", "48%");
-   }   if (gu === "Very Unguessable") {
-      document.getElementById("box")!.style.setProperty("--box-w", "100%");
-      document.getElementById("box")!.style.setProperty("--box-p", "64%");
-   }
+   const gu = guessable(currentPass());
+
+   document.getElementById("box")!.style.setProperty("--box-w", 
+      gu === "Enter password" ? "0%" :
+      gu === "Too Guessable" ? "36%" :
+      gu === "Very Guessable" ? "52%" :
+      gu === "Somewhat Guessable" ? "68%" :
+      gu === "Safely Unguessable" ? "84%" :
+      gu === "Very Unguessable" ? "100%" : "0%"
+   );
+
+   document.getElementById("box")!.style.setProperty("--box-p", 
+      gu === "Enter password" ? "0%" :
+      gu === "Too Guessable" ? "0%" :
+      gu === "Very Guessable" ? "16%" :
+      gu === "Somewhat Guessable" ? "32%" :
+      gu === "Safely Unguessable" ? "48%" :
+      gu === "Very Unguessable" ? "64%" : "0%"
+   );
 });
 
 
@@ -244,7 +240,7 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
 
 //varifaction 
 const [inKey, setInKey]         = createSignal("");
-const [otpOps, setOtpOps]       = createSignal("");
+const [otpOps, setOtpOps]       = createSignal("Auto");
 const [keyIsEnc, setKeyIsEnc]   = createSignal(false);
 const [sKey, setSkey]           = createSignal("");
 const [otpRe, setOtpRe]         = createSignal("");
@@ -275,13 +271,18 @@ createEffect(() => {
    setKeyIsEnc(/[A-Z]/.test(inKey()) && /[a-z]/.test(inKey()));
 });
 
+
 // set sKey based on options and detection
 createEffect(() => {
-   if (otpOps() === "Plain" || keyIsEnc() === false ){
-      setSkey(inKey())
+
+   if ((otpOps() === "Plain") || 
+      (otpOps() === "Auto" && keyIsEnc() === false )) {
+      setSkey(inKey());
    }
-   else if (otpOps() === "Encrypted" || keyIsEnc() === true ){
-      setSkey(decrypt(key(), iv(), inKey()))
+
+   else if ((otpOps() === "Encrypted") || 
+      (otpOps() === "Auto" && keyIsEnc() === true )){
+      setSkey(decrypt(key(), iv(), inKey()));
    }
 });
 
@@ -297,47 +298,43 @@ function updateOtp() {
 setInterval(updateOtp, 1000);
 
 
-
 createEffect(() => {
-   if (sKey() === "") {
-      document.getElementById("varif_detail")!.textContent = "";
-      document.getElementById("varif_detail_res")!.textContent = "";
-      document.getElementById("varif_hint")!.textContent = "";
-      document.getElementById("varif_copy_hint")!.textContent = "";
-   } else {
-      if (keyIsEnc() === true && keyIvIsValid() === false || sKey() === "Invalid Credentials"){
+   switch (true) {
+      case (sKey() === ""):
+         document.getElementById("varif_detail")!.textContent = ""
+         document.getElementById("varif_detail_res")!.textContent = "";
+         document.getElementById("varif_hint")!.textContent = "";
+         document.getElementById("varif_copy_hint")!.textContent = "";
+         break;
+
+      case (sKey() !== inKey() && (!keyIvIsValid() || sKey() === "Invalid Credentials")):
          document.getElementById("varif_detail")!.textContent = sKey();
          document.getElementById("varif_detail_res")!.textContent = "";
          document.getElementById("varif_hint")!.textContent = "";
          document.getElementById("varif_copy_hint")!.textContent = "";
-      } 
-      else if (otpRe() === "The provided key is not valid."){
+         break;
+
+      case (otpRe() === "The provided key is not valid."):
          document.getElementById("varif_detail")!.textContent = otpRe();
          document.getElementById("varif_detail_res")!.textContent = "";
          document.getElementById("varif_hint")!.textContent = "";
          document.getElementById("varif_copy_hint")!.textContent = "";
-      }
-      else if (otpRe() !== "The provided key is not valid.")  {
+         break;
+
+      default:
          document.getElementById("varif_detail")!.textContent = "Varification Code:";
          document.getElementById("varif_detail_res")!.textContent = otpRe();
-
          document.getElementById("varif_hint")!.textContent =
-            "This code is valid for the next ".concat(countDown().toString()," seconds.",);
-         document.getElementById("varif_copy_hint")!.textContent = "Tap to copy"
-
-      } 
+            "This code is valid for the next ".concat(countDown().toString(), " seconds.");
+         document.getElementById("varif_copy_hint")!.textContent = "Tap to copy";
    }
 });
+
 
 document.getElementById("varification")!.addEventListener("click", (e) => {
    if (
       (e!.target as HTMLInputElement).matches("#varif_detail ,#varif_detail_res, #varif_copy_hint",) &&
-      keyIvIsValid() === true &&
-      sKey() !== "Invalid Credentials" &&
-      otpRe() !== "The provided key is not valid."  ||
-      (e!.target as HTMLInputElement).matches("#varif_detail ,#varif_detail_res, #varif_copy_hint",) &&
-      keyIsEnc() === false &&
-      otpRe() !== "The provided key is not valid."
+      document.getElementById("varif_detail_res")!.textContent !== ""
    ) {
       navigator.clipboard.writeText(otpRe());
       showToast();
@@ -416,19 +413,6 @@ createEffect(() => {
 });
 
 
-// copy encryption
-document.getElementById("encryption")!.addEventListener("click",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#copy_e")){
-       if(resultE() !== "IV is not 16 Characters" &&
-         resultE() !== "Key is not 16 Characters" &&
-         resultE() !== "") {
-         navigator.clipboard.writeText(resultE());  
-         showToast();
-      } 
-   }
-});
-
-
 // condition for copy and show decryption
 createEffect(() => {
    if(resultD() !== "IV is not 16 Characters" &&
@@ -441,16 +425,17 @@ createEffect(() => {
    }
 });
 
-
-// copy decryption
+// copy encryption and decryption
 document.getElementById("encryption")!.addEventListener("click",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#copy_d")){
-       if(resultD() !== "IV is not 16 Characters" &&
-         resultD() !== "Key is not 16 Characters" &&
-         resultD() !== "Invalid Credentials"&&
-         resultD() !== "") {
-         navigator.clipboard.writeText(resultD());  
-         showToast();
-      } 
+   if((e!.target as HTMLInputElement).matches("#copy_e") &&
+      ((document.getElementById("copy_d")! as HTMLInputElement).disabled  === false )){
+      navigator.clipboard.writeText(resultE());  
+      showToast();
+   }
+
+   if((e!.target as HTMLInputElement).matches("#copy_d") &&
+      ((document.getElementById("copy_d")! as HTMLInputElement).disabled  === false )){
+      navigator.clipboard.writeText(resultD());  
+      showToast();
    }
 });
