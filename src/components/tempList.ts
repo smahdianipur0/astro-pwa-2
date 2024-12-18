@@ -52,22 +52,25 @@ createEffect(() => { setListPassword(password()) });
 		}
 	});
 
-
 	searchInputEl.addEventListener("focus", (e) => {
 		setIsSearching(true);
-	  });
+	});
 
 	searchInputEl.addEventListener("blur", (e) => {
 		if(searchInput().trim() !== "") {setIsSearching(true)} else{ setIsSearching(false) };
 	});
 
 
-	const fuse = new Fuse(listEntries(), { keys: ['title'] })
-
 	createEffect(() => {
-	const searched = fuse.search(searchInput()).map(entry => entry.item);
-	console.log(searched);
-	setSearchArray(searched);
+		const fuse = new Fuse(listEntries(), { keys: ['title'] });
+		const searchResults = fuse.search(searchInput());
+		const searched = [];
+
+		for (const entry of searchResults) {
+			searched.push(entry.item);
+		}
+
+		setSearchArray(searched);
 	});
 
 
