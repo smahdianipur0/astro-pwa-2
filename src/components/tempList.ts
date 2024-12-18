@@ -11,15 +11,18 @@ import {
 import { element } from "../utils/elementUtils";
 import { password, showToast } from "../components/signals.ts";
 import { createSignal, createEffect } from "solid-js";
-// import Fuse from 'fuse.js'
+import Fuse from 'fuse.js'
 
 
 
 // signals
-const [listTitle, setListTitle]        = createSignal('')
+const [listTitle, setListTitle]        = createSignal('');
 const [listPassword, setListPassword]  = createSignal('');
 const [listEntries, setListEntries]    = createSignal<PasswordEntry[]>([]);
 const [listRecentDel, setListRecentDel]= createSignal<PasswordEntry[]>([]);
+const [searchInput, setSearchInput]    = createSignal("");
+const [isSearching, setIsSearching]    = createSignal(false);
+const [searchArray, setSearchArray]    = createSignal<PasswordEntry[]>([]);
 
 
 // initialize entries
@@ -40,14 +43,32 @@ createEffect(() => { setListPassword(password()) });
 	const passwordInput  = (await element.wait("#password-input"))   as HTMLInputElement;
 	const titleInput     = (await element.wait("#title-input"))      as HTMLInputElement;
 	const addEntryButton = (await element.wait("#add-entry-button")) as HTMLButtonElement;
+	const searchInputEl  = (await element.wait("#search-input"))    as HTMLInputElement;
 
 
+	document.getElementById("search-box")!.addEventListener("input",(e)=>{
+		if((e!.target as HTMLInputElement).matches("#search-input")){
+		   setSearchInput((e!.target as HTMLInputElement).value);;
+		}
+	});
 
-	// const fuse = new Fuse(listEntries(), {
-	// 	keys: ['title']
-	//   })
 
-	// const searched = fuse.search('jon').map(entry => entry.item);
+	searchInputEl.addEventListener("focus", (e) => {
+		setIsSearching(true);
+	  });
+
+	searchInputEl.addEventListener("blur", (e) => {
+		if(searchInput().trim() !== "") {setIsSearching(true)} else{ setIsSearching(false) };
+	});
+
+
+	const fuse = new Fuse(listEntries(), { keys: ['title'] })
+
+	createEffect(() => {
+	const searched = fuse.search(searchInput()).map(entry => entry.item);
+	console.log(searched);
+	setSearchArray(searched);
+	});
 
 
 // render entries based on signal
@@ -55,7 +76,7 @@ createEffect(() => {
 	entriesList.textContent = '';
 	const fragment = document.createDocumentFragment();
   
-	(listEntries() ?? []).reverse().forEach((entry) => {
+	(isSearching() ? searchArray() : (listEntries() ?? [])).reverse().forEach((entry) => {
 		fragment.append(
 			element.configure(document.createElement('div'), {
 				className: 'entry-item',
