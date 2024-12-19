@@ -7,9 +7,7 @@ interface Props {
 const { title , iden } = Astro.props;
 ---
 
-<div class="prose" style="color: oklch(var(--gray-95) );
-width: -moz-available;
-width: -webkit-fill-available;" id={iden}>
+<div class="prose max-width" style="color: oklch(var(--gray-95) );" id={iden}>
 
   <div style="
 	background: var(--border);	

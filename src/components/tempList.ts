@@ -48,7 +48,15 @@ createEffect(() => { setListPassword(password()) });
 
 	document.getElementById("search-box")!.addEventListener("input",(e)=>{
 		if((e!.target as HTMLInputElement).matches("#search-input")){
-		   setSearchInput((e!.target as HTMLInputElement).value);;
+		   setSearchInput((e!.target as HTMLInputElement).value);
+		}
+	});
+
+	document.getElementById("search-box")!.addEventListener("click",(e)=>{
+		if((e!.target as HTMLInputElement).matches("#cancel-search")){
+			searchInputEl.value = ''
+		   	setSearchInput('');
+			setIsSearching(false)
 		}
 	});
 
@@ -63,13 +71,7 @@ createEffect(() => { setListPassword(password()) });
 
 	createEffect(() => {
 		const fuse = new Fuse(listEntries(), { keys: ['title'] });
-		const searchResults = fuse.search(searchInput());
-		const searched = [];
-
-		for (const entry of searchResults) {
-			searched.push(entry.item);
-		}
-
+		const searched = fuse.search(searchInput()).map(entry => entry.item);
 		setSearchArray(searched);
 	});
 
@@ -79,7 +81,7 @@ createEffect(() => {
 	entriesList.textContent = '';
 	const fragment = document.createDocumentFragment();
   
-	(isSearching() ? searchArray() : (listEntries() ?? [])).reverse().forEach((entry) => {
+	(isSearching() ? searchArray() : (listEntries() ?? []).reverse()).forEach((entry) => {
 		fragment.append(
 			element.configure(document.createElement('div'), {
 				className: 'entry-item',

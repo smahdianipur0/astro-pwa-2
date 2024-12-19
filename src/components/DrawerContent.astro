@@ -30,13 +30,24 @@ overflow-x: hidden;">
       <button style="margin-top: var(--gap-x03);"id="add-entry-button">Add</button>
     </div>
   </Card>
-    <div id="search-box" class="menu-item" style="display: flex; flex-direction: row;">
+    <div id="search-box" class="prose max-width" style="
+    display: flex; 
+    flex-direction: row;
+    position:relative;">
+      <input type="text" id="search-input" style="
+      position: relative;
+      background: oklch(var(--gray-15) / 1);
+      border: none ;
+      padding-left: var(--gap-x07);
+      box-shadow: none;"  placeholder="Search">
       <svg style="
-      height:var(--gap-x07); 
-      margin: auto var(--gap);
-      padding: 2px;
+      position: absolute;
+      margin: var(--default-padding);
+      margin-inline: var(--gap);
+      height: var(--gap-x04);
+      padding-top: 2px;
       opacity:0.5;" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 2.5a7.5 7.5 0 0 1 5.964 12.048l4.743 4.745a1 1 0 0 1-1.32 1.497l-.094-.083-4.745-4.743A7.5 7.5 0 1 1 10 2.5Zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z" /></svg>
-      <input id="search-input" style="background:none;" type="text" placeholder="Search">
+      <button class="not-prose" id="cancel-search">Cancel</button>
     </div>
 
   <div class="entries-list" id="entries-list"></div>
@@ -59,6 +70,33 @@ overflow-x: hidden;">
 
 <style is:global>
 
+#cancel-search {
+  color: oklch(var(--primary));
+  width: var(--gap-x08);
+  opacity: 0; 
+  position: absolute; 
+  top: 0;
+  right: 0;
+  margin: var(--default-padding);
+  margin-inline: 0;
+  line-height: var(--gap-x04);
+  transition: opacity 0.1s
+}
+
+:root:has(#search-input:focus-within) #cancel-search {
+  opacity: 1; 
+  transition: opacity 0.2s;
+}
+
+#search-input {
+  width: 100%;
+  transition: width 0.1s;
+}
+
+:root:has(#search-input:focus-within) #search-input {
+  width: calc(100% - var(--gap-x09));
+  transition: width 0.1s;
+}
 
 .entries-list{
   display: flex;
@@ -196,6 +234,5 @@ details.right-to-left[open] .delete-button {
   50% { opacity: 60%; }
   100% { opacity: 20%; }
 } 
-
 
 </style>
