@@ -12,7 +12,7 @@
 		padding-left:0;">Characters:</label>
 
   <div class="prose" style=" display: flex; gap: 0; margin-top: auto; margin-bottom: auto;">
-	<select id="char_input" class="number-input box-shadow" name="chars" style="
+	<select id="char_input" class="number-input" name="chars" style="
 			width: var(--gap-x09);
 			margin-right: var(--gap-xs);">
 		<option value="12"> 12 </option>
@@ -27,7 +27,7 @@
 	</select>
 
 
-    <div class="box-shadow" style="  display: inline-flex; border-radius: calc( var(--radius-a) + 1px) ;  ">
+    <div style="  display: inline-flex; border-radius: calc( var(--radius-a) + 1px) ;  ">
 	    <button style="margin-right:0; border-top-right-radius:0; border-bottom-right-radius:0 " 
 	    	aria-label="Increase Word Count" id="minus_chars" class="not-prose char-button">
 	      <svg id="minus_chars_icon" style="padding:3px;" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -62,7 +62,7 @@
 	place-content: center;
 	border-radius: var(--radius-a);
 	color: oklch(var(--gray-95) / 1);
-	background-color: oklch(var(--gray-25));
+	background: var(--gray-bg);
 	text-align: center;
 	position: relative;
 }
