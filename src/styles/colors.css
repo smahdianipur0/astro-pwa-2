@@ -5,10 +5,6 @@
     oklch(66% 0.165 268) 25%,
     oklch(63% 0.17 272) 65%,  
     oklch(60% 0.18 276) 100%);
-    --gray-bg:linear-gradient(0deg, 
-    oklch(100% 0 0 / 0.11) 0%, 
-    oklch(100% 0 0 / 0.08) 45%, 
-    oklch(100% 0 0 / 0.07) 100%);
   --success: oklch(65% 0.12 174);
   --danger: oklch(62.31% 0.246 27);
 
@@ -21,10 +17,6 @@
   --gray-75:65% 0 0;
   --gray-85:85% 0 0;
   --gray-95:100% 0 0 ;
-  --gray-bg:linear-gradient(0deg, 
-    oklch(100% 0 0 / 0.11) 0%, 
-    oklch(100% 0 0 / 0.08) 45%, 
-    oklch(100% 0 0 / 0.07) 100%);
   --primary-shadow: oklch(37% 0.17 268.67);
   --tab-indicator-bg:linear-gradient(175deg, oklch(100% 0 0 / 0.05) 0%, oklch(100% 0 0 / 0.12) 65%, oklch(100% 0 0 / 0.2) 100%);
   --rim-light:100% 0.0 273 / 0.1;
@@ -41,12 +33,8 @@
   --gray-75:30% 0 0;
   --gray-85:22% 0 0;
   --gray-95:0% 0 0 ;
-  --gray-bg:linear-gradient(0deg, 
-    oklch(20% 0 0 / 0.07) 0%, 
-    oklch(20% 0 0 / 0.09) 45%, 
-    oklch(20% 0 0 / 0.11) 100%);
   --primary-shadow: oklch(60% 0.16 268.67);
-  --tab-indicator-bg: linear-gradient(170deg, oklch(8.5% 0 0 / 0.2) 0%, oklch(8.5% 0 0 / 0.12) 65%, oklch(8.5% 0 0 / 0.05) 100%);
+  --tab-indicator-bg: linear-gradient(175deg, oklch(8.5% 0 0 / 0.2) 0%, oklch(8.5% 0 0 / 0.12) 65%, oklch(8.5% 0 0 / 0.05) 100%);
   --rim-light:100% 0.0 273 / 0.3 ;
   --border: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(88% 0 0) 25%, oklch(94% 0 0) 100%);
 
@@ -65,10 +53,6 @@
     --gray-75:65% 0 0;
     --gray-85:85% 0 0;
     --gray-95:100% 0 0 ;
-    --gray-bg:linear-gradient(0deg, 
-      oklch(100% 0 0 / 0.11) 0%, 
-      oklch(100% 0 0 / 0.08) 45%, 
-      oklch(100% 0 0 / 0.07) 100%);
     --primary-shadow: oklch(37% 0.17 268.67);
     --tab-indicator-bg:linear-gradient(175deg, oklch(100% 0 0 / 0.05) 0%, oklch(100% 0 0 / 0.12) 65%, oklch(100% 0 0 / 0.2) 100%);
     --rim-light:100% 0.0 273 / 0.1;
@@ -84,12 +68,8 @@
     --gray-75:30% 0 0;
     --gray-85:22% 0 0;
     --gray-95:0% 0 0 ;
-    --gray-bg:linear-gradient(0deg, 
-      oklch(20% 0 0 / 0.07) 0%, 
-      oklch(20% 0 0 / 0.09) 45%, 
-      oklch(20% 0 0 / 0.11) 100%);
     --primary-shadow: oklch(60% 0.16 268.67);
-    --tab-indicator-bg: linear-gradient(170deg, oklch(8.5% 0 0 / 0.2) 0%, oklch(8.5% 0 0 / 0.12) 65%, oklch(8.5% 0 0 / 0.05) 100%);
+    --tab-indicator-bg: linear-gradient(175deg, oklch(8.5% 0 0 / 0.2) 0%, oklch(8.5% 0 0 / 0.12) 65%, oklch(8.5% 0 0 / 0.05) 100%);
     --rim-light:100% 0.0 273 / 0.3 ;
     --border: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(88% 0 0) 25%, oklch(94% 0 0) 100%);
 }

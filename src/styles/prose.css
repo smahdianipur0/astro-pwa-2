@@ -109,7 +109,7 @@
   border-radius: var(--radius-a);
   color: oklch(var(--gray-95) );
   height: calc(var(--gap-x06) - 3px);
-  background: var(--gray-bg);
+  background-color: oklch(var(--gray-25));
   text-align: center;
   position: relative;
 }
