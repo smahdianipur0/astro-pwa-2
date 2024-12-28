@@ -7,7 +7,14 @@ interface Props {
 const { title , iden } = Astro.props;
 ---
 
+
+
 <div class="prose max-width" style="color: oklch(var(--gray-95) );" id={iden}>
+		{title && (
+		<h3 style="margin-bottom: var(--gap);">
+		  {title}
+		</h3>
+	  )}
 
   <div style="
 	background: var(--border);	
@@ -24,15 +31,7 @@ const { title , iden } = Astro.props;
 	background-color: oklch(var(--gray-10) / 0.5);
 	width: auto;
 	height: auto">
-	{title && (
-		<h2 style="
-		  line-height: var(--gap-x03);
-		  margin-top: 0;
-		  font-weight: 600;
-		  margin-bottom: var(--gap-x04);">
-		  {title}
-		</h2>
-	  )}
+
       <slot />
 
     </div>

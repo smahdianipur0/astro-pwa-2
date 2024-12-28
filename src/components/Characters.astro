@@ -1,8 +1,8 @@
 <div style="
 	display: flex;
 	justify-content: space-between;
-	margin-top: var(--gap-x02); 
-	margin-bottom: var(--gap-x02);
+	padding: var(--gap-x04) 0 var(--gap-3xs) 0; 
+	border-bottom: 1px solid oklch(var(--gray-25) / 1);
 	">
 
 
@@ -13,7 +13,7 @@
 
   <div class="prose" style=" display: flex; gap: 0; margin-top: auto; margin-bottom: auto;">
 	<select id="char_input" class="number-input" name="chars" style="
-			width: var(--gap-x09);
+			width:var(--gap-x09) ;
 			margin-right: var(--gap-xs);">
 		<option value="12"> 12 </option>
 		<option value="13"> 13 </option>
@@ -27,16 +27,16 @@
 	</select>
 
 
-    <div style="  display: inline-flex; border-radius: calc( var(--radius-a) + 1px) ;  ">
-	    <button style="margin-right:0; border-top-right-radius:0; border-bottom-right-radius:0 " 
-	    	aria-label="Increase Word Count" id="minus_chars" class="not-prose char-button">
+    <div style="display: inline-flex;">
+	    <button style="width: var(--gap-x07); margin-right:0; border-top-right-radius:0; border-bottom-right-radius:0 " 
+	    	aria-label="Increase Word Count" id="minus_chars" class="not-prose secondary-btn">
 	      <svg id="minus_chars_icon" style="padding:3px;" width="24" height="24" fill="none" viewBox="0 0 24 24">
 	        <path class="char-icon" d="M3.997 13H20a1 1 0 1 0 0-2H3.997a1 1 0 1 0 0 2Z" fill="#ffffff" />
 	      </svg>
 	    </button>
 
-	    <button style="margin-left:0; border-top-left-radius: 0; border-bottom-left-radius: 0;" 
-	    aria-label="Decrease Word Count" id="plus_chars" class="not-prose char-button">
+	    <button style="width: var(--gap-x07); margin-left:0; border-top-left-radius: 0; border-bottom-left-radius: 0;" 
+	    aria-label="Decrease Word Count" id="plus_chars" class="not-prose secondary-btn">
 	      <svg id="plus_chars_icon" style="padding:3px;" width="24" height="24" fill="none" viewBox="0 0 24 24">
 	        <path class="char-icon" d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" />
 	      </svg>
@@ -47,16 +47,8 @@
 
 <style is:global>
 
-.rim-light{
-  display: inline-flex;  
-  border-radius: calc( var(--radius-a) + 1px) ;
-  background: linear-gradient(to bottom, oklch(90% 0 0 /0.15) 0%, oklch(24% 0 0 / 0.2) 60%) border-box;
-  position: relative;
-}
 
-
-.char-button{
-	width: var(--gap-x07);
+.secondary-btn{
 	display: flex;
 	flex-wrap: wrap;
 	place-content: center;
@@ -65,14 +57,16 @@
 	background-color: oklch(var(--gray-25));
 	text-align: center;
 	position: relative;
+	width: calc(var(--gap-x09) - 3px);
+	height: calc(var(--gap-x06) - 3px);
 }
 
-.char-button:disabled::before{
+.secondary-btn:disabled::after{
 	content: "";
 	border-radius: inherit;
 	position: absolute;
-	top: -1px;
-	bottom: 0px;
+	top: 0;
+	bottom: 0;
 	left: 0;
 	right: 0;
 	background: oklch(var(--gray-10) / 0.4);

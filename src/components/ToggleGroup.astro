@@ -1,26 +1,49 @@
-<div class="flex-center-childs" style="position: relative;">
+<div class="flex-spread-childs" style="position: relative;">
+  <div>Pattern:</div>
+  <div style="display: inline-flex; height: calc(var(--gap-x06) - 3px);">
+    <label id="l_capitalize_first_letter" aria-label="Capitalize First Letter" for="capitalize_first_letter"
+      data-menu-label="capitalize" class="secondary-btn first-btn"></label>
 
-  <label id="l_capitalize_first_letter" aria-label="Capitalize First Letter" for="capitalize_first_letter"
-    data-menu-label="capitalize" class="prose-btn first-btn">
-    Capitalize</label>
+    <input type="checkbox" id="capitalize_first_letter" name="pass-ops" data-menu="capitalize" class="hide-checkbox" checked />
 
-  <input type="checkbox" id="capitalize_first_letter" name="pass-ops" data-menu="capitalize" class="hide-checkbox" checked />
+    <label id="l_add_number" aria-label="Add Number" for="add_number" data-menu-label="add_number"
+      class="secondary-btn middle-btn"></label>
 
-  <label id="l_add_number" aria-label="Add Number" for="add_number" data-menu-label="add_number"
-    class="prose-btn middle-btn">
-    Number</label>
+    <input type="checkbox" id="add_number" name="pass-ops" class="hide-checkbox" checked />
 
-  <input type="checkbox" id="add_number" name="pass-ops" class="hide-checkbox" checked />
+    <label id="l_add_special_cha" aria-label="Special Character" for="add_special_cha" data-menu-label="add_special_cha"
+      class="secondary-btn last-btn"></label>
 
-  <label id="l_add_special_cha" aria-label="Special Character" for="add_special_cha" data-menu-label="add_special_cha"
-    class="prose-btn last-btn">
-    !@#$%&...</label>
-
-  <input type="checkbox" id="add_special_cha" name="pass-ops" data-menu="add special cha" class="hide-checkbox" checked />
-
+    <input type="checkbox" id="add_special_cha" name="pass-ops" data-menu="add special cha" class="hide-checkbox" checked />
+  </div>
 </div>
 
 <style is:global>
+
+#l_capitalize_first_letter::after{
+  content: "Abc";
+}
+
+:root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter::after{
+  content: "abc";
+}
+
+#l_add_number::after{
+  content: "123...";
+}
+:root:not(:has(#add_number:checked))  #l_add_number::after{
+  content: "123...";
+  text-decoration: line-through;
+}
+
+#l_add_special_cha::after{
+  content: "#+@...";
+}
+
+:root:not(:has(#add_special_cha:checked)) #l_add_special_cha::after{
+  content: "#+@...";
+  text-decoration: line-through;
+}
  
 :root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter,
 :root:not(:has(#add_number:checked)) #l_add_number ,
@@ -37,13 +60,6 @@
   background: linear-gradient(to bottom, oklch(45% 0 0 / 0.4) 0%, oklch(100% 0 0 / 0) 180%) border-box;
 }
 
-:root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter::after ,
-:root:not(:has(#add_number:checked))  #l_add_number::after ,
-:root:not(:has(#add_special_cha:checked)) #l_add_special_cha::after {
-  content: "";
-  -webkit-mask: none;
-  background: none;
-}
 
 .first-btn,.first-btn::before, .first-btn::after{
 	border-top-right-radius: 0;
@@ -68,17 +84,6 @@
 :root:has(#add_special_cha:focus-visible) #l_add_special_cha {
 	outline: Highlight auto 1px;
   outline: -webkit-focus-ring-color auto 1px;
-}
-
-.toggle-button:active::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;    
-  scale: 0.65;
-  border-radius: 3ch;
-  filter: blur(10px);
-  mix-blend-mode: soft-light;
 }
 
 </style>
