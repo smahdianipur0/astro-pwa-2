@@ -11,9 +11,7 @@ const { title , iden } = Astro.props;
 
 <div class="prose max-width" style="color: oklch(var(--gray-95) );" id={iden}>
 		{title && (
-		<h3 style="margin-bottom: var(--gap);">
-		  {title}
-		</h3>
+		<h3>{title}</h3>
 	  )}
 
   <div style="
