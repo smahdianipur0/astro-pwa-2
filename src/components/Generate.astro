@@ -6,12 +6,11 @@ import Drawer from '../components/Drawer.tsx';
 import DrawerContent from '../components/DrawerContent.astro';
 ---
 
-<!-- <div class="card-bg"> </div> -->
 <Tabs name="pass" tab1="random" tab2="manual" content1="crandom" content2="cmanual">
 
   <fragment slot="tab1">
     <Characters />
-    <div style="padding-top:calc(var(--gap-3xs) + 1px);">
+    <div>
       <ToggleGroup />
     </div>
 
@@ -61,7 +60,12 @@ import DrawerContent from '../components/DrawerContent.astro';
     <div style="width:15ch;" class="skeleton"> </div>
   </div>
 
-  <p id="box"></p>
+  <div style="position:relative; height:var(--gap); place-content:center">
+    <div style="position: absolute;" id="box-place-holder"></div>
+    <div style="position: absolute;" id="box"> 
+  </div> 
+
+  </div>
 
   <div id="s1" class="skeleton-parrent">
     <div style="width:80% ;" class="skeleton"> </div>
@@ -164,9 +168,7 @@ import DrawerContent from '../components/DrawerContent.astro';
   transition: width 0.2s, background-color 0.2s, background-position 0.2s ;
   border-radius: var(--radius-a);
   background-color: red; 
-  margin-bottom: 10px;
   height: 0.3ch;
-  margin-top: 0.5ch;
   background-image: linear-gradient(to right, #f21616, #f02f11, #d47a20, #719deb, #6977e3, #7643b1, #5d43b1);
   background-clip: content-box;
   background-size: 300% var(--gap);
@@ -174,6 +176,17 @@ import DrawerContent from '../components/DrawerContent.astro';
   --box-p: 0%;
   width: var(--box-w);
   background-position: var(--box-p);
+  place-content: baseline;
+}
+
+#box-place-holder{
+  display: flex;
+    border-radius: var(--radius-a);
+  align-items: center;
+  background-color: oklch( var(--gray-95) / 0.2); 
+  height: 0.3ch;
+  width: 100% ;
+  box-shadow: inset 0px 1px 2px oklch(0% 0 0 / 0.3) ;
 }
 
 </style>

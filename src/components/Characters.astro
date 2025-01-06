@@ -1,19 +1,16 @@
 <div style="
 	display: flex;
 	justify-content: space-between;
-	padding: var(--gap-x04) 0 var(--gap-3xs) 0; 
+	padding: calc( (var(--gap-x04) * 2) - var(--gap-x03) ) 0 calc( var(--gap-xs) / 2)  0; 
 	border-bottom: 1px solid oklch(var(--gray-25) / 1);
 	">
 
 
-  <label for="char_input" style="
-    line-height: var(--gap-x04); 
-		padding:var(--default-padding);
-		padding-left:0;">Characters:</label>
+  <label for="char_input">Characters</label>
 
   <div class="prose" style=" display: flex; gap: 0; margin-top: auto; margin-bottom: auto;">
 	<select id="char_input" class="number-input" name="chars" style="
-			width:var(--gap-x09) ;
+			width:var(--gap-x08) ;
 			margin-right: var(--gap-xs);">
 		<option value="12"> 12 </option>
 		<option value="13"> 13 </option>
@@ -27,13 +24,14 @@
 	</select>
 
 
-    <div style="display: inline-flex;">
+    <div style="display: inline-flex; position: relative;">
 	    <button style="width: var(--gap-x07); margin-right:0; border-top-right-radius:0; border-bottom-right-radius:0 " 
 	    	aria-label="Increase Word Count" id="minus_chars" class="not-prose secondary-btn">
 	      <svg id="minus_chars_icon" style="padding:3px;" width="24" height="24" fill="none" viewBox="0 0 24 24">
 	        <path class="char-icon" d="M3.997 13H20a1 1 0 1 0 0-2H3.997a1 1 0 1 0 0 2Z" fill="#ffffff" />
 	      </svg>
 	    </button>
+	    <div class="divider"></div>
 
 	    <button style="width: var(--gap-x07); margin-left:0; border-top-left-radius: 0; border-bottom-left-radius: 0;" 
 	    aria-label="Decrease Word Count" id="plus_chars" class="not-prose secondary-btn">
@@ -57,7 +55,7 @@
 	background-color: oklch(var(--gray-25));
 	text-align: center;
 	position: relative;
-	width: calc(var(--gap-x09) - 3px);
+	width: var(--gap-x09);
 	height: calc(var(--gap-x06) - 3px);
 }
 
@@ -74,6 +72,15 @@
 
 .char-icon {
 	fill: oklch(var(--gray-95) / 1);
+}
+
+.divider{
+	position:absolute;
+	border: 0.25px solid oklch(var(--gray-95) / 0.05);
+	height: calc((var(--gap-x06)  - 3px) - 10px);
+	margin-top: calc(((var(--gap-x06)  - 3px) - ((var(--gap-x06)  - 3px) - 10px)) / 2);
+	right: calc( var(--gap-x07) - 0.25px );
+	z-index: var(--z-layer-middle);
 }
 
 </style>
