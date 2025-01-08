@@ -2,6 +2,7 @@ import {
 	createPasswordEntry,
 	getAllPasswordEntries,
 	deletePasswordEntry,
+	updatePasswordEntry,
 	createRecentDelPass,
 	getAllRecentDelPass,
 	deleteRecentDelPass,
@@ -16,13 +17,21 @@ import Fuse from 'fuse.js'
 
 
 // signals
-const [listTitle, setListTitle]        = createSignal('');
-const [listPassword, setListPassword]  = createSignal('');
-const [listEntries, setListEntries]    = createSignal<PasswordEntry[]>([]);
-const [listRecentDel, setListRecentDel]= createSignal<PasswordEntry[]>([]);
-const [searchInput, setSearchInput]    = createSignal("");
-const [isSearching, setIsSearching]    = createSignal(false);
-const [searchArray, setSearchArray]    = createSignal<PasswordEntry[]>([]);
+const [listTitle, setListTitle]       = createSignal('');
+const [listPassword, setListPassword] = createSignal('');
+const [listEntries, setListEntries]   = createSignal<PasswordEntry[]>([]);
+
+const [updtingEntry, setUpdtingEntry]                     = createSignal('');
+const [updatingListEntryTitle, setUpdatingListEntryTitle] = createSignal('');
+const [updatingListEntryPass, setUpdatingListEntryPass]   = createSignal('');
+
+const [searchInput, setSearchInput]     = createSignal("");
+const [isSearching, setIsSearching]     = createSignal(false);
+const [searchArray, setSearchArray]     = createSignal<PasswordEntry[]>([]);
+
+const [listRecentDel, setListRecentDel] = createSignal<PasswordEntry[]>([]);
+
+
 
 
 // initialize entries
@@ -43,7 +52,7 @@ createEffect(() => { setListPassword(password()) });
 	const passwordInput  = (await element.wait("#password-input"))   as HTMLInputElement;
 	const titleInput     = (await element.wait("#title-input"))      as HTMLInputElement;
 	const addEntryButton = (await element.wait("#add-entry-button")) as HTMLButtonElement;
-	const searchInputEl  = (await element.wait("#search-input"))    as HTMLInputElement;
+	const searchInputEl  = (await element.wait("#search-input"))     as HTMLInputElement;
 
 
 	document.getElementById("search-box")!.addEventListener("input",(e)=>{
@@ -113,9 +122,14 @@ createEffect(() => {
 										className: 'delete-button',
 										id: entry.id?.id ?? '',
 										textContent: ' Delete'
-									})
+									}),
 								]
-							})
+							}),
+							element.configure(document.createElement('button'), {
+								className: 'update-button',
+								id: entry.id?.id ?? '',
+								textContent: '📝'
+							}),
 						]
 					})
 				]
@@ -143,14 +157,32 @@ createEffect(() => {
 			})();
 		}
 
+	//update
+  const updateButton = (e!.target as HTMLInputElement).closest(".update-button");
+	if (updateButton) {
+		(async () => {
+			(document.getElementById("edit-temp-list-dialog") as HTMLInputElement).showModal();
+				setUpdtingEntry(updateButton.id);
+				const entry = await getEntryById("PasswordEntry", updateButton.id);
+				if (entry) {
+					const { title, password } = entry;
+					setUpdatingListEntryTitle(title);
+					(document.getElementById("updating-temp-title-input") as HTMLInputElement).value = title;
+
+					setUpdatingListEntryPass(password);
+					(document.getElementById("updating-temp-pass-input") as HTMLInputElement).value = password;
+				}
+		})();
+	}
+
   // copy password
-    const copyButton = (e!.target as HTMLInputElement).closest(".copy-button");
-		if (copyButton) {
-			(async () => {
-				navigator.clipboard.writeText(copyButton.id);  
-         showToast();
-			})();
-		}
+  const copyButton = (e!.target as HTMLInputElement).closest(".copy-button");
+	if (copyButton) {
+		(async () => {
+			navigator.clipboard.writeText(copyButton.id);  
+       showToast();
+		})();
+	}
 	});
 
   // add entry
@@ -184,10 +216,32 @@ createEffect(() => {
   inputGroup.addEventListener("input", (e) => {
     if ((e!.target as HTMLInputElement).matches("#title-input")) {
       setListTitle((e!.target as HTMLInputElement).value);
-    } else if ((e!.target as HTMLInputElement).matches("#password-input")) {
+    }
+    if ((e!.target as HTMLInputElement).matches("#password-input")) {
       setListPassword((e!.target as HTMLInputElement).value);
     }
   });
+
+
+  // update dialog inputs
+  document.getElementById("edit-temp-list-dialog")!.addEventListener("input", (e) => {
+      if ((e!.target as HTMLInputElement).matches("#updating-temp-title-input")) {
+      setUpdatingListEntryTitle((e!.target as HTMLInputElement).value);
+    }
+    if ((e!.target as HTMLInputElement).matches("#updating-temp-pass-input")) {
+      setUpdatingListEntryPass((e!.target as HTMLInputElement).value);
+    }
+});
+
+  // update dialog confirm
+  document.getElementById("edit-temp-list-dialog")!.addEventListener("click", (e) => {
+  	if((e!.target as HTMLInputElement).matches("#update-temp-list-entry")) {
+  		(async () => {
+				updatePasswordEntry( updtingEntry(), updatingListEntryTitle(), updatingListEntryPass() );
+				setListEntries((await getAllPasswordEntries()) ?? []);
+			})();
+	}
+});
 
 
 	// bind signals to input values

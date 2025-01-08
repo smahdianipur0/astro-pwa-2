@@ -21,7 +21,7 @@ async function getDb(){
 
 
 export type PasswordEntry = {
-  id?: {tb: string, id: string};
+  entryId?: {tb: string, entryId: string};
   title: string;
   password: string;
 }
@@ -43,6 +43,25 @@ async function createEntry(tableName: string, title: string, password: string): 
     await db.close();
   }
 }
+
+async function updateEntry(tableName: string, entryId: string, title: string, password: string): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    console.error("Database not initialized");
+    return;
+  }
+  try {
+    const entry = await db.update<PasswordEntry>(new RecordId(tableName, entryId), {
+      title,
+      password,
+    });
+  } catch (err: unknown) {
+    console.error(`Failed to create entry in ${tableName}:`, err instanceof Error ? err.message : String(err));
+  } finally {
+    await db.close();
+  }
+}
+
 
 async function deleteEntry(tableName: string, id: string): Promise<void> {
   const db = await getDb();
@@ -107,6 +126,10 @@ export async function deletePasswordEntry(id: string): Promise<void> {
 
 export async function getAllPasswordEntries(): Promise<PasswordEntry[] | undefined> {
   return await getAllEntries("PasswordEntry");
+}
+
+export async function updatePasswordEntry(entryId: string, title: string, password: string): Promise<void> {
+  await updateEntry("PasswordEntry",entryId, title, password);
 }
 
 
