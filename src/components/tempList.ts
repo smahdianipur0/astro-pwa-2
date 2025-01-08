@@ -120,14 +120,14 @@ createEffect(() => {
 									}), 
 									element.configure(document.createElement('button'), {
 										className: 'delete-button',
-										id: entry.entryId?.entryId ?? '',
+										id: entry.id?.id ?? '',
 										textContent: ' Delete'
 									}),
 								]
 							}),
 							element.configure(document.createElement('button'), {
 								className: 'update-button',
-								id: entry.entryId?.entryId ?? '',
+								id: entry.id?.id ?? '',
 								textContent: '📝'
 							}),
 						]
@@ -166,6 +166,7 @@ createEffect(() => {
 				const entry = await getEntryById("PasswordEntry", updateButton.id);
 				if (entry) {
 					const { title, password } = entry;
+					console.log(title, password);
 					setUpdatingListEntryTitle(title);
 					(document.getElementById("updating-temp-title-input") as HTMLInputElement).value = title;
 
@@ -305,7 +306,7 @@ createEffect(() => {
 										}),
 										element.configure(document.createElement('button'), {
 											className: 'delete-button',
-											id: entry.entryId?.entryId ?? '',
+											id: entry.id?.id ?? '',
 											textContent: ' Delete'
 										})
 									]
