@@ -6,12 +6,12 @@ import Card from './Card.astro';
     <form autocomplete="off">
 
         <div style="position: relative;">
-          <input id="key" type="text" class="k glass" name="Key" placeholder="Key">
+          <input id="key" type="text" class="input-group-top glass" name="Key" placeholder="Key">
           <span id="key_indic" class="key-indicator"></span>
         </div>
       
         <div style="position: relative; margin-bottom: var(--gap-x04);">
-          <input id="iv" type="text" class="v glass" name="IV" placeholder="IV">
+          <input id="iv" type="text" class="input-group-bottom glass" name="IV" placeholder="IV">
           <span id="iv_indic" class="key-indicator"></span>
         </div>
       
@@ -20,3 +20,52 @@ import Card from './Card.astro';
 </Card>
 
 <ThemeToggle/>
+
+
+<style is:global>
+
+.input-group-top{
+  border: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 0.1px solid oklch(var(--gray-25) );
+  line-height: var(--gap-x05);
+}
+
+.input-group-top:focus{
+  border: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 0.1px solid oklch(var(--gray-25) );
+  background: transparent;
+  background-color:oklch(var(--gray-10) / 0.75); 
+}
+
+.input-group-bottom{
+  border: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: var(--radius-a);
+  border-bottom-right-radius: var(--radius-a);
+  line-height: var(--gap-x05);
+}
+ 
+.input-group-bottom:focus{
+  border: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background: transparent;
+  background-color:oklch(var(--gray-10) / 0.75); 
+}
+
+.key-indicator {
+  line-height: var(--gap-x05);
+  position: absolute;
+  right: calc(var(--gap) * var(--x03));
+  top: calc(var(--gap) * var(--x03) / 2);
+  color: #777;
+  pointer-events: none;
+
+}
+
+</style>

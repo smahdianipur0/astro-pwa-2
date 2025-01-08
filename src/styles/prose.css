@@ -18,14 +18,30 @@
   transition: 0.2s;
 }
 
+.secondary-btn{
+  background: transparent;
+  box-shadow: inset 0 -12px 10px -8px oklch(var(--gray-75) / 0.1);
+
+}
+
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *)):hover, .prose-btn:hover {
   background: oklch(var(--primary) / 0.15);
   box-shadow: inset 0 -12px 10px -8px oklch(var(--primary) / 0.35);
 }
 
+.secondary-btn:hover{
+  background: transparent;
+  box-shadow: inset 0 -12px 10px -8px oklch(var(--gray-75) / 0.2);
+}
+
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *)):active, .prose-btn:active {
   background: oklch(var(--primary) / 0.2);
   box-shadow: inset 0 -12px 10px -8px oklch(var(--primary) / 0.4);
+}
+
+.secondary-btn:active{
+  background: transparent;
+  box-shadow: inset 0 -12px 10px -8px oklch(var(--gray-75) / 0.3);
 }
 
 .prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *)), .prose-btn:disabled,
@@ -51,6 +67,10 @@
   mask-composite: exclude;
   pointer-events: none;
   background: linear-gradient(to bottom, oklch(var(--primary) / 0.8) 0%, oklch(100% 0 0 / 0) 180%) border-box;
+}
+
+.secondary-btn::before{
+  background: linear-gradient(to bottom, oklch(var(--gray-75) / 0.2) 0%, oklch(100% 0 0 / 0) 180%) border-box;
 }
 
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *))::before:hover, .prose-btn::before:hover {

@@ -65,16 +65,22 @@ overflow-x: hidden;">
 </div>
 
 <dialog data-corvu-no-drag id="edit-temp-list-dialog" class="prose max-width" style="
-padding: var(--gap);
+padding: var(--gap-x04);
 border-radius: var(--radius-a);
-place-content:center;
-gap: var(--gap)">
-  <form method="dialog" style="display:flex; gap:var(--gap); flex-direction:column;">
-    <input type="text" name="title" placeholder="Title" id="updating-temp-title-input"/>
-    <input type="text" name="Password" placeholder="Password" id="updating-temp-pass-input"/>
-    <div class="flex-center-childs" style="gap:var(--gap); margin-top:var(--gap);">
-      <button>Cancel</button>
+place-content:center;">
+  <form method="dialog" style="display:flex; flex-direction:column;">
+    <input type="text" name="title"  class="input-group-top" placeholder="Title" id="updating-temp-title-input"/>
+    <input type="text" name="Password" class="input-group-bottom" placeholder="Password" id="updating-temp-pass-input"/>
+    <div  style="
+    display:flex; 
+    flex-direction: columns; 
+    gap:var(--gap);
+    justify-content: center; 
+    margin-top:var(--gap-x04);">
+      
+      <button class="secondary-btn" >Cancel</button>
       <button id="update-temp-list-entry">Update</button>
+      
     </div>
   </form>
 </dialog>

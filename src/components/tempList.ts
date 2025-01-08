@@ -120,14 +120,14 @@ createEffect(() => {
 									}), 
 									element.configure(document.createElement('button'), {
 										className: 'delete-button',
-										id: entry.id?.id ?? '',
+										id: entry.entryId?.entryId ?? '',
 										textContent: ' Delete'
 									}),
 								]
 							}),
 							element.configure(document.createElement('button'), {
 								className: 'update-button',
-								id: entry.id?.id ?? '',
+								id: entry.entryId?.entryId ?? '',
 								textContent: '📝'
 							}),
 						]
@@ -161,7 +161,7 @@ createEffect(() => {
   const updateButton = (e!.target as HTMLInputElement).closest(".update-button");
 	if (updateButton) {
 		(async () => {
-			(document.getElementById("edit-temp-list-dialog") as HTMLInputElement).showModal();
+			(document.getElementById("edit-temp-list-dialog") as HTMLDialogElement).showModal();
 				setUpdtingEntry(updateButton.id);
 				const entry = await getEntryById("PasswordEntry", updateButton.id);
 				if (entry) {
@@ -305,7 +305,7 @@ createEffect(() => {
 										}),
 										element.configure(document.createElement('button'), {
 											className: 'delete-button',
-											id: entry.id?.id ?? '',
+											id: entry.entryId?.entryId ?? '',
 											textContent: ' Delete'
 										})
 									]

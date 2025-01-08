@@ -63,14 +63,14 @@ async function updateEntry(tableName: string, entryId: string, title: string, pa
 }
 
 
-async function deleteEntry(tableName: string, id: string): Promise<void> {
+async function deleteEntry(tableName: string, entryId: string): Promise<void> {
   const db = await getDb();
   if (!db) {
     console.error("Database not initialized");
     return;
   }
   try {
-    await db.delete(new RecordId(tableName, id));
+    await db.delete(new RecordId(tableName, entryId));
   } catch (err: unknown) {
     console.error(`Failed to delete entry from ${tableName}:`, err instanceof Error ? err.message : String(err));
   } finally {
@@ -120,8 +120,8 @@ export async function createPasswordEntry(title: string, password: string): Prom
   await createEntry("PasswordEntry", title, password);
 }
 
-export async function deletePasswordEntry(id: string): Promise<void> {
-  await deleteEntry("PasswordEntry", id);
+export async function deletePasswordEntry(entryId: string): Promise<void> {
+  await deleteEntry("PasswordEntry", entryId);
 }
 
 export async function getAllPasswordEntries(): Promise<PasswordEntry[] | undefined> {
@@ -139,8 +139,8 @@ export async function createRecentDelPass(title: string, password: string): Prom
   await createEntry("RecentDelPass", title, password);
 }
 
-export async function deleteRecentDelPass(id: string): Promise<void> {
-  await deleteEntry("RecentDelPass", id);
+export async function deleteRecentDelPass(entryId: string): Promise<void> {
+  await deleteEntry("RecentDelPass", entryId);
 }
 
 export async function getAllRecentDelPass(): Promise<PasswordEntry[] | undefined> {
