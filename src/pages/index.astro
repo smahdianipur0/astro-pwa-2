@@ -1,10 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
-import Generate from '../components/Generate.astro'; 
+import GeneratePass from '../components/GeneratePass.astro'; 
 import Encdec from '../components/Encdec.astro';
-import VarificationCard from '../components/VarificationCard.astro';
-import GenerateQR from '../components/GenerateQR.astro'; 
+import Varification from '../components/Varification.astro';
+import QRCode from '../components/QRCode.astro'; 
 import About from '../components/About.astro';
 
 ---
@@ -16,11 +16,11 @@ import About from '../components/About.astro';
 	  <div class="grid-layout">
 	     
 			<Card title = "Generate Password" iden='generate'>
-				<Generate/>
+				<GeneratePass/>
 			</Card>	
 
 			<Card title = "Varification Code" iden='varification'>
-				<VarificationCard/> 
+				<Varification/> 
 		 	</Card>  
 
 	  </div> 
@@ -44,7 +44,7 @@ import About from '../components/About.astro';
 			</Card>
 
 			<Card title = "Generate QR Code" iden='generateQR'>
-				<GenerateQR/> 
+				<QRCode/> 
 	 		</Card> 
 
 		</div>
@@ -58,7 +58,8 @@ import About from '../components/About.astro';
     
 </Layout>
 
-<script src="../components/signals.ts"></script>
+<script src="../components/homeLogic.ts"></script>
+<script src="../components/tempListLogic.ts"></script>
 
 <style>
 	

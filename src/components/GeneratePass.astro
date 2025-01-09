@@ -1,24 +1,24 @@
 ---
 import Tabs from '../components/Tabs.astro';
-import Characters from '../components/Characters.astro';
-import ToggleGroup from '../components/ToggleGroup.astro'; 
+import CharactersCount from '../components/CharactersCount.astro';
+import CharactersPattern from '../components/CharactersPattern.astro'; 
 import Drawer from '../components/Drawer.tsx';
-import DrawerContent from '../components/DrawerContent.astro';
+import TempList from '../components/TempList.astro';
 ---
 
 <Tabs name="pass" tab1="random" tab2="manual" content1="crandom" content2="cmanual">
 
   <fragment slot="tab1">
-    <Characters />
+    <CharactersCount />
     <div>
-      <ToggleGroup />
+      <CharactersPattern />
     </div>
 
 
     <div class="flex-center-childs not-prose" style="overflow: hidden; position: relative;">
       <div id="add-drawer-trigger" style="left:0;">
         <Drawer client:load>
-          <DrawerContent />
+          <TempList />
         </Drawer>
       </div>
       <button id="gp" class=" copy" style="
@@ -79,10 +79,10 @@ import DrawerContent from '../components/DrawerContent.astro';
 
 <details name="encrypted password" class="prose" >
   <summary>Encrypted Password</summary>
-  <button id="encrypted-pass" class="skeleton-parrent not-prose" disabled>
+  <button id="encrypted-pass" class="skeleton-parrent not-prose text-as-button" disabled>
     <div style="width:15ch;" class="skeleton"> </div>
   </button>
-  <button id="encrypted-pass-copy" class="hint not-prose" style="display: block; color:oklch(var(--gray-95));"></button>
+  <button id="encrypted-pass-copy" class="hint not-prose" style="display: block;"></button>
 </details>
 
 
@@ -139,7 +139,7 @@ import DrawerContent from '../components/DrawerContent.astro';
   animation: blink 1s ease-in-out infinite;
 }
 
-#encrypted-pass{
+.text-as-button{
   border: 1px solid transparent;
   border-radius: var(--radius-a);
   padding: var(--thin-padding);
@@ -147,7 +147,7 @@ import DrawerContent from '../components/DrawerContent.astro';
   opacity: 1;
   margin-left: calc( var(--gap) * -1);
 }
-#encrypted-pass:disabled{
+.text-as-button:disabled{
   color: oklch(var(--gray-75));
 }
 
@@ -156,8 +156,8 @@ import DrawerContent from '../components/DrawerContent.astro';
 #add-drawer-trigger:hover,
 #redo:focus,
 #redo:hover,
-#encrypted-pass:focus,
-#encrypted-pass:hover {
+.text-as-button:focus,
+.text-as-button:hover {
   border: 1px solid oklch(var(--gray-25) / 1);
 }
 
@@ -181,7 +181,7 @@ import DrawerContent from '../components/DrawerContent.astro';
 
 #box-place-holder{
   display: flex;
-    border-radius: var(--radius-a);
+  border-radius: var(--radius-a);
   align-items: center;
   background-color: oklch( var(--gray-95) / 0.2); 
   height: 0.3ch;

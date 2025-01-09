@@ -10,11 +10,7 @@ import Tabs from '../components/Tabs.astro';
 
     <label for="result_e" style=" margin-bottom: var(--gap); font-size: var(--small-font); opacity: 0.6;">Encrypted Text : </label>
 
-    <textarea id="result_e" rows="2" readonly> </textarea>
-
-    <div class="flex-center-childs" style="height: var(--gap-x08); margin-top: var(--gap-x04);">
-      <button id="copy_e"  disabled>Copy</button>
-    </div>
+    <button class="not-prose max-width text-as-button" style="word-wrap: break-word; text-align:justify;" id="result_e"> </button>
 
   </fragment>
 
@@ -26,14 +22,107 @@ import Tabs from '../components/Tabs.astro';
 
     <label for="result_d" style="margin-bottom: var(--gap); font-size: var(--small-font); opacity: 0.6;">Decrypted Text : </label>
 
-    <textarea id="result_d" rows="2" readonly> </textarea>
-
-    <div class="flex-center-childs" style="height: var(--gap-x08); margin-top: var(--gap-x04);">
-      <button id="copy_d"  disabled>Copy</button>
-    </div>
+    <button id="result_d" class="not-prose max-width text-as-button" style="word-wrap: break-word; text-align:justify;"> </button>
 
   </fragment>
 </Tabs>
+
+<script>
+
+import { createSignal, createEffect } from 'solid-js';
+import { encrypt, decrypt } from "../pkg/rust_lib";
+import { key, iv } from "../components/credentialsLogic.ts";
+import { showToast } from "../components/homeLogic.ts";
+
+
+// encryption signals
+const [plainText, setPlainText]     = createSignal("");
+const [cipherText, setCipherText]   = createSignal("");
+const [resultE, setResultE]         = createSignal("");
+const [resultD, setResultD]         = createSignal("");
+
+
+document.getElementById("encryption")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#plain_text")){
+      const value = (e!.target as HTMLInputElement).value;
+      setPlainText(value.toString());
+   }
+
+   if((e!.target as HTMLInputElement).matches("#cipher_text")){
+      const value = (e!.target as HTMLInputElement).value;
+      setCipherText(value.toString());
+   }
+   
+});
+
+
+// encryption effect
+createEffect(() => {
+   setResultE(encrypt(key(), iv(), plainText()));
+   if ( key() !== "" && iv() !== "") {
+      document.getElementById("result_e")!.textContent = resultE();
+   }
+
+   if (resultE() === "") {
+      document.getElementById("result_e")!.textContent = "Enter Plain Text";
+   }
+});
+
+
+// decryption effect
+createEffect(() => {
+   setResultD(decrypt(key(), iv(), cipherText()));
+   if ( key() !== "" && iv() !== "") {
+   document.getElementById("result_d")!.textContent = resultD();
+   }
+
+   if (resultD() === "") {
+      document.getElementById("result_d")!.textContent = "Enter Cipher Text";
+   }
+});
+
+
+// condition for copy and show encryption
+createEffect(() => {
+   if(resultE() !== "IV is not 16 Characters" &&
+      resultE() !== "Key is not 16 Characters" &&
+      resultE() !== "") {
+      (document.getElementById("result_e")! as HTMLInputElement).disabled  = false;
+   } else{
+      (document.getElementById("result_e")! as HTMLInputElement).disabled  = true;;
+   }
+});
+
+
+// condition for copy and show decryption
+createEffect(() => {
+   if(resultD() !== "IV is not 16 Characters" &&
+      resultD() !== "Key is not 16 Characters" &&
+      resultD() !== "Invalid Credentials"&&
+      resultD() !== "") {
+      (document.getElementById("result_d")! as HTMLInputElement).disabled  = false;
+   } else{
+      (document.getElementById("result_d")! as HTMLInputElement).disabled  = true;
+   }
+});
+
+// copy encryption and decryption
+document.getElementById("encryption")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#result_e") &&
+      ((document.getElementById("result_e")! as HTMLInputElement).disabled  === false )){
+      navigator.clipboard.writeText(resultE());  
+      showToast();
+   }
+
+   if((e!.target as HTMLInputElement).matches("#result_d") &&
+      ((document.getElementById("result_d")! as HTMLInputElement).disabled  === false )){
+      navigator.clipboard.writeText(resultD());  
+      showToast();
+   }
+});
+
+
+</script>
 
 
 

@@ -6,38 +6,9 @@ import {
    guessable,
    encrypt,
    decrypt,
-   count_characters
 } from "../pkg/rust_lib";
 import { TOTP } from "totp-generator";
-
-
-// Key and IV signals
-const [key, setKey]                 = createSignal("");
-const [iv, setIv]                   = createSignal("");
-const [keyIvIsValid, setKeyIvIsValid ] = createSignal(false)
-
-
-// encryption inputs
-document.getElementById("key-IV")!.addEventListener("input",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#key")){
-      const value = (e!.target as HTMLInputElement).value;
-      setKey(value.toString());
-      document.getElementById("key_indic")!.textContent = count_characters(key()).toString();
-   }
-   if((e!.target as HTMLInputElement).matches("#iv")){
-      const value = (e!.target as HTMLInputElement).value;
-      setIv(value.toString());
-      document.getElementById("iv_indic")!.textContent = count_characters(iv()).toString();
-   }
-});
-
-// check for Key and IV validity
-createEffect(() => {
-	setKeyIvIsValid(
-		count_characters(key()).toString() === "✔️" &&
-			count_characters(iv()).toString() === "✔️",
-	);
-});
+import { key, iv, keyIvIsValid } from "../components/credentialsLogic.ts";
 
 
 // password generator signals
@@ -352,90 +323,3 @@ export function showToast() {
     }, 2000);
   }
 }
-
-
-// encryption signals
-const [plainText, setPlainText]     = createSignal("");
-const [cipherText, setCipherText]   = createSignal("");
-const [resultE, setResultE]         = createSignal("");
-const [resultD, setResultD]         = createSignal("");
-
-
-document.getElementById("encryption")!.addEventListener("input",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#plain_text")){
-      const value = (e!.target as HTMLInputElement).value;
-      setPlainText(value.toString());
-   }
-
-   if((e!.target as HTMLInputElement).matches("#cipher_text")){
-      const value = (e!.target as HTMLInputElement).value;
-      setCipherText(value.toString());
-   }
-   
-});
-
-
-// encryption effect
-createEffect(() => {
-   setResultE(encrypt(key(), iv(), plainText()));
-   if ( key() !== "" && iv() !== "") {
-      document.getElementById("result_e")!.textContent = resultE();
-   }
-
-   if (resultE() === "") {
-      document.getElementById("result_e")!.textContent = "Enter Plain Text";
-   }
-});
-
-
-// decryption effect
-createEffect(() => {
-   setResultD(decrypt(key(), iv(), cipherText()));
-   if ( key() !== "" && iv() !== "") {
-   document.getElementById("result_d")!.textContent = resultD();
-   }
-
-   if (resultD() === "") {
-      document.getElementById("result_d")!.textContent = "Enter Cipher Text";
-   }
-});
-
-
-// condition for copy and show encryption
-createEffect(() => {
-   if(resultE() !== "IV is not 16 Characters" &&
-      resultE() !== "Key is not 16 Characters" &&
-      resultE() !== "") {
-      (document.getElementById("copy_e")! as HTMLInputElement).disabled  = false;
-   } else{
-      (document.getElementById("copy_e")! as HTMLInputElement).disabled  = true;;
-   }
-});
-
-
-// condition for copy and show decryption
-createEffect(() => {
-   if(resultD() !== "IV is not 16 Characters" &&
-      resultD() !== "Key is not 16 Characters" &&
-      resultD() !== "Invalid Credentials"&&
-      resultD() !== "") {
-      (document.getElementById("copy_d")! as HTMLInputElement).disabled  = false;
-   } else{
-      (document.getElementById("copy_d")! as HTMLInputElement).disabled  = true;
-   }
-});
-
-// copy encryption and decryption
-document.getElementById("encryption")!.addEventListener("click",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#copy_e") &&
-      ((document.getElementById("copy_d")! as HTMLInputElement).disabled  === false )){
-      navigator.clipboard.writeText(resultE());  
-      showToast();
-   }
-
-   if((e!.target as HTMLInputElement).matches("#copy_d") &&
-      ((document.getElementById("copy_d")! as HTMLInputElement).disabled  === false )){
-      navigator.clipboard.writeText(resultD());  
-      showToast();
-   }
-});

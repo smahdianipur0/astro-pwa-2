@@ -8,9 +8,9 @@ import {
 	deleteRecentDelPass,
 	getEntryById,
 	type PasswordEntry,
-} from "../utils/surrealdb";
+} from "../utils/surrealdb-indexed";
 import { element } from "../utils/elementUtils";
-import { password, showToast } from "../components/signals.ts";
+import { password, showToast } from "../components/homeLogic.ts";
 import { createSignal, createEffect } from "solid-js";
 import Fuse from 'fuse.js'
 
