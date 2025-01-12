@@ -57,7 +57,7 @@
 }
 
 .notch {
-  height: var(--gap-xs);
+  height: calc( var(--gap) - 3px );
   width: var(--gap-x08);
   align-self: center;
   border-radius: 9999px;

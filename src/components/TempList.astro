@@ -93,6 +93,12 @@ max-width:min(350px, 100%);">
 
 <style is:global>
 
+::backdrop {
+  background-color: rgb(0 0 0 / 25%);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px)
+}
+
 #cancel-search {
   color: oklch(var(--primary));
   width: var(--gap-x08);
@@ -106,13 +112,9 @@ max-width:min(350px, 100%);">
   transition: opacity 0.1s
 }
 
-::backdrop {
-  background-color: rgb(0 0 0 / 25%);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px)
-}
 
-:root:has(#search-input:focus-within) #cancel-search {
+:root:has(#search-input:focus-within) #cancel-search,
+:root:has(#search-input:not(:placeholder-shown)) #cancel-search {
   opacity: 1; 
   transition: opacity 0.2s;
 }
@@ -122,7 +124,8 @@ max-width:min(350px, 100%);">
   transition: width 0.1s;
 }
 
-:root:has(#search-input:focus-within) #search-input {
+:root:has(#search-input:focus-within) #search-input,
+:root:has(#search-input:not(:placeholder-shown)) #search-input {
   width: calc(100% - var(--gap-x09));
   transition: width 0.1s;
 }
