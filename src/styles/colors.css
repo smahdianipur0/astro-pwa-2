@@ -21,6 +21,7 @@
   --tab-indicator-bg:linear-gradient(175deg, oklch(100% 0 0 / 0.05) 0%, oklch(100% 0 0 / 0.12) 65%, oklch(100% 0 0 / 0.2) 100%);
   --rim-light:40% 0.0 273 ;
   --border: linear-gradient(135deg, oklch(28% 0 0) 0%, oklch(40% 0 0) 25%, oklch(32% 0 0) 100%);
+  --success-border:  linear-gradient(135deg, oklch(28% 0.045 174) 0%, oklch(40% 0.0681 174) 25%, oklch(32% 0.0538 174) 100%);
 }
 
 
@@ -37,8 +38,9 @@
   --tab-indicator-bg: linear-gradient(175deg, oklch(8.5% 0 0 / 0.2) 0%, oklch(8.5% 0 0 / 0.12) 65%, oklch(8.5% 0 0 / 0.05) 100%);
   --rim-light:88% 0.0 273 ;
   --border: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(88% 0 0) 25%, oklch(94% 0 0) 100%);
-
+  --success-border:  linear-gradient(135deg, oklch(98% 0.0209 174) 0%, oklch(88% 0.1603 174) 25%, oklch(94% 0.0801 174) 100%);
 }
+
 
 
 
@@ -55,9 +57,9 @@
     --gray-95:100% 0 0 ;
     --primary-shadow: oklch(37% 0.17 268.67);
     --tab-indicator-bg:linear-gradient(175deg, oklch(100% 0 0 / 0.05) 0%, oklch(100% 0 0 / 0.12) 65%, oklch(100% 0 0 / 0.2) 100%);
-    --rim-light:100% 0.0 273 / 0.1;
+    --rim-light:40% 0.0 273 ;
     --border: linear-gradient(135deg, oklch(28% 0 0) 0%, oklch(40% 0 0) 25%, oklch(32% 0 0) 100%);
-}
+    --success-border:  linear-gradient(135deg, oklch(28% 0.045 174) 0%, oklch(40% 0.0681 174) 25%, oklch(32% 0.0538 174) 100%);}
 
   :root{ 
     color-scheme: only light;
@@ -70,7 +72,8 @@
     --gray-95:0% 0 0 ;
     --primary-shadow: oklch(60% 0.16 268.67);
     --tab-indicator-bg: linear-gradient(175deg, oklch(8.5% 0 0 / 0.2) 0%, oklch(8.5% 0 0 / 0.12) 65%, oklch(8.5% 0 0 / 0.05) 100%);
-    --rim-light:100% 0.0 273 / 0.3 ;
+    --rim-light:88% 0.0 273 ;
     --border: linear-gradient(135deg, oklch(98% 0 0) 0%, oklch(88% 0 0) 25%, oklch(94% 0 0) 100%);
-}
+    --success-border:  linear-gradient(135deg, oklch(98% 0.0209 174) 0%, oklch(88% 0.1603 174) 25%, oklch(94% 0.0801 174) 100%);
+  }
 }

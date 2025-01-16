@@ -10,9 +10,7 @@ import TempList from '../components/TempList.astro';
 
   <fragment slot="tab1">
     <CharactersCount />
-    <div>
-      <CharactersPattern />
-    </div>
+    <CharactersPattern />
 
 
     <div class="flex-center-childs not-prose" style="overflow: hidden; position: relative;">
@@ -26,32 +24,31 @@ import TempList from '../components/TempList.astro';
         <div class="skeleton" style="width:15ch"> </div>
       </button>
 
-      <button id="redo" class="redo_container" style="right: 0;" >↻
-      </button>
-      <p id="ttc" class="hint" style="
-          margin-top: var(--gap-x04); margin-bottom: var(--gap-x04);
-          position: absolute;
-          width: 18ch;
-          right: calc(50% - 9ch );
-          text-align: center;
-          line-height: var(--gap-x06);
-          top : calc(var(--gap-x07) * var(--x02));"> tap to copy </p>
+      <button id="redo" class="redo_container" style="right: 0;" >↻</button>
+
+      <p id="ttc" class="hint" style="margin-top: var(--gap-x04); 
+      margin-bottom: var(--gap-x04);
+      position: absolute;
+      width: 18ch;
+      right: calc(50% - 9ch );
+      text-align: center;
+      line-height: var(--gap-x06);
+      top : calc(var(--gap-x07) * var(--x02));"> tap to copy </p>
+
     </div>
   </fragment>
 
 
   <fragment slot="tab2">
-    <div class=" prose" style="
-        display: flex;
-        gap: var(--gap);
-        justify-content: space-between;
-        margin:var(--gap-x04) 0">
-        <input autocomplete="off" id="mPassword" type="text" style="
-          margin-bottom: var(--gap);" placeholder="Password">
+    <div class=" prose" style="display: flex;
+      gap: var(--gap);
+      justify-content: space-between;
+      margin:var(--gap-x04) 0">
+      <input autocomplete="off" id="mPassword" type="text" style="
+        margin-bottom: var(--gap);" placeholder="Password">
       <button id="copyMPassword" style="margin-bottom:var(--gap);" disabled> Copy </button>
     </div>
   </fragment>
-
 </Tabs>
 
 <div style=" margin-top:var(--gap-x04); margin-bottom: var(--gap); overflow: hidden">
@@ -62,9 +59,7 @@ import TempList from '../components/TempList.astro';
 
   <div style="position:relative; height:var(--gap); place-content:center">
     <div style="position: absolute; top: var(--gap-xxs);" id="box-place-holder"></div>
-    <div style="position: absolute; top: var(--gap-xxs);" id="box"> 
-  </div> 
-
+    <div style="position: absolute; top: var(--gap-xxs);" id="box"></div> 
   </div>
 
   <div id="s1" class="skeleton-parrent">
