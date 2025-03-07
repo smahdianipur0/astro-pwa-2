@@ -2,6 +2,9 @@ import { defineConfig } from 'astro/config';
 import wasm from "vite-plugin-wasm";
 import topLevelAwait from "vite-plugin-top-level-await";
 import solidJs from "@astrojs/solid-js";
+import node from '@astrojs/node';
+
+import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
@@ -21,4 +24,6 @@ export default defineConfig({
     assetsInlineLimit: 51200,
     inlineStylesheets: 'always',
   },
+  output: 'static',
+  adapter: vercel()
 });

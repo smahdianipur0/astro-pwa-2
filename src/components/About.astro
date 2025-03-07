@@ -20,8 +20,18 @@ import Card from './Card.astro';
 </Card>
 
 <Card title="credentials" iden='credentials'>
-  <p style="color:var(--success); margin:0;"> hello </p>
+
+  <input type="text" id="user_name" placeholder="Name" style="margin-bottom: var(--gap-x04);" >
+
+  <div style="width: 100%; display: flex; justify-content: space-between; gap: var(--gap-x02)">
+    <button style="--primary: 65% 0.12 174" id="registration" class="max-width"> registration </button>
+    <button style="--primary: 65% 0.12 174" id="authentication" class="max-width"> authentication </button>
+  </div>
+
+  <div id="auth_result"></div>
 </Card>
+
+
 
 <ThemeToggle/>
 
@@ -72,8 +82,8 @@ import Card from './Card.astro';
 
 }
 
-#credentials{
+/* #credentials{
   --border: var( --success-border )
-}
+} */
 
 </style>
