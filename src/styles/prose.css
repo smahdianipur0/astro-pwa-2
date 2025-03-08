@@ -17,24 +17,12 @@
   transition: 0.2s;
 }
 
-.secondary-btn{
-  background: transparent;
-}
-
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *)):hover, .prose-btn:hover {
   background: oklch(var(--primary) / 15%);
 }
 
-.secondary-btn:hover{
-  background: transparent;
-}
-
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *)):active, .prose-btn:active {
   background: oklch(var(--primary) / 20%);
-}
-
-.secondary-btn:active{
-  background: transparent;
 }
 
 .prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *)), .prose-btn:disabled,
@@ -60,10 +48,6 @@
   mask-composite: exclude;
   pointer-events: none;
   background: linear-gradient(to bottom, oklch(var(--primary) / 80%) 0%, oklch(100% 0 0 / 0) 180%) border-box;
-}
-
-.secondary-btn::before{
-  background: linear-gradient(to bottom, oklch(var(--gray-75) / 20%) 0%, oklch(100% 0 0 / 0) 180%) border-box;
 }
 
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *))::before:hover, .prose-btn::before:hover {
@@ -97,9 +81,6 @@
     mix-blend-mode: soft-light;
 }
 
-.secondary-btn::after{
-  background-color: oklch(100% 0 0 / 30%);
-}
 
 .prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *))::after, .prose-btn:disabled::after {
   content: "";

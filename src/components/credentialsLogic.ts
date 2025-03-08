@@ -40,6 +40,11 @@ document.getElementById("credentials")!.addEventListener("input",(e)=>{
     if((e!.target as HTMLInputElement).matches("#user_name")){
        const value = (e!.target as HTMLInputElement).value;
        setUserName(value.toString());
+       if(userName() === "") {
+        (document.getElementById("registration")! as HTMLInputElement).disabled  = true;  
+         } else {
+        (document.getElementById("registration")! as HTMLInputElement).disabled  = false; 
+     } 
     }
 });
 
@@ -54,7 +59,7 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
                   user: userName(),
                   challenge: data.message,
                 });
-                console.log(registration)
+                // use registration.id as UID
                 if (registration){document.getElementById("auth_result")!.textContent = "Connectoing to the server"}
                 const [registryData, registryError] = await queryHelper.direct("db", async () => {
                     return await trpc.registry.mutate({
@@ -98,7 +103,7 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
                     document.getElementById("auth_result")!.textContent = "Authentication Failed";
                 }
                 console.log(authData, authError)
-                /// credentialId
+                /// use authData.credentialId as UID
             }
         })();
     }  

@@ -21,12 +21,21 @@ import Card from './Card.astro';
 
 <Card title="credentials" iden='credentials'>
 
-  <input type="text" id="user_name" placeholder="Name" style="margin-bottom: var(--gap-x04);" >
-
-  <div style="width: 100%; display: flex; justify-content: space-between; gap: var(--gap-x02)">
-    <button style="--primary: 65% 0.12 174" id="registration" class="max-width"> registration </button>
-    <button style="--primary: 65% 0.12 174" id="authentication" class="max-width"> authentication </button>
+  <div class="prose" style="display: flex;
+  gap: var(--gap);
+  justify-content: space-between;">
+    <input autocomplete="off" id="user_name" type="text" style="
+    margin-bottom: var(--gap);
+    width: 100%;" placeholder="Name">
+    <button id="registration" style="margin-bottom: var(--gap);
+    width: fit-content;
+    white-space: nowrap;" disabled>Sign Up</button>
   </div>
+
+  <p class="hint" style="margin-top: 0;">Allready Signed UP ? 
+    <button class="unstyle-button not-prose" id="authentication"
+    style="font-weight: 600; text-decoration: underline;">Sign In</button>
+  </p>
 
   <div id="auth_result"></div>
 </Card>
