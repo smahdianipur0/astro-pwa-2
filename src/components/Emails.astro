@@ -14,7 +14,6 @@ padding-inline: var(--gap-x02);
 height:100%;"></div>
 
 
-
 <script>
 
 import { createSignal, createEffect } from 'solid-js';
@@ -49,20 +48,20 @@ document.getElementById("emails")!.addEventListener("click", (e) => {
   }
 
   const deleteButton = (e!.target as HTMLInputElement).closest(".delete-button");
-    if (deleteButton) {
-      (async () => {
-        await deleteEmail(deleteButton.id);
-        setEmaillist((await getAllEmails()) ?? []);
-      })();
-    }
+  if (deleteButton) {
+    (async () => {
+      await deleteEmail(deleteButton.id);
+      setEmaillist((await getAllEmails()) ?? []);
+    })();
+  }
 
   const copyButton = (e!.target as HTMLInputElement).closest(".copy-button");
-    if (copyButton) {
-      (async () => {
-        navigator.clipboard.writeText(copyButton.id);  
-         showToast();
-      })();
-    }
+  if (copyButton) {
+    (async () => {
+      navigator.clipboard.writeText(copyButton.id);  
+       showToast();
+    })();
+  }
 });
 
 
@@ -84,7 +83,7 @@ createEffect(() => {
           element.configure(document.createElement('div'), {
             append: [
               element.configure(document.createElement('button'), {
-                className: 'copy-button',
+                className: 'copy-button ellipsis',
                 id: entry.email ?? '',
                 textContent: entry.email ?? ''
               })

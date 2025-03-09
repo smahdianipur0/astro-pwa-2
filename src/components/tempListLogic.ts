@@ -102,7 +102,7 @@ createEffect(() => {
 								textContent: entry.title || 'untitled'
 							}),
 							element.configure(document.createElement('button'), {
-								className: 'copy-button',
+								className: 'copy-button ellipsis',
 								id: entry.password ?? '',
 								textContent: entry.password ?? ''
 							})
@@ -288,7 +288,7 @@ createEffect(() => {
 									textContent: entry.title || 'untitled'
 								}),
 								element.configure(document.createElement('button'), {
-									className: 'copy-button',
+									className: 'copy-button ellipsis',
 									id: entry.password ?? '',
 									textContent: entry.password ?? ''
 								})
