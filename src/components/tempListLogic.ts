@@ -146,7 +146,7 @@ createEffect(() => {
 		if (deleteButton) {
 			(async () => {
 				// Get the record by its ID
-				const entry = await getEntryById("PasswordEntry", deleteButton.id);
+				const entry = await getEntryById<PasswordEntry>("PasswordEntry", deleteButton.id);
 				if (entry) {
 					const { title, password } = entry;
 					await createRecentDelPass(title, password);
@@ -163,7 +163,7 @@ createEffect(() => {
 		(async () => {
 			(document.getElementById("edit-temp-list-dialog") as HTMLDialogElement).showModal();
 				setUpdtingEntry(updateButton.id);
-				const entry = await getEntryById("PasswordEntry", updateButton.id);
+				const entry = await getEntryById<PasswordEntry>("PasswordEntry", updateButton.id);
 				if (entry) {
 					const { title, password } = entry;
 					console.log(title, password);

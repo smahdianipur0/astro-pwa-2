@@ -1,0 +1,121 @@
+<div class="prose" style="display: flex;
+gap: var(--gap);
+justify-content: space-between;">
+  <input autocomplete="off" id="email_entry" type="text" style="
+  margin-bottom: var(--gap);
+  width: 100%;" placeholder="Email">
+  <button id="add_email" style="margin-bottom: var(--gap);
+  width: fit-content;
+  white-space: nowrap;" disabled>Add</button>
+</div>
+
+<div class="entries-list not-prose" id="emails-list" style="
+padding-inline: var(--gap-x02);
+height:100%;"></div>
+
+
+
+<script>
+
+import { createSignal, createEffect } from 'solid-js';
+import { createEmailEntry, getAllEmails, deleteEmail, type EmailEntry } from "../utils/surrealdb-indexed";
+import { element } from "../utils/elementUtils";
+import { showToast } from "../components/homeLogic.ts";
+
+const [emailEntery, setEmailEntery] = createSignal("");
+const [emailList, setEmaillist] = createSignal<EmailEntry[]>([]);
+
+
+document.getElementById("emails")!.addEventListener("input",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#email_entry")){
+       const value = (e!.target as HTMLInputElement).value;
+       setEmailEntery(value.toString());
+       if(emailEntery() === "") {
+        (document.getElementById("add_email")! as HTMLInputElement).disabled  = true;  
+         } else {
+        (document.getElementById("add_email")! as HTMLInputElement).disabled  = false; 
+     } 
+    }
+});
+
+
+
+document.getElementById("emails")!.addEventListener("click", (e) => {
+  if ((e!.target as HTMLInputElement).matches("#add_email")) {
+    (async () => {
+      await createEmailEntry(emailEntery());
+      setEmaillist((await getAllEmails() ) ?? []);
+    })();
+  }
+
+  const deleteButton = (e!.target as HTMLInputElement).closest(".delete-button");
+    if (deleteButton) {
+      (async () => {
+        await deleteEmail(deleteButton.id);
+        setEmaillist((await getAllEmails()) ?? []);
+      })();
+    }
+
+  const copyButton = (e!.target as HTMLInputElement).closest(".copy-button");
+    if (copyButton) {
+      (async () => {
+        navigator.clipboard.writeText(copyButton.id);  
+         showToast();
+      })();
+    }
+});
+
+
+setEmaillist((await getAllEmails()) ?? []);
+
+createEffect(() => {
+  setEmailEntery("");
+  (document.getElementById("email_entry") as HTMLInputElement).value = "";
+  (document.getElementById("add_email") as HTMLInputElement).disabled = true;
+  document.getElementById("emails-list")!.textContent = '';
+  const fragment = document.createDocumentFragment();
+  
+  (emailList() ?? []).reverse().forEach((entry) => {
+    fragment.append(
+      element.configure(document.createElement('div'), {
+        className: 'entry-item',
+        style: 'background-color:transparent; padding-inline: 0;',
+        append: [
+          element.configure(document.createElement('div'), {
+            append: [
+              element.configure(document.createElement('button'), {
+                className: 'copy-button',
+                id: entry.email ?? '',
+                textContent: entry.email ?? ''
+              })
+            ]
+          }),
+          element.configure(document.createElement('div'), {
+            className: 's-container',
+            append: [
+              element.configure(document.createElement('details'), {
+                name: 'delete-item',
+                className: 'right-to-left',
+                append: [
+                  element.configure(document.createElement('summary'), {
+                    className: 'right-to-left',
+                  }),
+                  element.configure(document.createElement('button'), {
+                    className: 'delete-button',
+                    id: entry.id?.id ?? '',
+                    textContent: ' Delete'
+                  })
+                ]
+              })
+            ]
+          })
+        ]
+      })
+    );
+  });
+  
+  document.getElementById("emails-list")!.append(fragment);
+});
+
+
+</script>

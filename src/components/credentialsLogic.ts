@@ -36,7 +36,6 @@ createEffect(() => {
 });
 
 document.getElementById("credentials")!.addEventListener("input",(e)=>{
-    // length input
     if((e!.target as HTMLInputElement).matches("#user_name")){
        const value = (e!.target as HTMLInputElement).value;
        setUserName(value.toString());
@@ -67,7 +66,6 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
                         registry: registration,
                     });
                 });
-                console.log(registryData)
                 document.getElementById("auth_result")!.textContent =
                 registryData?.message === "User registered"
                     ? `${userName()} Registered Successfully`
@@ -102,7 +100,6 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
                 } else {
                     document.getElementById("auth_result")!.textContent = "Authentication Failed";
                 }
-                console.log(authData, authError)
                 /// use authData.credentialId as UID
             }
         })();

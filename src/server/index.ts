@@ -2,7 +2,7 @@ import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import type { Context } from "./context.ts";
 import { z } from "zod";
-import { createUser, queryUser } from "../utils/surreal-cloud";
+import { createUser, queryUser } from "../utils/surrealdb-cloud";
 import { server } from '@passwordless-id/webauthn'
 
 
