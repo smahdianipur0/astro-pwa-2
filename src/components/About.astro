@@ -19,28 +19,6 @@ import Card from './Card.astro';
   </form>
 </Card>
 
-<Card title="credentials" iden='credentials'>
-
-  <div class="prose" style="display: flex;
-  gap: var(--gap);
-  justify-content: space-between;">
-    <input autocomplete="off" id="user_name" type="text" style="
-    margin-bottom: var(--gap);
-    width: 100%;" placeholder="Name">
-    <button id="registration" style="margin-bottom: var(--gap);
-    width: fit-content;
-    white-space: nowrap;" disabled>Sign Up</button>
-  </div>
-
-  <p class="hint" style="margin-top: 0;">Allready Signed Up ? 
-    <button class="unstyle-button not-prose" id="authentication"
-    style="font-weight: 600; text-decoration: underline;">Sign In</button>
-  </p>
-
-  <div id="auth_result"></div>
-</Card>
-
-
 
 <ThemeToggle/>
 

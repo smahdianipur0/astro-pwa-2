@@ -47,7 +47,7 @@ overflow-x: hidden;">
       height: var(--gap-x04);
       padding-top: 2px;
       opacity:0.5;" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 2.5a7.5 7.5 0 0 1 5.964 12.048l4.743 4.745a1 1 0 0 1-1.32 1.497l-.094-.083-4.745-4.743A7.5 7.5 0 1 1 10 2.5Zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z" /></svg>
-      <button class="not-prose" id="cancel-search">Cancel</button>
+      <button class="not-prose" id="cancel-search" >Cancel</button>
     </div>
 
   <div class="entries-list" id="entries-list"></div>
@@ -93,11 +93,6 @@ max-width:min(350px, 100%);">
 
 <style is:global>
 
-::backdrop {
-  background-color: rgb(0 0 0 / 25%);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px)
-}
 
 #cancel-search {
   color: oklch(var(--primary));
@@ -134,37 +129,8 @@ svg{
   fill: oklch(var(--gray-95))
 }
 
-.entries-list{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-}
-
-.entry-item{
-  display: flex;
-  place-content: space-between;
-  width: min(100%, 65ch);
-  background-color: oklch(var(--gray-15) / 1);
-  border-radius: 0;
-  padding: var(--default-padding);
-  margin: 0 var(--gap-x03);
-  position: relative;
-}
-
-.entries-list > :first-child{
-  border-top-left-radius: var(--radius-a);
-  border-top-right-radius: var(--radius-a);
-  margin-top: var(--gap);
-}
-
-.entries-list > :last-child{
-  border-bottom-left-radius: var(--radius-a);
-  border-bottom-right-radius: var(--radius-a);
-  margin-bottom: var(--gap-x06);
-}
-
-.entries-list > :last-child::after{
+#recent-del-list > :last-child::after,
+#entries-list > :last-child::after {
   content: 'tap on passwords to copy';
   position: absolute;
   bottom: 0;
@@ -173,62 +139,6 @@ svg{
   color: oklch(var(--gray-50) / 1);
 }
 
-.entries-list > :not(:last-child){
-  border-bottom:1px solid oklch(var(--gray-25) / 1);
-}
-
-
-.menu-item{
-  background-color: oklch(var(--gray-15) / 1);
-  width: min(100%, 65ch) ;
-  margin:var(--gap);
-  border-radius: var(--radius-a)
-}
-
-.menu-item:focus, .menu-item:hover{
-  background-color: oklch(var(--gray-25) / 1);
-}
-
-.s-container  {
-display: flex;
-justify-content: flex-end;
-align-items: center;
-gap: var(--gap);
-}
-
-details.right-to-left {
-  margin: 0;
-  position: relative;
-  display: inline-block;
-}
-
-details.right-to-left summary::-webkit-details-marker {
-  display: none;
-}
-
-summary.right-to-left {
-  display: flex;
-  position: relative;
-  cursor: pointer;
-  user-select: none;
-  min-width: max-content;
-  align-items: center;
-}
-
-@keyframes details-show-rtl {
-  from {
-    opacity: 0;
-    transform: translateY(-50%) translateX(var(--gap-x02));
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
-} 
-
-details.right-to-left[open] > *:not(summary) {
-  animation: details-show-rtl 150ms ease-in-out forwards;
-} 
 
 summary.right-to-left::before {
   content: '🗑️';
@@ -242,35 +152,5 @@ details.right-to-left[open] > summary::before {
   font-size: var(--small-font);
 } 
 
-details.right-to-left[open] > .s-container {
-  width: 10ch;
-} 
-
-
-
-.delete-button {
-  margin-inline: var(--gap);
-  color: var(--danger);
-  font-size: var(--small-font);
-} 
-
-details.right-to-left[open] .delete-button {
-  position: absolute;
-  right: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-right: var(--gap);
-} 
-
-@keyframes blink {
-  0% { opacity: 20%; }
-  50% { opacity: 60%; }
-  100% { opacity: 20%; }
-} 
-
-.copy-button{
-  width: 20ch;
-  text-align: start;
-}
 
 </style>

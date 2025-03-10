@@ -4,7 +4,7 @@ import type { Context } from "./context.ts";
 import { z } from "zod";
 import { createUser, queryUser } from "../utils/surrealdb-cloud";
 import { server } from '@passwordless-id/webauthn'
-
+import { registrationInputSchema, authenticationInputSchema, credentialSchema } from './schemas';
 
 const t = initTRPC.context<Context>().create({
     transformer: {
@@ -14,55 +14,6 @@ const t = initTRPC.context<Context>().create({
 });
 
 export const router = t.router;
-
-const registrationInputSchema = z.object({ 
-    challenge: z.string(),
-    registry : z.object({
-        type: z.literal('public-key'),
-        id: z.string(), 
-        rawId: z.string(), 
-        authenticatorAttachment: z.enum(['cross-platform', 'platform']),
-        clientExtensionResults: z.object({}).default({}),
-        response: z.object({
-            attestationObject: z.string(), 
-            authenticatorData: z.string(), 
-            clientDataJSON: z.string(), 
-            publicKey: z.string(),
-            publicKeyAlgorithm: z.number().int(),
-            transports: z.array(z.enum(['hybrid', 'internal', 'usb', 'nfc', 'ble'])).default(['hybrid', 'internal'])
-        }),
-        user: z.object({
-            name: z.string(),
-            id: z.string().uuid()
-        })
-    })
-})
-
-const authenticationInputSchema = z.object({  
-    challenge: z.string(),  
-    authenticationData: z.object({
-        clientExtensionResults: z.record(z.string(), z.any()),
-        id: z.string(),
-        rawId: z.string(),
-        type: z.literal('public-key'),
-        authenticatorAttachment: z.enum(['cross-platform', 'platform']),
-        response: z.object({
-          authenticatorData: z.string(),
-          clientDataJSON: z.string(),
-          signature: z.string(),
-          userHandle: z.string(),
-        }),
-      })
-});
-
-interface Credential {
-    credentials: {
-        algorithm: "ES256";
-        id: string;
-        publicKey: string;
-        transports: ['internal'];
-    };
-}
 
 export const appRouter = router({
 
@@ -90,23 +41,27 @@ export const appRouter = router({
         }),
 
 
-    authenticate:t.procedure
+    authenticate: t.procedure
         .input(authenticationInputSchema)
-        .mutation(async({input}) =>{
-            const credentialKey = await queryUser(input.authenticationData.id) as Credential[] | undefined;
-            if (!credentialKey || credentialKey.length === 0) { return { message: "Failed to find user" } }
+        .mutation(async ({ input }) => {
+            const [credential] = await queryUser(input.authenticationData.id) as z.infer<typeof credentialSchema>[];
+            if (!credential) return { message: "Failed to find user" };
 
-            const expected = {
-                challenge: input.challenge,
-                origin: "https://keypass.vercel.app",
-                userVerified: true, 
-            }
-            
-            const authenticationParsed = await server.verifyAuthentication(input.authenticationData, credentialKey[0].credentials, expected)
-            if (authenticationParsed.userVerified === true) {
+            const authenticationParsed = await server.verifyAuthentication(
+                input.authenticationData,
+                credential.credentials,
+                {
+                    challenge: input.challenge,
+                    origin: "https://keypass.vercel.app",
+                    userVerified: true,
+                }
+            );
 
-            }
-            return { message: authenticationParsed  || "User not authenticated" };
+            return {
+                message: authenticationParsed.userVerified ? "Authentication successful" : "Authentication failed",
+                authenticated: authenticationParsed.userVerified,
+                credentialId: credential.credentials.id
+            };
         }),        
 
         greet: t.procedure

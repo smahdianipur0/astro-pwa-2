@@ -56,13 +56,6 @@
   }
 }
 
-.notch {
-  height: calc( var(--gap) - 3px );
-  width: var(--gap-x08);
-  align-self: center;
-  border-radius: 9999px;
-  background-color: oklch(var(--gray-25) / 1);
-}
 
 [data-corvu-drawer-label] {
   margin: var(--gap-x04);

@@ -7,6 +7,7 @@ import Varification from '../components/Varification.astro';
 import QRCode from '../components/QRCode.astro'; 
 import About from '../components/About.astro';
 import Emails from '../components/Emails.astro';
+import Records from '../components/Records.astro';
 
 ---
 
@@ -32,7 +33,7 @@ import Emails from '../components/Emails.astro';
 	<div class="tab-content two">
 		<div class="grid-layout"> 
 
-			<div>Building...</div>
+			<Records>
 
 		</div>
 	</div>
@@ -44,12 +45,12 @@ import Emails from '../components/Emails.astro';
 				<Encdec/>
 			</Card>
 
-			<Card title = "Generate QR Code" iden='generateQR'>
-				<QRCode/> 
-	 		</Card>
-
 	 		<Card title = "Frequently Used Emails" iden='emails'>
 	 			<Emails/>
+	 		</Card>
+
+	 		<Card title = "Generate QR Code" iden='generateQR'>
+				<QRCode/> 
 	 		</Card> 
 
 		</div>
@@ -65,6 +66,7 @@ import Emails from '../components/Emails.astro';
 
 <script src="../components/homeLogic.ts"></script>
 <script src="../components/tempListLogic.ts"></script>
+<script src="../components/recordsLogic.ts"></script>
 
 <style>
 	

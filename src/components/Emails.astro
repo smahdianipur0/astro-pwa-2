@@ -11,7 +11,13 @@ justify-content: space-between;">
 
 <div class="entries-list not-prose" id="emails-list" style="
 padding-inline: var(--gap-x02);
-height:100%;"></div>
+height:100%;">
+<div style="display: flex; gap: 2ch; flex-direction: column; padding-top: var(--gap-x02);" class="max-width">
+<div class="skeleton"></div>
+<div class="skeleton" style="width: 17ch;"></div>
+<div class="skeleton" style="width: 22ch;"></div>
+</div>
+</div>
 
 
 <script>
@@ -118,3 +124,18 @@ createEffect(() => {
 
 
 </script>
+
+<style is:global>
+
+
+
+#emails-list > :last-child::after {
+  content: 'tap on email to copy';
+  position: absolute;
+  bottom: 0;
+  transform: translateY(var(--gap-x06));
+  font-size: var(--small-font);
+  color: oklch(var(--gray-50) / 1);
+}
+
+</style>
