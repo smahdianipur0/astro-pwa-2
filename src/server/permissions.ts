@@ -37,5 +37,3 @@ return rolePermissions[role]?.includes(requiredPermission) ?? false;
 export function canCreateVault(vaultCount: number): boolean {
 return vaultCount < 3; // Maximum 3 vaults per user
 }
-  
-  
