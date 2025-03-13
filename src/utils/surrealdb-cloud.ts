@@ -161,9 +161,6 @@ export async function deleteVault(vaultName: string ): Promise<object | undefine
   } else {
     try {
       const response = await db.query<hasVault[]>(`
-        LET $user = (SELECT in FROM has_vault WHERE out = $dbVaultName);
-        LET $vaultCount =(SELECT vaultCount FROM users WHERE id = $user[0].in);
-
         DELETE vaults WHERE id = $dbVaultName;
         UPSERT users SET vaultCount = $vaultCount[0].vaultCount - 1 WHERE id = $user[0].in;
         `,
@@ -179,4 +176,4 @@ export async function deleteVault(vaultName: string ): Promise<object | undefine
   }
 
   return result;
-} 
+}

@@ -1,9 +1,8 @@
 import {
-	createPasswordEntry,
+	dbCreate,
+	dbUpdate,
 	getAllPasswordEntries,
 	deletePasswordEntry,
-	updatePasswordEntry,
-	createRecentDelPass,
 	getAllRecentDelPass,
 	deleteRecentDelPass,
 	getEntryById,
@@ -149,7 +148,7 @@ createEffect(() => {
 				const entry = await getEntryById<PasswordEntry>("PasswordEntry", deleteButton.id);
 				if (entry) {
 					const { title, password } = entry;
-					await createRecentDelPass(title, password);
+					await dbCreate("RecentDelPass", {title:title, password:password})
           await setListRecentDel(await getAllRecentDelPass() ?? []);
 				}
 				await deletePasswordEntry(deleteButton.id);
@@ -190,7 +189,7 @@ createEffect(() => {
 	inputGroup.addEventListener("click", (e) => {
 		if ((e!.target as HTMLInputElement).matches("#add-entry-button")) {
 			(async () => {
-				await createPasswordEntry(listTitle(), listPassword());
+				await dbCreate("PasswordEntry", {title:listTitle(),password: listPassword()} )
 				setListTitle("");
         if ((document.getElementById("auto-pass-entry") as HTMLInputElement).checked){
 				  setListPassword("");
@@ -238,9 +237,10 @@ createEffect(() => {
   document.getElementById("edit-temp-list-dialog")!.addEventListener("click", (e) => {
   	if((e!.target as HTMLInputElement).matches("#update-temp-list-entry")) {
   		(async () => {
-				updatePasswordEntry( updtingEntry(), updatingListEntryTitle(), updatingListEntryPass() );
-				setListEntries((await getAllPasswordEntries()) ?? []);
-			})();
+			dbUpdate("PasswordEntry", updtingEntry(), 
+				{title:updatingListEntryTitle(), password:updatingListEntryPass()});
+			setListEntries((await getAllPasswordEntries()) ?? []);
+		})();
 	}
 });
 

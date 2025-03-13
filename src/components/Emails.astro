@@ -23,7 +23,7 @@ height:100%;">
 <script>
 
 import { createSignal, createEffect } from 'solid-js';
-import { createEmailEntry, getAllEmails, deleteEmail, type EmailEntry } from "../utils/surrealdb-indexed";
+import { dbCreate, getAllEmails, deleteEmail, type EmailEntry } from "../utils/surrealdb-indexed";
 import { element } from "../utils/elementUtils";
 import { showToast } from "../components/homeLogic.ts";
 
@@ -48,7 +48,7 @@ document.getElementById("emails")!.addEventListener("input",(e)=>{
 document.getElementById("emails")!.addEventListener("click", (e) => {
   if ((e!.target as HTMLInputElement).matches("#add_email")) {
     (async () => {
-      await createEmailEntry(emailEntery());
+      await dbCreate("Emails", {email:emailEntery()})
       setEmaillist((await getAllEmails() ) ?? []);
     })();
   }
