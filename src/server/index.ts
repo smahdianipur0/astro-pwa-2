@@ -72,7 +72,7 @@ export const appRouter = router({
 
         dbquery: t.procedure
         .mutation(async () =>{
-            const data = await deleteVault("8GuVy4UYH8iZKHTCr1TioGH3Bzs", "cocoa");
+            const data = await deleteVault("8GuVy4UYH8iZKHTCr1TioGH3Bzs", "orange");
             console.log(data)
             return data
         })

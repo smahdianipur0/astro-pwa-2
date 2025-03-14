@@ -161,14 +161,14 @@ export async function deleteVault(userID: string, vaultName: string ): Promise<o
   } else {
     try {
       const response = await db.query<hasVault[]>(`
-        DELETE $VAULT;
-        `,
-        { UID: userID, VAULT: dbVaultName }
+        DELETE vaults WHERE id = $VAULT;
+        `, { VAULT: dbVaultName }
       );
       console.log(response);
       result = response[0];
       console.log(result);
     } catch (err: unknown) {
+      console.log(err)
       result = { message: "Failed to search for user"};
     } finally {
       await db.close();
