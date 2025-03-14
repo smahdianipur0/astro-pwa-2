@@ -32,8 +32,8 @@ const [listRecentDel, setListRecentDel] = createSignal<PasswordEntry[]>([]);
 
 
 // initialize entries
-(async () => {setListEntries(await dbReadAll("password")  ?? []);})();
-(async () => {setListRecentDel(await dbReadAll("recentDelPass") ?? []);})();
+(async () => {setListEntries(await dbReadAll("PasswordEntry")  ?? []);})();
+(async () => {setListRecentDel(await dbReadAll("RecentDelPass") ?? []);})();
 
 createEffect(() => { setListPassword(password()) });
 
@@ -143,15 +143,15 @@ createEffect(() => {
 		if (deleteButton) {
 			(async () => {
 				// Get the record by its ID deleteButton.id
-				const entry = await getEntryById("password", deleteButton.id);
+				const entry = await getEntryById("PasswordEntry", deleteButton.id);
 				if (entry) {
 					const { title, password } = entry;
-					await dbCreate("recentDelPass:create", {title: title, password: password})
-					await setListRecentDel(await dbReadAll("recentDelPass") ?? []);
+					await dbCreate("RecentDelPass:create", {title: title, password: password})
+					await setListRecentDel(await dbReadAll("RecentDelPass") ?? []);
 				}
-				await dbDelete("password:delete", deleteButton.id)
+				await dbDelete("PasswordEntry:delete", deleteButton.id)
 		
-				setListEntries((await dbReadAll("password")) ?? []);
+				setListEntries((await dbReadAll("PasswordEntry")) ?? []);
 			})();
 		}
 
@@ -161,7 +161,7 @@ createEffect(() => {
 		(async () => {
 			(document.getElementById("edit-temp-list-dialog") as HTMLDialogElement).showModal();
 				setUpdtingEntry(updateButton.id);
-				const entry = await getEntryById("password", updateButton.id);
+				const entry = await getEntryById("PasswordEntry", updateButton.id);
 				if (entry) {
 					const { title, password } = entry;
 					console.log(title, password);
@@ -188,12 +188,12 @@ createEffect(() => {
 	inputGroup.addEventListener("click", (e) => {
 		if ((e!.target as HTMLInputElement).matches("#add-entry-button")) {
 			(async () => {
-				await dbCreate("password:create", {title:listTitle(),password: listPassword()} )
+				await dbCreate("PasswordEntry:create", {title:listTitle(),password: listPassword()} )
 				setListTitle("");
         if ((document.getElementById("auto-pass-entry") as HTMLInputElement).checked){
 				  setListPassword("");
 				}
-				setListEntries((await dbReadAll("password")) ?? []);
+				setListEntries((await dbReadAll("PasswordEntry")) ?? []);
 			})();
 		}
 
@@ -236,11 +236,11 @@ createEffect(() => {
   document.getElementById("edit-temp-list-dialog")!.addEventListener("click", (e) => {
   	if((e!.target as HTMLInputElement).matches("#update-temp-list-entry")) {
   		(async () => {
-			dbUpdate("password:update", {
+			dbUpdate("PasswordEntry:update", {
 				id: updtingEntry(), 
 				title:updatingListEntryTitle(), 
 				password:updatingListEntryPass()});
-			setListEntries((await dbReadAll("password")) ?? []);
+			setListEntries((await dbReadAll("PasswordEntry")) ?? []);
 		})();
 	}
 });
@@ -327,8 +327,8 @@ createEffect(() => {
 		const deleteButton = (e!.target as HTMLInputElement).closest(".delete-button");
 		if (deleteButton) {
 			(async () => {
-				await dbDelete("recentDelPass:delete", deleteButton.id);
-				await setListRecentDel(await dbReadAll("recentDelPass") ?? []);
+				await dbDelete("RecentDelPass:delete", deleteButton.id);
+				await setListRecentDel(await dbReadAll("RecentDelPass") ?? []);
 			})();
 		}
         const copyButton = (e!.target as HTMLInputElement).closest(".copy-button");

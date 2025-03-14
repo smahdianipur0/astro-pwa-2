@@ -99,8 +99,9 @@ export async function createVault(userID: string,vaultName: string ): Promise<ob
   } else {
     try {
       const response = await db.query<hasVault[]>(`
+        BEGIN TRANSACTION;
         LET $user = (SELECT id FROM users WHERE UID = $UID);
-        LET $vault = (CREATE vaults SET id = $vaultName);
+        LET $vault = (CREATE vaults SET id = $vaultName, name = $vaultName);
         LET $vaultCount =(SELECT vaultCount FROM users WHERE UID = $UID);
         
         INSERT RELATION INTO has_vault {
@@ -110,6 +111,7 @@ export async function createVault(userID: string,vaultName: string ): Promise<ob
         };
 
         UPSERT users SET vaultCount = $vaultCount[0].vaultCount + 1 WHERE UID = $UID;
+        COMMIT TRANSACTION;
       `,
       { UID: userID, vaultName: vaultName}
     );
@@ -161,8 +163,21 @@ export async function deleteVault(userID: string, vaultName: string ): Promise<o
   } else {
     try {
       const response = await db.query<hasVault[]>(`
-        DELETE vaults WHERE id = $VAULT;
-        `, { VAULT: dbVaultName }
+
+        BEGIN TRANSACTION;
+        LET $user = (SELECT id FROM users WHERE UID = $UID);
+        LET $vaultCount =(SELECT vaultCount FROM users WHERE UID = $UID);
+
+        LET $vaultExists = (SELECT * FROM vaults WHERE name = $VAULT);
+
+        IF count($vaultExists) = 0 {
+          THROW "Vault does not exist";
+        };
+
+        DELETE FROM vaults WHERE name = $VAULT ;
+        UPSERT users SET vaultCount = $vaultCount[0].vaultCount - 1 WHERE id = $user[0].id;
+        COMMIT TRANSACTION;
+        `, { UID:userID, VAULT: vaultName }
       );
       console.log(response);
       result = response[0];
@@ -177,10 +192,3 @@ export async function deleteVault(userID: string, vaultName: string ): Promise<o
 
   return result;
 }
-
-
-// LET $user = (SELECT id FROM users WHERE UID = $UID);
-// LET $vaultCount =(SELECT vaultCount FROM users WHERE UID = $UID);
-
-// DELETE $VAULT;
-// UPSERT users SET vaultCount = $vaultCount[0].vaultCount - 1 WHERE id = $user[0].id;

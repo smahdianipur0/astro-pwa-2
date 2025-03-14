@@ -48,16 +48,16 @@ document.getElementById("emails")!.addEventListener("input",(e)=>{
 document.getElementById("emails")!.addEventListener("click", (e) => {
   if ((e!.target as HTMLInputElement).matches("#add_email")) {
     (async () => {
-      await dbCreate("emails:create", {email:emailEntery()})
-      setEmaillist((await dbReadAll("emails") ) ?? []);
+      await dbCreate("Emails:create", {email:emailEntery()})
+      setEmaillist((await dbReadAll("Emails") ) ?? []);
     })();
   }
 
   const deleteButton = (e!.target as HTMLInputElement).closest(".delete-button");
   if (deleteButton) {
     (async () => {
-      await dbDelete("emails:delete", deleteButton.id);
-      setEmaillist((await dbReadAll("emails") ) ?? []);
+      await dbDelete("Emails:delete", deleteButton.id);
+      setEmaillist((await dbReadAll("Emails") ) ?? []);
     })();
   }
 
@@ -71,7 +71,7 @@ document.getElementById("emails")!.addEventListener("click", (e) => {
 });
 
 
-setEmaillist((await dbReadAll("emails") ) ?? []);
+setEmaillist((await dbReadAll("Emails") ) ?? []);
 
 createEffect(() => {
   setEmailEntery("");

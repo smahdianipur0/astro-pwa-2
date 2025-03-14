@@ -17,6 +17,8 @@ async function getDb() {
 	}
 }
 
+type TableName = "PasswordEntry" | "RecentDelPass" | "Emails";
+
 export type BaseEntry = {
 	id?: { tb: string; id: string };
 };
@@ -32,29 +34,35 @@ export type PasswordEntry = {
 	password: string;
 };
 
-const tableNames = ["password", "emails", "recentDelPass"] as const;
-type TableName = (typeof tableNames)[number];
-
-// Context-Aware PermittedTypes Mapping
-export type PermittedTypes = {
-	"password:create": { title?: string; password?: string };
-	"password:update": { id: string; title?: string; password?: string };
-	"password:delete": { id: string };
-	"recentDelPass:create": { title?: string; password?: string };
-	"recentDelPass:update": { id: string; title?: string; password?: string };
-	"recentDelPass:delete": { id: string };
-	"emails:create": { email: string };
-	"emails:update": { id: string; email?: string };
-	"emails:delete": { id: string };
+export type Schemas = {
+	PasswordEntry: { title: string; password: string };
+	Emails: { email: string };
+	RecentDelPass: {  title: string; password: string };
+	credentials: { value: string };
 };
 
-export type ReadResultTypes = {
-	password: PasswordEntry;
-	emails: EmailEntry;
-	recentDelPass: PasswordEntry;
+type CRUD<T> = {
+	create: Partial<T>; 
+	update: { id: string } & Partial<T>;
+	delete: { id: string };
 };
 
+// Generate CRUD types for all tables
+type TableCRUD = {[K in keyof Schemas]: CRUD<Schemas[K]>;
+};
+
+// Flatten into "table:action" format
+type Flatten<T extends Record<string, CRUD<any>>> = {
+	[K in keyof T as `${K & string}:create`]: T[K]["create"]; } & {
+	[K in keyof T as `${K & string}:update`]: T[K]["update"]; } & {
+	[K in keyof T as `${K & string}:delete`]: T[K]["delete"];
+};
+
+export type PermittedTypes = Flatten<TableCRUD>;
+
+export type ReadResultTypes = {[K in keyof Schemas]: Schemas[K];};
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
+
 
 export async function dbCreate<T extends `${TableName}:create`>(action: T, data: PermittedTypes[T]): Promise<void> {
 	const db = await getDb();
