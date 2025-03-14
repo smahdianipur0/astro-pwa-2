@@ -17,10 +17,13 @@ import Card from './Card.astro';
     </div>
     
   </form>
+  <button id="test">test</button>
 </Card>
 
 
 <ThemeToggle/>
+
+
 
 
 <style is:global>
@@ -74,3 +77,19 @@ import Card from './Card.astro';
 } */
 
 </style>
+
+<script>
+
+import queryHelper  from "../utils/query-helper"
+import { trpc } from "../utils/trpc";
+
+document.getElementById("key-IV")!.addEventListener("click", (e) => {
+  if ((e!.target as HTMLInputElement).matches("#test")) {
+    (async () => {
+    const [data, error] = await queryHelper.direct("db", () => trpc.dbquery.mutate());
+    console.log(data, error);
+    })();
+  }
+});
+
+</script>

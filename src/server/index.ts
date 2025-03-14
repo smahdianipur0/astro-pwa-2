@@ -2,7 +2,7 @@ import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import type { Context } from "./context.ts";
 import { z } from "zod";
-import { createUser, queryUser } from "../utils/surrealdb-cloud";
+import { createUser, createVault, deleteVault, queryUser, queryUserVaults } from "../utils/surrealdb-cloud";
 import { server } from '@passwordless-id/webauthn'
 import { registrationInputSchema, authenticationInputSchema, credentialSchema } from './schemas';
 
@@ -12,6 +12,7 @@ const t = initTRPC.context<Context>().create({
         output: superjson,
     },
 });
+
 
 export const router = t.router;
 
@@ -68,6 +69,13 @@ export const appRouter = router({
         .query(async () => {
             return { message: `Hello` };
         }),
+
+        dbquery: t.procedure
+        .mutation(async () =>{
+            const data = await deleteVault("8GuVy4UYH8iZKHTCr1TioGH3Bzs", "cocoa");
+            console.log(data)
+            return data
+        })
 
 });
 

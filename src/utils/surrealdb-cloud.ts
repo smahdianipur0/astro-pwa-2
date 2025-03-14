@@ -99,9 +99,9 @@ export async function createVault(userID: string,vaultName: string ): Promise<ob
   } else {
     try {
       const response = await db.query<hasVault[]>(`
-        LET $user = (SELECT id FROM users WHERE UID = "$UID");
-        LET $vault = (CREATE vaults SET id = "$vaultName");
-        LET $vaultCount =(SELECT vaultCount FROM users WHERE UID = "$UID");
+        LET $user = (SELECT id FROM users WHERE UID = $UID);
+        LET $vault = (CREATE vaults SET id = $vaultName);
+        LET $vaultCount =(SELECT vaultCount FROM users WHERE UID = $UID);
         
         INSERT RELATION INTO has_vault {
           in:  $user[0].id,
@@ -109,14 +109,13 @@ export async function createVault(userID: string,vaultName: string ): Promise<ob
           role: "owner"
         };
 
-        UPSERT users SET vaultCount = $vaultCount[0].vaultCount + 1 WHERE UID = "$UID";
+        UPSERT users SET vaultCount = $vaultCount[0].vaultCount + 1 WHERE UID = $UID;
       `,
       { UID: userID, vaultName: vaultName}
     );
       result = response[0];
-      console.log(result);
     } catch (err: unknown) {
-      result = { message: "Failed to search for user"};
+      result = { message: "Failed to search for user", err};
     } finally {
       await db.close();
     }
@@ -134,13 +133,13 @@ export async function queryUserVaults(userID: string ): Promise<object | undefin
   } else {
     try {
       const response = await db.query<hasVault[]>(`
+        
         LET $user = (SELECT id FROM users WHERE UID = $UID);
         SELECT out.* FROM has_vault WHERE in = $user[0].id ;
       `,
         { UID: userID }
       );
-      result = response[0];
-      console.log(result);
+      result = response[1];
     } catch (err: unknown) {
       result = { message: "Failed to search for user"};
     } finally {
@@ -151,21 +150,22 @@ export async function queryUserVaults(userID: string ): Promise<object | undefin
   return result;
 }
 
-export async function deleteVault(vaultName: string ): Promise<object | undefined> {
+export async function deleteVault(userID: string, vaultName: string ): Promise<object | undefined> {
   const db = await getDb();
   let result: object | undefined;
   const dbVaultName = `vaults:${vaultName}`;
+  console.log(dbVaultName)
 
   if (!db) {
     result = { message:"Database not initialized"};
   } else {
     try {
       const response = await db.query<hasVault[]>(`
-        DELETE vaults WHERE id = $dbVaultName;
-        UPSERT users SET vaultCount = $vaultCount[0].vaultCount - 1 WHERE id = $user[0].in;
+        DELETE $VAULT;
         `,
-        { dbVaultName: dbVaultName }
+        { UID: userID, VAULT: dbVaultName }
       );
+      console.log(response);
       result = response[0];
       console.log(result);
     } catch (err: unknown) {
@@ -177,3 +177,10 @@ export async function deleteVault(vaultName: string ): Promise<object | undefine
 
   return result;
 }
+
+
+// LET $user = (SELECT id FROM users WHERE UID = $UID);
+// LET $vaultCount =(SELECT vaultCount FROM users WHERE UID = $UID);
+
+// DELETE $VAULT;
+// UPSERT users SET vaultCount = $vaultCount[0].vaultCount - 1 WHERE id = $user[0].id;
