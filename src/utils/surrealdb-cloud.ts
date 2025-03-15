@@ -179,14 +179,7 @@ export async function deleteVault(userID: string, vaultName: string ): Promise<a
     console.log(response);
 
     if (response[response.length - 1].status === 'OK') {
-      const validResults = response.filter(item => { typeof item.result === 'object'});
-      if (validResults.length > 0) {
-        console.log(validResults);
-        return { message: validResults};
-      } else {
-        console.log("No valid results");
-        throw new Error("No valid results"); 
-      }
+      return{message : "${vaultName} Deleted"}
     } else if (response.filter(item => item.status === 'ERR')) {
       const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
       if (errorObject) {
@@ -197,7 +190,7 @@ export async function deleteVault(userID: string, vaultName: string ): Promise<a
       throw new Error("unknown error");
     } else {
       console.log("Response is undefined.");
-      throw new Error("unknown error");
+      throw new Error("unknown status");
     }
   } catch(err:unknown){
     console.log(err);
