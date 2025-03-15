@@ -1,3 +1,4 @@
+import { array, number } from 'astro:schema';
 import { Surreal, RecordId } from 'surrealdb';
 
 
@@ -92,38 +93,38 @@ export async function queryUser(userID: string): Promise<object | undefined> {
 
 export async function createVault(userID: string,vaultName: string ): Promise<object | undefined> {
   const db = await getDb();
-  let result: object | undefined;
 
   if (!db) {
-    result = { message:"Database not initialized"};
-  } else {
-    try {
-      const response = await db.query<hasVault[]>(`
-        BEGIN TRANSACTION;
-        LET $user = (SELECT id FROM users WHERE UID = $UID);
-        LET $vault = (CREATE vaults SET id = $vaultName, name = $vaultName);
-        LET $vaultCount =(SELECT vaultCount FROM users WHERE UID = $UID);
-        
-        INSERT RELATION INTO has_vault {
-          in:  $user[0].id,
-          out: $vault[0].id,
-          role: "owner"
-        };
+		console.error("Database not initialized");
+		return undefined;
+	}
 
-        UPSERT users SET vaultCount = $vaultCount[0].vaultCount + 1 WHERE UID = $UID;
-        COMMIT TRANSACTION;
-      `,
-      { UID: userID, vaultName: vaultName}
-    );
-      result = response[0];
-    } catch (err: unknown) {
-      result = { message: "Failed to search for user", err};
-    } finally {
-      await db.close();
-    }
+  try {
+    const response = await db.query<hasVault[]>(`
+      BEGIN TRANSACTION;
+      LET $user = (SELECT id FROM users WHERE UID = $UID);
+      LET $vault = (CREATE vaults SET id = $vaultName, name = $vaultName);
+      LET $vaultCount =(SELECT vaultCount FROM users WHERE UID = $UID);
+      
+      INSERT RELATION INTO has_vault {
+        in:  $user[0].id,
+        out: $vault[0].id,
+        role: "owner"
+      };
+
+      UPSERT users SET vaultCount = $vaultCount[0].vaultCount + 1 WHERE UID = $UID;
+      COMMIT TRANSACTION;
+    `,
+    { UID: userID, vaultName: vaultName}
+  );
+  return response
+
+  } 
+  catch (err: unknown) {
+		console.error(`Failed to create vault`, err instanceof Error ? err.message : String(err));
+	} finally {
+    await db.close();
   }
-
-  return result;
 }
 
 export async function queryUserVaults(userID: string ): Promise<object | undefined> {
@@ -152,43 +153,57 @@ export async function queryUserVaults(userID: string ): Promise<object | undefin
   return result;
 }
 
-export async function deleteVault(userID: string, vaultName: string ): Promise<object | undefined> {
+export async function deleteVault(userID: string, vaultName: string ): Promise<any | undefined> {
   const db = await getDb();
-  let result: object | undefined;
-  const dbVaultName = `vaults:${vaultName}`;
-  console.log(dbVaultName)
 
   if (!db) {
-    result = { message:"Database not initialized"};
-  } else {
-    try {
-      const response = await db.query<hasVault[]>(`
+    throw new Error ("Database not initialized");
+  } 
+  try {
+    const response = await db.query_raw(`
+      BEGIN TRANSACTION;
+      LET $user = (SELECT id FROM users WHERE UID = $UID);
+      LET $vaultCount =(SELECT vaultCount FROM users WHERE UID = $UID);
 
-        BEGIN TRANSACTION;
-        LET $user = (SELECT id FROM users WHERE UID = $UID);
-        LET $vaultCount =(SELECT vaultCount FROM users WHERE UID = $UID);
+      LET $vaultExists = (SELECT * FROM vaults WHERE name = $VAULT);
 
-        LET $vaultExists = (SELECT * FROM vaults WHERE name = $VAULT);
+      IF count($vaultExists) = 0 {
+        THROW "Vault does not exist";
+      };
 
-        IF count($vaultExists) = 0 {
-          THROW "Vault does not exist";
-        };
+      DELETE FROM vaults WHERE name = $VAULT ;
+      UPSERT users SET vaultCount = $vaultCount[0].vaultCount - 1 WHERE id = $user[0].id;
+      COMMIT TRANSACTION;
+      `, { UID:userID, VAULT: vaultName }
+    );
+    console.log(response);
 
-        DELETE FROM vaults WHERE name = $VAULT ;
-        UPSERT users SET vaultCount = $vaultCount[0].vaultCount - 1 WHERE id = $user[0].id;
-        COMMIT TRANSACTION;
-        `, { UID:userID, VAULT: vaultName }
-      );
-      console.log(response);
-      result = response[0];
-      console.log(result);
-    } catch (err: unknown) {
-      console.log(err)
-      result = { message: "Failed to search for user"};
-    } finally {
-      await db.close();
+    if (response[response.length - 1].status === 'OK') {
+      const validResults = response.filter(item => { typeof item.result === 'object'});
+      if (validResults.length > 0) {
+        console.log(validResults);
+        return { message: validResults};
+      } else {
+        console.log("No valid results");
+        throw new Error("No valid results"); 
+      }
+    } else if (response.filter(item => item.status === 'ERR')) {
+      const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
+      if (errorObject) {
+        console.log(errorObject);
+        throw new Error(String(errorObject.result));
+      }
+      console.log("unknown error");
+      throw new Error("unknown error");
+    } else {
+      console.log("Response is undefined.");
+      throw new Error("unknown error");
     }
+  } catch(err:unknown){
+    console.log(err);
+    throw new Error(err instanceof Error ? err.message : String(err))
+  } finally{
+    await db. close();
   }
 
-  return result;
 }

@@ -38,29 +38,19 @@ export type Schemas = {
 	PasswordEntry: { title: string; password: string };
 	Emails: { email: string };
 	RecentDelPass: {  title: string; password: string };
-	credentials: { value: string };
 };
 
-type CRUD<T> = {
-	create: Partial<T>; 
-	update: { id: string } & Partial<T>;
-	delete: { id: string };
-};
+
 
 // Generate CRUD types for all tables
-type TableCRUD = {[K in keyof Schemas]: CRUD<Schemas[K]>;
+type PermittedTypes = {
+	[K in keyof Schemas as `${K & string}:create`]: Partial<Schemas[K]> } & {
+	[K in keyof Schemas as `${K & string}:update`]: { id: string } & Partial<Schemas[K]> } & {
+	[K in keyof Schemas as `${K & string}:delete`]: { id: string };
 };
-
-// Flatten into "table:action" format
-type Flatten<T extends Record<string, CRUD<any>>> = {
-	[K in keyof T as `${K & string}:create`]: T[K]["create"]; } & {
-	[K in keyof T as `${K & string}:update`]: T[K]["update"]; } & {
-	[K in keyof T as `${K & string}:delete`]: T[K]["delete"];
-};
-
-export type PermittedTypes = Flatten<TableCRUD>;
 
 export type ReadResultTypes = {[K in keyof Schemas]: Schemas[K];};
+
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
 
