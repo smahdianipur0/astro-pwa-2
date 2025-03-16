@@ -40,7 +40,7 @@ export type hasVault = {
 }
 
 
-export async function createUser(userID: string, credential: object): Promise<string | undefined> {
+export async function dbCreateUser(userID: string, credential: object): Promise<string | undefined> {
   const db = await getDb();
   let result: string | undefined;
 
@@ -65,46 +65,81 @@ export async function createUser(userID: string, credential: object): Promise<st
   return result;
 }
 
-export async function queryUser(userID: string): Promise<object | undefined> {
+export async function dbQueryUser(userID: string): Promise<object | undefined> {
   const db = await getDb();
-  let result: object | undefined;
 
   if (!db) {
-    result = { message:"Database not initialized"};
-  } else {
-    try {
-      const getobject = await db.query<[Credentials[]]>(
-        'SELECT credentials FROM users WHERE UID = $UID ;',
-        { UID: userID }
-      );
-      result = getobject[0];
-      console.log(result);
-    } catch (err: unknown) {
-      result = { message: "Failed to search for user"};
-    } finally {
-      await db.close();
-    }
+    throw new Error ("Database not initialized");
   }
 
-  return result;
+  try {
+    const getobject = await db.query(
+      'SELECT credentials FROM users WHERE UID = $UID ;',
+      { UID: userID }
+    ) as object[];
+    console.log(getobject);
+    return getobject[0];
+
+  } catch (err: unknown) {
+    console.log(err);
+    throw new Error(err instanceof Error ? err.message : String(err))
+  } finally {
+    await db.close();
+  }
 }
 
-
-
-export async function createVault(userID: string,vaultName: string ): Promise<object | undefined> {
+export async function dbQueryRole(userID: string, vaultName: string): Promise<object | undefined> {
   const db = await getDb();
 
   if (!db) {
-		console.error("Database not initialized");
-		return undefined;
+    throw new Error ("Database not initialized");
+  }
+
+  try {
+    const response = await db.query_raw(`
+      BEGIN TRANSACTION;
+      LET $user = (SELECT id FROM users WHERE UID = $UID);
+      LET $vault = (SELECT id FROM vaults WHERE name = $vaultName);
+      SELECT role FROM has_vault WHERE in = $user[0].id AND out = $vault[0].id ;
+      COMMIT TRANSACTION;`,
+      { UID: userID, vaultName: vaultName});
+
+    
+    console.log(response);
+
+    if (response[response.length - 1].status === 'OK') {
+      console.log(response[2].result);
+      return{message : response[2].result}
+    } else if (response[response.length - 1].status === 'ERR') {
+      const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
+      if (errorObject) {
+        console.log(String(errorObject.result));
+        throw new Error(String(errorObject.result));
+      }
+      throw new Error("unknown error");
+      console.log("unknown error")
+    }
+  } 
+  catch (err: unknown) {
+    console.log(err);
+    throw new Error(err instanceof Error ? err.message : String(err))
+  } finally {
+    await db.close();
+  }
+}
+
+export async function dbCreateVault(userID: string,vaultName: string ): Promise<object | undefined> {
+  const db = await getDb();
+
+  if (!db) {
+    throw new Error ("Database not initialized");
 	}
 
   try {
-    const response = await db.query<hasVault[]>(`
+    const response = await db.query_raw(`
       BEGIN TRANSACTION;
       LET $user = (SELECT id FROM users WHERE UID = $UID);
       LET $vault = (CREATE vaults SET id = $vaultName, name = $vaultName);
-      LET $vaultCount =(SELECT vaultCount FROM users WHERE UID = $UID);
       
       INSERT RELATION INTO has_vault {
         in:  $user[0].id,
@@ -113,47 +148,121 @@ export async function createVault(userID: string,vaultName: string ): Promise<ob
       };
 
       UPSERT users SET vaultCount = $vaultCount[0].vaultCount + 1 WHERE UID = $UID;
-      COMMIT TRANSACTION;
-    `,
+      COMMIT TRANSACTION; `,
     { UID: userID, vaultName: vaultName}
-  );
-  return response
+    );
+    console.log(response);
 
+    if (response[response.length - 1].status === 'OK') {
+      return{message : "OK"}
+    } else if (response[response.length - 1].status === 'ERR') {
+      const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
+      if (errorObject) {
+        console.log(String(errorObject.result));
+        throw new Error(String(errorObject.result));
+      }
+      throw new Error("unknown error");
+      console.log("unknown error")
+    }
   } 
   catch (err: unknown) {
-		console.error(`Failed to create vault`, err instanceof Error ? err.message : String(err));
+    console.log(err);
+    throw new Error(err instanceof Error ? err.message : String(err))
 	} finally {
     await db.close();
   }
 }
 
-export async function queryUserVaults(userID: string ): Promise<object | undefined> {
+export async function dbRelateVault(userID: string,vaultName: string ): Promise<object | undefined> {
   const db = await getDb();
-  let result: object | undefined;
 
   if (!db) {
-    result = { message:"Database not initialized"};
-  } else {
+    throw new Error ("Database not initialized");
+  }
+
+  try {
+    const response = await db.query_raw(`
+      BEGIN TRANSACTION;
+      LET $user = (SELECT id FROM users WHERE UID = $UID);
+      LET $vault = (SELECT id FROM vaults WHERE name = $vaultName);
+
+      LET $relationExists = (SELECT * FROM has_vault WHERE in = $user[0].id AND out = $vault[0].id);
+
+      IF count($relationExists) = 0 {
+
+        RETURN RELATION INTO has_vault {
+          in:  $user[0].id,
+          out: $vault[0].id,
+          role: "viewer"
+        };
+
+      }ELSE {
+        RETURN SELECT out FROM has_vault WHERE in = $user[0].id AND out = $vault[0].id
+      };
+
+      COMMIT TRANSACTION; `,
+    { UID: userID, vaultName: vaultName}
+    );
+    console.log(response);
+
+    if (response[response.length - 1].status === 'OK') {
+      console.log()
+      return{message : "ok"}
+    } else if (response[response.length - 1].status === 'ERR') {
+      const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
+      if (errorObject) {
+        console.log(String(errorObject.result));
+        throw new Error(String(errorObject.result));
+      }
+      console.log("unknown error");
+      throw new Error("unknown error");
+    }
+  } 
+  catch (err: unknown) {
+    console.log(err);
+    throw new Error(err instanceof Error ? err.message : String(err))
+  } finally {
+    await db.close();
+  }
+}
+
+export async function dbReadVault(userID: string ): Promise<object | undefined> {
+  const db = await getDb();
+
+  if (!db) {
+    throw new Error ("Database not initialized");
+  }
     try {
-      const response = await db.query<hasVault[]>(`
+      const response = await db.query_raw<hasVault[]>(`
         
         LET $user = (SELECT id FROM users WHERE UID = $UID);
         SELECT out.* FROM has_vault WHERE in = $user[0].id ;
       `,
         { UID: userID }
       );
-      result = response[1];
-    } catch (err: unknown) {
-      result = { message: "Failed to search for user"};
-    } finally {
-      await db.close();
+      console.log(response);
+      if (response[response.length - 1].status === 'OK') {
+      console.log(response[1].result);
+      return{message : response[1].result}
+    } else if (response[response.length - 1].status === 'ERR') {
+      const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
+      if (errorObject) {
+        console.log(String(errorObject.result));
+        throw new Error(String(errorObject.result));
+      }
+      console.log("unknown error");
+      throw new Error("unknown error");
     }
+  } 
+  catch (err: unknown) {
+    console.log(err);
+    throw new Error(err instanceof Error ? err.message : String(err))
+  } finally {
+    await db.close();
   }
-
-  return result;
 }
 
-export async function deleteVault(userID: string, vaultName: string ): Promise<any | undefined> {
+export async function dbDeleteVault(userID: string, vaultName: string ): Promise<any | undefined> {
   const db = await getDb();
 
   if (!db) {
@@ -186,11 +295,7 @@ export async function deleteVault(userID: string, vaultName: string ): Promise<a
         console.log(errorObject);
         throw new Error(String(errorObject.result));
       }
-      console.log("unknown error");
       throw new Error("unknown error");
-    } else {
-      console.log("Response is undefined.");
-      throw new Error("unknown status");
     }
   } catch(err:unknown){
     console.log(err);
@@ -198,5 +303,4 @@ export async function deleteVault(userID: string, vaultName: string ): Promise<a
   } finally{
     await db. close();
   }
-
 }

@@ -9,7 +9,6 @@
   display: flex;
   place-content: space-between;
   width: min(100%, 65ch);
-  background-color: oklch(var(--gray-15) / 1);
   border-radius: 0;
   padding: var(--default-padding);
   margin: 0 var(--gap-x03);

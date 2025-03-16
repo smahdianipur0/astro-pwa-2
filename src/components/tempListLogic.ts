@@ -125,7 +125,7 @@ createEffect(() => {
 							element.configure(document.createElement('button'), {
 								className: 'update-button',
 								id: entry.id?.id ?? '',
-								textContent: '📝'
+								textContent: '✏️'
 							}),
 						]
 					})

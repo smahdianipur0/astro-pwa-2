@@ -50,7 +50,22 @@ overflow-x: hidden;">
       <button class="not-prose" id="cancel-search" >Cancel</button>
     </div>
 
-  <div class="entries-list" id="entries-list"></div>
+    <div style=" background: var(--border); 
+    width: min(100%, 65ch); 
+    padding: 1px;border-radius: 
+    var(--radius-b);" class="">
+      <div class="glass box-shadow max-width" style=" --box-shadow-opacity: 0.06;
+			border-radius: var(--radius-b);
+			contain: paint;
+			background-color: oklch(var(--gray-10) / 0.5);
+			width: auto;
+			height: auto">
+
+        <div class="entries-list not-prose" id="entries-list"></div>
+
+      </div>
+    </div>
+
     <div class="menu-item" style="margin-bottom: var(--gap-x06);">
     <DrawerFromRight client:load>
       <div  data-corvu-no-drag class="entries-list" id="recent-del-list" style="
@@ -62,6 +77,7 @@ overflow-x: hidden;">
   </div>
 
 
+
 </div>
 
 <dialog data-corvu-no-drag id="edit-temp-list-dialog" class="prose max-width glass" style="
@@ -71,6 +87,7 @@ place-content:center;
 background: oklch(var(--gray-15) / 0.65);
 max-width:min(350px, 100%);">
   <form method="dialog" style="display:flex; flex-direction:column;">
+    <h3 style="margin-top: 0;">Edit Item</h3>
     <input type="text" name="title"  class="input-group-top" placeholder="Title" id="updating-temp-title-input"/>
     <input type="text" name="Password" class="input-group-bottom" placeholder="Password" id="updating-temp-pass-input"/>
     <div  style="

@@ -2,7 +2,14 @@ import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import type { Context } from "./context.ts";
 import { z } from "zod";
-import { createUser, createVault, deleteVault, queryUser, queryUserVaults } from "../utils/surrealdb-cloud";
+import { 
+    dbCreateUser, 
+    dbCreateVault, 
+    dbDeleteVault, 
+    dbQueryUser, 
+    dbReadVault, 
+    dbQueryRole,
+    dbRelateVault } from "../utils/surrealdb-cloud";
 import { server } from '@passwordless-id/webauthn'
 import { registrationInputSchema, authenticationInputSchema, credentialSchema } from './schemas';
 
@@ -36,7 +43,7 @@ export const appRouter = router({
             }
             const registrationParsed = await server.verifyRegistration(input.registry, expected);
             if (registrationParsed.userVerified === true) {
-                addToDb = await createUser(registrationParsed.credential.id, registrationParsed.credential);
+                addToDb = await dbCreateUser(registrationParsed.credential.id, registrationParsed.credential);
                 console.log(addToDb); 
             }
             return { message: addToDb || "User not created" };
@@ -46,7 +53,7 @@ export const appRouter = router({
     authenticate: t.procedure
         .input(authenticationInputSchema)
         .mutation(async ({ input }) => {
-            const [credential] = await queryUser(input.authenticationData.id) as z.infer<typeof credentialSchema>[];
+            const [credential] = await dbQueryUser(input.authenticationData.id) as z.infer<typeof credentialSchema>[];
             if (!credential) return { message: "Failed to find user" };
 
             const authenticationParsed = await server.verifyAuthentication(
@@ -73,7 +80,7 @@ export const appRouter = router({
 
         dbquery: t.procedure
         .mutation(async () =>{
-            const data = await deleteVault("8GuVy4UYH8iZKHTCr1TioGH3Bzs", "hello");
+            const data = await dbRelateVault("WfNHn9wh1ng4mFfZTMZbhBPc8x0", "banana");
             console.log(data)
             return data
         })
