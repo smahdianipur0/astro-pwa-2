@@ -30,18 +30,15 @@ overflow-x: hidden;">
       <button style="margin-top: var(--gap-x03);"id="add-entry-button">Add</button>
     </div>
   </Card>
-    <div id="search-box" class="prose max-width" style="
-    display: flex; 
+    <div id="search-box" class="prose max-width" style="display: flex; 
     flex-direction: row;
     position:relative;">
-      <input type="text" id="search-input" style="
-      position: relative;
+      <input type="text" id="search-input" style=" position: relative;
       background: oklch(var(--gray-15) / 1);
       border: none ;
       padding-left: var(--gap-x07);
       box-shadow: none;"  placeholder="Search">
-      <svg style="
-      position: absolute;
+      <svg style="position: absolute;
       margin: var(--default-padding);
       margin-inline: var(--gap);
       height: var(--gap-x04);
@@ -50,29 +47,53 @@ overflow-x: hidden;">
       <button class="not-prose" id="cancel-search" >Cancel</button>
     </div>
 
-    <div style=" background: var(--border); 
-    width: min(100%, 65ch); 
-    padding: 1px;border-radius: 
-    var(--radius-b);" class="">
-      <div class="glass box-shadow max-width" style=" --box-shadow-opacity: 0.06;
-			border-radius: var(--radius-b);
-			contain: paint;
-			background-color: oklch(var(--gray-10) / 0.5);
-			width: auto;
-			height: auto">
-
-        <div class="entries-list not-prose" id="entries-list"></div>
-
+    <div class="card-border">
+      <div class="card glass box-shadow max-width">
+        <div class="entries-list not-prose" id="entries-list"> 
+          <p class="hint" style="padding-top:var(--gap-x04)">No records found</p>
+        </div>
       </div>
     </div>
 
     <div class="menu-item" style="margin-bottom: var(--gap-x06);">
     <DrawerFromRight client:load>
-      <div  data-corvu-no-drag class="entries-list" id="recent-del-list" style="
-      padding-inline: var(--gap-x02);
-      height:100%;
-      margin-left: var(--gap-x03);
-      overflow-y: scroll;">
+     
+        
+     <div data-corvu-no-drag class="flex-center-childs" style="align-items: baseline;
+          padding-inline: var(--gap-x02);
+          height:100%;
+          margin-left: var(--gap-x03);
+          overflow-y: scroll;" >
+      <div class="card-border"  style="margin-left: calc(var(--gap-x03)* -1);">
+        <div class="card glass box-shadow max-width">
+          <div  class="entries-list" id="recent-del-list"></div>
+        </div>
+      </div>
+    </div> 
+
+    <dialog data-corvu-no-drag id="restore-dialog" class="prose max-width glass" 
+    style="max-width:min(350px, 100%);">
+      <form method="dialog" style="display:flex; flex-direction:column;">
+        <h3 style="margin-top: 0;">Restore Item</h3>
+        <div id="restore-list"style="display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        background: oklch(var(--gray-10) / 20%);
+        border-radius: var(--radius-a);
+        padding: var(--gap-x02);"></div>
+        <div  style="display:flex; 
+        flex-direction: columns; 
+        gap:var(--gap);
+        justify-content: center; 
+        margin-top:var(--gap-x04);">
+          
+          <button class="unstyle-button not-prose max-width" >Cancel</button>
+          <button class="max-width" id="confirm-restore">Restore</button>
+          
+        </div>
+      </form>
+    </dialog>
+    
     </DrawerFromRight>
   </div>
 
@@ -80,18 +101,13 @@ overflow-x: hidden;">
 
 </div>
 
-<dialog data-corvu-no-drag id="edit-temp-list-dialog" class="prose max-width glass" style="
-padding: var(--gap-x04);
-border-radius: var(--radius-a);
-place-content:center;
-background: oklch(var(--gray-15) / 0.65);
-max-width:min(350px, 100%);">
+<dialog data-corvu-no-drag id="edit-temp-list-dialog" class="prose max-width glass" 
+  style=" max-width:min(350px, 100%);" >
   <form method="dialog" style="display:flex; flex-direction:column;">
     <h3 style="margin-top: 0;">Edit Item</h3>
     <input type="text" name="title"  class="input-group-top" placeholder="Title" id="updating-temp-title-input"/>
     <input type="text" name="Password" class="input-group-bottom" placeholder="Password" id="updating-temp-pass-input"/>
-    <div  style="
-    display:flex; 
+    <div  style="display:flex; 
     flex-direction: columns; 
     gap:var(--gap);
     justify-content: center; 
@@ -103,6 +119,8 @@ max-width:min(350px, 100%);">
     </div>
   </form>
 </dialog>
+
+
 
 
 

@@ -49,7 +49,7 @@ type PermittedTypes = {
 	[K in keyof Schemas as `${K & string}:delete`]: { id: string };
 };
 
-export type ReadResultTypes = {[K in keyof Schemas]: Schemas[K];};
+export type ReadResultTypes = {[K in keyof Schemas]: {id?: { tb: string; id: string }} & Schemas[K];};
 
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 

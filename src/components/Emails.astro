@@ -82,38 +82,26 @@ createEffect(() => {
   
   (emailList() ?? []).reverse().forEach((entry) => {
     fragment.append(
-      element.configure(document.createElement('div'), {
-        className: 'entry-item',
+      element.configure('div', { className: 'entry-item',
         style: 'background-color:transparent; padding-inline: 0;',
         append: [
-          element.configure(document.createElement('div'), {
-            append: [
-              element.configure(document.createElement('button'), {
+
+          element.configure('div', { append: [
+              element.configure('button', {
                 className: 'copy-button ellipsis',
                 id: entry.email ?? '',
-                textContent: entry.email ?? ''
-              })
-            ]
-          }),
-          element.configure(document.createElement('div'), {
-            className: 's-container',
-            append: [
-              element.configure(document.createElement('details'), {
-                name: 'delete-item',
-                className: 'right-to-left',
-                append: [
-                  element.configure(document.createElement('summary'), {
-                    className: 'right-to-left',
-                  }),
-                  element.configure(document.createElement('button'), {
-                    className: 'delete-button',
-                    id: entry.id?.id ?? '',
-                    textContent: ' Delete'
-                  })
-                ]
-              })
-            ]
-          })
+                textContent: entry.email ?? ''})
+          ]}),
+
+          element.configure('div', {className: 's-container', append: [
+            element.configure('details', {name: 'delete-item',className: 'right-to-left',append: [
+
+              element.configure('summary', { className: 'right-to-left', }),
+              element.configure('button', { className: 'delete-button', 
+                id: entry.id?.id ?? '',
+                textContent: ' Delete'})
+            ]})
+          ]})
         ]
       })
     );

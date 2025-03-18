@@ -48,40 +48,36 @@ async function validateAuthentication(challenge: string, authentication: any) {
         const fragment = document.createDocumentFragment();
         
         fragment.append(
-            element.configure(document.createElement('div'), {
+            element.configure('div', {
                 className: 'prose',
                 style: 'display: flex; gap: var(--gap); justify-content: space-between;',
                 append: [
-                    element.configure(document.createElement('input'), {
+
+                    element.configure('input', {
                         id: 'user_name',
                         type: 'text',
                         style: 'margin-bottom: var(--gap); width: 100%;',
                         placeholder: 'Name',
-                        autocomplete: 'off'
-                    }),
-                    element.configure(document.createElement('button'), {
+                        autocomplete: 'off'}),
+
+                    element.configure('button', {
                         id: 'registration',
                         style: 'margin-bottom: var(--gap); width: fit-content; white-space: nowrap;',
                         textContent: 'Sign Up',
-                        disabled: true
-                    })
+                        disabled: true})
+
                 ]
             }),
-            element.configure(document.createElement('p'), {
-                className: 'hint',
-                style: 'margin-top: 0;',
-                append: [
-                    element.configure(document.createElement('span'), {
-                        textContent: 'Allready Signed Up ? '
-                    }),
-                    element.configure(document.createElement('button'), {
-                        className: 'unstyle-button not-prose',
-                        id: 'authentication',
-                        style: 'font-weight: 600; text-decoration: underline;',
-                        textContent: 'Sign In'
-                    })
-                ]
-            })
+
+            element.configure('p', { className: 'hint', style: 'margin-top: 0;', append: [
+
+                element.configure('span', { textContent: 'Allready Signed Up ? ' }),
+                element.configure('button', {
+                    className: 'unstyle-button not-prose',
+                    id: 'authentication',
+                    style: 'font-weight: 600; text-decoration: underline;',
+                    textContent: 'Sign In'})
+            ]})
         );
         
         credentialsDiv.append(fragment);

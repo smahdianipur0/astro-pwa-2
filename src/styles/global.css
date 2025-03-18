@@ -111,3 +111,24 @@ details.right-to-left[open] .delete-button {
   width: 19ch;
   text-align: start;
 }
+
+.card-border{
+  background: var(--border); 
+  width: min(100%, 65ch); 
+  padding: 1px;border-radius: 
+  var(--radius-b);
+}
+
+.card{
+  --box-shadow-opacity: 0.06;
+  border-radius: var(--radius-b);
+  contain: paint;
+  background-color: oklch(var(--gray-10) / 0.5);
+}
+
+dialog{
+  padding: var(--gap-x04);
+  border-radius: var(--radius-a);
+  place-content:center;
+  background: oklch(var(--gray-15) / 0.65);
+}

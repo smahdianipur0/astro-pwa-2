@@ -6,8 +6,12 @@ type ElementProps = {
   [key: string]: any;
 };
 
+type ValidTagNames = keyof HTMLElementTagNameMap;
+
 export const element = {
-  configure: <T extends HTMLElement>(element: T, { append, ...props }: ElementProps): T => {
+    configure: <T extends ValidTagNames>( tag: T,{ append, ...props }: ElementProps): HTMLElementTagNameMap[T] => {
+
+    const element = document.createElement(tag) as HTMLElementTagNameMap[T];
     if (append) {
       if (Array.isArray(append)) {
         for (const child of append) {

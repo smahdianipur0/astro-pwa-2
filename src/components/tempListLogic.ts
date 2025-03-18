@@ -10,6 +10,7 @@ import { element } from "../utils/elementUtils";
 import { password, showToast } from "../components/homeLogic.ts";
 import { createSignal, createEffect } from "solid-js";
 import Fuse from 'fuse.js'
+import { classList, className } from "solid-js/web";
 
 
 
@@ -86,53 +87,49 @@ createEffect(() => { setListPassword(password()) });
 createEffect(() => {
 	entriesList.textContent = '';
 	const fragment = document.createDocumentFragment();
-  
-	(isSearching() ? searchArray() : (listEntries() ?? []).reverse()).forEach((entry) => {
-		fragment.append(
-			element.configure(document.createElement('div'), {
-				className: 'entry-item',
-				append: [
-					element.configure(document.createElement('div'), {
-						append: [
-							element.configure(document.createElement('p'), {
-								className: 'hint',
-								textContent: entry.title || 'untitled'
-							}),
-							element.configure(document.createElement('button'), {
-								className: 'copy-button ellipsis',
-								id: entry.password ?? '',
-								textContent: entry.password ?? ''
-							})
-						]
-					}),
-					element.configure(document.createElement('div'), {
-						className: 's-container',
-						append: [
-							element.configure(document.createElement('details'), {
-								name: 'delete-item',
-								className: 'right-to-left',
-								append: [
-									element.configure(document.createElement('summary'),{
-										className: 'right-to-left',
-									}), 
-									element.configure(document.createElement('button'), {
-										className: 'delete-button',
-										id: entry.id?.id ?? '',
-										textContent: ' Delete'
-									}),
-								]
-							}),
-							element.configure(document.createElement('button'), {
-								className: 'update-button',
+
+	if (
+		isSearching() ? searchArray().length === 0 : listEntries().length === 0) { 
+		fragment.append(element.configure("p", {textContent: "Loading records...", 
+			className:"hint", 
+			style:"padding-top:var(--gap-x04)" }));
+
+  } else {
+		(isSearching() ? searchArray() : (listEntries() ?? []).reverse()).forEach((entry) => {
+
+			fragment.append(
+				element.configure('div', { className: 'entry-item', append: [
+					element.configure('div', {append: [
+
+						element.configure('p', { className: 'hint ellipsis', 
+							style: "width: 20ch",
+							textContent: entry.title || 'untitled'}),
+
+						element.configure('button', {
+							className: 'copy-button ellipsis',
+							id: entry.password ?? '',
+							textContent: entry.password ?? ''})
+					]}),
+
+					element.configure('div', {className: 's-container',append: [
+
+						element.configure('details', { name: 'delete-item', className: 'right-to-left',append: [
+
+							element.configure('summary',{ className: 'right-to-left', }), 
+
+							element.configure('button', { className: 'delete-button', 
 								id: entry.id?.id ?? '',
-								textContent: '✏️'
-							}),
-						]
-					})
-				]
-			})
-		);
-	});
+								textContent: ' Delete'}),
+						]}),
+						element.configure('button', {
+							className: 'update-button',
+							id: entry.id?.id ?? '',
+							textContent: '✏️'}),
+					]})
+				]})
+			);
+		});
+	};
   
 	entriesList.append(fragment);
   });
@@ -146,7 +143,7 @@ createEffect(() => {
 				const entry = await getEntryById("PasswordEntry", deleteButton.id);
 				if (entry) {
 					const { title, password } = entry;
-					await dbCreate("RecentDelPass:create", {title: title, password: password})
+					await dbCreate("RecentDelPass:create", {title: title, password: password});
 					await setListRecentDel(await dbReadAll("RecentDelPass") ?? []);
 				}
 				await dbDelete("PasswordEntry:delete", deleteButton.id)
@@ -241,9 +238,9 @@ createEffect(() => {
 				title:updatingListEntryTitle(), 
 				password:updatingListEntryPass()});
 			setListEntries((await dbReadAll("PasswordEntry")) ?? []);
-		})();
-	}
-});
+			})();
+		}
+	});
 
 
 	// bind signals to input values
@@ -275,49 +272,50 @@ createEffect(() => {
 	createEffect(() => {
 		recentdellist.textContent = '';
 		const fragment = document.createDocumentFragment();
+
+		if (listRecentDel().length === 0){
+			fragment.append(element.configure("p", {textContent: "No records found", 
+				className:"hint",
+				style:"padding-top:var(--gap-x04)" }));
+		} else {
 	  
 		(listRecentDel() ?? []).reverse().forEach((entry) => {
 			fragment.append(
-				element.configure(document.createElement('div'), {
-					className: 'entry-item',
-					style: 'margin-left: calc(var(--gap-x03)* -1);',
-					append: [
-						element.configure(document.createElement('div'), {
+				element.configure('div', { className: 'entry-item',append: [
+					element.configure('div', { append: [
+
+						element.configure('p', { className: 'hint ellipsis',
+							style: "width:20ch",
+							textContent: entry.title || 'untitled'}),
+
+						element.configure('button', { className: 'copy-button ellipsis',
+							id: entry.password ?? '',
+							textContent: entry.password ?? ''})
+
+					]}),
+
+					element.configure('div', { className: 's-container',append: [
+						element.configure('details', {
+							name: 'delete-item',
+							className: 'right-to-left',
 							append: [
-								element.configure(document.createElement('p'), {
-									className: 'hint',
-									textContent: entry.title || 'untitled'
-								}),
-								element.configure(document.createElement('button'), {
-									className: 'copy-button ellipsis',
-									id: entry.password ?? '',
-									textContent: entry.password ?? ''
-								})
+
+								element.configure('summary', { className: 'right-to-left',}),
+
+								element.configure('button', { className: 'delete-button',
+									id: entry.id?.id ?? '',
+									textContent: ' Delete'})
 							]
 						}),
-						element.configure(document.createElement('div'), {
-							className: 's-container',
-							append: [
-								element.configure(document.createElement('details'), {
-									name: 'delete-item',
-									className: 'right-to-left',
-									append: [
-										element.configure(document.createElement('summary'), {
-											className: 'right-to-left',
-										}),
-										element.configure(document.createElement('button'), {
-											className: 'delete-button',
-											id: entry.id?.id ?? '',
-											textContent: ' Delete'
-										})
-									]
-								})
-							]
-						})
-					]
-				})
+						element.configure('button',{
+							className: 'restore-button',
+							id: entry.id?.id ?? '',
+							textContent: "📤"})
+					]})
+				]})
 			);
 		});
+	}
 	  
 		recentdellist.append(fragment);
 	});
@@ -331,13 +329,54 @@ createEffect(() => {
 				await setListRecentDel(await dbReadAll("RecentDelPass") ?? []);
 			})();
 		}
-        const copyButton = (e!.target as HTMLInputElement).closest(".copy-button");
+    const copyButton = (e!.target as HTMLInputElement).closest(".copy-button");
 		if (copyButton) {
 			(async () => {
 				navigator.clipboard.writeText(copyButton.id);  
          showToast();
 			})();
 		}
+		const restoreButton = (e!.target as HTMLInputElement).closest(".restore-button");
+		if (restoreButton) {
+			(async() => {
+				(document.getElementById("restore-dialog") as HTMLDialogElement).showModal();
+				const entry = await getEntryById("RecentDelPass", restoreButton.id);	
+				console.log(entry)
+				if (entry) {
+					(document.getElementById("restore-list") as HTMLDialogElement).textContent = "";
+					(document.getElementById("restore-list") as HTMLDialogElement)!.append(
+
+						element.configure('p', { className: 'hint', style:"margin:0",
+							textContent: entry.title || 'untitled'}),
+
+						element.configure('div', { className: 'ellipsis' ,style:"text-align: start",
+							id: entry.id?.id ?? '',
+							textContent: entry.password ?? ''})
+					);
+				}
+			})();
+		}
 	});
 
+
+	document.getElementById("restore-dialog")!.addEventListener("click", (e) => {
+  	if((e!.target as HTMLInputElement).matches("#confirm-restore")) {
+  		(async () => {
+
+	  		const id = document.getElementById("restore-list")?.children[1].id as string;
+	  		const title = document.getElementById("restore-list")?.children[0].textContent;
+				const password = document.getElementById("restore-list")?.children[1].textContent;
+
+	  		console.log(id,title, password);
+
+	  		if (title && password) {
+		  		await dbCreate("PasswordEntry:create", {title:title, password:password });
+					setListEntries(await dbReadAll("PasswordEntry") ?? []);
+
+					await dbDelete("RecentDelPass:delete", id);
+					setListRecentDel(await dbReadAll("RecentDelPass") ?? []);
+				}
+			})();
+		}
+	});
 })();
