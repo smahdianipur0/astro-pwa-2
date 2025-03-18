@@ -152,7 +152,7 @@ createEffect(() => {
 
 
 // copy password and redo effect
-document.getElementById("redo")!.style.animation = 'none';
+document.getElementById("redo")!.classList.remove('blink')
 
 document.getElementById("generate")!.addEventListener("click",(e)=>{
    if((e!.target as HTMLInputElement).matches("#gp ,#ttc")){

@@ -13,18 +13,22 @@ import TempList from '../components/TempList.astro';
     <CharactersPattern />
 
 
-    <div class="flex-center-childs not-prose" style="overflow: hidden; position: relative;">
-      <div id="add-drawer-trigger" style="left:0;">
+    <div class="flex-center-childs not-prose " style=" position: relative;">
+      <div id="add-drawer-trigger" class="text-as-button blink" style="left:0;">
         <Drawer client:load>
           <TempList />
         </Drawer>
       </div>
-      <button id="gp" class=" copy" style="
-        margin-top: var(--gap-x04); margin-bottom: var(--gap-x04); line-height: var(--gap-x05);">
+      <button id="gp" class="text-as-button" style=" margin-inline: 0;
+        margin-top: var(--gap-x04); 
+        margin-bottom: var(--gap-x04); 
+        line-height: var(--gap-x05);
+        font-weight: 300;
+        font-size:var(--big-font);">
         <div class="skeleton" style="width:15ch"> </div>
       </button>
 
-      <button id="redo" class="redo_container" style="right: 0;" >↻</button>
+      <button id="redo" class="redo_container text-as-button blink" style="right: 0; margin-right: calc(var(--gap)* -1);" >↻</button>
 
       <p id="ttc" class="hint" style="margin-top: var(--gap-x04); 
       margin-bottom: var(--gap-x04);
@@ -102,36 +106,15 @@ import TempList from '../components/TempList.astro';
   #pass { transform: translate3d(5ch, 0, 0);}
 }
 
-.copy{
-  border: 1px solid oklch(100% 0 0 /0.0);
-  border-radius: var(--radius-a);
-  padding: var(--thin-padding);
-  line-height: var(--gap-x04);
-  font-weight: 300;
-  font-size:var(--big-font);
-}
-
-.copy:focus,
-.copy:hover{
-  border: 1px solid oklch(var(--gray-25) / 1);
-  border-radius: var(--radius-a);
-}
-
 #redo,
 #add-drawer-trigger {
   display: flex;
   place-content: center;
-  border: 1px solid oklch(100% 0 0 /0.0); 
-  border-radius: var(--radius-a);
-  line-height: var(--gap-x05); 
   position: absolute;
-  padding: var(--thin-padding);
-  opacity: 100%;
   font-size:var(--big-font); 
   font-weight: 300; 
   margin-top: var(--gap-x04); 
   margin-bottom: var(--gap-x04);
-  animation: blink 1s ease-in-out infinite;
 }
 
 .text-as-button{
@@ -142,15 +125,13 @@ import TempList from '../components/TempList.astro';
   opacity: 1;
   margin-left: calc( var(--gap) * -1);
 }
+
 .text-as-button:disabled{
   color: oklch(var(--gray-75));
 }
 
 
-#add-drawer-trigger:focus,
-#add-drawer-trigger:hover,
-#redo:focus,
-#redo:hover,
+
 .text-as-button:focus,
 .text-as-button:hover {
   border: 1px solid oklch(var(--gray-25) / 1);

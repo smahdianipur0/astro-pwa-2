@@ -25,7 +25,6 @@ const [updatingListEntryPass, setUpdatingListEntryPass]   = createSignal('');
 const [searchInput, setSearchInput]     = createSignal("");
 const [isSearching, setIsSearching]     = createSignal(false);
 const [searchArray, setSearchArray]     = createSignal<PasswordEntry[]>([]);
-
 const [listRecentDel, setListRecentDel] = createSignal<PasswordEntry[]>([]);
 
 
@@ -37,20 +36,10 @@ const [listRecentDel, setListRecentDel] = createSignal<PasswordEntry[]>([]);
 
 createEffect(() => { setListPassword(password()) });
 
+document.addEventListener("templist:opened", () => {
 
-// await elements
-(async () => {
-	// Remove the blinking animation when JS loads
-	const drawerTrigger = await element.wait("#add-drawer-trigger");
-	drawerTrigger.style.animation = 'none';
-
-	const inputGroup     = (await element.wait("#input-group"))      as HTMLElement;
-	const entriesList    = (await element.wait("#entries-list"))     as HTMLElement;
-	const passwordInput  = (await element.wait("#password-input"))   as HTMLInputElement;
-	const titleInput     = (await element.wait("#title-input"))      as HTMLInputElement;
-	const addEntryButton = (await element.wait("#add-entry-button")) as HTMLButtonElement;
-	const searchInputEl  = (await element.wait("#search-input"))     as HTMLInputElement;
-
+	const entriesList    = document.getElementById("entries-list")    as HTMLElement;
+	const searchInputEl  = document.getElementById("search-input")     as HTMLInputElement;
 
 	document.getElementById("search-box")!.addEventListener("input",(e)=>{
 		if((e!.target as HTMLInputElement).matches("#search-input")){
@@ -181,7 +170,7 @@ createEffect(() => {
 	});
 
   // add entry
-	inputGroup.addEventListener("click", (e) => {
+	document.getElementById("input-group")!.addEventListener("click", (e) => {
 		if ((e!.target as HTMLInputElement).matches("#add-entry-button")) {
 			(async () => {
 				await dbCreate("PasswordEntry:create", {title:listTitle(),password: listPassword()} )
@@ -215,7 +204,7 @@ createEffect(() => {
 	});
 
   // bind input values to signals
-  inputGroup.addEventListener("input", (e) => {
+  document.getElementById("input-group")!.addEventListener("input", (e) => {
     if ((e!.target as HTMLInputElement).matches("#title-input")) {
       setListTitle((e!.target as HTMLInputElement).value);
     }
@@ -233,7 +222,7 @@ createEffect(() => {
     if ((e!.target as HTMLInputElement).matches("#updating-temp-pass-input")) {
       setUpdatingListEntryPass((e!.target as HTMLInputElement).value);
     }
-});
+	});
 
   // update dialog confirm
   document.getElementById("edit-temp-list-dialog")!.addEventListener("click", (e) => {
@@ -251,28 +240,27 @@ createEffect(() => {
 
 	// bind signals to input values
 	createEffect(() => {
-		titleInput.value = listTitle();
+		(document.getElementById("title-input")! as HTMLInputElement).value = listTitle();
 	});
 
 	createEffect(() => {
-		passwordInput.value = listPassword();
+		(document.getElementById("password-input")! as HTMLInputElement).value = listPassword();
 	});
 
 
 	// update add entry button state
 	createEffect(() => {
 		if (!listPassword()) {
-			addEntryButton.disabled = true;
+			(document.getElementById("add-entry-button")! as HTMLButtonElement).disabled = true;
 		} else {
-			addEntryButton.disabled = false;
+			(document.getElementById("add-entry-button")! as HTMLButtonElement).disabled = false;
 		}
 	});
+});
 
-})();
+document.addEventListener("recentDelPass:opened", () => {
 
-(async () => {
-
-  const recentdellist  = (await element.wait("#recent-del-list"))  as HTMLElement;
+  const recentdellist  = document.getElementById("recent-del-list")  as HTMLElement;
 
   	// render recent deleted entries based on signal
 	createEffect(() => {
@@ -385,4 +373,4 @@ createEffect(() => {
 			})();
 		}
 	});
-})();
+});

@@ -17,18 +17,18 @@
   cursor: pointer;
   border-radius: var(--radius-a);
   color: oklch(var(--gray-95));
-  background: oklch(var(--primary) / 10%);
+  background: oklch(var(--primary) / 15%);
   border-width: 0;
   position: relative;
   transition: 0.2s;
 }
 
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *)):hover, .prose-btn:hover {
-  background: oklch(var(--primary) / 15%);
+  background: oklch(var(--primary) / 20%);
 }
 
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *)):active, .prose-btn:active {
-  background: oklch(var(--primary) / 20%);
+  background: oklch(var(--primary) / 30%);
 }
 
 .prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *)), .prose-btn:disabled,
@@ -80,9 +80,10 @@
     position: absolute;
     inset: 0;
     z-index: -1;		
-    background-color: oklch(var(--primary) / 50%);
+    background-color: oklch(var(--gray-10) / 65%);
     scale: 0.65;
-    border-radius: 10ch;
+    scale: 0.8 0.6;
+    border-radius: 20ch;
     filter: blur(15px);
     mix-blend-mode: soft-light;
 }

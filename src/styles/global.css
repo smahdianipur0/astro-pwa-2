@@ -107,6 +107,10 @@ details.right-to-left[open] .delete-button {
   100% { opacity: 20%; }
 } 
 
+.blink{
+   animation: blink 1s ease-in-out infinite;
+}
+
 .copy-button{
   width: 19ch;
   text-align: start;
