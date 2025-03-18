@@ -10,7 +10,6 @@ import { element } from "../utils/elementUtils";
 import { password, showToast } from "../components/homeLogic.ts";
 import { createSignal, createEffect } from "solid-js";
 import Fuse from 'fuse.js'
-import { classList, className } from "solid-js/web";
 
 
 
@@ -90,7 +89,7 @@ createEffect(() => {
 
 	if (
 		isSearching() ? searchArray().length === 0 : listEntries().length === 0) { 
-		fragment.append(element.configure("p", {textContent: "Loading records...", 
+		fragment.append(element.configure("p", {textContent: "No records found", 
 			className:"hint", 
 			style:"padding-top:var(--gap-x04)" }));
 
@@ -144,7 +143,7 @@ createEffect(() => {
 				if (entry) {
 					const { title, password } = entry;
 					await dbCreate("RecentDelPass:create", {title: title, password: password});
-					await setListRecentDel(await dbReadAll("RecentDelPass") ?? []);
+					setListRecentDel(await dbReadAll("RecentDelPass") ?? []);
 				}
 				await dbDelete("PasswordEntry:delete", deleteButton.id)
 		
@@ -191,6 +190,13 @@ createEffect(() => {
 				  setListPassword("");
 				}
 				setListEntries((await dbReadAll("PasswordEntry")) ?? []);
+				document.getElementById("add-entry-button")!.style.setProperty("--primary", "65% 0.12 174"); 
+				document.getElementById("add-entry-button")!.textContent= "Added";
+				setTimeout(() => {
+					document.getElementById("add-entry-button")!.style.removeProperty("--primary");
+					document.getElementById("add-entry-button")!.textContent= "Add";
+				}, 1000);
+
 			})();
 		}
 
