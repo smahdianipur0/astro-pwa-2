@@ -55,13 +55,8 @@ document.addEventListener("templist:opened", () => {
 		}
 	});
 
-	searchInputEl.addEventListener("focus", (e) => {
-		setIsSearching(true);
-	});
-
-	searchInputEl.addEventListener("blur", (e) => {
-		if(searchInput().trim() !== "") {setIsSearching(true)} else{ setIsSearching(false) };
-	});
+	searchInputEl.addEventListener("focus", (e) => {setIsSearching(true);});
+	searchInputEl.addEventListener("blur", (e) => {setIsSearching(searchInput().trim() !== "")});
 
 
 	createEffect(() => {

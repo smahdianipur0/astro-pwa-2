@@ -1,0 +1,7 @@
+[data-corvu-popover-label] {
+  font-weight: 500;
+}
+
+[data-corvu-popover-arrow] {
+  color: oklch(var(--gray-50) / .58);
+} 

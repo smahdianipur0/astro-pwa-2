@@ -1,0 +1,19 @@
+---
+interface Props {
+  identifier: string;
+}
+
+const { identifier } = Astro.props;
+---
+
+
+<dialog data-corvu-no-drag id={ identifier } class="prose max-width glass" 
+style="max-width:min(350px, 100%);
+  padding: var(--gap-x04);
+  border-radius: var(--radius-a);
+  place-content:center;
+  background: oklch(var(--gray-15) / 0.65);">
+  <form method="dialog" style="display:flex; flex-direction:column;">
+    <slot />
+  </form>
+</dialog>

@@ -129,10 +129,3 @@ details.right-to-left[open] .delete-button {
   contain: paint;
   background-color: oklch(var(--gray-10) / 0.5);
 }
-
-dialog{
-  padding: var(--gap-x04);
-  border-radius: var(--radius-a);
-  place-content:center;
-  background: oklch(var(--gray-15) / 0.65);
-}

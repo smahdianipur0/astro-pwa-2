@@ -1,5 +1,6 @@
 ---
 import Card from './Card.astro';
+import VaultMenu from '../components/VaultMenu.tsx';
 ---
 
 <Card title="credentials" iden='credentials'>
@@ -7,5 +8,16 @@ import Card from './Card.astro';
   <div id="credentialsDiv"> <div class="skeleton"></div></div>
 
   <div id="auth_result"></div>
+
+
+  <div class="flex-spread-childs" style="padding-block: var(--gap);">
+    <p style="margin: 0;">Vaults :</p>
+      <div class="not-prose"><VaultMenu client:load></VaultMenu></div>
+    </div>
+  </div>
+  <select name="chars" class="max-width" >
+  <option selected>Auto</option>
+  <option>Plain</option>
+  <option>Encrypted</option>
   
 </Card>
