@@ -19,12 +19,12 @@ const VaultMenu: VoidComponent = () => {
       <Popover.Portal>
         <Popover.Content>
           {/*<Popover.Label>Settings</Popover.Label>*/}
-          <div class="card-border">
-            <div class='card' style={"background-color: oklch(var(--gray-10) / .65);  width:250px;"}>
-              <div class='entries-list '>
-                <button class='entry-item'>➕ Creat vault</button>
-                <button class='entry-item'>📥 Import existing Vault</button>
-                <button class='entry-item' style={"color: var(--danger)"} >🗑️ Delete</button>
+          <div class="card-border box-shadow">
+            <div class='card' style={"background-color: oklch(var(--gray-10) / .65);  width:200px;"}>
+              <div class='entries-list ' style={"font-size:var(--small-font)"}>
+                <button class='entry-item' style={"flex-direction: row-reverse;"}> Creat vault ➕</button>
+                <button class='entry-item' style={"flex-direction: row-reverse;"}> Import existing Vault 📥</button>
+                <button class='entry-item' style={"flex-direction: row-reverse; color: var(--danger);"} > Delete 🗑️</button>
               </div>
             </div>
           </div>
