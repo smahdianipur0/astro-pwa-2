@@ -15,6 +15,21 @@
   position: relative;
 }
 
+.card-border{
+  background: var(--border); 
+  width: min(100%, 65ch); 
+  padding: 1px;border-radius: 
+  var(--radius-b);
+}
+
+.card{
+  --box-shadow-opacity: 0.06;
+  border-radius: var(--radius-b);
+  contain: paint;
+  background-color: oklch(var(--gray-10) / 0.5);
+}
+
+
 .entries-list > :first-child{
   border-top-left-radius: var(--radius-a);
   border-top-right-radius: var(--radius-a);
@@ -109,23 +124,4 @@ details.right-to-left[open] .delete-button {
 
 .blink{
    animation: blink 1s ease-in-out infinite;
-}
-
-.copy-button{
-  width: 19ch;
-  text-align: start;
-}
-
-.card-border{
-  background: var(--border); 
-  width: min(100%, 65ch); 
-  padding: 1px;border-radius: 
-  var(--radius-b);
-}
-
-.card{
-  --box-shadow-opacity: 0.06;
-  border-radius: var(--radius-b);
-  contain: paint;
-  background-color: oklch(var(--gray-10) / 0.5);
 }

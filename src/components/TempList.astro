@@ -150,8 +150,9 @@ svg{
   fill: oklch(var(--gray-95))
 }
 
-#recent-del-list > :last-child::after,
-#entries-list > :last-child::after {
+
+#recent-del-list > .entry-item:last-of-type::after,
+#entries-list > .entry-item:last-of-type::after {
   content: 'tap on passwords to copy';
   position: absolute;
   bottom: 0;

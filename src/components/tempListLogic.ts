@@ -36,10 +36,16 @@ const [listRecentDel, setListRecentDel] = createSignal<PasswordEntry[]>([]);
 
 createEffect(() => { setListPassword(password()) });
 
-document.addEventListener("templist:opened", () => {
 
-	const entriesList    = document.getElementById("entries-list")    as HTMLElement;
-	const searchInputEl  = document.getElementById("search-input")     as HTMLInputElement;
+
+(async () => {
+
+	const inputGroup     = (await element.wait("#input-group"))      as HTMLElement;
+	const entriesList    = (await element.wait("#entries-list"))     as HTMLElement;
+	const passwordInput  = (await element.wait("#password-input"))   as HTMLInputElement;
+	const titleInput     = (await element.wait("#title-input"))      as HTMLInputElement;
+	const addEntryButton = (await element.wait("#add-entry-button")) as HTMLButtonElement;
+	const searchInputEl  = (await element.wait("#search-input"))     as HTMLInputElement;
 
 	document.getElementById("search-box")!.addEventListener("input",(e)=>{
 		if((e!.target as HTMLInputElement).matches("#search-input")){
@@ -88,8 +94,8 @@ createEffect(() => {
 							style: "width: 20ch",
 							textContent: entry.title || 'untitled'}),
 
-						element.configure('button', {
-							className: 'copy-button ellipsis',
+						element.configure('button', { className: 'copy-button ellipsis',
+							style:"text-align: start; width: 19ch;",
 							id: entry.password ?? '',
 							textContent: entry.password ?? ''})
 					]}),
@@ -165,7 +171,7 @@ createEffect(() => {
 	});
 
   // add entry
-	document.getElementById("input-group")!.addEventListener("click", (e) => {
+  	inputGroup.addEventListener("click", (e) => {
 		if ((e!.target as HTMLInputElement).matches("#add-entry-button")) {
 			(async () => {
 				await dbCreate("PasswordEntry:create", {title:listTitle(),password: listPassword()} )
@@ -174,11 +180,11 @@ createEffect(() => {
 				  setListPassword("");
 				}
 				setListEntries((await dbReadAll("PasswordEntry")) ?? []);
-				document.getElementById("add-entry-button")!.style.setProperty("--primary", "65% 0.12 174"); 
-				document.getElementById("add-entry-button")!.textContent= "Added";
+				addEntryButton.style.setProperty("--primary", "65% 0.12 174"); 
+				addEntryButton.textContent= "Added";
 				setTimeout(() => {
-					document.getElementById("add-entry-button")!.style.removeProperty("--primary");
-					document.getElementById("add-entry-button")!.textContent= "Add";
+					addEntryButton.style.removeProperty("--primary");
+					addEntryButton.textContent= "Add";
 				}, 1000);
 
 			})();
@@ -187,10 +193,10 @@ createEffect(() => {
     // auto-pass entry
     if ((e!.target as HTMLInputElement).matches("#auto-pass-entry")) {
       if ((e.target as HTMLInputElement).checked) {
-         (document.getElementById("password-input")! as HTMLInputElement).readOnly = false;
+		passwordInput.readOnly = false;
          setListPassword('');
       } else {
-        (document.getElementById("password-input")! as HTMLInputElement).readOnly = true;
+        passwordInput.readOnly = true;
         createEffect(() => {
           setListPassword(password());
         });
@@ -199,7 +205,7 @@ createEffect(() => {
 	});
 
   // bind input values to signals
-  document.getElementById("input-group")!.addEventListener("input", (e) => {
+  inputGroup.addEventListener("input", (e) => {
     if ((e!.target as HTMLInputElement).matches("#title-input")) {
       setListTitle((e!.target as HTMLInputElement).value);
     }
@@ -234,28 +240,17 @@ createEffect(() => {
 
 
 	// bind signals to input values
-	createEffect(() => {
-		(document.getElementById("title-input")! as HTMLInputElement).value = listTitle();
-	});
+	createEffect(() => { titleInput.value = listTitle();});
 
-	createEffect(() => {
-		(document.getElementById("password-input")! as HTMLInputElement).value = listPassword();
-	});
-
+	createEffect(() => { passwordInput.value = listPassword();});
 
 	// update add entry button state
-	createEffect(() => {
-		if (!listPassword()) {
-			(document.getElementById("add-entry-button")! as HTMLButtonElement).disabled = true;
-		} else {
-			(document.getElementById("add-entry-button")! as HTMLButtonElement).disabled = false;
-		}
-	});
-});
+	createEffect(() => { addEntryButton.disabled = (!listPassword());});
+})();
 
-document.addEventListener("recentDelPass:opened", () => {
+(async () => {
 
-  const recentdellist  = document.getElementById("recent-del-list")  as HTMLElement;
+	const recentdellist  = (await element.wait("#recent-del-list"))  as HTMLElement;
 
   	// render recent deleted entries based on signal
 	createEffect(() => {
@@ -278,6 +273,7 @@ document.addEventListener("recentDelPass:opened", () => {
 							textContent: entry.title || 'untitled'}),
 
 						element.configure('button', { className: 'copy-button ellipsis',
+							style:"text-align: start; width: 19ch;",
 							id: entry.password ?? '',
 							textContent: entry.password ?? ''})
 
@@ -368,4 +364,4 @@ document.addEventListener("recentDelPass:opened", () => {
 			})();
 		}
 	});
-});
+})();

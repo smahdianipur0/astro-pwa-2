@@ -87,8 +87,8 @@ createEffect(() => {
         append: [
 
           element.configure('div', { append: [
-              element.configure('button', {
-                className: 'copy-button ellipsis',
+              element.configure('button', { className: 'copy-button ellipsis',
+                style:"text-align: start; width: 19ch;",
                 id: entry.email ?? '',
                 textContent: entry.email ?? ''})
           ]}),

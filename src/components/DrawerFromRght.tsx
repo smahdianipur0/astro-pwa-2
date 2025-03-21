@@ -1,14 +1,8 @@
 import '../styles/drawer.css'
-import { onMount } from "solid-js";
 import Drawer from "@corvu/drawer";
 import type { ParentComponent } from "solid-js";
 
-const DrawerContentWrapper: ParentComponent<{ onReady: () => void }> = (props) => {
-  onMount(() => {
-    props.onReady();  
-  });
-  return <>{props.children}</>;  
-};
+
 
 const DrawerComponent: ParentComponent = (props) => {
   return (
@@ -33,20 +27,14 @@ const DrawerComponent: ParentComponent = (props) => {
               }}
             />
             <Drawer.Content>
-           <DrawerContentWrapper
-              onReady={() => {
-                const event = new CustomEvent("recentDelPass:opened");
-                document.dispatchEvent(event); 
-              }}>
-                <Drawer.Close> 
-                  <div style="margin-right: var(--gap-x04); display:flex; width: fit-content;">
-                      <svg style="padding: 2px" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.707 4.293a1 1 0 0 1 0 1.414L9.414 12l6.293 6.293a1 1 0 0 1-1.414 1.414l-7-7a1 1 0 0 1 0-1.414l7-7a1 1 0 0 1 1.414 0Z" fill="oklch(var(--primary))"/></svg>
-                      <div style="color:oklch(var(--primary));">back</div>
-                  </div>
-                </Drawer.Close>         
-                {props.children}
-                <Drawer.Description></Drawer.Description>
-              </DrawerContentWrapper>
+              <Drawer.Close> 
+                <div style="margin-right: var(--gap-x04); display:flex; width: fit-content;">
+                    <svg style="padding: 2px" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.707 4.293a1 1 0 0 1 0 1.414L9.414 12l6.293 6.293a1 1 0 0 1-1.414 1.414l-7-7a1 1 0 0 1 0-1.414l7-7a1 1 0 0 1 1.414 0Z" fill="oklch(var(--primary))"/></svg>
+                    <div style="color:oklch(var(--primary));">back</div>
+                </div>
+              </Drawer.Close>         
+              {props.children}
+              <Drawer.Description></Drawer.Description>
             </Drawer.Content>
           </Drawer.Portal>
         </>
