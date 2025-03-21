@@ -23,13 +23,13 @@
 [data-corvu-popover-content][data-open] {
   animation-name: enter;
   animation-duration: 150ms;
-  animation-timing-function: var( --animation-function);
+  animation-timing-function: var( --appear);
 }
 
 [data-corvu-popover-content][data-closed] {
   animation-name: exit;
   animation-duration: 150ms;
-  animation-timing-function: var( --animation-function);
+  animation-timing-function: var( --appear);
 }
 
 

@@ -163,3 +163,6 @@ onMount(() => {
       clearToastTimeout();
    };
 });
+
+
+  --primary-bg: linear-gradient(110deg, oklch(60% 0.18 265) 0%, oklch(66% 0.165 268) 25%, oklch(63% 0.17 272) 65%, oklch(60% 0.18 276) 100%);

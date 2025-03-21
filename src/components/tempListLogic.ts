@@ -84,7 +84,9 @@ createEffect(() => {
 			style:"padding-top:var(--gap-x04)" }));
 
   } else {
-		(isSearching() ? searchArray() : (listEntries() ?? []).reverse()).forEach((entry) => {
+		(isSearching() ? searchArray() : (listEntries() ?? [])
+		.sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime()))
+		.forEach((entry) => {
 
 			fragment.append(
 				element.configure('div', { className: 'entry-item', append: [
@@ -94,7 +96,8 @@ createEffect(() => {
 							style: "width: 20ch",
 							textContent: entry.title || 'untitled'}),
 
-						element.configure('button', { className: 'copy-button ellipsis',
+						element.configure('button', {dataset: {action: 'copy'}, 
+							className: 'ellipsis',
 							style:"text-align: start; width: 19ch;",
 							id: entry.password ?? '',
 							textContent: entry.password ?? ''})
@@ -102,16 +105,17 @@ createEffect(() => {
 
 					element.configure('div', {className: 's-container',append: [
 
-						element.configure('details', { name: 'delete-item', className: 'right-to-left',append: [
-
-							element.configure('summary',{ className: 'right-to-left', }), 
-
-							element.configure('button', { className: 'delete-button', 
-								id: entry.id?.id ?? '',
-								textContent: ' Delete'}),
-						]}),
-						element.configure('button', {
-							className: 'update-button',
+						element.configure('details', { 
+							name: 'delete-item', 
+							className: 'right-to-left',
+							append: [
+								element.configure('summary',{ className: 'right-to-left' }), 
+								element.configure('button', { dataset: {action: 'delete'},
+									id: entry.id?.id ?? '',
+									textContent: ' Delete'}),
+							]
+						}),
+						element.configure('button', { dataset: {action: 'update'},
 							id: entry.id?.id ?? '',
 							textContent: '✏️'}),
 					]})
@@ -125,24 +129,22 @@ createEffect(() => {
 
   // delete entry
 	entriesList.addEventListener("click", (e) => {
-		const deleteButton = (e!.target as HTMLInputElement).closest(".delete-button");
+		const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
 		if (deleteButton) {
 			(async () => {
-				// Get the record by its ID deleteButton.id
 				const entry = await getEntryById("PasswordEntry", deleteButton.id);
 				if (entry) {
-					const { title, password } = entry;
-					await dbCreate("RecentDelPass:create", {title: title, password: password});
+					const { title, password,crreatedAt  } = entry;
+					await dbCreate("RecentDelPass:create", {title: title, password: password, crreatedAt: crreatedAt });
 					setListRecentDel(await dbReadAll("RecentDelPass") ?? []);
 				}
 				await dbDelete("PasswordEntry:delete", deleteButton.id)
-		
 				setListEntries((await dbReadAll("PasswordEntry")) ?? []);
 			})();
 		}
 
 	//update
-  const updateButton = (e!.target as HTMLInputElement).closest(".update-button");
+  const updateButton = (e!.target as HTMLInputElement).closest("[data-action='update']");
 	if (updateButton) {
 		(async () => {
 			(document.getElementById("edit-temp-list-dialog") as HTMLDialogElement).showModal();
@@ -161,7 +163,7 @@ createEffect(() => {
 	}
 
   // copy password
-  const copyButton = (e!.target as HTMLInputElement).closest(".copy-button");
+  const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
 	if (copyButton) {
 		(async () => {
 			navigator.clipboard.writeText(copyButton.id);  
@@ -174,7 +176,11 @@ createEffect(() => {
   	inputGroup.addEventListener("click", (e) => {
 		if ((e!.target as HTMLInputElement).matches("#add-entry-button")) {
 			(async () => {
-				await dbCreate("PasswordEntry:create", {title:listTitle(),password: listPassword()} )
+				await dbCreate("PasswordEntry:create", {
+					title:listTitle(),
+					password: listPassword(),
+					crreatedAt: new Date().toISOString()
+				});
 				setListTitle("");
         if ((document.getElementById("auto-pass-entry") as HTMLInputElement).checked){
 				  setListPassword("");
@@ -263,7 +269,9 @@ createEffect(() => {
 				style:"padding-top:var(--gap-x04)" }));
 		} else {
 	  
-		(listRecentDel() ?? []).reverse().forEach((entry) => {
+		(listRecentDel() ?? [])
+		.sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
+		.forEach((entry) => {
 			fragment.append(
 				element.configure('div', { className: 'entry-item',append: [
 					element.configure('div', { append: [
@@ -272,7 +280,8 @@ createEffect(() => {
 							style: "width:20ch",
 							textContent: entry.title || 'untitled'}),
 
-						element.configure('button', { className: 'copy-button ellipsis',
+						element.configure('button', { dataset: {action: 'copy'},
+							className: 'ellipsis',
 							style:"text-align: start; width: 19ch;",
 							id: entry.password ?? '',
 							textContent: entry.password ?? ''})
@@ -287,13 +296,13 @@ createEffect(() => {
 
 								element.configure('summary', { className: 'right-to-left',}),
 
-								element.configure('button', { className: 'delete-button',
+								element.configure('button', {dataset: {action: 'delete'},
 									id: entry.id?.id ?? '',
 									textContent: ' Delete'})
 							]
 						}),
 						element.configure('button',{
-							className: 'restore-button',
+							dataset: { action: 'restore'},
 							id: entry.id?.id ?? '',
 							textContent: "📤"})
 					]})
@@ -307,21 +316,21 @@ createEffect(() => {
 
 	// delete recent deleted entry
 	recentdellist.addEventListener("click", (e) => {
-		const deleteButton = (e!.target as HTMLInputElement).closest(".delete-button");
+		const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
 		if (deleteButton) {
 			(async () => {
 				await dbDelete("RecentDelPass:delete", deleteButton.id);
 				await setListRecentDel(await dbReadAll("RecentDelPass") ?? []);
 			})();
 		}
-    const copyButton = (e!.target as HTMLInputElement).closest(".copy-button");
+    const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
 		if (copyButton) {
 			(async () => {
 				navigator.clipboard.writeText(copyButton.id);  
          showToast();
 			})();
 		}
-		const restoreButton = (e!.target as HTMLInputElement).closest(".restore-button");
+		const restoreButton = (e!.target as HTMLInputElement).closest("[data-action='restore']");
 		if (restoreButton) {
 			(async() => {
 				(document.getElementById("restore-dialog") as HTMLDialogElement).showModal();
@@ -332,6 +341,7 @@ createEffect(() => {
 					(document.getElementById("restore-list") as HTMLDialogElement)!.append(
 
 						element.configure('p', { className: 'hint', style:"margin:0",
+							id: entry.crreatedAt ?? '',
 							textContent: entry.title || 'untitled'}),
 
 						element.configure('div', { className: 'ellipsis' ,style:"text-align: start",
@@ -348,14 +358,16 @@ createEffect(() => {
   	if((e!.target as HTMLInputElement).matches("#confirm-restore")) {
   		(async () => {
 
+			const title = document.getElementById("restore-list")?.children[0].textContent;
+			const crreatedAt = document.getElementById("restore-list")?.children[0].id as string;
+
 	  		const id = document.getElementById("restore-list")?.children[1].id as string;
-	  		const title = document.getElementById("restore-list")?.children[0].textContent;
-				const password = document.getElementById("restore-list")?.children[1].textContent;
+			const password = document.getElementById("restore-list")?.children[1].textContent;
 
 	  		console.log(id,title, password);
 
 	  		if (title && password) {
-		  		await dbCreate("PasswordEntry:create", {title:title, password:password });
+		  		await dbCreate("PasswordEntry:create", {title:title, password:password, crreatedAt: crreatedAt });
 					setListEntries(await dbReadAll("PasswordEntry") ?? []);
 
 					await dbDelete("RecentDelPass:delete", id);

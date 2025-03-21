@@ -18,19 +18,19 @@ const VaultMenu: VoidComponent = () => {
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content>
-              <div class='entries-list glass ' style={" background: oklch(var(--gray-15) / 75%); border-radius: var(--radius-b);"}>
+              <div class='entries-list glass' style={" border-radius: var(--radius-b); box-shadow: 0px 0px 120px 10px oklch(var(--gray-10) / 22%);"}>
                 
-                <div class='flex-spread chilids entry-item'>
-                <button> Creat vault </button> <button>➕</button>
-                </div>
+                <button class='flex-spread chilids glass menu-item'>
+                <div> Creat vault </div> <div>➕</div>
+                </button>
 
-                <div class='flex-spread chilids entry-item'>
-                <button> Import existing Vault </button> <button>📥</button>
-                </div>
+                <button class='flex-spread chilids menu-item'>
+                <div> Import existing Vault </div> <div>📥</div>
+                </button>
 
-                <div class='flex-spread chilids entry-item'>
-                <button> Delete vault </button> <button>🗑️</button>
-                </div>
+                <button class='flex-spread chilids menu-item'>
+                <div> Delete vault </div> <div>🗑️</div>
+                </button>
           </div>
         </Popover.Content>
       </Popover.Portal>

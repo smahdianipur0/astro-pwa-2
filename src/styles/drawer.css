@@ -10,7 +10,7 @@
 
 [data-corvu-drawer-overlay][data-transitioning] {
   transition-property: background-color;
-  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  transition-timing-function: var(--move);
   transition-duration: 500ms;
 }
 
@@ -45,7 +45,7 @@
 
 [data-corvu-drawer-content][data-transitioning] {
   transition-property: transform;
-  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  transition-timing-function: var(--move);
   transition-duration: 500ms;
 }
 

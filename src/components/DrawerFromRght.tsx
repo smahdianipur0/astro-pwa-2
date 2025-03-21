@@ -10,10 +10,9 @@ const DrawerComponent: ParentComponent = (props) => {
       {(drawerProps) => (
         <>
           <Drawer.Trigger> 
-            <div style="
-            display:flex ;
-            place-content: space-between;
-            padding: var(--default-padding);">
+            <div class='menu-item' style="
+            border-radius: var(--radius-a);
+            margin-inline: auto;">
                 <div>Recently Deleted</div>
                 <svg style="padding: 2px" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.293 4.293a1 1 0 0 0 0 1.414L14.586 12l-6.293 6.293a1 1 0 1 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7a1 1 0 0 0-1.414 0Z" fill="oklch(var(--gray-95) / 0.5)"/></svg>
             </div>

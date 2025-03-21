@@ -2,6 +2,7 @@ type ElementProps = {
   className?: string;
   id?: string;
   textContent?: string;
+  dataset?: {[key: string]: string;};
   append?: HTMLElement | HTMLElement[];
   [key: string]: any;
 };
@@ -9,9 +10,9 @@ type ElementProps = {
 type ValidTagNames = keyof HTMLElementTagNameMap;
 
 export const element = {
-    configure: <T extends ValidTagNames>( tag: T,{ append, ...props }: ElementProps): HTMLElementTagNameMap[T] => {
-
+    configure: <T extends ValidTagNames>(tag: T, { append, dataset, ...props }: ElementProps): HTMLElementTagNameMap[T] => {
     const element = document.createElement(tag) as HTMLElementTagNameMap[T];
+    
     if (append) {
       if (Array.isArray(append)) {
         for (const child of append) {
@@ -21,6 +22,11 @@ export const element = {
         element.appendChild(append);
       }
     }
+
+    if (dataset) {
+      Object.assign(element.dataset, dataset);
+    }
+
     return Object.assign(element, props);
   },
   wait: (selector: string): Promise<HTMLElement> => {

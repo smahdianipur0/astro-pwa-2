@@ -32,8 +32,7 @@
   --gap-x10: calc(var(--gap) * var(--x10));
 
 
-  --default-padding: calc( var(--gap-x03) / 2) calc( var(--gap-x03));
-  --medium-padding: calc(var(--gap)  / 2) calc(var(--gap));
+  --default-padding: calc( var(--gap-x03) / 2)  var(--gap-x03);
   --thin-padding: 0.1ch var(--gap);
 
 
@@ -46,6 +45,7 @@
   --z-layer-middle: 2;
   --z-layer-beneath: -1;
 
-  --animation-function: cubic-bezier(0.6, 1.45, 0.5, 1);
+  --appear: cubic-bezier(0.6, 1.45, 0.5, 1);
+  --move:cubic-bezier(0.32, 0.72, 0, 1);
 
 }

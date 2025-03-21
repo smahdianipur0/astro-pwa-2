@@ -50,27 +50,26 @@ overflow-x: hidden;">
 
     <div class="card-border">
       <div class="card glass box-shadow max-width">
-        <div class="entries-list not-prose" id="entries-list"> 
+        <div class="entries-list not-prose" id="entries-list"  style=" margin-top: var(--gap);"> 
           <p class="hint" style="padding-top:var(--gap-x04)"> Loading records </p>
         </div>
       </div>
     </div>
 
-    <div class="menu-item" style="margin-bottom: var(--gap-x06);">
-    <DrawerFromRight client:load>
+    <div class="max-width flex-center-childs"style="margin-bottom: var(--gap-x06);">
+      <DrawerFromRight client:load>
      
-        
-     <div data-corvu-no-drag class="flex-center-childs" style="align-items: baseline;
-          padding-inline: var(--gap-x02);
-          height:100%;
-          margin-left: var(--gap-x03);
-          overflow-y: scroll;" >
-      <div class="card-border"  style="margin-left: calc(var(--gap-x03)* -1);">
-        <div class="card glass box-shadow max-width">
-          <div  class="entries-list" id="recent-del-list"></div>
+      <div data-corvu-no-drag class="flex-center-childs" style="align-items: baseline;
+            padding-inline: var(--gap-x02);
+            height:100%;
+            margin-left: var(--gap-x03);
+            overflow-y: scroll;" >
+        <div class="card-border"  style="margin-left: calc(var(--gap-x03)* -1);">
+          <div class="card glass box-shadow max-width">
+            <div  class="entries-list" id="recent-del-list"></div>
+          </div>
         </div>
-      </div>
-    </div> 
+      </div> 
     <Dialog identifier="restore-dialog">
       <h3 style="margin-top: 0;">Restore Item</h3>
       <div id="restore-list"style="display: flex;

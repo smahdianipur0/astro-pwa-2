@@ -48,12 +48,12 @@ document.getElementById("emails")!.addEventListener("input",(e)=>{
 document.getElementById("emails")!.addEventListener("click", (e) => {
   if ((e!.target as HTMLInputElement).matches("#add_email")) {
     (async () => {
-      await dbCreate("Emails:create", {email:emailEntery()})
+      await dbCreate("Emails:create", {email:emailEntery(), crreatedAt: new Date().toISOString()})
       setEmaillist((await dbReadAll("Emails") ) ?? []);
     })();
   }
 
-  const deleteButton = (e!.target as HTMLInputElement).closest(".delete-button");
+  const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
   if (deleteButton) {
     (async () => {
       await dbDelete("Emails:delete", deleteButton.id);
@@ -61,7 +61,7 @@ document.getElementById("emails")!.addEventListener("click", (e) => {
     })();
   }
 
-  const copyButton = (e!.target as HTMLInputElement).closest(".copy-button");
+  const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
   if (copyButton) {
     (async () => {
       navigator.clipboard.writeText(copyButton.id);  
@@ -80,26 +80,30 @@ createEffect(() => {
   document.getElementById("emails-list")!.textContent = '';
   const fragment = document.createDocumentFragment();
   
-  (emailList() ?? []).reverse().forEach((entry) => {
+  (emailList() ?? [])
+  .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
+  .forEach((entry) => {
     fragment.append(
       element.configure('div', { className: 'entry-item',
         style: 'background-color:transparent; padding-inline: 0;',
         append: [
 
           element.configure('div', { append: [
-              element.configure('button', { className: 'copy-button ellipsis',
+              element.configure('button', { dataset: {action: 'copy'}, 
+                className: 'ellipsis',
                 style:"text-align: start; width: 19ch;",
                 id: entry.email ?? '',
-                textContent: entry.email ?? ''})
+                textContent: entry.email ?? ''
+              })
           ]}),
 
           element.configure('div', {className: 's-container', append: [
-            element.configure('details', {name: 'delete-item',className: 'right-to-left',append: [
-
-              element.configure('summary', { className: 'right-to-left', }),
-              element.configure('button', { className: 'delete-button', 
-                id: entry.id?.id ?? '',
-                textContent: ' Delete'})
+            element.configure('details', {name: 'delete-item',className: 'right-to-left', append: [
+              element.configure('summary', { className: 'right-to-left' }),
+              element.configure('button', { dataset: {action: 'delete' },
+                  id: entry.id?.id ?? '',
+                  textContent: ' Delete'
+                })
             ]})
           ]})
         ]

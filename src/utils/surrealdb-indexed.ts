@@ -23,21 +23,24 @@ export type BaseEntry = {
 	id?: { tb: string; id: string };
 };
 
+
 export type EmailEntry = {
 	id?: { tb: string; id: string };
 	email: string;
+	crreatedAt: string;
 };
 
 export type PasswordEntry = {
 	id?: { tb: string; id: string };
 	title: string;
 	password: string;
+	crreatedAt: string;
 };
 
 export type Schemas = {
-	PasswordEntry: { title: string; password: string };
-	Emails: { email: string };
-	RecentDelPass: {  title: string; password: string };
+	PasswordEntry: { title: string; password: string; crreatedAt: string };
+	Emails: { email: string; crreatedAt: string };
+	RecentDelPass: {  title: string; password: string; crreatedAt: string };
 };
 
 
