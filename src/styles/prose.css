@@ -186,7 +186,7 @@
   user-select: none;
 }
 
-@keyframes arrow-open {
+@keyframes arrow-rotate-open {
   from {
     transform: rotate(0deg);
   }
@@ -195,7 +195,7 @@
   }
 }
 
-@keyframes arrow-close {
+@keyframes arrow-rotate-close {
   from {
     transform: rotate(90deg);
   }
@@ -207,19 +207,21 @@
 .prose :where(summary):not(:where([class~=not-prose],[class~=not-prose] *)):before {
   content: "";
   background-color: oklch(var(--primary));
-  -webkit-mask-image: url('data:image/svg+xml,<svg width="20" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.293 4.293a1 1 0 0 0 0 1.414L14.586 12l-6.293 6.293a1 1 0 1 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7a1 1 0 0 0-1.414 0Z" fill="%23fff"/></svg>');
-  mask-image:url('data:image/svg+xml,<svg width="24" height="20" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.293 4.293a1 1 0 0 0 0 1.414L14.586 12l-6.293 6.293a1 1 0 1 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7a1 1 0 0 0-1.414 0Z" fill="%23fff"/></svg>');
+  -webkit-mask-image: url('data:image/svg+xml,<svg width="var(--gap-x04)" height="var(--gap-x04)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.293 4.293a1 1 0 0 0 0 1.414L14.586 12l-6.293 6.293a1 1 0 1 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7a1 1 0 0 0-1.414 0Z" fill="%23fff"/></svg>');
+  mask-image: url('data:image/svg+xml,<svg width="var(--gap-x04)" height="var(--gap-x04)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.293 4.293a1 1 0 0 0 0 1.414L14.586 12l-6.293 6.293a1 1 0 1 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7a1 1 0 0 0-1.414 0Z" fill="%23fff"/></svg>');
   position: absolute;
   right: var(--gap-xs);
   transform-origin: 50% 50%;
-  width: 20px;
-  height: 20px;
-  transform: rotate(0deg);
-  transition: transform 0.1s ease-in-out;
+  width: var(--gap-x04);
+  height: var(--gap-x04);
 }
 
 .prose :where(details[open]):not(:where([class~=not-prose],[class~=not-prose] *)) > summary:before {
-  transform: rotate(90deg);
+  animation: arrow-rotate-open 0.1s ease-in-out forwards;
+}
+
+.prose :where(details:not([open])):not(:where([class~=not-prose],[class~=not-prose] *)) > summary:before {
+  animation: arrow-rotate-close 0.1s ease-in-out forwards;
 }
 
 @keyframes details-show {

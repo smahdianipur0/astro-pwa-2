@@ -54,6 +54,7 @@
   width: min(100%, 65ch) ;
   background-color: oklch(var(--gray-25) / 0.75);
   padding: var(--default-padding);
+  align-items: center
 }
 
 .menu-item:focus, .menu-item:hover{

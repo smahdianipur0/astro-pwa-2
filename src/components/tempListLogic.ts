@@ -115,9 +115,8 @@ createEffect(() => {
 									textContent: ' Delete'}),
 							]
 						}),
-						element.configure('button', { dataset: {action: 'update'},
-							id: entry.id?.id ?? '',
-							textContent: '✏️'}),
+
+						element.configure('button', { dataset: {action: 'update'},id: entry.id?.id ?? '',}),
 					]})
 				]})
 			);
@@ -301,10 +300,7 @@ createEffect(() => {
 									textContent: ' Delete'})
 							]
 						}),
-						element.configure('button',{
-							dataset: { action: 'restore'},
-							id: entry.id?.id ?? '',
-							textContent: "📤"})
+						element.configure('button',{dataset: { action: 'restore'},id: entry.id?.id ?? '',})
 					]})
 				]})
 			);
