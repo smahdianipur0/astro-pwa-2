@@ -168,12 +168,6 @@
   border: 1px solid transparent;
 }
 
-.prose :where(details):not(:where([class~=not-prose],[class~=not-prose] *)) {
-  margin-bottom: 0;
-  overflow: hidden;
-
-}
-
 .prose :where(details) summary::-webkit-details-marker {
   display: none;
 }
@@ -217,11 +211,11 @@
 }
 
 .prose :where(details[open]):not(:where([class~=not-prose],[class~=not-prose] *)) > summary:before {
-  animation: arrow-rotate-open 0.1s ease-in-out forwards;
+  animation: arrow-rotate-open 150ms var(--move) forwards;
 }
 
 .prose :where(details:not([open])):not(:where([class~=not-prose],[class~=not-prose] *)) > summary:before {
-  animation: arrow-rotate-close 0.1s ease-in-out forwards;
+  animation: arrow-rotate-close 150ms var(--move) forwards;
 }
 
 @keyframes details-show {

@@ -81,7 +81,7 @@ createEffect(() => {
 		isSearching() ? searchArray().length === 0 : listEntries().length === 0) { 
 		fragment.append(element.configure("p", {textContent: "No records found", 
 			className:"hint", 
-			style:"padding-top:var(--gap-x04)" }));
+			style:"padding-block :var(--gap-x04)" }));
 
   } else {
 		(isSearching() ? searchArray() : (listEntries() ?? [])
@@ -265,7 +265,7 @@ createEffect(() => {
 		if (listRecentDel().length === 0){
 			fragment.append(element.configure("p", {textContent: "No records found", 
 				className:"hint",
-				style:"padding-top:var(--gap-x04)" }));
+				style:"padding-block:var(--gap-x04)" }));
 		} else {
 	  
 		(listRecentDel() ?? [])
