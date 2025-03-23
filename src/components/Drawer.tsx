@@ -1,4 +1,4 @@
-import '../styles/drawer.css'
+import '../styles/corvu.css'
 import { onMount } from "solid-js";
 import Drawer from "@corvu/drawer";
 import type { ParentComponent } from "solid-js";

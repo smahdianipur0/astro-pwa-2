@@ -3,9 +3,25 @@ import { trpc } from "../utils/trpc";
 import queryHelper  from "../utils/query-helper"
 import {client} from '@passwordless-id/webauthn'
 import { element } from "../utils/elementUtils";
+import { dbCreate, dbReadAll, dbUpdate, type CredentialsEntry} from "../utils/surrealdb-indexed"
+
 
 const [userName, setUserName] = createSignal("");
-const [indexedId, setIndexedId] = createSignal("");
+const [indexedUid, setIndexedUid] = createSignal(false);
+
+
+const user = await dbReadAll("Credentials");
+console.log(user)
+
+if ( user && user?.length !== 0 ) {
+    const userId= user[0].id?.id
+    if (userId && user[0].registered === true){
+        setIndexedUid(true);      
+    }
+ } else if ( user && user?.length === 0 ){
+     dbCreate("Credentials:create",{registered: false});
+     setIndexedUid(false);
+ }
 
 
 
@@ -42,30 +58,23 @@ async function validateAuthentication(challenge: string, authentication: any) {
 
 (async () => {
     const credentialsDiv = document.getElementById("credentialsDiv") as HTMLElement;
-    
-    if (indexedId() === '') {
+    console.log(indexedUid())
+    if (indexedUid() === false) {
         credentialsDiv.textContent = '';
         const fragment = document.createDocumentFragment();
         
         fragment.append(
-            element.configure('div', {
-                className: 'prose',
+            element.configure('div', {className: 'prose',
                 style: 'display: flex; gap: var(--gap); justify-content: space-between;',
                 append: [
+                    element.configure('input', {id: 'user_name',
+                        type: 'text', placeholder: 'Name',autocomplete: 'off',
+                        style: 'margin-bottom: var(--gap); width: 100%;'}),
 
-                    element.configure('input', {
-                        id: 'user_name',
-                        type: 'text',
-                        style: 'margin-bottom: var(--gap); width: 100%;',
-                        placeholder: 'Name',
-                        autocomplete: 'off'}),
-
-                    element.configure('button', {
-                        id: 'registration',
+                    element.configure('button', {id: 'registration',
                         style: 'margin-bottom: var(--gap); width: fit-content; white-space: nowrap;',
                         textContent: 'Sign Up',
                         disabled: true})
-
                 ]
             }),
 
@@ -81,8 +90,9 @@ async function validateAuthentication(challenge: string, authentication: any) {
         );
         
         credentialsDiv.append(fragment);
-    }
+    }  
 })();
+
 
 
 document.getElementById("credentials")!.addEventListener("input",(e)=>{
@@ -103,27 +113,54 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
     if ((e!.target as HTMLInputElement).matches("#registration")) {
         (async () => {
             const [data, error] = await queryHelper.direct("db", () => trpc.challenge.query());
+
+            if (error) { document.getElementById("auth_result")!.textContent = "Connection failed"};
+
             if (data?.message) {
+                console.log(data);
                 const registration: any = await client.register({
                   user: userName(),
                   challenge: data.message,
                 });
-                // use registration.id as UID
                 if (registration){document.getElementById("auth_result")!.textContent = "Connectoing to the server"}
+
                 const [registryData, registryError] = await queryHelper.direct("db", async () => {
                     return await trpc.registry.mutate({
                         challenge: data.message,
                         registry: registration,
                     });
                 });
-                document.getElementById("auth_result")!.textContent =
-                registryData?.message === "User registered"
-                    ? `${userName()} Registered Successfully`
-                    : registryError?.message 
-                    ??"Registration Failed";
+
+                console.log(registryData, registryError)
+
+                if (registryData)  {
+
+                    
+
+                    const credentialsDiv = document.getElementById("credentialsDiv") as HTMLElement;
+                    credentialsDiv.textContent = '';
+                    const fragment = document.createDocumentFragment();
+                    
+                    fragment.append(
+                        element.configure('p', { className: 'hint', style: 'margin-top: 0;', append:[
+                        element.configure('span', { textContent: "device registered."})
+                        ]})
+                    );
+                    credentialsDiv.append(fragment);
+                    document.getElementById("auth_result")!.textContent = " "
+                    await dbCreate("Credentials:create",{registered: true});
+                    // use registration.id as UID}
+                }
+
+                if (registryError) {
+                    document.getElementById("auth_result")!.textContent = "Registration Failed"
+                    console.log(registryError?.message)
+                }
+
             }
         })();
     }
+
     if ((e!.target as HTMLInputElement).matches("#authentication")) {
         (async () => {
             const { authentication, challenge } = await queryChallenge();
@@ -133,15 +170,32 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
             }
     
             const { authData, authError } = await validateAuthentication(challenge, authentication);
-    
-            document.getElementById("auth_result")!.textContent =
-                authData?.message || authError?.message || "Authentication Failed";
-    
-            if (authData?.authenticated && authData.credentialId) {
-                // setIndexedId(authData.credentialId);
-                // use userCredentialId for future operations
+
+            if (authData)  {
+                const credentialsDiv = document.getElementById("credentialsDiv") as HTMLElement;
+                credentialsDiv.textContent = '';
+                const fragment = document.createDocumentFragment();
+                
+                fragment.append(element.configure('p', { className: 'hint', style: 'margin-top: 0;', append:[
+                    element.configure('span', { textContent: "device registered."})
+                ]}));
+                credentialsDiv.append(fragment);
+                if (authData?.authenticated && authData.credentialId) {
+                // use authData.credentialId as UID}
+                }
+                if (user) {
+                    const userId= user[0].id?.id
+                    if (userId){
+                        dbUpdate("Credentials:update",{id :userId, registered: true})
+                        setIndexedUid(true);      
+                    }                 
+                }
+            }
+
+            if (authError) {
+                document.getElementById("auth_result")!.textContent = "Authentication Failed"
+                console.log(authError?.message)
             }
         })();
     }
-    
 });

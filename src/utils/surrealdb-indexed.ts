@@ -17,7 +17,7 @@ async function getDb() {
 	}
 }
 
-type TableName = "PasswordEntry" | "RecentDelPass" | "Emails";
+type TableName = "PasswordEntry" | "RecentDelPass" | "Emails" | "Credentials";
 
 export type BaseEntry = {
 	id?: { tb: string; id: string };
@@ -35,12 +35,21 @@ export type PasswordEntry = {
 	title: string;
 	password: string;
 	crreatedAt: string;
-};
+}; 
+
+export type CredentialsEntry = {
+	id?: { tb: string; id: string };
+	registered: boolean;
+	vaults: string[];
+}; 
+
+
 
 export type Schemas = {
 	PasswordEntry: { title: string; password: string; crreatedAt: string };
 	Emails: { email: string; crreatedAt: string };
 	RecentDelPass: {  title: string; password: string; crreatedAt: string };
+	Credentials: { registered:boolean; vaults: string[];}
 };
 
 
@@ -64,8 +73,8 @@ export async function dbCreate<T extends `${TableName}:create`>(action: T, data:
 		return;
 	}
 
-	try {
-		await db.create<PermittedTypes[T]>(action.split(":")[0], data);
+	try { 
+		await db.create<PermittedTypes[T]>(action.split(":")[0], data); 
 	} catch (err: unknown) {
 		console.error(`Failed to create entry in ${action}:`, err instanceof Error ? err.message : String(err));
 	} finally {
@@ -139,6 +148,24 @@ export async function getEntryById<T extends TableName>(
 		return entry;
 	} catch (err) {
 		console.error(`Failed to get entry from ${tableName} with ID ${recordId}:`, err);
+		return undefined;
+	} finally {
+		await db.close();
+	}
+}
+
+
+export async function dbDeleteAll<T extends TableName>(tableName: T): Promise<void> {
+	const db = await getDb();
+
+	if (!db) {
+		console.error("Database not initialized");
+		return undefined;
+	}
+	try {
+		await db.delete(tableName);
+	} catch (err) {
+		console.error(`Failed to get entries from ${tableName}:`, err);
 		return undefined;
 	} finally {
 		await db.close();

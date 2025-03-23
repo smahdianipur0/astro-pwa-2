@@ -1,3 +1,5 @@
+/* drawer */
+
 [data-corvu-drawer-trigger] {
   width: 100%;
 }
@@ -71,7 +73,44 @@
 }
 
 
-/* [data-corvu-drawer-close] {
-  margin-left: auto;
-  margin-right: 1rem;
-} */
+
+/* popover */
+
+[data-corvu-popover-label] {
+  font-weight: 500;
+}
+
+[data-corvu-popover-arrow] {
+  color: oklch(var(--gray-50) / .58);
+} 
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    scale: 0.8;
+  }
+}
+
+@keyframes exit {
+  to {
+    opacity: 0;
+    scale: 0.8;
+  }
+}
+
+[data-corvu-popover-content][data-open] {
+  animation-name: enter;
+  animation-duration: 150ms;
+  animation-timing-function: var( --appear);
+}
+
+[data-corvu-popover-content][data-closed] {
+  animation-name: exit;
+  animation-duration: 150ms;
+  animation-timing-function: var( --appear);
+}
+
+
+[data-corvu-popover-Trigger][data-open] {
+  opacity: 0.4;
+}
