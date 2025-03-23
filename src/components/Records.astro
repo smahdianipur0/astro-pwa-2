@@ -1,6 +1,7 @@
 ---
 import Card from './Card.astro';
 import VaultMenu from '../components/VaultMenu.tsx';
+import Dialog from './Dialog.astro';
 ---
 
 <Card title="credentials" iden='credentials'>
@@ -14,10 +15,10 @@ import VaultMenu from '../components/VaultMenu.tsx';
     <p style="margin: 0;">Vaults :</p>
       <div class="not-prose">
         <VaultMenu client:load>
-          <div class='entries-list glass' style= "width: 25ch; border-radius: var(--radius-b); box-shadow: 0px 0px 120px 10px oklch(var(--gray-10) / 30%);">
+          <div class='entries-list glass' id="vault-menu" style= "width: 25ch; border-radius: var(--radius-b); box-shadow: 0px 0px 120px 10px oklch(var(--gray-10) / 30%);">
                   
-            <button class='menu-item'>
-            <div> Creat vault </div> <svg style='width: var(--gap-x04);'  fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm0 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17ZM12 7a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 12 7Z" fill="oklch (var(--gray-95))"/></svg>
+            <button id="vault-create" class='menu-item'>
+            <div > Creat vault </div> <svg style='width: var(--gap-x04);'  fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm0 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17ZM12 7a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 12 7Z" fill="oklch (var(--gray-95))"/></svg>
             </button>
 
             <button class='menu-item'>
@@ -33,10 +34,28 @@ import VaultMenu from '../components/VaultMenu.tsx';
       </div>
     </div>
   </div>
-  <select name="chars" class="max-width" >
-    <option selected>Auto</option>
-    <option>Plain</option>
-    <option>Encrypted</option>
+
+  <select name="chars" class="max-width" id="vault-list" disabled>
+
   </select>
   
 </Card>
+
+<Dialog identifier= 'create-vault-dialog'>
+
+  <h3 style="margin-top: 0;">Create vault</h3>
+
+  <input type="text" name="vault-name" id="vault-name-input">
+  <div class="flex-center-childs" style="gap:var(--gap);margin-top:var(--gap-x04);">
+    
+    <button class="unstyle-button not-prose max-width" >Cancel</button>
+    <button class="max-width" id="create-vault-button" disabled>Create</button>
+    
+  </div>
+
+</Dialog>
+
+
+
+<script src="../components/recordsLogic.ts"></script>
+<script src="../components/authLogic.ts"></script>

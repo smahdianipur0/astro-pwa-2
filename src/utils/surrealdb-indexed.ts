@@ -2,7 +2,7 @@ import { Surreal, RecordId } from "surrealdb";
 import { surrealdbWasmEngines } from "@surrealdb/wasm";
 import { jsonify } from "surrealdb";
 
-async function getDb() {
+export async function getDb() {
 	const db = new Surreal({
 		engines: surrealdbWasmEngines(),
 	});
@@ -17,41 +17,16 @@ async function getDb() {
 	}
 }
 
-type TableName = "PasswordEntry" | "RecentDelPass" | "Emails" | "Credentials";
-
-export type BaseEntry = {
-	id?: { tb: string; id: string };
-};
-
-
-export type EmailEntry = {
-	id?: { tb: string; id: string };
-	email: string;
-	crreatedAt: string;
-};
-
-export type PasswordEntry = {
-	id?: { tb: string; id: string };
-	title: string;
-	password: string;
-	crreatedAt: string;
-}; 
-
-export type CredentialsEntry = {
-	id?: { tb: string; id: string };
-	registered: boolean;
-	vaults: string[];
-}; 
-
-
+// Define Tables and Schemas
+type TableName = "PasswordEntry" | "RecentDelPass" | "Emails" | "Credentials" | "Vaults";
 
 export type Schemas = {
 	PasswordEntry: { title: string; password: string; crreatedAt: string };
 	Emails: { email: string; crreatedAt: string };
 	RecentDelPass: {  title: string; password: string; crreatedAt: string };
-	Credentials: { registered:boolean; vaults: string[];}
+	Credentials: { registered:boolean; UID: string;};
+	Vaults: {name: string; }
 };
-
 
 
 // Generate CRUD types for all tables

@@ -4,7 +4,7 @@ import {
 	dbDelete,
 	dbReadAll,
 	getEntryById,
-	type PasswordEntry,
+	type ReadAllResultTypes
 } from "../utils/surrealdb-indexed";
 import { element } from "../utils/elementUtils";
 import { password, showToast } from "../components/homeLogic.ts";
@@ -16,7 +16,7 @@ import Fuse from 'fuse.js'
 // signals
 const [listTitle, setListTitle]       = createSignal('');
 const [listPassword, setListPassword] = createSignal('');
-const [listEntries, setListEntries]   = createSignal<PasswordEntry[]>([]);
+const [listEntries, setListEntries]   = createSignal<ReadAllResultTypes["PasswordEntry"]>([]);
 
 const [updtingEntry, setUpdtingEntry]                     = createSignal('');
 const [updatingListEntryTitle, setUpdatingListEntryTitle] = createSignal('');
@@ -24,8 +24,8 @@ const [updatingListEntryPass, setUpdatingListEntryPass]   = createSignal('');
 
 const [searchInput, setSearchInput]     = createSignal("");
 const [isSearching, setIsSearching]     = createSignal(false);
-const [searchArray, setSearchArray]     = createSignal<PasswordEntry[]>([]);
-const [listRecentDel, setListRecentDel] = createSignal<PasswordEntry[]>([]);
+const [searchArray, setSearchArray]     = createSignal<ReadAllResultTypes["PasswordEntry"]>([]);
+const [listRecentDel, setListRecentDel] = createSignal<ReadAllResultTypes["PasswordEntry"]>([]);
 
 
 
