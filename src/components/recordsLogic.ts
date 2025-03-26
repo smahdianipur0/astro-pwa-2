@@ -1,11 +1,11 @@
 import { element } from "../utils/elementUtils";
 import { createSignal, createEffect } from "solid-js";
-import {dbCreate, dbDelete, dbReadAll, type ReadAllResultTypes} from "../utils/surrealdb-indexed"
+import { dbCreate, dbDelete, dbReadAll, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
+
 
 const [createVaultName, setCreateVaultName] = createSignal("");
-const [vaultsList, setVaultsList] = createSignal<ReadAllResultTypes["Vaults"]>([]);
+const [vaultsList, setVaultsList]           = createSignal<ReadAllResultTypes["Vaults"]>([]);
 const [creationAllowed, setCreationAllowed] = createSignal(true);
-
 
 
 const intialvaults = await dbReadAll("Vaults");
@@ -28,12 +28,11 @@ createEffect(() => {
 });
 
 
-
 (async () => {
 
-    const vaultMenu = (await element.wait("#vault-menu")) as HTMLElement;
-    const createVaultButton = ( await element.wait("#create-vault-button")) as HTMLButtonElement
-    const vaultNameInput = ( await element.wait("#vault-name-input")) as HTMLInputElement
+    const vaultMenu =         (await element.wait("#vault-menu"))          as HTMLElement;
+    const createVaultButton = (await element.wait("#create-vault-button")) as HTMLButtonElement
+    const vaultNameInput =    (await element.wait("#vault-name-input"))    as HTMLInputElement
 
     vaultMenu.addEventListener("click",(e)=>{
         if((e!.target as HTMLInputElement).matches("#vault-create")){
@@ -51,14 +50,12 @@ createEffect(() => {
         if((e!.target as HTMLInputElement).matches("#create-vault-button")){
 
             (async () => {
-                console.log("created");
                 await dbCreate("Vaults:create", {
                     name:createVaultName(), 
                     crreatedAt: new Date().toISOString(),
                     status: "available",
                     role: "owner" 
                 });
-
                 const vaults = await dbReadAll("Vaults");
                 if (vaults){setVaultsList(vaults)};
             })();
@@ -73,12 +70,13 @@ createEffect(() => {
     const vaultlist = document.getElementById("vault-list") as HTMLSelectElement
     vaultlist.textContent = "";
     vaultlist.disabled = false;
+
     const fragment = document.createDocumentFragment();
     if (vaultsList().length === 0){
         fragment.append(element.configure("option", {textContent: "No vaults found"}));
-    } else { (vaultsList() ?? [])
-        .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
-        .forEach((entry) => {
+    } else { 
+         (vaultsList() ?? []).sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
+         .forEach((entry) => {
             fragment.append( element.configure("option", {textContent:entry.name}));
         });
     }
