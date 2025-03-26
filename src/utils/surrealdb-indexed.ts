@@ -25,7 +25,7 @@ export type Schemas = {
 	Emails: { email: string; crreatedAt: string };
 	RecentDelPass: {  title: string; password: string; crreatedAt: string };
 	Credentials: { registered:boolean; UID: string;};
-	Vaults: {name: string; crreatedAt: string}
+	Vaults: {name: string; crreatedAt: string, status:"available" | "deleted", role:"owner" | "viewer"}
 };
 
 
