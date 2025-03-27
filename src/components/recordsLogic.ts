@@ -63,7 +63,7 @@ createEffect(() => {
             (async () => {
                 await dbCreate("Vaults:create", {
                     name:createVaultName(), 
-                    crreatedAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
                     status: "available",
                     role: "owner" 
                 });
@@ -108,7 +108,7 @@ createEffect(() => {
     } else { 
          (vaultsList() ?? [])
          .filter(item => item.status === "available")
-         .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
+         .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
          .forEach((entry) => {
 
             fragment.append( element.configure("option", {textContent:entry.name, id:entry.id?.id }));
@@ -129,7 +129,7 @@ createEffect(() => {
     } else { 
          (vaultsList() ?? [])
          .filter(item => item.status === "available" && item.role === "owner")
-         .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
+         .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
          .forEach((entry) => {
 
             fragment2.append( element.configure("option", {textContent:entry.name, id:entry.id?.id}));

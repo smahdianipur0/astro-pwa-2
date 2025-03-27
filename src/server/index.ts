@@ -11,7 +11,7 @@ import {
     dbQueryRole,
     dbRelateVault } from "../utils/surrealdb-cloud";
 import { server } from '@passwordless-id/webauthn'
-import { registrationInputSchema, authenticationInputSchema, credentialSchema } from './schemas';
+import { registrationInputSchema, authenticationInputSchema, credentialSchema, UID } from './schemas';
 
 
 const t = initTRPC.context<Context>().create({
@@ -77,6 +77,12 @@ export const appRouter = router({
         .query(async () => {
             return { message: `Hello` };
         }),
+
+        queryVaults : t.procedure
+        .input(UID)
+        .query(async({ input }) => { 
+            return await dbReadVault(input.UID)
+         }),
 
         dbquery: t.procedure
         .mutation(async () =>{

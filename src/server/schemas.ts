@@ -48,3 +48,5 @@ export const credentialSchema = z.object({
         transports: z.tuple([z.literal('internal')])
     })
 });
+
+export const UID = z.object({UID:z.string()});
