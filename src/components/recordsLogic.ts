@@ -1,6 +1,6 @@
 import { element } from "../utils/elementUtils";
 import { createSignal, createEffect } from "solid-js";
-import { dbCreate, dbDelete, dbReadAll, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
+import { dbCreate, dbDelete, dbReadAll, dbUpdate, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
 
 
 const [createVaultName, setCreateVaultName] = createSignal("");
@@ -28,15 +28,26 @@ createEffect(() => {
 });
 
 
+
 (async () => {
 
-    const vaultMenu =         (await element.wait("#vault-menu"))          as HTMLElement;
-    const createVaultButton = (await element.wait("#create-vault-button")) as HTMLButtonElement
-    const vaultNameInput =    (await element.wait("#vault-name-input"))    as HTMLInputElement
+    const vaultMenu =          (await element.wait("#vault-menu"))          as HTMLElement;
+    const createVaultButton =  (await element.wait("#create-vault-button")) as HTMLButtonElement
+    const vaultNameInput =     (await element.wait("#vault-name-input"))    as HTMLInputElement
+
+    const deleteVaultButton =  (await element.wait("#delete-vault-button")) as HTMLButtonElement
+    const selectDeleteVaults = (await element.wait("#delete-vault-list"))   as HTMLSelectElement;
+
 
     vaultMenu.addEventListener("click",(e)=>{
         if((e!.target as HTMLInputElement).matches("#vault-create")){
             (document.getElementById("create-vault-dialog") as HTMLDialogElement).showModal();
+        };
+    });
+
+    vaultMenu.addEventListener("click",(e)=>{
+        if((e!.target as HTMLInputElement).matches("#vault-delete")){
+            (document.getElementById("delete-vault-dialog") as HTMLDialogElement).showModal();
         };
     });
 
@@ -62,23 +73,67 @@ createEffect(() => {
         };
     });
 
-    createEffect(() => { createVaultButton.disabled = ( !creationAllowed() ||createVaultName() === "") ;});
-    createEffect(() => { vaultNameInput.disabled = (!creationAllowed()) });
+    document.getElementById("delete-vault-dialog")!.addEventListener("click",(e)=>{
+        if((e!.target as HTMLInputElement).matches("#delete-vault-button")){
+            const id = selectDeleteVaults.options[selectDeleteVaults.selectedIndex]?.id;
+            console.log(id);
+            (async () => {
+                await dbUpdate("Vaults:update", {id:id, status:"deleted"});
+
+                const vaults = await dbReadAll("Vaults");
+                if (vaults){setVaultsList(vaults)};
+            })();
+        };
+    });
+
+    createEffect(() => { createVaultButton.disabled = (!creationAllowed() ||createVaultName() === "")});
+    createEffect(() => { vaultNameInput.disabled    = (!creationAllowed()) });
+
+    createEffect(() => { deleteVaultButton.disabled = (vaultsList().filter(item => item.status === "available" && item.role === "owner").length === 0)});
+
 })();
 
 createEffect(() => { 
+
+    //vaults list
     const vaultlist = document.getElementById("vault-list") as HTMLSelectElement
     vaultlist.textContent = "";
     vaultlist.disabled = false;
 
     const fragment = document.createDocumentFragment();
-    if (vaultsList().length === 0){
+
+    if (vaultsList().filter(item => item.status === "available").length === 0){
+
         fragment.append(element.configure("option", {textContent: "No vaults found"}));
     } else { 
-         (vaultsList() ?? []).sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
+         (vaultsList() ?? [])
+         .filter(item => item.status === "available")
+         .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
          .forEach((entry) => {
-            fragment.append( element.configure("option", {textContent:entry.name}));
+
+            fragment.append( element.configure("option", {textContent:entry.name, id:entry.id?.id }));
         });
     }
     vaultlist.append(fragment);
-})
+
+
+    //delete vaults list
+    const deleteVaultlist = document.getElementById("delete-vault-list") as HTMLSelectElement
+    deleteVaultlist.textContent = "";
+
+    const fragment2 = document.createDocumentFragment();
+
+    if (vaultsList().filter(item => item.status === "available" && item.role === "owner").length === 0){
+
+        fragment2.append(element.configure("option", {textContent: "No vaults found"}));
+    } else { 
+         (vaultsList() ?? [])
+         .filter(item => item.status === "available" && item.role === "owner")
+         .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
+         .forEach((entry) => {
+
+            fragment2.append( element.configure("option", {textContent:entry.name, id:entry.id?.id}));
+        });
+    }
+    deleteVaultlist.append(fragment2);
+});
