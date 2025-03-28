@@ -7,11 +7,18 @@ interface dbArrays {
   updatedAt: string; 
 }
 
-function syncArrays(
-  local: dbArrays[],
-  cloud: dbArrays[],
-  key: string
-): { localToCloud: dbArrays[]; cloudToLocal: dbArrays[] } {
+interface dbObject {
+  message: dbArrays[];
+}
+
+interface dbError{
+  [key: string]: any;
+  message: string
+}
+
+function syncArrays(local: dbArrays[], cloud: dbArrays[],key: string): 
+{ localToCloud: dbArrays[]; cloudToLocal: dbArrays[] } {
+  
   const localMap = new Map<string, dbArrays>(local.map(obj => [obj[key], obj]));
   const cloudMap = new Map<string, dbArrays>(cloud.map(obj => [obj[key], obj]));
 
@@ -39,16 +46,19 @@ function syncArrays(
   return { localToCloud, cloudToLocal };
 }
 
-async function syncVaults(){
+export async function syncVaults(){
 
   const indexedArray = await dbReadAll("Vaults") as ReadAllResultTypes["Vaults"] ;
   const credentials  = await dbReadAll("Credentials") as ReadAllResultTypes["Credentials"] ;
   const UID = credentials[0].UID
 
-  const [cloudArry, cloudError] = await queryHelper.direct("cloudVaults", async () => {
-    return await trpc.queryVaults.query({ UID});
+  const [data, error] = await queryHelper.direct("cloudVaults", async () => {
+    return await trpc.queryVaults.query({UID: UID}) as dbObject;
   });
+  console.log(indexedArray, data)
 
-// if (cloudArry){syncArrays(indexedArray, cloudArry, "name")}
-
+  if (data?.message){
+  const {localToCloud,cloudToLocal} =  syncArrays(indexedArray, data.message, "name")
+    console.log(localToCloud,cloudToLocal)
+  }
 }

@@ -5,6 +5,10 @@ import {client} from '@passwordless-id/webauthn'
 import { element } from "../utils/elementUtils";
 import { dbCreate, dbReadAll, dbUpdate, } from "../utils/surrealdb-indexed"
 
+// import {syncVaults} from "../utils/syncLayer"
+// (async () => { await syncVaults();})();
+ 
+
 
 const [userName, setUserName] = createSignal("");
 const [indexedUid, setIndexedUid] = createSignal(false);

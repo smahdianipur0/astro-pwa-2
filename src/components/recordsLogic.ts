@@ -76,9 +76,15 @@ createEffect(() => {
     document.getElementById("delete-vault-dialog")!.addEventListener("click",(e)=>{
         if((e!.target as HTMLInputElement).matches("#delete-vault-button")){
             const id = selectDeleteVaults.options[selectDeleteVaults.selectedIndex]?.id;
+            const value = selectDeleteVaults.options[selectDeleteVaults.selectedIndex]?.value;
             console.log(id);
             (async () => {
-                await dbUpdate("Vaults:update", {id:id, status:"deleted"});
+                await dbUpdate("Vaults:update", {
+                    id:id, 
+                    name: value,
+                    updatedAt: new Date().toISOString(),
+                    status:"deleted"
+                });
 
                 const vaults = await dbReadAll("Vaults");
                 if (vaults){setVaultsList(vaults)};
