@@ -1,7 +1,7 @@
 :root {
-  --primary:57% 0.15 268.67 ;
-  --success: oklch(65% 0.12 174);
-  --danger: oklch(62.31% 0.246 27);
+  --primary:61% 0.185 268.8 ;
+  --success: oklch(63% 0.12 174);
+  --danger: oklch(61% 0.248 27.5);
 
 
   color-scheme: only dark;
