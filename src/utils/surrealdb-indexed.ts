@@ -73,6 +73,22 @@ export async function dbUpdate<T extends `${TableName}:update`>(action: T, data:
 	}
 }
 
+export async function dbUpsert<T extends `${TableName}:update`>(action: T, data: PermittedTypes[T]): Promise<void> {
+	const db = await getDb();
+	if (!db) {
+		console.error("Database not initialized");
+		return;
+	}
+
+	try {
+		await db.upsert<PermittedTypes[T]>(new RecordId(action.split(":")[0], data.id), data);
+	} catch (err: unknown) {
+		console.error(`Failed to insert or update entry in ${action}:`, err instanceof Error ? err.message : String(err));
+	} finally {
+		await db.close();
+	}
+}
+
 export async function dbDelete<T extends `${TableName}:delete`>(action: T, id: string): Promise<void> {
 	const db = await getDb();
 	if (!db) {

@@ -9,9 +9,10 @@ import {
     dbQueryUser, 
     dbReadVault, 
     dbQueryRole,
-    dbRelateVault } from "../utils/surrealdb-cloud";
+    dbRelateVault,
+    dbUpdateVault } from "../utils/surrealdb-cloud";
 import { server } from '@passwordless-id/webauthn'
-import { registrationInputSchema, authenticationInputSchema, credentialSchema, UID } from './schemas';
+import { registrationInputSchema, authenticationInputSchema, credentialSchema, UID, syncVaultsSchema } from './schemas';
 
 
 const t = initTRPC.context<Context>().create({
@@ -84,9 +85,35 @@ export const appRouter = router({
             return await dbReadVault(input.UID)
          }),
 
+        syncvaults : t.procedure
+        .input(syncVaultsSchema)
+        .mutation(async ({ input }) => {
+            const [credential] = await dbQueryUser(input.authenticationData.id) as z.infer<typeof credentialSchema>[];
+            if (!credential) return { message: "Failed to find user" };
+
+            const authenticationParsed = await server.verifyAuthentication(
+                input.authenticationData,
+                credential.credentials,
+                {
+                    challenge: input.challenge,
+                    origin: "https://keypass.vercel.app",
+                    userVerified: true,
+                }
+            );
+            if (!authenticationParsed.userVerified) throw new Error("Authentication failed");
+
+            
+
+            // return {
+            //     message: authenticationParsed.userVerified ? "Authentication successful" : "Authentication failed",
+            //     authenticated: authenticationParsed.userVerified,
+            //     credentialId: credential.credentials.id
+            // };
+        }),   
+
         dbquery: t.procedure
         .mutation(async () =>{
-            const data = await dbRelateVault("WfNHn9wh1ng4mFfZTMZbhBPc8x0", "banana");
+            const data = await dbUpdateVault("hello", new Date().toISOString(), "deleted");
             console.log(data)
             return data
         })

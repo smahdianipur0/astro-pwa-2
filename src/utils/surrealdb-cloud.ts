@@ -1,29 +1,29 @@
-import { array, number } from 'astro:schema';
 import { Surreal, RecordId } from 'surrealdb';
 
 
-// Open a connection and authenticate
-async function getDb(){
-	const db = new Surreal();   
-    try {
-    	console.log("Attempting to connect to SurrealDB...");
-    	await db.connect("wss://new-instance-06a2fsk7u9qnndnf9s5cldv158.aws-use1.surreal.cloud", {
-			namespace: import.meta.env.SURREALDB_NAMESPACE,
-			database: import.meta.env.SURREALDB_DATABASE,
-			auth: {
-				username: import.meta.env.SURREALDB_USERNAME,
-				password: import.meta.env.SURREALDB_PASSWORD,
-			}
-		});
+let db: Surreal | null = null;;
 
+(async () => {
+  if(!db){
+     db = new Surreal();   
+    try {
+      console.log("Attempting to connect to SurrealDB...");
+      await db.connect("wss://new-instance-06a2fsk7u9qnndnf9s5cldv158.aws-use1.surreal.cloud", {
+      namespace: import.meta.env.SURREALDB_NAMESPACE,
+      database: import.meta.env.SURREALDB_DATABASE,
+      auth: {
+        username: import.meta.env.SURREALDB_USERNAME,
+        password: import.meta.env.SURREALDB_PASSWORD,
+      }
+    });
       console.log("Connected to SurrealDB successfully.");
-      return db;
     } catch (err) {
       console.error("Failed to connect to SurrealDB:", err instanceof Error ? err.message : String(err));
       await db.close();
       throw err;
     }
-}
+  }
+})();
 
 export type Credentials = {
   UID: string;
@@ -41,7 +41,7 @@ export type hasVault = {
 
 
 export async function dbCreateUser(userID: string, credential: object): Promise<string | undefined> {
-  const db = await getDb();
+  if (!db) throw new Error("Database not connected.");
   let result: string | undefined;
 
   if (!db) {
@@ -61,16 +61,12 @@ export async function dbCreateUser(userID: string, credential: object): Promise<
       await db.close();
     }
   }
-
   return result;
 }
 
 export async function dbQueryUser(userID: string): Promise<object | undefined> {
-  const db = await getDb();
 
-  if (!db) {
-    throw new Error ("Database not initialized");
-  }
+  if (!db) throw new Error("Database not connected.");
 
   try {
     const getobject = await db.query(
@@ -83,17 +79,12 @@ export async function dbQueryUser(userID: string): Promise<object | undefined> {
   } catch (err: unknown) {
     console.log(err);
     throw new Error(err instanceof Error ? err.message : String(err))
-  } finally {
-    await db.close();
   }
 }
 
 export async function dbQueryRole(userID: string, vaultName: string): Promise<object | undefined> {
-  const db = await getDb();
-
-  if (!db) {
-    throw new Error ("Database not initialized");
-  }
+  
+  if (!db) throw new Error("Database not connected.")
 
   try {
     const response = await db.query_raw(`
@@ -123,17 +114,12 @@ export async function dbQueryRole(userID: string, vaultName: string): Promise<ob
   catch (err: unknown) {
     console.log(err);
     throw new Error(err instanceof Error ? err.message : String(err))
-  } finally {
-    await db.close();
   }
 }
 
 export async function dbCreateVault(userID: string,vaultName: string ): Promise<object | undefined> {
-  const db = await getDb();
-
-  if (!db) {
-    throw new Error ("Database not initialized");
-	}
+ 
+  if (!db) throw new Error("Database not connected.")
 
   try {
     const response = await db.query_raw(`
@@ -168,17 +154,12 @@ export async function dbCreateVault(userID: string,vaultName: string ): Promise<
   catch (err: unknown) {
     console.log(err);
     throw new Error(err instanceof Error ? err.message : String(err))
-	} finally {
-    await db.close();
-  }
+	}
 }
 
 export async function dbRelateVault(userID: string,vaultName: string ): Promise<object | undefined> {
-  const db = await getDb();
 
-  if (!db) {
-    throw new Error ("Database not initialized");
-  }
+  if (!db) throw new Error("Database not connected.")
 
   try {
     const response = await db.query_raw(`
@@ -221,17 +202,13 @@ export async function dbRelateVault(userID: string,vaultName: string ): Promise<
   catch (err: unknown) {
     console.log(err);
     throw new Error(err instanceof Error ? err.message : String(err))
-  } finally {
-    await db.close();
   }
 }
 
 export async function dbReadVault(userID: string ): Promise<object | undefined> {
-  const db = await getDb();
+ 
+  if (!db) throw new Error("Database not connected.")
 
-  if (!db) {
-    throw new Error ("Database not initialized");
-  }
     try {
       const response = await db.query_raw<hasVault[]>(`
         
@@ -257,17 +234,13 @@ export async function dbReadVault(userID: string ): Promise<object | undefined> 
   catch (err: unknown) {
     console.log(err);
     throw new Error(err instanceof Error ? err.message : String(err))
-  } finally {
-    await db.close();
   }
 }
 
 export async function dbDeleteVault(userID: string, vaultName: string ): Promise<any | undefined> {
-  const db = await getDb();
+ 
+  if (!db) throw new Error("Database not connected.")
 
-  if (!db) {
-    throw new Error ("Database not initialized");
-  } 
   try {
     const response = await db.query_raw(`
       BEGIN TRANSACTION;
@@ -300,7 +273,39 @@ export async function dbDeleteVault(userID: string, vaultName: string ): Promise
   } catch(err:unknown){
     console.log(err);
     throw new Error(err instanceof Error ? err.message : String(err))
-  } finally{
-    await db. close();
+  } 
+}
+
+export async function dbUpdateVault(vaultName: string, updatedAt: string, status: string ): Promise<object | undefined> {
+ 
+  if (!db) throw new Error("Database not connected.")
+
+  try {
+    const response = await db.query_raw(`
+      BEGIN TRANSACTION;
+
+      LET $vault = (SELECT id FROM vaults WHERE name = $vaultName);
+      UPDATE $vault[0].id SET updatedAt = $updatedAt , status = $status;
+
+      COMMIT TRANSACTION; `,
+    { vaultName: vaultName, updatedAt: updatedAt, status: status }
+    );
+    console.log(response);
+
+    if (response[response.length - 1].status === 'OK') {
+      return{message : "OK"}
+    } else if (response[response.length - 1].status === 'ERR') {
+      const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
+      if (errorObject) {
+        console.log(String(errorObject.result));
+        throw new Error(String(errorObject.result));
+      }
+      throw new Error("unknown error");
+      console.log("unknown error")
+    }
+  } 
+  catch (err: unknown) {
+    console.log(err);
+    throw new Error(err instanceof Error ? err.message : String(err))
   }
 }

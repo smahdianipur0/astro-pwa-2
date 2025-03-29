@@ -30,7 +30,7 @@ if (user && user?.length !== 0) {
 console.log(user);
 
 
-async function queryChallenge() {
+export async function queryChallenge() {
 	const [data, error] = await queryHelper.direct("db", () => trpc.challenge.query());
 
 	if (data?.message) {
@@ -194,11 +194,12 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
             const { authData, authError } = await validateAuthentication(challenge, authentication);
 
             if (authData)  {
-                updateSucceededAuth()
                 
                 if (!authData?.authenticated || !authData.credentialId) return;
                 if (!user) return;
 
+                updateSucceededAuth();
+                
                 const userId = user[0]?.id?.id;
                 if (!userId) return;
                 // use authData.credentialId as UID}

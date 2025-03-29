@@ -50,3 +50,30 @@ export const credentialSchema = z.object({
 });
 
 export const UID = z.object({UID:z.string()});
+
+
+export const VaultsArraySchema = z.object({
+    id: z.string().optional(),
+    name: z.string().optional().optional(),
+    role: z.string().optional().optional(),
+    status: z.enum(["deleted", "available"]).optional(),
+    updatedAt: z.string().datetime(),
+  });
+
+export const syncVaultsSchema = z.object({
+    challenge: z.string(),  
+    authenticationData: z.object({
+        clientExtensionResults: z.record(z.string(), z.any()),
+        id: z.string(),
+        rawId: z.string(),
+        type: z.literal('public-key'),
+        authenticatorAttachment: z.enum(['cross-platform', 'platform']),
+        response: z.object({
+          authenticatorData: z.string(),
+          clientDataJSON: z.string(),
+          signature: z.string(),
+          userHandle: z.string(),
+        }),
+    }),
+    vaults: z.array(VaultsArraySchema)    
+})

@@ -1,6 +1,7 @@
-import {dbReadAll, getEntryById, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
+import {dbReadAll, dbUpdate, getEntryById,dbUpsert, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
 import queryHelper  from "../utils/query-helper"
 import { trpc } from "../utils/trpc";
+import { queryChallenge }from "../components/authLogic"
 
 interface dbArrays {
   [key: string]: any;
@@ -48,7 +49,7 @@ function syncArrays(local: dbArrays[], cloud: dbArrays[],key: string):
 
 export async function syncVaults(){
 
-  const indexedArray = await dbReadAll("Vaults") as ReadAllResultTypes["Vaults"] ;
+  const indexedArray = await dbReadAll("Vaults")      as ReadAllResultTypes["Vaults"] ;
   const credentials  = await dbReadAll("Credentials") as ReadAllResultTypes["Credentials"] ;
   const UID = credentials[0].UID
 
@@ -57,8 +58,32 @@ export async function syncVaults(){
   });
   console.log(indexedArray, data)
 
-  if (data?.message){
-  const {localToCloud,cloudToLocal} =  syncArrays(indexedArray, data.message, "name")
-    console.log(localToCloud,cloudToLocal)
-  }
+  if (!data?.message) return
+  const {localToCloud,cloudToLocal} = syncArrays(indexedArray, data.message, "name");
+
+    if (cloudToLocal && cloudToLocal.length > 0) {
+      cloudToLocal.forEach(async (entry) => {
+        await dbUpsert("Vaults:update", {
+          id: entry.id.id,
+          updatedAt: entry.updatedAt,
+          status: entry.status,
+        });
+      });
+    };
+  
+  (async () => {
+
+    const { authentication, challenge } = await queryChallenge() as any;
+
+    if (!authentication && !challenge) throw new Error("Database not connected.");
+
+    const [authData, authError] = await queryHelper.direct("auth", async () => {
+      return await trpc.syncvaults.mutate({
+          challenge,
+          authenticationData: authentication,
+          vaults: localToCloud
+      });
+    });
+  })();  
+  
 }
