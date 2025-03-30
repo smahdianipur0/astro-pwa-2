@@ -66,21 +66,25 @@ export async function syncVaults(){
   const [data, error] = await queryHelper.direct("cloudVaults", async () => {
     return await trpc.queryVaults.query({UID: UID}) as dbObject;
   });
-  console.log("whats on indexed:",indexedArray,"whats on cloud", data)
+
+  if (error){ console.log(error); return}
+
 
   if (!data?.message) return
+  const transformedArray = data.message.map(item => item.out);
+  console.log("whats on indexed:",indexedArray,"whats on cloud",transformedArray)
   const {localToCloud, cloudToLocal} = syncArrays<VaultsSchema[number]>(
     indexedArray as VaultsSchema, 
-    data.message as VaultsSchema, 
+    transformedArray as VaultsSchema, 
     "name"
   );
   console.log("localToCloud", localToCloud,"cloudToLocal",cloudToLocal)
   console.log(cloudToLocal.length)
     if (cloudToLocal && cloudToLocal.length > 0) {
       cloudToLocal.forEach(async (entry) => {
-        const entryAny = entry as any;
-        await dbUpsert("Vaults:update", {
-          id: entryAny.id.id,
+        await dbUpsert( "Vaults:update", {
+          id: entry.name,
+          name: entry.name,
           updatedAt: entry.updatedAt,
           status: entry.status,
         });

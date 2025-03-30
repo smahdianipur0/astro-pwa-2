@@ -17,7 +17,7 @@
   --extra-small-font: calc(100% / var(--x03));
 
 
-  --gap: 1.1ch;
+  --gap: 1.13ch;
   --gap-3xs: calc(var(--gap) / var(--x05));
   --gap-xxs: calc(var(--gap) / var(--x04));
   --gap-xs:  calc(var(--gap) / var(--x03));
@@ -32,12 +32,12 @@
   --gap-x10: calc(var(--gap) * var(--x10));
 
 
-  --default-padding: calc( var(--gap-x02) / 2)  var(--gap-x02);
+  --default-padding: calc( var(--gap-x03) / 2)  var(--gap-x03);
   --thin-padding: 0.1ch var(--gap);
 
 
-  --radius-a: calc(var(--gap-x06) * 0.227);
-  --radius-b: calc(var(--gap-x06) * 0.365);
+  --radius-a: calc((var(--gap-x03) + var(--gap-x04)) * 0.227);
+  --radius-b: calc((var(--gap-x03) + var(--gap-x04)) * 0.365);
 
   --z-layer-top: 4;
   --z-layer-higher: 3;

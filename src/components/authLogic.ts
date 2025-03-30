@@ -192,53 +192,38 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
 
     if ((e!.target as HTMLInputElement).matches("#authentication")) {
         (async () => {
+            const authResult = document.getElementById("auth_result");
+            if (!authResult){return}
+            
             try {
                 const { authentication, challenge } = await queryChallenge();
         
-                if (!authentication) {
-                    document.getElementById("auth_result")!.textContent = "Failed to get authentication";
-                    return;
-                }
+                if (!authentication) { authResult.textContent = "Failed to start authentication"; return; }
                 
                 document.getElementById("auth_result")!.textContent = "Connecting to the server...";
                 
                 const { authData, authError } = await validateAuthentication(challenge, authentication);
                 console.log("Authentication complete", authData, authError);
 
-                if (authError) {
-                    document.getElementById("auth_result")!.textContent = "Authentication Failed";
-                    console.error("Authentication error:", authError);
-                    return;
-                }
-
-                if (!authData) {
-                    document.getElementById("auth_result")!.textContent = "No response from server";
-                    return;
-                }
                 
-                if (!authData.authenticated || !authData.credentialId) {
-                    document.getElementById("auth_result")!.textContent = "Authentication unsuccessful";
-                    return;
-                }
-                
-                if (!user) {
-                    document.getElementById("auth_result")!.textContent = "User data not found";
-                    return;
-                }
 
+                if (authError) {authResult.textContent = "Authentication Failed"; return;}
+                if (!authData) {authResult.textContent = "Authentication Failed"; return;}
+                if (!authData.authenticated || !authData.credentialId) {authResult.textContent = "Authentication Failed"; return; }
+                
+                if (!user ) { return }
+                if (!user[0].id ) { return }
+                const userId = user[0].id.id;
+
+                // handle Succeeded auth 
                 updateSucceededAuth();
-                
-                const userId = user[0]?.id?.id;
-                if (!userId) {
-                    document.getElementById("auth_result")!.textContent = "Invalid user ID";
-                    return;
-                }
-                
+
                 dbUpdate("Credentials:update", { id: userId, registered: true, UID: authData.credentialId });
+
                 setIndexedUid(true);
             } catch (error) {
                 console.error("Authentication flow error:", error);
-                document.getElementById("auth_result")!.textContent = "Authentication process failed";
+                authResult.textContent = "Authentication Failed";
             }
         })();
     }

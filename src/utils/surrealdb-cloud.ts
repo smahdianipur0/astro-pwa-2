@@ -64,7 +64,7 @@ export async function dbCreateUser(userID: string, credential: object): Promise<
   return result;
 }
 
-export async function dbQueryUser(userID: string): Promise<object[] | []> {
+export async function dbQueryUser(userID: string): Promise<object | undefined> {
   if (!db) throw new Error("Database not connected.");
 
   try {
@@ -72,30 +72,19 @@ export async function dbQueryUser(userID: string): Promise<object[] | []> {
     const getobject = await db.query(
       'SELECT credentials FROM users WHERE UID = $UID ;',
       { UID: userID }
-    ) as any[];
+    );
     
-    console.log("Raw query result:", JSON.stringify(getobject, null, 2));
+    if (
+        !Array.isArray(getobject) || getobject.length === 0 || 
+        !Array.isArray(getobject[0]) || getobject[0].length === 0 || 
+        !getobject[0][0]?.credentials
+    ) {throw new Error("Invalid credential format");}
+
+    const credentialObj = getobject[0][0].credentials;
     
-    // Check if the result has the expected structure
-    if (!getobject || !Array.isArray(getobject) || getobject.length === 0) {
-      console.log("No user found for ID:", userID);
-      return [];
-    } 
-    
-    // Verify that the first result has the expected structure
-    if (!getobject[0]) {
-      console.log("Invalid result structure:", getobject);
-      return [];
-    }
-    
-    // For debugging, log the actual structure received
-    console.log("Result structure:", typeof getobject[0], JSON.stringify(getobject[0], null, 2));
-    
-    return getobject;
+    return credentialObj;
   } catch (err: unknown) {
-    console.error("Error in dbQueryUser:", err);
-    // Don't throw, return empty array to prevent the server from hanging
-    return [];
+    throw new Error(`Error in dbQueryUser: ${err}`);
   }
 }
 

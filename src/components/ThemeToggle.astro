@@ -1,4 +1,4 @@
-<input style="  
+<input class="max-width flex-spread-childs" style="  
 appearance: none;
 -webkit-appearance: none;
 cursor: pointer;
@@ -34,29 +34,30 @@ checkboxElementOne.addEventListener("change", updateURL);
 
 <style>
 
-#theme-toggle:before {
+#theme-toggle::before{
   color:oklch(var(--gray-95) / 1);
-  content: 'Change Theme: ☀️';
-  display: block;
-  width: 20ch; 
+  content: 'Change Theme:';
+} 
+
+#theme-toggle::after {
+  color:oklch(var(--gray-95) / 1);
+  content: '☀️';
 }
 
 	
 
-:root:has(#theme-toggle:checked) #theme-toggle:before {
-  content: 'Change Theme: 🌙'; 
+:root:has(#theme-toggle:checked) #theme-toggle:after {
+  content: '🌙'; 
 }
 
 @media (prefers-color-scheme:light) {
 
-  #theme-toggle:before {
+  #theme-toggle::after {
     color:oklch(var(--gray-95) / 1);
     content: 'Change Theme: 🌙';
-    display: block;
-    width: 20ch;
   }
 
-  :root:has(#theme-toggle:checked) #theme-toggle:before {
+  :root:has(#theme-toggle:checked) #theme-toggle::after {
     content: 'Change Theme: ☀️'; 
   }
 

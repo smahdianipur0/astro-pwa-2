@@ -41,12 +41,10 @@ export const authenticationInputSchema = z.object({
 });
 
 export const credentialSchema = z.object({
-    credentials: z.object({
-        algorithm: z.literal("ES256"),
-        id: z.string(),
-        publicKey: z.string(),
-        transports: z.tuple([z.literal('internal')])
-    })
+    algorithm: z.literal("ES256"),
+    id: z.string(),
+    publicKey: z.string(),
+    transports: z.array(z.enum(['hybrid', 'internal', 'usb', 'nfc', 'ble']))
 });
 
 export const UID = z.object({UID:z.string()});

@@ -53,24 +53,14 @@ export const appRouter = router({
     authenticate: t.procedure
         .input(authenticationInputSchema)
         .mutation(async ({ input }) => {
-            console.log("Authentication request received:", input.authenticationData.id);
             
             try {
-                const credentials = await dbQueryUser(input.authenticationData.id) as any[] || [];
-                
-                if (!credentials || !Array.isArray(credentials) || credentials.length === 0 || !credentials[0]) {
-                    throw new Error("Failed to find user"); 
-                }
-                
-                const outerArray = credentials[0];
-                if (!Array.isArray(outerArray) || outerArray.length === 0 || !outerArray[0]) {
-                    throw new Error("Invalid credential format");
-                }
-                
-                const userObject = outerArray[0];
-                if (!userObject || !userObject.credentials) {throw new Error("Invalid credential format")}
-                const credentialObj = userObject.credentials;
-                console.log(credentialObj);
+                const dbResult = await dbQueryUser(input.authenticationData.id);
+
+                const parsedCredential = credentialSchema.safeParse(dbResult);
+                if (!parsedCredential.success) { throw new Error("Credential does not match expected schema"); }
+
+                const credentialObj = parsedCredential.data;
 
                 try {
                     const authenticationParsed = await server.verifyAuthentication(
@@ -110,20 +100,12 @@ export const appRouter = router({
             console.log("Authentication request received:", input.authenticationData.id);
             
             try {
-                const credentials = await dbQueryUser(input.authenticationData.id) as any[] || [];
-                
-                if (!credentials || !Array.isArray(credentials) || credentials.length === 0 || !credentials[0]) {
-                    throw new Error("Failed to find user"); 
-                }
-                
-                const outerArray = credentials[0];
-                if (!Array.isArray(outerArray) || outerArray.length === 0 || !outerArray[0]) {
-                    throw new Error("Invalid credential format");
-                }
-                
-                const userObject = outerArray[0];
-                if (!userObject || !userObject.credentials) {throw new Error("Invalid credential format")}
-                const credentialObj = userObject.credentials;
+                const dbResult = await dbQueryUser(input.authenticationData.id);
+
+                const parsedCredential = credentialSchema.safeParse(dbResult);
+                if (!parsedCredential.success) { throw new Error("Credential does not match expected schema"); }
+
+                const credentialObj = parsedCredential.data;
 
                 try {
                     const authenticationParsed = await server.verifyAuthentication(
@@ -136,11 +118,8 @@ export const appRouter = router({
                         }
                     );
                     
-                    if (!authenticationParsed.userVerified) {
-                        throw new Error("Authentication failed");
-                    }
+                    if (!authenticationParsed.userVerified) { throw new Error("Authentication failed"); }
                     
-                    console.log(input.vaults);
                     input.vaults.forEach(async (entry) => {
                         if(entry.role === "owner" && entry.status === "available") {
                             console.log("adding to cloud");
