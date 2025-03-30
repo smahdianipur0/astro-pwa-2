@@ -50,13 +50,20 @@ export async function queryChallenge() {
 
 
 async function validateAuthentication(challenge: string, authentication: any) {
-    const [authData, authError] = await queryHelper.direct("auth", async () => {
-        return await trpc.authenticate.mutate({
-            challenge,
-            authenticationData: authentication,
+    try {
+        console.log("Sending authentication request to server");
+        const [authData, authError] = await queryHelper.direct("auth", async () => {
+            return await trpc.authenticate.mutate({
+                challenge,
+                authenticationData: authentication,
+            });
         });
-    });
-    return { authData, authError };
+        console.log("Authentication response:", authData, "Error:", authError);
+        return { authData, authError };
+    } catch (error) {
+        console.error("Error in authentication request:", error);
+        return { authData: null, authError: error };
+    }
 }
 
 
@@ -159,7 +166,7 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
                     });
                 });
 
-                console.log(registryData, registryError)
+                console.log("registryData", registryData, registryError)
 
                 if (registryData)  {
                     
@@ -185,33 +192,54 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
 
     if ((e!.target as HTMLInputElement).matches("#authentication")) {
         (async () => {
-            const { authentication, challenge } = await queryChallenge();
-    
-            if (authentication) {
-                document.getElementById("auth_result")!.textContent = "Connecting to the server...";
-            }
-    
-            const { authData, authError } = await validateAuthentication(challenge, authentication);
-
-            if (authData)  {
+            try {
+                const { authentication, challenge } = await queryChallenge();
+        
+                if (!authentication) {
+                    document.getElementById("auth_result")!.textContent = "Failed to get authentication";
+                    return;
+                }
                 
-                if (!authData?.authenticated || !authData.credentialId) return;
-                if (!user) return;
+                document.getElementById("auth_result")!.textContent = "Connecting to the server...";
+                
+                const { authData, authError } = await validateAuthentication(challenge, authentication);
+                console.log("Authentication complete", authData, authError);
+
+                if (authError) {
+                    document.getElementById("auth_result")!.textContent = "Authentication Failed";
+                    console.error("Authentication error:", authError);
+                    return;
+                }
+
+                if (!authData) {
+                    document.getElementById("auth_result")!.textContent = "No response from server";
+                    return;
+                }
+                
+                if (!authData.authenticated || !authData.credentialId) {
+                    document.getElementById("auth_result")!.textContent = "Authentication unsuccessful";
+                    return;
+                }
+                
+                if (!user) {
+                    document.getElementById("auth_result")!.textContent = "User data not found";
+                    return;
+                }
 
                 updateSucceededAuth();
                 
                 const userId = user[0]?.id?.id;
-                if (!userId) return;
-                // use authData.credentialId as UID}
+                if (!userId) {
+                    document.getElementById("auth_result")!.textContent = "Invalid user ID";
+                    return;
+                }
+                
                 dbUpdate("Credentials:update", { id: userId, registered: true, UID: authData.credentialId });
                 setIndexedUid(true);
+            } catch (error) {
+                console.error("Authentication flow error:", error);
+                document.getElementById("auth_result")!.textContent = "Authentication process failed";
             }
-
-            if (authError) {
-                document.getElementById("auth_result")!.textContent = "Authentication Failed"
-                console.log(authError?.message)
-            }
-
         })();
     }
 });

@@ -1,7 +1,6 @@
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import type { Context } from "./context.ts";
-import { z } from "zod";
 import { 
     dbCreateUser, 
     dbCreateVault, 
@@ -40,7 +39,7 @@ export const appRouter = router({
             let addToDb: string | undefined;
             const expected = {
                 challenge: input.challenge,
-                origin: "https://keypass.vercel.app",
+                origin: "http://localhost:4321",
             }
             const registrationParsed = await server.verifyRegistration(input.registry, expected);
             if (registrationParsed.userVerified === true) {
@@ -54,24 +53,44 @@ export const appRouter = router({
     authenticate: t.procedure
         .input(authenticationInputSchema)
         .mutation(async ({ input }) => {
-            const [credential] = await dbQueryUser(input.authenticationData.id) as z.infer<typeof credentialSchema>[];
-            if (!credential) return { message: "Failed to find user" };
-
-            const authenticationParsed = await server.verifyAuthentication(
-                input.authenticationData,
-                credential.credentials,
-                {
-                    challenge: input.challenge,
-                    origin: "https://keypass.vercel.app",
-                    userVerified: true,
+            console.log("Authentication request received:", input.authenticationData.id);
+            
+            try {
+                const credentials = await dbQueryUser(input.authenticationData.id) as any[] || [];
+                
+                if (!credentials || !Array.isArray(credentials) || credentials.length === 0 || !credentials[0]) {
+                    throw new Error("Failed to find user"); 
                 }
-            );
+                
+                const outerArray = credentials[0];
+                if (!Array.isArray(outerArray) || outerArray.length === 0 || !outerArray[0]) {
+                    throw new Error("Invalid credential format");
+                }
+                
+                const userObject = outerArray[0];
+                if (!userObject || !userObject.credentials) {throw new Error("Invalid credential format")}
+                const credentialObj = userObject.credentials;
+                console.log(credentialObj);
 
-            return {
-                message: authenticationParsed.userVerified ? "Authentication successful" : "Authentication failed",
-                authenticated: authenticationParsed.userVerified,
-                credentialId: credential.credentials.id
-            };
+                try {
+                    const authenticationParsed = await server.verifyAuthentication(
+                        input.authenticationData,
+                        credentialObj,
+                        {
+                            challenge: input.challenge,
+                            origin: "http://localhost:4321",
+                            userVerified: true,
+                        }
+                    );
+                    
+                    return {
+                        message: authenticationParsed.userVerified ? "Authentication successful" : "Authentication failed",
+                        authenticated: authenticationParsed.userVerified,
+                        credentialId: credentialObj.id
+                    };
+                    
+                } catch (verifyError) { throw new Error(`Authentication verification error: ${verifyError}`); }
+            } catch (error) { throw new Error(`Authentication verification error: ${error}`);}
         }),        
 
         greet: t.procedure
@@ -88,27 +107,60 @@ export const appRouter = router({
         syncvaults : t.procedure
         .input(syncVaultsSchema)
         .mutation(async ({ input }) => {
-            const [credential] = await dbQueryUser(input.authenticationData.id) as z.infer<typeof credentialSchema>[];
-            if (!credential) return { message: "Failed to find user" };
-
-            const authenticationParsed = await server.verifyAuthentication(
-                input.authenticationData,
-                credential.credentials,
-                {
-                    challenge: input.challenge,
-                    origin: "https://keypass.vercel.app",
-                    userVerified: true,
-                }
-            );
-            if (!authenticationParsed.userVerified) throw new Error("Authentication failed");
-
+            console.log("Authentication request received:", input.authenticationData.id);
             
+            try {
+                const credentials = await dbQueryUser(input.authenticationData.id) as any[] || [];
+                
+                if (!credentials || !Array.isArray(credentials) || credentials.length === 0 || !credentials[0]) {
+                    throw new Error("Failed to find user"); 
+                }
+                
+                const outerArray = credentials[0];
+                if (!Array.isArray(outerArray) || outerArray.length === 0 || !outerArray[0]) {
+                    throw new Error("Invalid credential format");
+                }
+                
+                const userObject = outerArray[0];
+                if (!userObject || !userObject.credentials) {throw new Error("Invalid credential format")}
+                const credentialObj = userObject.credentials;
 
-            // return {
-            //     message: authenticationParsed.userVerified ? "Authentication successful" : "Authentication failed",
-            //     authenticated: authenticationParsed.userVerified,
-            //     credentialId: credential.credentials.id
-            // };
+                try {
+                    const authenticationParsed = await server.verifyAuthentication(
+                        input.authenticationData,
+                        credentialObj,
+                        {
+                            challenge: input.challenge,
+                            origin: "https://keypass.vercel.app",
+                            userVerified: true,
+                        }
+                    );
+                    
+                    if (!authenticationParsed.userVerified) {
+                        throw new Error("Authentication failed");
+                    }
+                    
+                    console.log(input.vaults);
+                    input.vaults.forEach(async (entry) => {
+                        if(entry.role === "owner" && entry.status === "available") {
+                            console.log("adding to cloud");
+                            console.log(entry);
+                            await dbCreateVault(credentialObj.id, entry.name, entry.updatedAt, entry.status);
+                        }
+                        if(entry.role === "owner" && entry.status === "deleted") {
+                            console.log("updating cloud");
+                            console.log(entry);
+                            await dbUpdateVault(entry.name, entry.updatedAt, entry.status);
+                        }
+                    });
+
+                    return {
+                        message: "Sync successful",
+                        credentialId: credentialObj.id
+                    };
+                    
+                } catch (verifyError) { throw new Error(`Authentication verification error: ${verifyError}`); }
+            } catch (error) { throw new Error(`Authentication verification error: ${error}`);}
         }),   
 
         dbquery: t.procedure

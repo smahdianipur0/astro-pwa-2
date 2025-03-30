@@ -1,11 +1,21 @@
-import {dbReadAll, dbUpdate, getEntryById,dbUpsert, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
+import {dbReadAll,dbUpsert, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
 import queryHelper  from "../utils/query-helper"
 import { trpc } from "../utils/trpc";
 import { queryChallenge }from "../components/authLogic"
 
+type VaultsSchema = {
+  id?: string;
+  name: string;
+  role?: string;
+  status?: "deleted" | "available";
+  updatedAt: string;
+}[];
+
+
 interface dbArrays {
   [key: string]: any;
   updatedAt: string; 
+  name: string
 }
 
 interface dbObject {
@@ -17,14 +27,14 @@ interface dbError{
   message: string
 }
 
-function syncArrays(local: dbArrays[], cloud: dbArrays[],key: string): 
-{ localToCloud: dbArrays[]; cloudToLocal: dbArrays[] } {
+function syncArrays<T extends dbArrays>(local: T[], cloud: T[], key: string): 
+{ localToCloud: T[]; cloudToLocal: T[] } {
   
-  const localMap = new Map<string, dbArrays>(local.map(obj => [obj[key], obj]));
-  const cloudMap = new Map<string, dbArrays>(cloud.map(obj => [obj[key], obj]));
+  const localMap = new Map<string, T>(local.map(obj => [obj[key], obj]));
+  const cloudMap = new Map<string, T>(cloud.map(obj => [obj[key], obj]));
 
-  const localToCloud: dbArrays[] = [];
-  const cloudToLocal: dbArrays[] = [];
+  const localToCloud: T[] = [];
+  const cloudToLocal: T[] = [];
 
   for (const localObj of local) {
     const cloudObj = cloudMap.get(localObj[key]);
@@ -56,34 +66,57 @@ export async function syncVaults(){
   const [data, error] = await queryHelper.direct("cloudVaults", async () => {
     return await trpc.queryVaults.query({UID: UID}) as dbObject;
   });
-  console.log(indexedArray, data)
+  console.log("whats on indexed:",indexedArray,"whats on cloud", data)
 
   if (!data?.message) return
-  const {localToCloud,cloudToLocal} = syncArrays(indexedArray, data.message, "name");
-
+  const {localToCloud, cloudToLocal} = syncArrays<VaultsSchema[number]>(
+    indexedArray as VaultsSchema, 
+    data.message as VaultsSchema, 
+    "name"
+  );
+  console.log("localToCloud", localToCloud,"cloudToLocal",cloudToLocal)
+  console.log(cloudToLocal.length)
     if (cloudToLocal && cloudToLocal.length > 0) {
       cloudToLocal.forEach(async (entry) => {
+        const entryAny = entry as any;
         await dbUpsert("Vaults:update", {
-          id: entry.id.id,
+          id: entryAny.id.id,
           updatedAt: entry.updatedAt,
           status: entry.status,
         });
       });
-    };
-  
-  (async () => {
+    
+    console.log("added to local");
+  };
+  if  (localToCloud && localToCloud.length > 0) {
+    (async () => {
 
-    const { authentication, challenge } = await queryChallenge() as any;
+      const { authentication, challenge } = await queryChallenge() as any;
 
-    if (!authentication && !challenge) throw new Error("Database not connected.");
+      console.log("requesting challenge")
+      console.log("Data being sent to syncvaults:", JSON.stringify(localToCloud));
 
-    const [authData, authError] = await queryHelper.direct("auth", async () => {
-      return await trpc.syncvaults.mutate({
-          challenge,
-          authenticationData: authentication,
-          vaults: localToCloud
+      // Validate and ensure all required fields are present
+      const validVaults = localToCloud.filter(vault => 
+        vault.name !== undefined && 
+        vault.updatedAt !== undefined
+      );
+
+      if (validVaults.length === 0) {
+        console.error("No valid vaults to sync - missing required fields");
+        return;
+      }
+
+      if (!authentication && !challenge) throw new Error("Database not connected.");
+
+      const [authData, authError] = await queryHelper.direct("auth", async () => {
+        return await trpc.syncvaults.mutate({
+            challenge,
+            authenticationData: authentication,
+            vaults: validVaults
+        });
       });
-    });
-  })();  
-  
+      console.log(authData, authError)
+    })();  
+  };
 }

@@ -32,20 +32,19 @@
   --gap-x10: calc(var(--gap) * var(--x10));
 
 
-  --default-padding: calc( var(--gap-x03) / 2)  var(--gap-x03);
+  --default-padding: calc( var(--gap-x02) / 2)  var(--gap-x02);
   --thin-padding: 0.1ch var(--gap);
 
 
-  --radius-a: 0.96ch;
-  --radius-b: 1.56ch;
-  --radius-c: 2.5ch;
+  --radius-a: calc(var(--gap-x06) * 0.227);
+  --radius-b: calc(var(--gap-x06) * 0.365);
 
   --z-layer-top: 4;
   --z-layer-higher: 3;
   --z-layer-middle: 2;
   --z-layer-beneath: -1;
 
-  --appear: cubic-bezier(0.6, 1.45, 0.5, 1);
+  --appear: cubic-bezier(0.6, 1.65, 0.5, 1);
   --move:cubic-bezier(0.32, 0.72, 0, 1);
 
 }

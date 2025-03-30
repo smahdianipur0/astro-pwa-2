@@ -64,21 +64,38 @@ export async function dbCreateUser(userID: string, credential: object): Promise<
   return result;
 }
 
-export async function dbQueryUser(userID: string): Promise<object | undefined> {
-
+export async function dbQueryUser(userID: string): Promise<object[] | []> {
   if (!db) throw new Error("Database not connected.");
 
   try {
+    console.log("Querying user with ID:", userID);
     const getobject = await db.query(
       'SELECT credentials FROM users WHERE UID = $UID ;',
       { UID: userID }
-    ) as object[];
-    console.log(getobject);
-    return getobject[0];
-
+    ) as any[];
+    
+    console.log("Raw query result:", JSON.stringify(getobject, null, 2));
+    
+    // Check if the result has the expected structure
+    if (!getobject || !Array.isArray(getobject) || getobject.length === 0) {
+      console.log("No user found for ID:", userID);
+      return [];
+    } 
+    
+    // Verify that the first result has the expected structure
+    if (!getobject[0]) {
+      console.log("Invalid result structure:", getobject);
+      return [];
+    }
+    
+    // For debugging, log the actual structure received
+    console.log("Result structure:", typeof getobject[0], JSON.stringify(getobject[0], null, 2));
+    
+    return getobject;
   } catch (err: unknown) {
-    console.log(err);
-    throw new Error(err instanceof Error ? err.message : String(err))
+    console.error("Error in dbQueryUser:", err);
+    // Don't throw, return empty array to prevent the server from hanging
+    return [];
   }
 }
 
@@ -117,7 +134,7 @@ export async function dbQueryRole(userID: string, vaultName: string): Promise<ob
   }
 }
 
-export async function dbCreateVault(userID: string,vaultName: string ): Promise<object | undefined> {
+export async function dbCreateVault(userID: string,vaultName: string, updatedAt:string, status:string ): Promise<object | undefined> {
  
   if (!db) throw new Error("Database not connected.")
 
@@ -125,7 +142,8 @@ export async function dbCreateVault(userID: string,vaultName: string ): Promise<
     const response = await db.query_raw(`
       BEGIN TRANSACTION;
       LET $user = (SELECT id FROM users WHERE UID = $UID);
-      LET $vault = (CREATE vaults SET id = $vaultName, name = $vaultName);
+      LET $vaultCount = (SELECT vaultCount FROM users WHERE UID = $UID);
+      LET $vault = (CREATE vaults SET id = $vaultName, name = $vaultName, updatedAt = $updatedAt, status = $status);
       
       INSERT RELATION INTO has_vault {
         in:  $user[0].id,
@@ -135,7 +153,7 @@ export async function dbCreateVault(userID: string,vaultName: string ): Promise<
 
       UPSERT users SET vaultCount = $vaultCount[0].vaultCount + 1 WHERE UID = $UID;
       COMMIT TRANSACTION; `,
-    { UID: userID, vaultName: vaultName}
+    { UID: userID, vaultName: vaultName, updatedAt:updatedAt, status:status}
     );
     console.log(response);
 
