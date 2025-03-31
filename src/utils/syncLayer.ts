@@ -6,7 +6,7 @@ import { queryChallenge }from "../components/authLogic"
 type VaultsSchema = {
   id?: string;
   name: string;
-  role?: string;
+  role?: "owner" | "viewer";
   status?: "deleted" | "available";
   updatedAt: string;
 }[];
@@ -85,8 +85,9 @@ export async function syncVaults(){
         await dbUpsert( "Vaults:update", {
           id: entry.name,
           name: entry.name,
-          updatedAt: entry.updatedAt,
           status: entry.status,
+          role: entry.role,
+          updatedAt: entry.updatedAt,
         });
       });
     

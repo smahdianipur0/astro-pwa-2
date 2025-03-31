@@ -53,7 +53,7 @@ export const UID = z.object({UID:z.string()});
 export const VaultsArraySchema = z.object({
     id: z.string().optional(),
     name: z.string(),
-    role: z.string().optional(),
+    role: z.enum(["owner", "viewer"]).optional(),
     status: z.enum(["deleted", "available"]).optional(),
     updatedAt: z.string().datetime(),
   });
