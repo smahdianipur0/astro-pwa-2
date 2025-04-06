@@ -1,7 +1,7 @@
 ---
-import Card from "../components/Card.astro";
-import DrawerFromRight from '../components/DrawerFromRght.tsx';
-import Dialog from "../components/Dialog.astro"
+import Card from "../components/ui/Card.astro";
+import DrawerFromRight from './ui/DrawerFromRght.tsx';
+import Dialog from "../components/ui/Dialog.astro"
 ---
 
 <div  style="
@@ -58,34 +58,42 @@ overflow-x: hidden;">
 
     <div class="max-width flex-center-childs"style="margin-bottom: var(--gap-x06);">
       <DrawerFromRight client:load>
-     
-      <div data-corvu-no-drag class="flex-center-childs" style="align-items: baseline;
-            padding-inline: var(--gap-x02);
-            height:100%;
-            margin-left: var(--gap-x03);
-            overflow-y: scroll;" >
-        <div class="card-border"  style="margin-left: calc(var(--gap-x03)* -1);">
-          <div class="card glass box-shadow max-width">
-            <div  class="entries-list" id="recent-del-list"></div>
+
+        <fragment slot="trigger">
+          <div class='menu-item' style="border-radius: var(--radius-a);margin-inline: auto;">
+              <div>Recently Deleted</div>
+              <svg style="padding: 2px" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.293 4.293a1 1 0 0 0 0 1.414L14.586 12l-6.293 6.293a1 1 0 1 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7a1 1 0 0 0-1.414 0Z" fill="oklch(var(--gray-95) / 0.5)"/></svg>
           </div>
+        </fragment>
+
+        <fragment slot="content">
+        <div data-corvu-no-drag class="flex-center-childs" style="align-items: baseline;
+              padding-inline: var(--gap-x02);
+              height:100%;
+              margin-left: var(--gap-x03);
+              overflow-y: scroll;" >
+          <div class="card-border"  style="margin-left: calc(var(--gap-x03)* -1);">
+            <div class="card glass box-shadow max-width">
+              <div  class="entries-list" id="recent-del-list"></div>
+            </div>
+          </div>
+        </div> 
+      <Dialog identifier="restore-dialog">
+        <h3 style="margin-top: 0;">Restore Item</h3>
+        <div id="restore-list"style="display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        background: oklch(var(--gray-10) / 20%);
+        border-radius: var(--radius-a);
+        padding: var(--gap-x02);"></div>
+        <div class="flex-center-childs" style="gap:var(--gap);margin-top:var(--gap-x04);">
+          
+          <button class="unstyle-button not-prose max-width" >Cancel</button>
+          <button class="max-width" id="confirm-restore">Restore</button>
+          
         </div>
-      </div> 
-    <Dialog identifier="restore-dialog">
-      <h3 style="margin-top: 0;">Restore Item</h3>
-      <div id="restore-list"style="display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      background: oklch(var(--gray-10) / 20%);
-      border-radius: var(--radius-a);
-      padding: var(--gap-x02);"></div>
-      <div class="flex-center-childs" style="gap:var(--gap);margin-top:var(--gap-x04);">
-        
-        <button class="unstyle-button not-prose max-width" >Cancel</button>
-        <button class="max-width" id="confirm-restore">Restore</button>
-        
-      </div>
-    </Dialog>
-    
+      </Dialog>
+    </fragment>
     </DrawerFromRight>
   </div>
 

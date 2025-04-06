@@ -39,6 +39,7 @@ createEffect(() => { setListPassword(password()) });
 
 
 (async () => {
+	document.getElementById("add-drawer-trigger")!.classList.remove('blink');
 
 	const inputGroup     = (await element.wait("#input-group"))      as HTMLElement;
 	const entriesList    = (await element.wait("#entries-list"))     as HTMLElement;
@@ -47,6 +48,7 @@ createEffect(() => { setListPassword(password()) });
 	const addEntryButton = (await element.wait("#add-entry-button")) as HTMLButtonElement;
 	const searchInputEl  = (await element.wait("#search-input"))     as HTMLInputElement;
 
+	
 	document.getElementById("search-box")!.addEventListener("input",(e)=>{
 		if((e!.target as HTMLInputElement).matches("#search-input")){
 		   setSearchInput((e!.target as HTMLInputElement).value);

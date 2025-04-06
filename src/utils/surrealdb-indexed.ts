@@ -30,7 +30,7 @@ export type Schemas = {
 };
 
 export type rSchemas = {
-	has_card : {in: string}
+	Vaults_has : {in: string}
 };
 
 
@@ -105,34 +105,51 @@ export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: 
 		console.error("Database not initialized");
 		return;
 	}
+	const outRecord = `${action.split(":")[0]}:${data.id}`;
 
-	let outTable = "";
-	let outValiues: { [key: string]: any } = {};
-	let inValues:   { [key: string]: any } = {};
+	let rTable = "";
+	let rValiues: { [key: string]: any } = {};
+	let outValues:   { [key: string]: any } = {};
 
 	Object.entries(data).forEach(([key, value]) => {
-		if (key.startsWith("to:")) {outTable = key; outValiues = value;
-		} else {inValues[key] = value;}
-	})
+		if (key.startsWith("to:")) {
+			rTable = key; 
+			rValiues = value;
+			rValiues["in"] = `${(rTable.split("_")[0]).split(":")[1]}:${value.in}`;
+			rValiues["out"] = `${action.split(":")[0]}:${data.id}`;
+		} else {
+			outValues[key] = value;
+		}
+	});
 
-	if (outTable === "" || outValiues.length === 0){ console.log("incomplete data"); return;}
+
+	if (rTable === "" || rValiues.length === 0){ console.log("incomplete data"); return;}
+
+	console.log(
+	"outTable  :",action.split(":")[0], 
+	"outValues :",outValues, 
+	"rTable    :",rTable.split(":")[1], 
+	"outRecord :",outRecord,
+	"rValiues  :",rValiues )
 
 	try { 
 		await db.query(`
 			BEGIN TRANSACTION;
-			LET $user = (SELECT id FROM users WHERE UID = $UID);
-			LET $vaultCount = (SELECT vaultCount FROM users WHERE UID = $UID);
-			LET $vault = (CREATE vaults SET id = $vaultName, name = $vaultName, updatedAt = $updatedAt, status = $status);
 			
-			UPSERT $inTable CONTENT ${JSON.stringify(data)};
+			IF record::exists($outRecord) {
+				UPDATE $outTable CONTENT $outValues;
 
-			INSERT RELATION INTO has_vault {
-			  in:  $user[0].id,
-			  out: $vault[0].id,
-			};
+			} ELSE {
+				CREATE $outRecord CONTENT $outValues;
+				INSERT RELATION INTO $rTable CONTENT $rValiues;
+			}
 	  
 			COMMIT TRANSACTION; `,
-		  { inTable: action.split(":")[0], outTable: outTable.split(":")[1],   }
+		  { outTable  :action.split(":")[0], 
+			outValues :outValues, 
+			rTable    :rTable.split(":")[1], 
+			outRecord :outRecord,
+			rValiues  :rValiues  }
 		  );
 	} catch (err: unknown) {
 		console.error(`Failed to create entry in ${action}:`, err instanceof Error ? err.message : String(err));
@@ -141,7 +158,7 @@ export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: 
 	}
 }
 
-dbUpserelate("Cards:upserelate", {id:"heelo", title:"good", "to:has_card": {in:"hi"} });
+// dbUpserelate("Cards:upserelate", {id:"newcard1111", title:"good", "to:Vaults_has": {in:"vault111"} });
 
 
 export async function dbDelete<T extends `${TableName}:delete`>(action: T, id: string): Promise<void> {

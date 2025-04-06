@@ -1,4 +1,4 @@
-import '../styles/corvu.css'
+import '../../styles/corvu.css'
 import Popover from '@corvu/popover'
 import type { VoidComponent } from 'solid-js'
 

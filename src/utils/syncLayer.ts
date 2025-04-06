@@ -98,8 +98,6 @@ export async function syncVaults(){
 
       const { authentication, challenge } = await queryChallenge() as any;
 
-      console.log("requesting challenge")
-      console.log("Data being sent to syncvaults:", JSON.stringify(localToCloud));
 
       // Validate and ensure all required fields are present
       const validVaults = localToCloud.filter(vault => 
@@ -118,7 +116,7 @@ export async function syncVaults(){
         return await trpc.syncvaults.mutate({
             challenge,
             authenticationData: authentication,
-            vaults: validVaults
+            vaults: localToCloud
         });
       });
       console.log(authData, authError)
