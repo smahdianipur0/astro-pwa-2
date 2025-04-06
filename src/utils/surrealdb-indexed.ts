@@ -30,7 +30,7 @@ export type Schemas = {
 };
 
 export type rSchemas = {
-	Vaults_has : {in: string}
+	Vaults_has : {in: string, role:string}
 };
 
 
@@ -105,50 +105,43 @@ export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: 
 		console.error("Database not initialized");
 		return;
 	}
-	const outRecord = `${action.split(":")[0]}:${data.id}`;
 
+	const outRecord = `${action.split(":")[0]}:${data.id}`;
+	let inRecord = ""
 	let rTable = "";
 	let rValiues: { [key: string]: any } = {};
 	let outValues:   { [key: string]: any } = {};
 
 	Object.entries(data).forEach(([key, value]) => {
 		if (key.startsWith("to:")) {
-			rTable = key; 
-			rValiues = value;
-			rValiues["in"] = `${(rTable.split("_")[0]).split(":")[1]}:${value.in}`;
-			rValiues["out"] = `${action.split(":")[0]}:${data.id}`;
-		} else {
-			outValues[key] = value;
-		}
+			rTable = key;
+			rValiues = {... value}; 
+			delete rValiues.in;
+			inRecord = `${(rTable.split("_")[0]).split(":")[1]}:${value.in}`;
+			
+		} else {outValues[key] = value;}
 	});
 
-
 	if (rTable === "" || rValiues.length === 0){ console.log("incomplete data"); return;}
-
-	console.log(
-	"outTable  :",action.split(":")[0], 
-	"outValues :",outValues, 
-	"rTable    :",rTable.split(":")[1], 
-	"outRecord :",outRecord,
-	"rValiues  :",rValiues )
 
 	try { 
 		await db.query(`
 			BEGIN TRANSACTION;
-			
-			IF record::exists($outRecord) {
-				UPDATE $outTable CONTENT $outValues;
 
-			} ELSE {
-				CREATE $outRecord CONTENT $outValues;
-				INSERT RELATION INTO $rTable CONTENT $rValiues;
-			}
+			IF record::exists(type::thing({$outRecord})) {
+				UPDATE (type::table({$outTable})) CONTENT $outValues;
+
+			} ELSE { 
+				CREATE (type::thing({$outRecord})) CONTENT $outValues;
+				RELATE (type::thing({$inRecord}))-> (type::table({$rTable})) -> (type::thing({$outRecord})) CONTENT $rValiues;
+			};
 	  
 			COMMIT TRANSACTION; `,
 		  { outTable  :action.split(":")[0], 
 			outValues :outValues, 
 			rTable    :rTable.split(":")[1], 
 			outRecord :outRecord,
+			inRecord  :inRecord,
 			rValiues  :rValiues  }
 		  );
 	} catch (err: unknown) {
@@ -158,7 +151,7 @@ export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: 
 	}
 }
 
-// dbUpserelate("Cards:upserelate", {id:"newcard1111", title:"good", "to:Vaults_has": {in:"vault111"} });
+// dbUpserelate("Cards:upserelate", {id:"newcard1111", title:"good", "to:Vaults_has": {in:"vault111", role:"owner"} });
 
 
 export async function dbDelete<T extends `${TableName}:delete`>(action: T, id: string): Promise<void> {
