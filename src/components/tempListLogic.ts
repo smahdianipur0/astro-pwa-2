@@ -118,7 +118,11 @@ createEffect(() => {
 							]
 						}),
 
-						element.configure('button', { dataset: {action: 'update'},id: entry.id?.id ?? '',}),
+						element.configure('button', { dataset: {action: 'update'},id: entry.id?.id ?? '', append: [
+							element.draw("svg", { style: "width: var(--gap-x04); height: var(--gap-x04);",viewBox: "0 0 24 24", fill: "none",append: 
+								element.draw("path", {d: "M21.03 2.97a3.578 3.578 0 0 1 0 5.06L9.062 20a2.25 2.25 0 0 1-.999.58l-5.116 1.395a.75.75 0 0 1-.92-.921l1.395-5.116a2.25 2.25 0 0 1 .58-.999L15.97 2.97a3.578 3.578 0 0 1 5.06 0ZM15 6.06 5.062 16a.75.75 0 0 0-.193.333l-1.05 3.85 3.85-1.05A.75.75 0 0 0 8 18.938L17.94 9 15 6.06Zm2.03-2.03-.97.97L19 7.94l.97-.97a2.079 2.079 0 0 0-2.94-2.94Z",fill: "#fff"})
+							})
+						]}),
 					]})
 				]})
 			);
@@ -301,8 +305,12 @@ createEffect(() => {
 									id: entry.id?.id ?? '',
 									textContent: ' Delete'})
 							]
-						}),
-						element.configure('button',{dataset: { action: 'restore'},id: entry.id?.id ?? '',})
+						}), 
+						element.configure('button',{dataset: { action: 'restore'},id: entry.id?.id ?? '', append: [
+							element.draw("svg", { style: "width: var(--gap-x04); height: var(--gap-x04);",viewBox: "0 0 24 24", fill: "none",append: 
+								element.draw("path", {d: "M4.75 2a.75.75 0 0 1 .743.648l.007.102v5.69l4.574-4.56a6.41 6.41 0 0 1 8.879-.179l.186.18a6.41 6.41 0 0 1 0 9.063l-8.846 8.84a.75.75 0 0 1-1.06-1.062l8.845-8.838a4.91 4.91 0 0 0-6.766-7.112l-.178.17L6.562 9.5h5.688a.75.75 0 0 1 .743.648l.007.102a.75.75 0 0 1-.648.743L12.25 11h-7.5a.75.75 0 0 1-.743-.648L4 10.25v-7.5A.75.75 0 0 1 4.75 2Z",fill: "#fff"})
+							})
+						]}),				  
 					]})
 				]})
 			);

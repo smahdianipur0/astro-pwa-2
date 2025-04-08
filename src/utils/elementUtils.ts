@@ -3,24 +3,21 @@ type ElementProps = {
   id?: string;
   textContent?: string;
   dataset?: {[key: string]: string;};
-  append?: HTMLElement | HTMLElement[];
+  append?: (HTMLElement | SVGElement) | (HTMLElement | SVGElement)[];
   [key: string]: any;
 };
 
 type ValidTagNames = keyof HTMLElementTagNameMap;
+type ValidSvgTagNames = keyof SVGElementTagNameMap;
 
 export const element = {
     configure: <T extends ValidTagNames>(tag: T, { append, dataset, ...props }: ElementProps): HTMLElementTagNameMap[T] => {
     const element = document.createElement(tag) as HTMLElementTagNameMap[T];
     
     if (append) {
-      if (Array.isArray(append)) {
-        for (const child of append) {
-          element.appendChild(child);
-        }
-      } else {
-        element.appendChild(append);
-      }
+      (Array.isArray(append) ? append : [append]).forEach(child =>
+        element.appendChild(child)
+      );
     }
 
     if (dataset) {
@@ -29,6 +26,32 @@ export const element = {
 
     return Object.assign(element, props);
   },
+
+  draw: <T extends ValidSvgTagNames>(tag: T,{ append, dataset, style, ...props }: ElementProps): SVGElementTagNameMap[T] => {
+    const element = document.createElementNS("http://www.w3.org/2000/svg",tag) as SVGElementTagNameMap[T];
+  
+    if (append) {
+      (Array.isArray(append) ? append : [append]).forEach(child =>
+        element.appendChild(child)
+      );
+    }
+  
+    if (dataset) {
+      Object.assign(element.dataset, dataset);
+    }
+  
+    if (typeof style === "string") {element.style.cssText = style;}
+  
+
+    Object.entries(props).forEach(([key, value]) => {
+      if (value != null) {
+        element.setAttribute(key, value.toString());
+      }
+    });
+  
+    return element;
+  },
+
   wait: (selector: string): Promise<HTMLElement> => {
     return new Promise(resolve => {
       const element = document.querySelector(selector);
