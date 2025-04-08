@@ -42,7 +42,6 @@ export const element = {
   
     if (typeof style === "string") {element.style.cssText = style;}
   
-
     Object.entries(props).forEach(([key, value]) => {
       if (value != null) {
         element.setAttribute(key, value.toString());

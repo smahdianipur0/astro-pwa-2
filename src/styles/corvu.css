@@ -1,4 +1,7 @@
 /* drawer */
+:root{
+  --drawer-heigt: 500px
+}
 
 [data-corvu-drawer-trigger] {
   width: 100%;
@@ -27,7 +30,7 @@
   z-index: var(--z-layer-higher);
   display: flex;
   height: 100%;
-  max-height: 500px;
+  max-height: var(--drawer-heigt);
   flex-direction: column;
   border-top-left-radius: var(--radius-b);
   border-top-right-radius:var(--radius-b);
@@ -100,13 +103,13 @@
 
 [data-corvu-popover-content][data-open] {
   animation-name: enter;
-  animation-duration: 150ms;
+  animation-duration: 250ms;
   animation-timing-function: var( --appear);
 }
 
 [data-corvu-popover-content][data-closed] {
   animation-name: exit;
-  animation-duration: 150ms;
+  animation-duration: 250ms;
   animation-timing-function: var( --appear);
 }
 

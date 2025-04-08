@@ -4,13 +4,15 @@ import DrawerFromRight from './ui/DrawerFromRght.tsx';
 import Dialog from "../components/ui/Dialog.astro"
 ---
 
-<div  style="
+<div data-corvu-no-drag style="
+position:absolute;
+inset:0;
+top:var(--gap-x05);
+height: calc(var(--drawer-heigt) - var(--gap-x05));
 display: flex; 
 flex-direction: column; 
 align-items: center; 
 gap: var(--gap-x04); 
-margin-inline: var(--gap-x04)
-height: 85%;
 overflow-y: scroll;
 padding-top: var(--gap-x02);
 padding-inline: var(--gap-x02);
