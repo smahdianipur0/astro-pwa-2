@@ -36,8 +36,8 @@
   --thin-padding: 0.1ch var(--gap);
 
 
-  --radius-a: calc((var(--gap-x03) + var(--gap-x04)) * 0.227);
-  --radius-b: calc((var(--gap-x03) + var(--gap-x04)) * 0.365);
+  --radius-a: calc(var(--gap-x07) * 0.227);
+  --radius-b: calc(var(--gap-x07) * 0.365);
 
   --z-layer-top: 4;
   --z-layer-higher: 3;

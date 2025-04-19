@@ -170,31 +170,36 @@ declare global {
   
 
 const dialog = document.getElementById('card-form') as HTMLDialogElement;
-const originalForm = dialog.querySelector('form')!.cloneNode(true) as HTMLFormElement;
+const form   = dialog.querySelector('form')         as HTMLFormElement;
+const initialFormHTML = form.innerHTML;
 
 
-window.handleCardgForm = function (form: HTMLFormElement, event: SubmitEvent): boolean {
-    const submitter = event.submitter as HTMLButtonElement;
-    const isCancel = submitter?.value === "cancel";
-  
-    if (!isCancel) {
-      const formData = new FormData(form);
-      const nameValue = formData.get('name');
-      const ageValue = formData.get('age');
-      const comments = formData.getAll('comments');
-  
-      console.log("Name:", nameValue);
-      console.log("Age:", ageValue);
-      console.log("Comments:", comments);
-    }
-  
-    const dialog = form.closest("dialog") as HTMLDialogElement;
-    dialog?.close();
-  
-    requestAnimationFrame(() => {
-      const freshClone = originalForm.cloneNode(true) as HTMLFormElement;
-      form.replaceWith(freshClone);
+dialog.addEventListener('close', () => {
+  form.innerHTML = initialFormHTML;
+
+  document.getElementById("card-form-add-field")!.addEventListener("click",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#add-field")){
+        e.preventDefault();
+        const fragment = document.createDocumentFragment();
+        fragment.append(
+         element.configure('textarea', {name:"comments"})
+        );
+        document.getElementById("card-fields")!.append(fragment)
+        return false
+        };
     });
+});
+
+
+window.handleCardgForm = (form: HTMLFormElement, event: SubmitEvent): boolean => {
+    const action = (event.submitter as HTMLButtonElement)?.value;
   
-    return false;
+    if (action === 'cancel') { return true;}
+  
+    const data = new FormData(form);
+    console.log('vault:', data.get("select vault"));
+    console.log('card:', data.get("select card"));
+    console.log('Comments:', data.getAll('comments'));
+  
+    return true;
   };
