@@ -71,10 +71,66 @@ import Dialog from './ui/Dialog.astro';
 
 </Dialog>
 
-<!-- <div class="prose" style="display: flex; flex-direction: row-reverse; align-items: flex-start;height: var(--gap-x08);" >   
-  <button >Add</button>
-</div> -->
+<div id="card-menu-div" style="display: flex; flex-direction: row-reverse; align-items: flex-start;height: var(--gap-x08);" >   
+  <button id="card-form-button" style="background-color: oklch(var(--gray-25));
+  padding: var(--default-padding);
+  border-radius: 100px;
+  color: oklch(var(--primary));
+  height: calc(var(--gap-x06) - 3px);
+  line-height: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: row;">
+  <svg width="24" height="24" fill="none" style="pointer-events: none;padding: 1px; fill: oklch(var(--primary)); width: var(--gap-x04);" viewBox="0 0 24 24">
+    <path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z" />
+  </svg>
+  <p style="padding-right: var(--gap-xxs);pointer-events: none;">Add</p> 
+</button>
+</div>
 
+<Dialog identifier="card-form" formHandler="return handleCardgForm(this, event);">
+  <label>
+    <p>
+      <label for="select vaults">Vault:</label>
+      <select name="select vaults" class="max-width prose" id="select-vault-list" >
+        <option value="vault-1">vault-1</option>
+      </select>
+    </p>
+    <p>
+      <label for="select card">card:</label>
+      <select name="select card" class="max-width prose" id="select-card-list" >
+        <option value="card-1">card-1</option>
+      </select>
+    </p>
+  
+    <div id="card-fields">
+      <textarea name="comments"></textarea>
+    </div>
+ 
+
+  <div id="card-form-add-field" class="not-prose" style="display: flex; flex-direction: row-reverse; align-items: flex-start;height: var(--gap-x08);" >   
+    <button type="button" id="add-field" style="background-color: oklch(var(--gray-25));
+    padding: var(--default-padding);
+    border-radius: 100px;
+    color: oklch(var(--primary));
+    height: calc(var(--gap-x06) - 3px);
+    line-height: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;">
+    <svg width="24" height="24" fill="none" style="pointer-events: none;padding: 1px; fill: oklch(var(--primary)); width: var(--gap-x04);" viewBox="0 0 24 24">
+      <path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z" />
+    </svg>
+    <p style="padding-right: var(--gap-xxs);pointer-events: none;">Add</p> 
+  </button>
+  </div>
+
+
+  <menu class="flex-center-childs" style="gap:var(--gap);margin-top: var(--gap-x04);">
+    <button class="max-width not-prose unstyle-button" type="submit" value="cancel">Cancel</button>
+    <button class="max-width" type="submit" value="confirm">OK</button>
+  </menu>
+</Dialog>
 
 
 <script src="../components/recordsLogic.ts"></script>

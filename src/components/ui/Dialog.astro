@@ -1,9 +1,10 @@
 ---
 interface Props {
   identifier: string;
+  formHandler?: string; 
 }
 
-const { identifier } = Astro.props;
+const { identifier, formHandler } = Astro.props;
 ---
 
 
@@ -13,7 +14,10 @@ style="max-width:min(350px, 100%);
   border-radius: var(--radius-a);
   place-content:center;
   background: oklch(var(--gray-15) / 0.65);">
-  <form method="dialog" style="display:flex; flex-direction:column;">
-    <slot />
-  </form>
+  <form method="dialog" style="display:flex; flex-direction:column;"
+  {...(formHandler ? { 'onsubmit': formHandler } : {})}>
+  <slot />
+</form>
+
 </dialog>
+

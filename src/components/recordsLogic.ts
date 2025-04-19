@@ -43,13 +43,11 @@ createEffect(() => {
         if((e!.target as HTMLInputElement).matches("#vault-create")){
             (document.getElementById("create-vault-dialog") as HTMLDialogElement).showModal();
         };
-    });
-
-    vaultMenu.addEventListener("click",(e)=>{
         if((e!.target as HTMLInputElement).matches("#vault-delete")){
             (document.getElementById("delete-vault-dialog") as HTMLDialogElement).showModal();
         };
     });
+
 
     document.getElementById("create-vault-dialog")!.addEventListener("input",(e)=>{
         if((e!.target as HTMLInputElement).matches("#vault-name-input")){
@@ -143,3 +141,60 @@ createEffect(() => {
     }
     deleteVaultlist.append(fragment2);
 });
+
+
+document.getElementById("card-menu-div")!.addEventListener("click",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#card-form-button")){
+
+        (document.getElementById("card-form") as HTMLDialogElement).showModal();
+    };
+});
+
+document.getElementById("card-form-add-field")!.addEventListener("click",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#add-field")){
+        e.preventDefault();
+        const fragment = document.createDocumentFragment();
+        fragment.append(
+         element.configure('textarea', {name:"comments"})
+        );
+        document.getElementById("card-fields")!.append(fragment)
+        return false
+    };
+});
+
+declare global {
+    interface Window {
+        handleCardgForm: (form: HTMLFormElement, event: SubmitEvent) => boolean;
+    }
+}
+  
+
+const dialog = document.getElementById('card-form') as HTMLDialogElement;
+const originalForm = dialog.querySelector('form')!.cloneNode(true) as HTMLFormElement;
+
+
+window.handleCardgForm = function (form: HTMLFormElement, event: SubmitEvent): boolean {
+    const submitter = event.submitter as HTMLButtonElement;
+    const isCancel = submitter?.value === "cancel";
+  
+    if (!isCancel) {
+      const formData = new FormData(form);
+      const nameValue = formData.get('name');
+      const ageValue = formData.get('age');
+      const comments = formData.getAll('comments');
+  
+      console.log("Name:", nameValue);
+      console.log("Age:", ageValue);
+      console.log("Comments:", comments);
+    }
+  
+    const dialog = form.closest("dialog") as HTMLDialogElement;
+    dialog?.close();
+  
+    requestAnimationFrame(() => {
+      const freshClone = originalForm.cloneNode(true) as HTMLFormElement;
+      form.replaceWith(freshClone);
+    });
+  
+    return false;
+  };
