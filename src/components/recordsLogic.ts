@@ -125,6 +125,9 @@ createEffect(() => {
     const deleteVaultlist = document.getElementById("delete-vault-list") as HTMLSelectElement
     deleteVaultlist.textContent = "";
 
+    const cardVaultlist = document.getElementById("select-vault-for-card") as HTMLSelectElement
+    cardVaultlist.textContent = "";
+
     const fragment2 = document.createDocumentFragment();
 
     if (vaultsList().filter(item => item.status === "available" && item.role === "owner").length === 0){
@@ -139,7 +142,11 @@ createEffect(() => {
             fragment2.append( element.configure("option", {textContent:entry.name, id:entry.id?.id}));
         });
     }
+
+    const fragment2Clone = fragment2.cloneNode(true);
     deleteVaultlist.append(fragment2);
+    cardVaultlist.append(fragment2Clone);
+
 });
 
 
@@ -167,7 +174,6 @@ declare global {
         handleCardgForm: (form: HTMLFormElement, event: SubmitEvent) => boolean;
     }
 }
-  
 
 const dialog = document.getElementById('card-form') as HTMLDialogElement;
 const form   = dialog.querySelector('form')         as HTMLFormElement;
@@ -202,4 +208,4 @@ window.handleCardgForm = (form: HTMLFormElement, event: SubmitEvent): boolean =>
     console.log('Comments:', data.getAll('comments'));
   
     return true;
-  };
+};

@@ -5,6 +5,7 @@
   --x04: 2.04;
   --x05: 2.60;
   --x06: 3.30;
+  --x65: 3.70;
   --x07: 4.20;
   --x08: 5.32;
   --x09: 6.76;
@@ -26,6 +27,7 @@
   --gap-x04: calc(var(--gap) * var(--x04));
   --gap-x05: calc(var(--gap) * var(--x05));
   --gap-x06: calc(var(--gap) * var(--x06));
+  --gap-x65: calc(var(--gap) * var(--x65));
   --gap-x07: calc(var(--gap) * var(--x07));
   --gap-x08: calc(var(--gap) * var(--x08));
   --gap-x09: calc(var(--gap) * var(--x09));
@@ -36,8 +38,8 @@
   --thin-padding: 0.1ch var(--gap);
 
 
-  --radius-a: calc(var(--gap-x07) * 0.227);
-  --radius-b: calc(var(--gap-x07) * 0.365);
+  --radius-a: calc(var(--gap-x65) * 0.28);
+  --radius-b: calc(var(--gap-x65) * 0.46);
 
   --z-layer-top: 4;
   --z-layer-higher: 3;

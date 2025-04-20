@@ -12,8 +12,10 @@
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *)), .prose-btn {
   padding: var(--default-padding);
   padding-block: 0;
-  line-height: var(--gap-x05);
-  height: calc(var(--gap-x07) - 3px);
+  display: flex;
+  flex-wrap: wrap;
+  place-content: center;
+  height: var(--gap-x65) ;
   -webkit-user-select: none;
   user-select: none;
   cursor: pointer;
@@ -131,7 +133,22 @@
   outline: -webkit-focus-ring-color auto 1px;
 }
 
-.prose :where(input[type="text"], input[type="url"], input[type="password"], input[type="email"]):not(:where([class~=not-prose],[class~=not-prose] *)),
+.prose :where(input[type="text"], input[type="url"], input[type="password"], input[type="email"]):not(:where([class~=not-prose],[class~=not-prose] *)){
+  padding: var(--default-padding);
+  width: 100%;
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: var(--radius-a);
+  color: oklch(var(--gray-95) / 1);
+  background:none;
+  background-color: oklch(var(--gray-10) / 45%);
+  height: var(--gap-x65);
+  box-shadow: inset 0px 1px 5px oklch(0% 0 0 / 10%) , 
+                    0px 1px 2px oklch(100% 0 0 / 10%) , 
+                    0px 0px 1px 0.5px oklch(100% 0 0 / 10%) ;
+}
+
+
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)){
   padding: var(--default-padding);
   width: 100%;
@@ -141,7 +158,6 @@
   color: oklch(var(--gray-95) / 1);
   background:none;
   background-color: oklch(var(--gray-10) / 45%);
-  line-height: var(--gap-x04);
   box-shadow: inset 0px 1px 5px oklch(0% 0 0 / 10%) , 
                     0px 1px 2px oklch(100% 0 0 / 10%) , 
                     0px 0px 1px 0.5px oklch(100% 0 0 / 10%) ;
