@@ -72,19 +72,11 @@ import Dialog from './ui/Dialog.astro';
 </Dialog>
 
 <div id="card-menu-div" style="display: flex; flex-direction: row-reverse; align-items: flex-start;height: var(--gap-x08);" >   
-  <button id="card-form-button" style="background-color: oklch(var(--gray-25));
-  padding: var(--default-padding);
-  border-radius: 100px;
-  color: oklch(var(--primary));
-  height: calc(var(--gap-x06) - 3px);
-  line-height: 0;
-  display: flex;
-  align-items: center;
-  flex-direction: row;">
-  <svg width="24" height="24" fill="none" style="pointer-events: none;padding: 1px; fill: oklch(var(--primary)); width: var(--gap-x04);" viewBox="0 0 24 24">
+  <button id="card-form-button" class="tertiary-btn">
+  <svg width="24" height="24" fill="none" style="pointer-events: none;padding: 1px; width: var(--gap-x04);" viewBox="0 0 24 24">
     <path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z" />
   </svg>
-  <p style="padding-right: var(--gap-xxs);pointer-events: none;">Add</p> 
+  <p style="padding-right: var(--gap-xxs);pointer-events: none;font-weight: lighter;">Add</p> 
 </button>
 </div>
 
@@ -108,20 +100,12 @@ import Dialog from './ui/Dialog.astro';
     </div>
  
 
-  <div id="card-form-add-field" class="not-prose" style="display: flex; flex-direction: row-reverse; align-items: flex-start;height: var(--gap-x08);" >   
-    <button type="button" id="add-field" style="background-color: oklch(var(--gray-25));
-    padding: var(--default-padding);
-    border-radius: 100px;
-    color: oklch(var(--primary));
-    height: calc(var(--gap-x06) - 3px);
-    line-height: 0;
-    display: flex;
-    align-items: center;
-    flex-direction: row;">
-    <svg width="24" height="24" fill="none" style="pointer-events: none;padding: 1px; fill: oklch(var(--primary)); width: var(--gap-x04);" viewBox="0 0 24 24">
+  <div id="card-form-add-field" class="not-prose" style="display: flex; flex-direction: row-reverse; align-items: flex-start;height: var(--gap-x08); margin-top: var(--gap-xs);" >   
+    <button type="button" id="add-field" class="tertiary-btn">
+    <svg width="24" height="24" fill="none" style="pointer-events: none;padding: 1px; width: var(--gap-x04);" viewBox="0 0 24 24">
       <path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z" />
     </svg>
-    <p style="padding-right: var(--gap-xxs);pointer-events: none;">Add</p> 
+    <p style="padding-right: var(--gap-xxs);pointer-events: none;font-weight: lighter;">Add</p> 
   </button>
   </div>
 
