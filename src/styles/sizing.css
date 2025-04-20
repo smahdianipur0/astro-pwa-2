@@ -5,7 +5,7 @@
   --x04: 2.04;
   --x05: 2.60;
   --x06: 3.30;
-  --x65: 3.70;
+  --x65: 3.72;
   --x07: 4.20;
   --x08: 5.32;
   --x09: 6.76;
@@ -38,8 +38,8 @@
   --thin-padding: 0.1ch var(--gap);
 
 
-  --radius-a: calc(var(--gap-x65) * 0.28);
-  --radius-b: calc(var(--gap-x65) * 0.46);
+  --radius-a: calc(var(--gap-x65) * 0.227);
+  --radius-b: calc(var(--gap-x65) * 0.365);
 
   --z-layer-top: 4;
   --z-layer-higher: 3;
