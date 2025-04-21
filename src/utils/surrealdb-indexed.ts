@@ -26,7 +26,7 @@ export type Schemas = {
 	RecentDelPass: {  title: string; password: string; crreatedAt: string };
 	Credentials: { registered:boolean; UID: string;};
 	Vaults: {name: string; updatedAt: string, status:"available" | "deleted", role:"owner" | "viewer"};
-	Cards: {title: string, data:string[]; updatedAt: string, status:"available" | "deleted"}
+	Cards: {name: string, data:string[]; updatedAt: string, status:"available" | "deleted"}
 };
 
 export type rSchemas = {

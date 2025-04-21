@@ -115,7 +115,7 @@
   padding-right:var(--gap-xs);
   border-radius: var(--radius-a);
   color: oklch(var(--gray-95) );
-  height: calc(var(--gap-x06) - 3px);
+  height: var(--gap-x55) ;
   background-color: oklch(var(--gray-25));
   text-align: center;
   position: relative;
@@ -374,7 +374,7 @@
 .prose :where(h1):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: oklch(var(--gray-85) );
   font-weight: 800;
-  font-size: var(--bigest-font);
+  font-size: var(--font-lg3);
   margin-top: 0;
   margin-bottom: var(--gap-x03);
   line-height: var(--gap-x04)
@@ -388,7 +388,7 @@
 .prose :where(h2):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: oklch(var(--gray-85) );
   font-weight: 700;
-  font-size: var(--extra-big-font);
+  font-size: var(--font-lg2);
   margin-top: var(--gap-x06);
   margin-bottom: var(--gap-x04);
   line-height: var(--gap-x05)
@@ -402,7 +402,7 @@
 .prose :where(h3):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: oklch(var(--gray-85) );
   font-weight: 600;
-  font-size: var(--big-font);
+  font-size: var(--font-lg1);
   margin-top: var(--gap-x05);
   margin-bottom: var(--gap);
   line-height: var(--gap-x06)
@@ -447,7 +447,7 @@
   font-family: inherit;
   color: oklch(var(--gray-85) );
   box-shadow: 0 0 0 1px oklch(var(--gray-85) / 0.1),0 3px oklch(var(--gray-85) / 10%);
-  font-size: var(--small-font);
+  font-size: var(--font-sm1);
   border-radius: var(--gap-xs);
   padding-top: var(--gap-3xs);
   padding-inline-end: var(--gap-xs);
@@ -458,7 +458,7 @@
 .prose :where(code):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: oklch(var(--gray-85) );
   font-weight: 600;
-  font-size: var(--small-font)
+  font-size: var(--font-sm1)
 }
 
 .prose :where(code):not(:where([class~=not-prose],[class~=not-prose] *)):before {
@@ -479,12 +479,12 @@
 
 .prose :where(h2 code):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: inherit;
-  font-size: var(--small-font)
+  font-size: var(--font-sm1)
 }
 
 .prose :where(h3 code):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: inherit;
-  font-size: var(--small-font)
+  font-size: var(--font-sm1)
 }
 
 .prose :where(h4 code):not(:where([class~=not-prose],[class~=not-prose] *)) {
@@ -504,7 +504,7 @@
   background-color: oklch(var(--gray-75) );
   overflow-x: auto;
   font-weight: 400;
-  font-size: var(--small-font);
+  font-size: var(--font-sm1);
   line-height: var(--gap-x06);
   margin-top: var(--gap-x06);
   margin-bottom: var(--gap-x06);
@@ -540,7 +540,7 @@
   table-layout: auto;
   margin-top: var(--gap-x06);
   margin-bottom: var(--gap-x06);
-  font-size: var(--small-font);
+  font-size: var(--font-sm1);
   line-height: var(--gap-x06)
 }
 
@@ -591,7 +591,7 @@
 
 .prose :where(figcaption):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: oklch (var(--gray-50) );
-  font-size: var(--small-font);
+  font-size: var(--font-sm1);
   line-height: var(--gap-x05);
   margin-top: var(--gap-x03)
 }

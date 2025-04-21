@@ -64,7 +64,7 @@
 .hint{
   border: 1px solid oklch(100% 0 0 /0.0);
   color: oklch(var(--gray-75));
-  font-size:var(--small-font);
+  font-size:var(--font-sm1);
   line-height: var(--gap-x04); 
   font-weight: 300; 
 }
@@ -205,7 +205,7 @@ details.right-to-left[open] > .s-container {
 details.right-to-left > *:not(summary):nth-child(2) {
   margin-inline: var(--gap);
   color: var(--danger);
-  font-size: var(--small-font);
+  font-size: var(--font-sm1);
 } 
 
 details.right-to-left[open] summary + *  {

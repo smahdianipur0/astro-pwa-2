@@ -65,8 +65,9 @@ import Card from './ui/Card.astro';
 .key-indicator {
   line-height: var(--gap-x05);
   position: absolute;
-  right: calc(var(--gap) * var(--x03));
-  top: calc(var(--gap) * var(--x03) / 2);
+  right: var(--gap-x03);
+  top: 50%;
+  transform: translateY(-50%);
   color: #777;
   pointer-events: none;
 

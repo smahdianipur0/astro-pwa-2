@@ -4,6 +4,7 @@
   --x03: 1.61;
   --x04: 2.04;
   --x05: 2.60;
+  --x55: 2.93;
   --x06: 3.30;
   --x65: 3.72;
   --x07: 4.20;
@@ -11,27 +12,28 @@
   --x09: 6.76;
   --x10: 8.60;
 
-  --bigest-font: calc(100% * var(--x04));
-  --extra-big-font: calc(100% * var(--x03));
-  --big-font: calc(100% * var(--x02));
-  --small-font: calc(100% / var(--x02));
-  --extra-small-font: calc(100% / var(--x03));
+  --font-lg3: calc(100% * var(--x04));
+  --font-lg2: calc(100% * var(--x03));
+  --font-lg1: calc(100% * var(--x02));
+  --font-sm1: calc(100% / var(--x02));
+  --font-sm2: calc(100% / var(--x03));
 
 
   --gap: 1.1ch;
-  --gap-3xs: calc(var(--gap) / var(--x05));
-  --gap-xxs: calc(var(--gap) / var(--x04));
-  --gap-xs:  calc(var(--gap) / var(--x03));
-  --gap-x02: calc(var(--gap) * var(--x02));
-  --gap-x03: calc(var(--gap) * var(--x03));
-  --gap-x04: calc(var(--gap) * var(--x04));
-  --gap-x05: calc(var(--gap) * var(--x05));
-  --gap-x06: calc(var(--gap) * var(--x06));
-  --gap-x65: calc(var(--gap) * var(--x65));
-  --gap-x07: calc(var(--gap) * var(--x07));
-  --gap-x08: calc(var(--gap) * var(--x08));
-  --gap-x09: calc(var(--gap) * var(--x09));
-  --gap-x10: calc(var(--gap) * var(--x10));
+  --gap-3xs: calc(var(--gap) / var(--x05)); /* xs4 */
+  --gap-xxs: calc(var(--gap) / var(--x04)); /* xs3 */
+  --gap-xs:  calc(var(--gap) / var(--x03)); /* xs2 */
+  --gap-x02: calc(var(--gap) * var(--x02)); /* sm1 */
+  --gap-x03: calc(var(--gap) * var(--x03)); /* sm2 */
+  --gap-x04: calc(var(--gap) * var(--x04)); /* sm3 */
+  --gap-x05: calc(var(--gap) * var(--x05)); /* sm4 */
+  --gap-x55: calc(var(--gap) * var(--x55)); /* md1 */
+  --gap-x06: calc(var(--gap) * var(--x06)); /* md2 */
+  --gap-x65: calc(var(--gap) * var(--x65)); /* md3 */
+  --gap-x07: calc(var(--gap) * var(--x07)); /* md4 */
+  --gap-x08: calc(var(--gap) * var(--x08)); /* lg1 */
+  --gap-x09: calc(var(--gap) * var(--x09)); /* lg2 */
+  --gap-x10: calc(var(--gap) * var(--x10)); /* lg3 */
 
 
   --default-padding: calc( var(--gap-x03) / 2)  var(--gap-x03);
@@ -46,7 +48,7 @@
   --z-layer-middle: 2;
   --z-layer-beneath: -1;
 
-  --appear: cubic-bezier(0.6, 1.45, 0.5, 1);
-  --move:cubic-bezier(0.32, 0.72, 0, 1);
+  --appear: cubic-bezier(0.6 , 1.45, 0.5, 1);
+  --move:   cubic-bezier(0.32, 0.72, 0  , 1);
 
 }
