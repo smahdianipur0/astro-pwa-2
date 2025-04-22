@@ -157,7 +157,17 @@ document.getElementById("card-menu-div")!.addEventListener("click",(e)=>{
     };
 });
 
-document.getElementById("card-form-add-field")!.addEventListener("click",(e)=>{
+declare global {
+    interface Window {
+        handleCardgForm: (form: HTMLFormElement, event: SubmitEvent) => boolean;
+    }
+}
+
+const dialog = document.getElementById('card-form') as HTMLDialogElement;
+const form   = dialog.querySelector('form')         as HTMLFormElement;
+const initialFormHTML = form.innerHTML;
+
+dialog!.addEventListener("click",(e)=>{
     if((e!.target as HTMLInputElement).matches("#add-field")){
         e.preventDefault();
         const fragment = document.createDocumentFragment();
@@ -169,64 +179,43 @@ document.getElementById("card-form-add-field")!.addEventListener("click",(e)=>{
     };
 });
 
-declare global {
-    interface Window {
-        handleCardgForm: (form: HTMLFormElement, event: SubmitEvent) => boolean;
-    }
-}
+dialog!.addEventListener("input",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#select-vault-for-card")){
 
-const dialog = document.getElementById('card-form') as HTMLDialogElement;
-const form   = dialog.querySelector('form')         as HTMLFormElement;
-const initialFormHTML = form.innerHTML;
+        document.getElementById("select-card-list")!.textContent = "";
+
+        const value = (e!.target as HTMLInputElement).value;
+
+        (document.getElementById("select-card-list")! as HTMLInputElement).disabled  = (value === "No vaults found");
+
+        if (value !== "No vaults found"){
+            (async () => {
+                const cards = await dbReadAll("Cards");
+
+                const fragment = document.createDocumentFragment();
+
+                if (cards?.filter(item => item.status === "available").length === 0){
+
+                    fragment.append(element.configure("option", {textContent: "No Cards found"}));
+                    
+                } else { 
+                     (cards ?? [])
+                     .filter(item => item.status === "available")
+                     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+                     .forEach((entry) => {
+
+                        fragment.append( element.configure("option", {textContent:entry.name, id:entry.id?.id }));
+                    });
+                }
+                document.getElementById("select-card-list")!.append(fragment);
+            })();
+        }
+    };
+});
 
 
 dialog.addEventListener('close', () => {
   form.innerHTML = initialFormHTML;
-
-    document.getElementById("card-form-add-field")!.addEventListener("click",(e)=>{
-        if((e!.target as HTMLInputElement).matches("#add-field")){
-            e.preventDefault();
-            const fragment = document.createDocumentFragment();
-            fragment.append(
-             element.configure('textarea', {name:"comments"})
-            );
-            document.getElementById("card-fields")!.append(fragment)
-            return false
-        };
-    });
-
-    document.getElementById("card-form")!.addEventListener("input",(e)=>{
-        if((e!.target as HTMLInputElement).matches("#select-vault-for-card")){
-            console.log("hey");
-
-            const value = (e!.target as HTMLInputElement).value;
-            console.log(value);
-            (document.getElementById("select-card-list")! as HTMLInputElement).disabled  = (value === "No vaults found");
-
-            if (value !== "No vaults found"){
-                (async () => {
-                    const cards = await dbReadAll("Cards");
-
-                    const fragment = document.createDocumentFragment();
-
-                    if (cards?.filter(item => item.status === "available").length === 0){
-
-                        fragment.append(element.configure("option", {textContent: "No Cards found"}));
-                        
-                    } else { 
-                         (cards ?? [])
-                         .filter(item => item.status === "available")
-                         .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-                         .forEach((entry) => {
-
-                            fragment.append( element.configure("option", {textContent:entry.name, id:entry.id?.id }));
-                        });
-                    }
-                    document.getElementById("select-card-list")!.append(fragment);
-                })();
-            }
-        };
-    });
 });
 
 
