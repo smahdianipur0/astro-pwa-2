@@ -1,0 +1,180 @@
+---
+
+
+interface Props {
+  name: string;
+  tab1Id: string;
+  tab1Label: string;
+  tab2Id: string;
+  tab2Label: string;
+  content1Id: string;
+  content2Id: string;
+  initialCheckedId?: string;
+}
+
+const {
+  name,
+  tab1Id,
+  tab1Label,
+  tab2Id,
+  tab2Label,
+  content1Id,
+  content2Id,
+  initialCheckedId = tab1Id 
+} = Astro.props;
+
+
+const wrapperClass = `css-tabs-wrapper-${name}`;
+const dynamicCss = `
+  .${wrapperClass} {
+    position: relative;
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    width: fit-content;
+    margin-left: auto; 
+    margin-right: auto; 
+  }
+
+  .${wrapperClass} .css-tab-input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  .${wrapperClass} .css-tab-label {
+    align-items: center;
+    justify-content: center;
+    width: 10ch; 
+    height: var(--gap-x06, 40px); 
+    padding: 0 var(--gap-x01, 5px); 
+    text-align: center;
+    cursor: pointer;
+    z-index: 2;
+    color: oklch(var(--gray-95, 95%) / 0.5); 
+    transition: color 200ms ease-out;
+    user-select: none;
+    box-sizing: border-box;
+    margin-bottom: var(--gap-x03, 10px); 
+  }
+
+  .${wrapperClass} .css-tab-indicator-bg {
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(20ch + 6px + (2 * var(--gap-x01, 5px))); 
+    height: calc(var(--gap-x06, 40px) + 6px);
+    background-color: oklch(var(--gray-25, 25%) / 0.4);
+    border-radius: 100px;
+    z-index: 0;
+  }
+
+  .${wrapperClass} .css-tab-indicator {
+    position: absolute;
+    top: 0;
+    left: calc(50% - 10ch - var(--gap-x01, 5px)); 
+    width: 10ch;
+    height: var(--gap-x06, 40px);
+    background: var(--tab-indicator-bg, oklch(var(--gray-10, 10%) / 0.6));
+    border-radius: 100px;
+    box-shadow: inset 0.8px 0.8px 0px 0px oklch(var(--rim-light, 98% 0.01 100)),
+                1px 2px 2px 0px oklch(0% 0 0 / 0.1);
+    transition: transform 250ms var(--move, ease-in-out);
+    z-index: 1; 
+    transform: translateX(0);
+    pointer-events: none; 
+  }
+
+  .${wrapperClass} .css-tab-panels {
+    width: 100%; 
+    order: 3; 
+  }
+
+  .${wrapperClass} .css-tab-panel {
+    display: none; 
+    padding: var(--gap-x03, 10px);
+  }
+
+
+  .${wrapperClass}:has(#${tab1Id}:checked) label[for="${tab1Id}"],
+  .${wrapperClass}:has(#${tab2Id}:checked) label[for="${tab2Id}"] {
+    color: oklch(var(--gray-95, 95%) / 1);
+  }
+
+
+  .${wrapperClass}:has(#${tab2Id}:checked) .css-tab-indicator {
+    transform: translateX(calc(10ch + (2 * var(--gap-x01, 5px))));
+  }
+
+
+  .${wrapperClass}:has(#${tab1Id}:checked) #${content1Id} {
+    display: block;
+  }
+
+  .${wrapperClass}:has(#${tab2Id}:checked) #${content2Id} {
+    display: block;
+  }
+
+
+ .${wrapperClass} .css-tab-input:focus-visible + .css-tab-label {
+    outline: 2px solid oklch(var(--accent, 60% 0.2 250));
+    outline-offset: 2px;
+    border-radius: 3px;
+ }
+`;
+---
+
+
+<style set:html={dynamicCss}> </style>
+
+<style is:global>.red-test {border:1px solid red;} </style>
+
+
+
+<div style="flex-wrap: wrap; position: relative;" class={`${wrapperClass} flex-center-childs`}>
+
+
+  <input
+    type="radio"
+    class="css-tab-input"
+    name={name}
+    id={tab1Id}
+    checked={initialCheckedId === tab1Id}
+  />
+  <input
+    type="radio"
+    class="css-tab-input"
+    name={name}
+    id={tab2Id}
+    checked={initialCheckedId === tab2Id}
+  />
+
+
+  <div class="css-tab-indicator-bg"></div>
+
+
+  <label class="css-tab-label red-test" for={tab1Id}>{tab1Label}</label>
+  <label class="css-tab-label" for={tab2Id}>{tab2Label}</label>
+
+
+  <div class="css-tab-indicator glass"></div> 
+
+
+  <div class="css-tab-panels">
+   
+    <div class="css-tab-panel" id={content1Id}>
+      <slot name="tab1" /> 
+    </div>
+    <div class="css-tab-panel" id={content2Id}>
+      <slot name="tab2" /> 
+    </div>
+  </div>
+
+</div>
