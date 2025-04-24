@@ -81,23 +81,20 @@ import Dialog from './ui/Dialog.astro';
 </div>
 
 <Dialog identifier="card-form" formHandler="return handleCardgForm(this, event);">
-  <label>
-    <p>
-      <label for="select vault">Vault:</label>
-      <select name="select vault" class="max-width prose" id="select-vault-for-card" >
-        <option value="vault-1">vault-1</option>
-      </select>
-    </p>
-    <p>
-      <label for="select card">card:</label>
-      <select name="select card" class="max-width prose" id="select-card-list" >
-        <option value="card-1">Card-1</option>
-      </select>
-    </p>
+
+  <p>
+    <label for="select vault">Vault:</label>
+    <select name="select vault" class="max-width prose" id="select-vault-for-card" ></select>
+  </p>
+
+  <p>
+    <label for="select card">card:</label>
+    <select name="select card" class="max-width prose" id="select-card-list" ></select>
+  </p>
   
-    <div id="card-fields">
-      <textarea name="comments"></textarea>
-    </div>
+  <div id="card-fields">
+    <textarea name="comments"></textarea>
+  </div>
  
 
   <div id="card-form-add-field" class="not-prose" style="display: flex; flex-direction: row-reverse; align-items: flex-start;height: var(--gap-x08); margin-top: var(--gap-xs);" >   

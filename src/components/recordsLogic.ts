@@ -149,6 +149,39 @@ createEffect(() => {
 
 });
 
+async function handleVaultSelection() {
+    const selectCardList = document.getElementById("select-card-list") as HTMLInputElement;
+    if (!selectCardList) return;
+
+    selectCardList.textContent = "";
+
+    const value = (document.getElementById("select-vault-for-card") as HTMLSelectElement)!.value;
+
+    selectCardList.disabled = (value === "No vaults found");
+
+    if (value !== "No vaults found") {
+        const cards = await dbReadAll("Cards");
+        const fragment = document.createDocumentFragment();
+
+        const availableCards = (cards ?? []).filter(item => item.status === "available");
+
+        if (availableCards.length === 0) {
+            fragment.append(element.configure("option", { textContent: "No Cards found" }));
+        } else {
+            availableCards
+                .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+                .forEach((entry) => {
+                    fragment.append(
+                        element.configure("option", { textContent: entry.name, id: entry.id?.id })
+                    );
+                });
+        }
+
+        selectCardList.append(fragment);
+    }
+}
+
+handleVaultSelection();
 
 document.getElementById("card-menu-div")!.addEventListener("click",(e)=>{
     if((e!.target as HTMLInputElement).matches("#card-form-button")){
@@ -181,41 +214,14 @@ dialog!.addEventListener("click",(e)=>{
 
 dialog!.addEventListener("input",(e)=>{
     if((e!.target as HTMLInputElement).matches("#select-vault-for-card")){
-
-        document.getElementById("select-card-list")!.textContent = "";
-
-        const value = (e!.target as HTMLInputElement).value;
-
-        (document.getElementById("select-card-list")! as HTMLInputElement).disabled  = (value === "No vaults found");
-
-        if (value !== "No vaults found"){
-            (async () => {
-                const cards = await dbReadAll("Cards");
-
-                const fragment = document.createDocumentFragment();
-
-                if (cards?.filter(item => item.status === "available").length === 0){
-
-                    fragment.append(element.configure("option", {textContent: "No Cards found"}));
-                    
-                } else { 
-                     (cards ?? [])
-                     .filter(item => item.status === "available")
-                     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-                     .forEach((entry) => {
-
-                        fragment.append( element.configure("option", {textContent:entry.name, id:entry.id?.id }));
-                    });
-                }
-                document.getElementById("select-card-list")!.append(fragment);
-            })();
-        }
+        handleVaultSelection();
     };
 });
 
 
 dialog.addEventListener('close', () => {
   form.innerHTML = initialFormHTML;
+  handleVaultSelection();
 });
 
 
