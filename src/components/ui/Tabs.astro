@@ -1,66 +1,111 @@
 ---
 interface Props {
-	name: string;	
-	tab1: string;
-	tab2: string;
-	content1: string;
-	content2: string;	
+  name: string;
+  tab1Label: string;
+  tab2Label: string;
 }
 
-const {name, tab1 , tab2, content1, content2} = Astro.props;
+const {
+  name,
+  tab1Label,
+  tab2Label,
+} = Astro.props;
 
+const sanitizedName = name.toLowerCase().replace(/[^a-z0-9-_]+/g, '-').replace(/^-+|-+$/g, '');
+const tab1Id = `first-tab-id-${sanitizedName}`
+const tab2Id = `second-tab-id-${sanitizedName}`
+const content1Id = `first-tab-content-${sanitizedName}`
+const content2Id = `second-tab-content-${sanitizedName}`
+
+const wrapperClass = `tabs-wrapper-${name}`;
+const dynamicCss = `
+
+  .${wrapperClass}:has(#${tab1Id}:checked) label[for="${tab1Id}"],
+  .${wrapperClass}:has(#${tab2Id}:checked) label[for="${tab2Id}"] {
+    color: oklch(var(--gray-95, 95%) / 1);
+  }
+
+  .${wrapperClass}:has(#${tab1Id}:checked) #${content1Id},
+  .${wrapperClass}:has(#${tab2Id}:checked) #${content2Id} {
+    display: block;
+  }
+
+ .${wrapperClass}:has(#${tab1Id}:focus-visible) label[for="${tab1Id}"],
+ .${wrapperClass}:has(#${tab2Id}:focus-visible) label[for="${tab2Id}"]  {
+  outline: Highlight auto 1px;
+  outline: -webkit-focus-ring-color auto 1px;
+ }
+
+  .${wrapperClass}:has(#${tab1Id}:checked) .tab-indicator {
+    transform: translate3d(-5ch, 0, 0);
+  }
+
+  .${wrapperClass}:has(#${tab2Id}:checked) .tab-indicator {
+    transform: translate3d(5ch, 0, 0);
+  }
+
+`;
 ---
-<div class="flex-center-childs" style="flex-wrap: wrap; position: relative;">
 
-  <input type="radio" class="tabs first-lable" name={name} id={tab1} checked />
-  <input type="radio" class="tabs second-lable" name={name} id={tab2} />
 
-  <div class="tab__indicator__bg"></div>
-  <div id={name} class="tab__indicator glass"></div>
-  
+<style set:html={dynamicCss}> </style>
 
-  <div class="tabs-content" id={content1}>
-    <slot name="tab1" />
-  </div>
 
-  <div class="tabs-content" id={content2}>
-    <slot name="tab2" />
+<div style="flex-wrap: wrap; position: relative;" class={`${wrapperClass} flex-center-childs`}>
+
+  <input type="radio" class="tab-input" name={name} id={tab1Id} checked/>
+  <input type="radio" class="tab-input" name={name} id={tab2Id} />
+
+  <div class="tab-indicator-bg"></div>
+
+  <label class="tab-label no-select" for={tab1Id}>{tab1Label}</label>
+  <label class="tab-label no-select" for={tab2Id}>{tab2Label}</label>
+
+  <div class="tab-indicator glass"></div> 
+
+  <div style="width: 100%;">
+    <div class="tab-panel" id={content1Id}>
+      <slot name="tab1" /> 
+    </div>
+    <div class="tab-panel" id={content2Id}>
+      <slot name="tab2" /> 
+    </div>
   </div>
 
 </div>
 
+
 <style>
 
-.tabs{
-	appearance: none;
-	-webkit-appearance: none;
-	border: none;
-	background-color: transparent;
-	display: grid;
-	height: var(--gap-x06);
-	line-height: var(--gap-x05);
-	width: 10ch;	
-	cursor: pointer; 
-	z-index: var(--z-layer-middle);
-	text-align: center;
-	justify-self: center;
-	align-items: center;
-	transition: color 200ms ease-out;
-	color: oklch(var(--gray-95) / 0.5);
-	margin-bottom:var(--gap-x03);
+.tab-label{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  height: var(--gap-x06);
+  line-height: var(--gap-x05);
+  cursor: pointer;
+  width: 10ch;
+  z-index: var(--z-layer-middle);
+  text-align: center;
+  color: oklch(var(--gray-95) / .5);
+  margin-bottom: var(--gap-x03);
+  background-color: #0000;
+  border: none;
+  justify-self: center;
+  align-items: center;
+  transition: color .2s ease-out;
+  display: grid;
 }
 
-.tabs-content {
-    display: none;
-    width: 100%;
+
+.tab-input{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: absolute;
 }
 
-.tabs:checked.first-lable,
-.tabs:checked.second-lable{
-	color: oklch(var(--gray-95) / 1);
-}
-
-.tab__indicator {
+.tab-indicator {
  width: 10ch;
  position: relative;
  display: inline-block;
@@ -76,7 +121,7 @@ const {name, tab1 , tab2, content1, content2} = Astro.props;
  transition: transform 250ms var(--move);
 }
 
-.tab__indicator__bg {
+.tab-indicator-bg {
  width: calc(20ch + 4px);
  display: inline-block;
  justify-content: center;
@@ -87,8 +132,10 @@ const {name, tab1 , tab2, content1, content2} = Astro.props;
  background-color: oklch(var(--gray-25) / 0.4);
  border-radius: 100px;
  padding: 5px;
+}
 
-
+.tab-panel {
+    display: none; 
 }
 
 </style>

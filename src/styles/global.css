@@ -225,3 +225,9 @@ details.right-to-left[open] summary + *  {
 .blink{
    animation: blink 1s ease-in-out infinite;
 }
+
+.no-select{
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}

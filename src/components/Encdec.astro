@@ -2,7 +2,7 @@
 import Tabs from '../components/ui/Tabs.astro';
 ---
 
-<Tabs name="encdec" tab1="enc" tab2="dec" content1="cenc" content2="cdec">
+<Tabs name="encdec" tab1Label="Encrypt" tab2Label="Decrypt" >
    <fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab1">
 
       <textarea 
@@ -140,23 +140,3 @@ document.getElementById("encryption")!.addEventListener("click",(e)=>{
 
 
 </script>
-
-
-
-<style is:global>
-
-
-#enc:after { content: 'Encrypt';}
-#dec:after { content: 'Decrypt';}
-
-:root:has(#enc:checked) { 
-	#cenc{display: block;} 
-	#encdec {transform: translate3d(-5ch, 0, 0);}
-}
-
-:root:has(#dec:checked) {
- #cdec {display: block;} 
- #encdec { transform: translate3d(5ch, 0, 0);}
-}
-
-</style>

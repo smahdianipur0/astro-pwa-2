@@ -1,7 +1,6 @@
 ---
 import ThemeToggle from '../components/ThemeToggle.astro';
 import Card from './ui/Card.astro';
-// import Tabstest from './ui/Tabstest.astro';
 ---
 
 <Card title = "Key and IV" iden='key-IV'>
@@ -22,34 +21,6 @@ import Card from './ui/Card.astro';
 </Card>
 
 <div class="entries-list"> <div class="menu-item" >  <ThemeToggle/> </div></div>
-
-<!--   <Tabstest
-  name="encdec-tool"      
-  tab1Id="encrypt-tab"    
-  tab1Label="Encrypt"
-  content1Id="encrypt-panel"
-  tab2Id="decrypt-tab"     
-  tab2Label="Decrypt"
-  content2Id="decrypt-panel" 
-  initialCheckedId="encrypt-tab"
->
-
-  <fragment slot="tab1" class="panel">
-    <label for="plain_text_input">Plain Text:</label>
-    <textarea id="plain_text_input" rows="3" placeholder="Type..." style="width:100%;"></textarea>
-  </fragment>
-
-
-  <fragment slot="tab2" class="panel">
-    <label for="cipher_text_input">Cipher Text:</label>
-    <textarea id="cipher_text_input" rows="3" placeholder="Paste..." style="width:100%;"></textarea>
-  </fragment>
-</Tabstest> 
- -->
-
-
-
-
 
 
 <style is:global>
