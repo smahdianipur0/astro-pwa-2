@@ -63,13 +63,11 @@ const dynamicCss = `
 
   <div class="tab-indicator glass"></div> 
 
-  <div style="width: 100%;">
-    <div class="tab-panel" id={content1Id}>
-      <slot name="tab1" /> 
-    </div>
-    <div class="tab-panel" id={content2Id}>
-      <slot name="tab2" /> 
-    </div>
+  <div class="tab-panel" id={content1Id}>
+    <slot name="tab1" /> 
+  </div>
+  <div class="tab-panel" id={content2Id}>
+    <slot name="tab2" /> 
   </div>
 
 </div>
@@ -103,6 +101,7 @@ const dynamicCss = `
   -moz-appearance: none;
   appearance: none;
   position: absolute;
+  top: 0;
 }
 
 .tab-indicator {
@@ -135,7 +134,8 @@ const dynamicCss = `
 }
 
 .tab-panel {
-    display: none; 
+  width: 100%;
+  display: none; 
 }
 
 </style>
