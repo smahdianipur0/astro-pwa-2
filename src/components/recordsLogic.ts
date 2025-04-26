@@ -166,7 +166,7 @@ async function handleVaultSelection() {
         const availableCards = (cards ?? []).filter(item => item.status === "available");
 
         if (availableCards.length === 0) {
-            fragment.append(element.configure("option", { textContent: "No Cards found" }));
+            fragment.append(element.configure("option", { textContent: "New Card" }));
         } else {
             availableCards
                 .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
@@ -181,7 +181,36 @@ async function handleVaultSelection() {
     }
 }
 
-handleVaultSelection();
+async function handleCardSelection() {
+
+    const value = (document.getElementById("select-card-list") as HTMLSelectElement)!.value;;
+    console.log(value);
+    const fragment = document.createDocumentFragment();
+
+    if (value === "New Card") {
+        console.log(value);
+        fragment.append(element.configure("input", {
+            style: "margin-top:var(--gap-x02)",
+            type: "text", 
+            placeholder:"Card Name",
+            id:"new-card-input",
+            name: "new card"
+        }));
+    } else {
+        console.log("hi")
+        const cardInput = document.getElementById("new-card-input") as HTMLInputElement;
+        if (cardInput) {cardInput.remove()}
+    }
+
+    document.getElementById("card-select-field")!.append(fragment);
+}
+
+
+(async () => {
+    await handleVaultSelection();
+    handleCardSelection();
+})();
+
 
 document.getElementById("card-menu-div")!.addEventListener("click",(e)=>{
     if((e!.target as HTMLInputElement).matches("#card-form-button")){
@@ -216,12 +245,18 @@ dialog!.addEventListener("input",(e)=>{
     if((e!.target as HTMLInputElement).matches("#select-vault-for-card")){
         handleVaultSelection();
     };
+    if((e!.target as HTMLInputElement).matches("#select-card-list")){
+        handleCardSelection();
+    };
 });
 
 
 dialog.addEventListener('close', () => {
   form.innerHTML = initialFormHTML;
-  handleVaultSelection();
+    (async () => {
+        await handleVaultSelection();
+        handleCardSelection();
+    })();
 });
 
 
@@ -233,6 +268,7 @@ window.handleCardgForm = (form: HTMLFormElement, event: SubmitEvent): boolean =>
     const data = new FormData(form);
     console.log('vault:', data.get("select vault"));
     console.log('card:', data.get("select card"));
+    console.log('new card:', data.get("new card")); 
     console.log('Comments:', data.getAll('comments'));
   
     return true;
