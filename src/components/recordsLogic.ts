@@ -1,20 +1,19 @@
 import { element } from "../utils/elementUtils";
 import { createSignal, createEffect } from "solid-js";
-import { dbCreate, dbDelete, dbReadAll, dbUpdate, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
+import { dbCreate, dbReadAll, dbUpdate, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
 
 
-const [createVaultName, setCreateVaultName] = createSignal("");
-const [vaultsList, setVaultsList]           = createSignal<ReadAllResultTypes["Vaults"]>([]);
-const [creationAllowed, setCreationAllowed] = createSignal(true);
-
+export const [createVaultName, setCreateVaultName]     = createSignal("");
+export const [vaultsList, setVaultsList]               = createSignal<ReadAllResultTypes["Vaults"]>([]);
+export const [editableVaultList, setEditableVaultList] = createSignal<ReadAllResultTypes["Vaults"]>([]);
+export const [creationAllowed, setCreationAllowed]     = createSignal(true);
 
 const intialvaults = await dbReadAll("Vaults");
 if (intialvaults){setVaultsList(intialvaults);};
 
-createEffect(() => { 
-    const filteredItems = vaultsList().filter(item => item.status === "available" && item.role === "owner");
-    setCreationAllowed(filteredItems.length < 3);
-});
+
+createEffect(() => { setEditableVaultList(vaultsList().filter(item => item.status === "available" && item.role === "owner")) });
+createEffect(() => { setCreationAllowed(editableVaultList().length < 3) });
 
 createEffect(() => { 
     (async () => {
@@ -31,11 +30,11 @@ createEffect(() => {
 
 (async () => {
 
-    const vaultMenu =          (await element.wait("#vault-menu"))          as HTMLElement;
-    const createVaultButton =  (await element.wait("#create-vault-button")) as HTMLButtonElement
-    const vaultNameInput =     (await element.wait("#vault-name-input"))    as HTMLInputElement
+    const vaultMenu          = (await element.wait("#vault-menu"))          as HTMLElement;
+    const createVaultButton  = (await element.wait("#create-vault-button")) as HTMLButtonElement
+    const vaultNameInput     = (await element.wait("#vault-name-input"))    as HTMLInputElement
 
-    const deleteVaultButton =  (await element.wait("#delete-vault-button")) as HTMLButtonElement
+    const deleteVaultButton  = (await element.wait("#delete-vault-button")) as HTMLButtonElement
     const selectDeleteVaults = (await element.wait("#delete-vault-list"))   as HTMLSelectElement;
 
 
@@ -75,7 +74,6 @@ createEffect(() => {
         if((e!.target as HTMLInputElement).matches("#delete-vault-button")){
             const id = selectDeleteVaults.options[selectDeleteVaults.selectedIndex]?.id;
             const value = selectDeleteVaults.options[selectDeleteVaults.selectedIndex]?.value;
-            console.log(id);
             (async () => {
                 await dbUpdate("Vaults:update", {
                     id:id, 
@@ -90,10 +88,10 @@ createEffect(() => {
         };
     });
 
-    createEffect(() => { createVaultButton.disabled = (!creationAllowed() ||createVaultName() === "")});
+    createEffect(() => { createVaultButton.disabled = (!creationAllowed() || createVaultName() === "")});
     createEffect(() => { vaultNameInput.disabled    = (!creationAllowed()) });
 
-    createEffect(() => { deleteVaultButton.disabled = (vaultsList().filter(item => item.status === "available" && item.role === "owner").length === 0)});
+    createEffect(() => { deleteVaultButton.disabled = editableVaultList().length === 0});
 
 })();
 
@@ -125,17 +123,16 @@ createEffect(() => {
     const deleteVaultlist = document.getElementById("delete-vault-list") as HTMLSelectElement
     deleteVaultlist.textContent = "";
 
+    //vaults list for card creation
     const cardVaultlist = document.getElementById("select-vault-for-card") as HTMLSelectElement
     cardVaultlist.textContent = "";
 
     const fragment2 = document.createDocumentFragment();
 
-    if (vaultsList().filter(item => item.status === "available" && item.role === "owner").length === 0){
-
+    if (editableVaultList().length === 0){
         fragment2.append(element.configure("option", {textContent: "No vaults found"}));
     } else { 
-         (vaultsList() ?? [])
-         .filter(item => item.status === "available" && item.role === "owner")
+         (editableVaultList() ?? [])
          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
          .forEach((entry) => {
 
@@ -148,128 +145,3 @@ createEffect(() => {
     cardVaultlist.append(fragment2Clone);
 
 });
-
-async function handleVaultSelection() {
-    const selectCardList = document.getElementById("select-card-list") as HTMLInputElement;
-    if (!selectCardList) return;
-
-    selectCardList.textContent = "";
-
-    const value = (document.getElementById("select-vault-for-card") as HTMLSelectElement)!.value;
-
-    selectCardList.disabled = (value === "No vaults found");
-
-    if (value !== "No vaults found") {
-        const cards = await dbReadAll("Cards");
-        const fragment = document.createDocumentFragment();
-
-        const availableCards = (cards ?? []).filter(item => item.status === "available");
-
-        if (availableCards.length === 0) {
-            fragment.append(element.configure("option", { textContent: "New Card" }));
-        } else {
-            availableCards
-                .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-                .forEach((entry) => {
-                    fragment.append(
-                        element.configure("option", { textContent: entry.name, id: entry.id?.id })
-                    );
-                });
-        }
-
-        selectCardList.append(fragment);
-    }
-}
-
-async function handleCardSelection() {
-
-    const value = (document.getElementById("select-card-list") as HTMLSelectElement)!.value;;
-    console.log(value);
-    const fragment = document.createDocumentFragment();
-
-    if (value === "New Card") {
-        console.log(value);
-        fragment.append(element.configure("input", {
-            style: "margin-top:var(--gap-x02)",
-            type: "text", 
-            placeholder:"Card Name",
-            id:"new-card-input",
-            name: "new card"
-        }));
-    } else {
-        console.log("hi")
-        const cardInput = document.getElementById("new-card-input") as HTMLInputElement;
-        if (cardInput) {cardInput.remove()}
-    }
-
-    document.getElementById("card-select-field")!.append(fragment);
-}
-
-
-(async () => {
-    await handleVaultSelection();
-    handleCardSelection();
-})();
-
-
-document.getElementById("card-menu-div")!.addEventListener("click",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#card-form-button")){
-
-        (document.getElementById("card-form") as HTMLDialogElement).showModal();
-    };
-});
-
-declare global {
-    interface Window {
-        handleCardgForm: (form: HTMLFormElement, event: SubmitEvent) => boolean;
-    }
-}
-
-const dialog = document.getElementById('card-form') as HTMLDialogElement;
-const form   = dialog.querySelector('form')         as HTMLFormElement;
-const initialFormHTML = form.innerHTML;
-
-dialog!.addEventListener("click",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#add-field")){
-        e.preventDefault();
-        const fragment = document.createDocumentFragment();
-        fragment.append(
-         element.configure('textarea', {name:"comments"})
-        );
-        document.getElementById("card-fields")!.append(fragment)
-        return false
-    };
-});
-
-dialog!.addEventListener("input",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#select-vault-for-card")){
-        handleVaultSelection();
-    };
-    if((e!.target as HTMLInputElement).matches("#select-card-list")){
-        handleCardSelection();
-    };
-});
-
-
-dialog.addEventListener('close', () => {
-  form.innerHTML = initialFormHTML;
-    (async () => {
-        await handleVaultSelection();
-        handleCardSelection();
-    })();
-});
-
-
-window.handleCardgForm = (form: HTMLFormElement, event: SubmitEvent): boolean => {
-    const action = (event.submitter as HTMLButtonElement)?.value;
-  
-    if (action === 'cancel') { return true;}
-  
-    const data = new FormData(form);
-    console.log('vault:', data.get("select vault"));
-    console.log('card:', data.get("select card"));
-    console.log('new card:', data.get("new card")); 
-    console.log('Comments:', data.getAll('comments'));
-  
-    return true;
-};

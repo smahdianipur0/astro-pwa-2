@@ -29,6 +29,9 @@ export type Schemas = {
 	Cards: {name: string, data:string[]; updatedAt: string, status:"available" | "deleted"}
 };
 
+
+type rTableName = "Vaults_has";
+
 export type rSchemas = {
 	Vaults_has : {in: string, role:string}
 };
@@ -47,7 +50,6 @@ type PermittedTypes = {
 };
 
 export type ReadResultTypes = {[K in keyof Schemas]: {id?: { tb: string; id: string }} & Schemas[K];};
-
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
 
@@ -151,7 +153,7 @@ export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: 
 	}
 }
 
-// dbUpserelate("Cards:upserelate", {id:"newcard1111", title:"good", "to:Vaults_has": {in:"vault111", role:"owner"} });
+// dbUpserelate("Cards:upserelate", {id:"newcard1111", name:"good", "to:Vaults_has": {in:"vault111", role:"owner"} });
 
 
 export async function dbDelete<T extends `${TableName}:delete`>(action: T, id: string): Promise<void> {
@@ -187,6 +189,7 @@ export async function dbReadAll<T extends TableName>(tableName: T): Promise<Read
 		await db.close();
 	}
 }
+
 
 export async function getEntryById<T extends TableName>(
 	tableName: T,
