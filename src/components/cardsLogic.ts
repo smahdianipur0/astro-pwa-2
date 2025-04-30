@@ -1,6 +1,6 @@
 import { element } from "../utils/elementUtils";
 import { createSignal, createEffect } from "solid-js";
-import { dbCreate, dbReadAll,dbUpdate, type ReadAllResultTypes, type ReadrResultTypes } from "../utils/surrealdb-indexed"
+import { dbCreate, dbReadAll,dbUpdate, type ReadAllResultTypes, } from "../utils/surrealdb-indexed"
 import {editableVaultList} from "./recordsLogic"
 
 
