@@ -9,6 +9,7 @@ const [selectedVault, setSelectedVault]  = createSignal("");
 const [selectedCard, setcselectedCard]   = createSignal("");
 
 // set cards from cards table where in.id is selectedVault() to cardsList
+// SELECT * FROM cards WHERE id IN (SELECT VALUE out FROM vault_has WHERE in = vault:sbbw9wfooyvv4nkjw9lo);
 
 document.getElementById("card-menu-div")!.addEventListener("click",(e)=>{
     if((e!.target as HTMLInputElement).matches("#card-form-button")){
