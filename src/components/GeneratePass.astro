@@ -27,16 +27,15 @@ import TempList from '../components/TempList.astro';
         </Drawer>
       </div>
 
-      <button id="gp" class="text-as-button" style=" margin-inline: 0;
+      <button id="gp" name="copy password" class="text-as-button skeleton-parrent" style=" margin-inline: 0;
         margin-top: var(--gap-x04); 
-        margin-bottom: var(--gap-x04); 
-        line-height: var(--gap-x05);
+        margin-bottom: var(--gap-x04);
         font-weight: 300;
         font-size:var(--font-lg1);">
         <div class="skeleton" style="width:15ch"> </div>
       </button>
 
-      <button id="redo" class="redo_container text-as-button blink" style="right: 0; margin-right: calc(var(--gap)* -1);" >↻</button>
+      <button id="redo" name="regenerate password" class="redo_container text-as-button blink" style="right: 0; margin-right: calc(var(--gap)* -1);" >↻</button>
 
       <p id="ttc" class="hint" style="margin-top: var(--gap-x04); 
       margin-bottom: var(--gap-x04);
