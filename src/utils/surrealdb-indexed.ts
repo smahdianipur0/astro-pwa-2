@@ -2,6 +2,7 @@ import { Surreal, RecordId } from "surrealdb";
 import { surrealdbWasmEngines } from "@surrealdb/wasm";
 import { jsonify } from "surrealdb";
 
+
 export async function getDb() {
 	const db = new Surreal({
 		engines: surrealdbWasmEngines(),
@@ -39,7 +40,7 @@ export type rSchemas = {
 
 // Generate CRUD types for all tables
 type PermittedTypes = {
-	[K in keyof Schemas as `${K & string}:create`]: Partial<Schemas[K]>;} & {
+	[K in keyof Schemas as `${K & string}:create`]: { id?: string } & Partial<Schemas[K]>;} & {
 
 	[K in keyof Schemas as `${K & string}:update`]: { id: string } & Partial<Schemas[K]>;} & {
 
@@ -153,8 +154,6 @@ export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: 
 	}
 }
 
-// dbUpserelate("Cards:upserelate", {id:"newcard1111", name:"good", "to:Vaults_has": {in:"vault111", role:"owner"} });
-
 
 export async function dbDelete<T extends `${TableName}:delete`>(action: T, id: string): Promise<void> {
 	const db = await getDb();
@@ -184,6 +183,36 @@ export async function dbReadAll<T extends TableName>(tableName: T): Promise<Read
 		return entries;
 	} catch (err) {
 		console.error(`Failed to get entries from ${tableName}:`, err);
+		return undefined;
+	} finally {
+		await db.close();
+	}
+}
+
+// SELECT * FROM {$outTable} WHERE id IN (SELECT VALUE out FROM {$rTable} WHERE in ={$fullinid});
+export async function dbReadRelation<T extends TableName>(
+	inTable: TableName, rTable:rTableName, outTable: T, inid: string
+	): Promise<ReadAllResultTypes[T] | undefined> {
+	const db = await getDb();
+
+	if (inid =="") {return}
+	const fullinid = `${inTable}:${inid}`
+	if (!db) {
+		console.error("Database not initialized");
+		return undefined;
+	}
+
+	try {
+		const recs = await db.query(`
+			SELECT * FROM (type::table({$outTable})) 
+			 WHERE id IN 
+			 (SELECT VALUE out FROM (type::table({$rTable})) WHERE in = Vaults:test2);
+			 -- (type::thing({$fullinid})));
+			`,{ outTable :outTable,rTable: rTable, fullinid: fullinid }
+		) ;
+		return recs[0] as ReadAllResultTypes[T]; 
+	} catch (err) {
+		console.error(`Failed to get entries `, err);
 		return undefined;
 	} finally {
 		await db.close();

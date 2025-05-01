@@ -59,6 +59,7 @@ createEffect(() => {
 
             (async () => {
                 await dbCreate("Vaults:create", {
+                    id:createVaultName(),
                     name:createVaultName(), 
                     updatedAt: new Date().toISOString(),
                     status: "available",
@@ -113,7 +114,7 @@ createEffect(() => {
          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
          .forEach((entry) => {
 
-            fragment.append( element.configure("option", {textContent:entry.name, id:entry.id?.id }));
+            fragment.append( element.configure("option", {textContent:entry.id?.id }));
         });
     }
     vaultlist.append(fragment);
