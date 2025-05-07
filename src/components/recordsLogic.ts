@@ -7,6 +7,7 @@ export const [createVaultName, setCreateVaultName]     = createSignal("");
 export const [vaultsList, setVaultsList]               = createSignal<ReadAllResultTypes["Vaults"]>([]);
 export const [editableVaultList, setEditableVaultList] = createSignal<ReadAllResultTypes["Vaults"]>([]);
 export const [creationAllowed, setCreationAllowed]     = createSignal(true);
+export const [selectedVault, setSelectedVault]         = createSignal("");
 
 const intialvaults = await dbReadAll("Vaults");
 if (intialvaults){setVaultsList(intialvaults);};
@@ -26,7 +27,12 @@ createEffect(() => {
     })();
 });
 
-
+// bind SelectedVault signal
+document.getElementById("credentials")!.addEventListener("change",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#vault-list")){
+        setSelectedVault((e!.target as HTMLInputElement).value)
+    };
+});
 
 (async () => {
 

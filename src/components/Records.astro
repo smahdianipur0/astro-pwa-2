@@ -80,6 +80,7 @@ import Dialog from './ui/Dialog.astro';
 </button>
 </div>
 
+
 <Dialog identifier="card-form" formHandler="return handleCardForm(this, event);">
 
   <p>
@@ -109,7 +110,7 @@ import Dialog from './ui/Dialog.astro';
 
   <menu class="flex-center-childs" style="gap:var(--gap);margin-top: var(--gap-x04);">
     <button class="max-width not-prose unstyle-button" type="submit" value="cancel">Cancel</button>
-    <button class="max-width" type="submit" value="confirm">OK</button>
+    <button class="max-width" type="submit" value="confirm" id="add-card-button">OK</button>
   </menu>
 </Dialog>
 
