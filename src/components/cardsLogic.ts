@@ -1,11 +1,11 @@
 import { element } from "../utils/elementUtils";
 import { createSignal, createEffect } from "solid-js";
-import { dbCreate, dbReadAll,dbUpdate,dbUpserelate, dbReadRelation, type ReadAllResultTypes, } from "../utils/surrealdb-indexed"
+import { dbCreate, dbReadAll,dbUpdate,dbUpserelate, dbReadRelation, type ReadAllResultTypes, dbDelete, } from "../utils/surrealdb-indexed"
 import {editableVaultList, selectedVault} from "./recordsLogic"
 import { customAlphabet } from 'nanoid'
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 20)
 
-
+// signals
 const [cardsList, setcardsList]                       = createSignal<ReadAllResultTypes["Cards"]>([]);
 const [addCardSelectedVault, setAddCardSelectedVault] = createSignal("");
 const [selectedCard, setSelectedCard]                = createSignal("");
@@ -26,18 +26,7 @@ createEffect(() => { (async () => {
     if (intialcardsList) {setcardsList(intialcardsList);}
 })(); });
 
-
-// show modal and pre select vault
-document.getElementById("card-menu-div")!.addEventListener("click",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#card-form-button")){
-        (document.getElementById("card-form") as HTMLDialogElement).showModal();
-        const value = selectedVault();
-        selectVaultToAddCard.value = 
-            Array.from(selectVaultToAddCard.options).some(o => o.value === value) ? value :
-            selectVaultToAddCard.options[0]?.value || '';
-    };
-});
-
+// initial handleCardForm
 declare global {
     interface Window {
         handleCardForm: (form: HTMLFormElement, event: SubmitEvent) => boolean;
@@ -47,7 +36,7 @@ declare global {
 const dialog = document.getElementById('card-form') as HTMLDialogElement;
 const form   = dialog.querySelector('form')         as HTMLFormElement;
 
-
+// update availible cards to select
 createEffect(() => {
     (async () => {
         const selectCardList = document.getElementById("select-card-list") as HTMLInputElement;
@@ -60,7 +49,6 @@ createEffect(() => {
 
         if (editableVaultList().length !== 0) {
             const fragment = document.createDocumentFragment();
-
 
             const availableCards = (cardsList() ?? []).filter(item => item.status === "available");
             if (availableCards.length === 0) {
@@ -86,6 +74,10 @@ createEffect(() => {
     const fragment = document.createDocumentFragment();
 
     if (selectedCard() === "" || selectedCard() === "New Card") {
+
+        const cardInput = document.getElementById("new-card-input") as HTMLInputElement;
+        if (cardInput) {cardInput.remove()}
+
         fragment.append(element.configure("input", {
             style: "margin-top:var(--gap-x02)",
             type: "text", 
@@ -93,12 +85,13 @@ createEffect(() => {
             id:"new-card-input",
             name: "new card"
         }));
+
         document.getElementById("card-select-field")!.append(fragment)
+
     } else {
         const cardInput = document.getElementById("new-card-input") as HTMLInputElement;
         if (cardInput) {cardInput.remove()}
     }
-
 });
 
 // ok button disabled
@@ -106,14 +99,22 @@ createEffect(() => {
     (document.getElementById("add-card-button") as HTMLButtonElement).disabled = (selectedCard() === "" && cardName() === "")
 });
     
+// handle clicks as inputs
+document.getElementById("card-menu-div")!.addEventListener("click",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#card-form-button")){
+        (document.getElementById("card-form") as HTMLDialogElement).showModal();
+        const value = selectedVault();
+        selectVaultToAddCard.value = 
+            Array.from(selectVaultToAddCard.options).some(o => o.value === value) ? value :
+            selectVaultToAddCard.options[0]?.value || '';
+    };
+});
 
 dialog!.addEventListener("click",(e)=>{
     if((e!.target as HTMLInputElement).matches("#add-field")){
         e.preventDefault();
         const fragment = document.createDocumentFragment();
-        fragment.append(
-         element.configure('textarea', {name:"comments"})
-        );
+        fragment.append(element.configure('textarea', {name:"comments"}) );
         document.getElementById("card-fields")!.append(fragment)
         return false
     };
@@ -128,52 +129,36 @@ dialog!.addEventListener("input",(e)=>{
     };
     if((e!.target as HTMLInputElement).matches("#new-card-input")){
         setCardName((e!.target as HTMLInputElement).value.toString())
-        console.log(cardName());
     };
 });
 
-
+// handle form
 window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => {
     const action = (event.submitter as HTMLButtonElement)?.value;
   
     if (action === 'cancel') { return true;}
   
     const data = new FormData(form);
-    console.log('vault:', data.get("select vault"));
-    console.log('card:', data.get("select card"));
-    console.log('new card:', data.get("new card")); 
-    console.log('Comments:', data.getAll('comments'));
 
     const selectElement = document.getElementById("select-card-list") as HTMLSelectElement;
     const selectedOptionId = selectElement.options[selectElement.selectedIndex].id;
 
     const id   = ( data.get("select card") === "New Card") ? nanoid() : selectedOptionId;
     const name = ( data.get("select card") === "New Card") ? data.get("new card") as string : data.get("select card") as string ; 
-    console.log(name);
-    // dbUpserelate("Cards:upserelate", {
-    //     id:id, 
-    //     name:name, 
-    //     status:"available", 
-    //     data: data.getAll('comments') as string[],
-    //     "to:Vaults_has": {
-    //         in: data.get("select vault") as string} 
-    //     });
-    // return true;
+
+    dbUpserelate("Cards:upserelate", {
+        id:id, 
+        name:name, 
+        status:"available", 
+        data: data.getAll('comments') as string[],
+        "to:Vaults_has": {
+            in: data.get("select vault") as string} 
+        });
+    return true;
 };
 
 // reset the form on close
 const initialFormHTML = form.innerHTML;
 dialog.addEventListener('close', () => {form.innerHTML = initialFormHTML; });
 
-
-
-createEffect(() => { (async () => {
-    console.log(
-        // (await dbReadAll("Vaults_has")),
-        // addCardSelectedVault(),
-        "test2", (await dbReadRelation("Vaults", "Vaults_has", "Cards", "test2")),
-        // "test3", (await dbReadRelation("Vaults", "Vaults_has", "Cards", "test3")),
-
-        )
-})();});
-
+// await dbReadRelation("Vaults", "Vaults_has", "Cards", "test3")
