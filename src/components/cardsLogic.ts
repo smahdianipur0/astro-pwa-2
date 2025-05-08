@@ -2,20 +2,25 @@ import { element } from "../utils/elementUtils";
 import { createSignal, createEffect } from "solid-js";
 import { dbCreate, dbReadAll,dbUpdate,dbUpserelate, dbReadRelation, type ReadAllResultTypes, } from "../utils/surrealdb-indexed"
 import {editableVaultList, selectedVault} from "./recordsLogic"
-
-
+import { customAlphabet } from 'nanoid'
+const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 20)
 
 
 const [cardsList, setcardsList]                       = createSignal<ReadAllResultTypes["Cards"]>([]);
 const [addCardSelectedVault, setAddCardSelectedVault] = createSignal("");
-const [selectedCard, setcselectedCard]                = createSignal("");
+const [selectedCard, setSelectedCard]                = createSignal("");
 const [cardName, setCardName]                         = createSignal("");
 
 
+// initialize addCardSelectedVault
+const selectVaultToAddCard = document.getElementById("select-vault-for-card") as HTMLSelectElement;
+if (selectVaultToAddCard){ setAddCardSelectedVault(selectVaultToAddCard.options[0]?.value)}
 
+// initialize cardsList
 const intialcardsList = await dbReadRelation("Vaults", "Vaults_has", "Cards", addCardSelectedVault());
 if (intialcardsList) {setcardsList(intialcardsList)}
 
+// update cardsList
 createEffect(() => { (async () => {
     const intialcardsList = await dbReadRelation("Vaults", "Vaults_has", "Cards", addCardSelectedVault());
     if (intialcardsList) {setcardsList(intialcardsList);}
@@ -26,9 +31,10 @@ createEffect(() => { (async () => {
 document.getElementById("card-menu-div")!.addEventListener("click",(e)=>{
     if((e!.target as HTMLInputElement).matches("#card-form-button")){
         (document.getElementById("card-form") as HTMLDialogElement).showModal();
-        const select = document.getElementById("select-vault-for-card") as HTMLSelectElement;
         const value = selectedVault();
-        select.value = Array.from(select.options).some(o => o.value === value) ? value : select.options[0]?.value || '';
+        selectVaultToAddCard.value = 
+            Array.from(selectVaultToAddCard.options).some(o => o.value === value) ? value :
+            selectVaultToAddCard.options[0]?.value || '';
     };
 });
 
@@ -48,6 +54,7 @@ createEffect(() => {
         if (!selectCardList) return;
 
         selectCardList.textContent = "";
+        setSelectedCard("");
 
         selectCardList.disabled = (editableVaultList().length === 0);
 
@@ -74,12 +81,11 @@ createEffect(() => {
     })();
 });
 
-
-
+// card name input
 createEffect(() => {
-const fragment = document.createDocumentFragment();
+    const fragment = document.createDocumentFragment();
 
-    if (selectedCard() === "") {
+    if (selectedCard() === "" || selectedCard() === "New Card") {
         fragment.append(element.configure("input", {
             style: "margin-top:var(--gap-x02)",
             type: "text", 
@@ -87,12 +93,12 @@ const fragment = document.createDocumentFragment();
             id:"new-card-input",
             name: "new card"
         }));
+        document.getElementById("card-select-field")!.append(fragment)
     } else {
         const cardInput = document.getElementById("new-card-input") as HTMLInputElement;
         if (cardInput) {cardInput.remove()}
     }
 
-    document.getElementById("card-select-field")!.append(fragment); 
 });
 
 // ok button disabled
@@ -118,10 +124,11 @@ dialog!.addEventListener("input",(e)=>{
         setAddCardSelectedVault((e!.target as HTMLInputElement).value.toString());
     };
     if((e!.target as HTMLInputElement).matches("#select-card-list")){
-        setcselectedCard((e!.target as HTMLInputElement).value.toString())
+        setSelectedCard((e!.target as HTMLInputElement).value.toString())
     };
     if((e!.target as HTMLInputElement).matches("#new-card-input")){
         setCardName((e!.target as HTMLInputElement).value.toString())
+        console.log(cardName());
     };
 });
 
@@ -136,10 +143,37 @@ window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => 
     console.log('card:', data.get("select card"));
     console.log('new card:', data.get("new card")); 
     console.log('Comments:', data.getAll('comments'));
-  
-    // dbUpserelate("Cards:upserelate", {id:"somecard", name:"good", status:"available", "to:Vaults_has": {in:"test2", role:"owner"} });
-    return true;
+
+    const selectElement = document.getElementById("select-card-list") as HTMLSelectElement;
+    const selectedOptionId = selectElement.options[selectElement.selectedIndex].id;
+
+    const id   = ( data.get("select card") === "New Card") ? nanoid() : selectedOptionId;
+    const name = ( data.get("select card") === "New Card") ? data.get("new card") as string : data.get("select card") as string ; 
+    console.log(name);
+    // dbUpserelate("Cards:upserelate", {
+    //     id:id, 
+    //     name:name, 
+    //     status:"available", 
+    //     data: data.getAll('comments') as string[],
+    //     "to:Vaults_has": {
+    //         in: data.get("select vault") as string} 
+    //     });
+    // return true;
 };
 
+// reset the form on close
 const initialFormHTML = form.innerHTML;
 dialog.addEventListener('close', () => {form.innerHTML = initialFormHTML; });
+
+
+
+createEffect(() => { (async () => {
+    console.log(
+        // (await dbReadAll("Vaults_has")),
+        // addCardSelectedVault(),
+        "test2", (await dbReadRelation("Vaults", "Vaults_has", "Cards", "test2")),
+        // "test3", (await dbReadRelation("Vaults", "Vaults_has", "Cards", "test3")),
+
+        )
+})();});
+

@@ -126,13 +126,13 @@ export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: 
 	});
 
 	if (rTable === "" || rValiues.length === 0){ console.log("incomplete data"); return;}
-
+	console.log("checked for",outRecord,"should add", (action.split(":")[0]), "with", outValues);
 	try { 
 		await db.query(`
 			BEGIN TRANSACTION;
 
 			IF record::exists(type::thing({$outRecord})) {
-				UPDATE (type::table({$outTable})) CONTENT $outValues;
+				UPSERT (type::table({$outTable})) CONTENT $outValues;
 
 			} ELSE { 
 				CREATE (type::thing({$outRecord})) CONTENT $outValues;
@@ -147,6 +147,8 @@ export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: 
 			inRecord  :inRecord,
 			rValiues  :rValiues  }
 		  );
+		
+
 	} catch (err: unknown) {
 		console.error(`Failed to create entry in ${action}:`, err instanceof Error ? err.message : String(err));
 	} finally {
@@ -205,9 +207,8 @@ export async function dbReadRelation<T extends TableName>(
 	try {
 		const recs = await db.query(`
 			SELECT * FROM (type::table({$outTable})) 
-			 WHERE id IN 
-			 (SELECT VALUE out FROM (type::table({$rTable})) WHERE in = Vaults:test2);
-			 -- (type::thing({$fullinid})));
+			WHERE id IN 
+			(SELECT VALUE out FROM (type::table({$rTable})) WHERE in = (type::thing({$fullinid})));
 			`,{ outTable :outTable,rTable: rTable, fullinid: fullinid }
 		) ;
 		return recs[0] as ReadAllResultTypes[T]; 
