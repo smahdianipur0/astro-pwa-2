@@ -1,14 +1,14 @@
 import { element } from "../utils/elementUtils";
 import { createSignal, createEffect } from "solid-js";
-import { dbCreate, dbReadAll,dbUpdate,dbUpserelate, dbReadRelation, type ReadAllResultTypes, dbDelete, } from "../utils/surrealdb-indexed"
-import {editableVaultList, selectedVault} from "./recordsLogic"
+import { dbUpserelate, dbReadRelation, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
+import { editableVaultList, selectedVault} from "./recordsLogic"
 import { customAlphabet } from 'nanoid'
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 20)
 
 // signals
-const [cardsList, setcardsList]                       = createSignal<ReadAllResultTypes["Cards"]>([]);
+export const [cardsList, setcardsList]                = createSignal<ReadAllResultTypes["Cards"]>([]);
 const [addCardSelectedVault, setAddCardSelectedVault] = createSignal("");
-const [selectedCard, setSelectedCard]                = createSignal("");
+const [selectedCard, setSelectedCard]                 = createSignal("");
 const [cardName, setCardName]                         = createSignal("");
 
 
@@ -35,6 +35,40 @@ declare global {
 
 const dialog = document.getElementById('card-form') as HTMLDialogElement;
 const form   = dialog.querySelector('form')         as HTMLFormElement;
+
+
+// bind listeners
+document.getElementById("card-menu-div")!.addEventListener("click",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#card-form-button")){
+        (document.getElementById("card-form") as HTMLDialogElement).showModal();
+        const value = selectedVault();
+        selectVaultToAddCard.value = 
+            Array.from(selectVaultToAddCard.options).some(o => o.value === value) ? value :
+            selectVaultToAddCard.options[0]?.value || '';
+    };
+});
+
+dialog!.addEventListener("click",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#add-field")){
+        e.preventDefault();
+        const fragment = document.createDocumentFragment();
+        fragment.append(element.configure('textarea', {name:"comments"}) );
+        document.getElementById("card-fields")!.append(fragment)
+        return false
+    };
+});
+
+dialog!.addEventListener("input",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#select-vault-for-card")){
+        setAddCardSelectedVault((e!.target as HTMLInputElement).value.toString());
+    };
+    if((e!.target as HTMLInputElement).matches("#select-card-list")){
+        setSelectedCard((e!.target as HTMLInputElement).value.toString())
+    };
+    if((e!.target as HTMLInputElement).matches("#new-card-input")){
+        setCardName((e!.target as HTMLInputElement).value.toString())
+    };
+});
 
 // update availible cards to select
 createEffect(() => {
@@ -99,39 +133,6 @@ createEffect(() => {
     (document.getElementById("add-card-button") as HTMLButtonElement).disabled = (selectedCard() === "" && cardName() === "")
 });
     
-// handle clicks as inputs
-document.getElementById("card-menu-div")!.addEventListener("click",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#card-form-button")){
-        (document.getElementById("card-form") as HTMLDialogElement).showModal();
-        const value = selectedVault();
-        selectVaultToAddCard.value = 
-            Array.from(selectVaultToAddCard.options).some(o => o.value === value) ? value :
-            selectVaultToAddCard.options[0]?.value || '';
-    };
-});
-
-dialog!.addEventListener("click",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#add-field")){
-        e.preventDefault();
-        const fragment = document.createDocumentFragment();
-        fragment.append(element.configure('textarea', {name:"comments"}) );
-        document.getElementById("card-fields")!.append(fragment)
-        return false
-    };
-});
-
-dialog!.addEventListener("input",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#select-vault-for-card")){
-        setAddCardSelectedVault((e!.target as HTMLInputElement).value.toString());
-    };
-    if((e!.target as HTMLInputElement).matches("#select-card-list")){
-        setSelectedCard((e!.target as HTMLInputElement).value.toString())
-    };
-    if((e!.target as HTMLInputElement).matches("#new-card-input")){
-        setCardName((e!.target as HTMLInputElement).value.toString())
-    };
-});
-
 // handle form
 window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => {
     const action = (event.submitter as HTMLButtonElement)?.value;

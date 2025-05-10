@@ -3,10 +3,10 @@ import { createSignal, createEffect } from "solid-js";
 import { dbCreate, dbReadAll, dbUpdate, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
 
 
-export const [createVaultName, setCreateVaultName]     = createSignal("");
-export const [vaultsList, setVaultsList]               = createSignal<ReadAllResultTypes["Vaults"]>([]);
+const [createVaultName, setCreateVaultName]            = createSignal("");
+const [vaultsList, setVaultsList]                      = createSignal<ReadAllResultTypes["Vaults"]>([]);
 export const [editableVaultList, setEditableVaultList] = createSignal<ReadAllResultTypes["Vaults"]>([]);
-export const [creationAllowed, setCreationAllowed]     = createSignal(true);
+const [creationAllowed, setCreationAllowed]            = createSignal(true);
 export const [selectedVault, setSelectedVault]         = createSignal("");
 
 const intialvaults = await dbReadAll("Vaults");
@@ -97,7 +97,6 @@ document.getElementById("credentials")!.addEventListener("change",(e)=>{
 
     createEffect(() => { createVaultButton.disabled = (!creationAllowed() || createVaultName() === "")});
     createEffect(() => { vaultNameInput.disabled    = (!creationAllowed()) });
-
     createEffect(() => { deleteVaultButton.disabled = editableVaultList().length === 0});
 
 })();
