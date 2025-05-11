@@ -9,11 +9,11 @@ import { dbCreate, dbReadAll, dbUpdate, } from "../utils/surrealdb-indexed"
 // (async () => { await syncVaults();})();
  
 
-
 const [userName, setUserName] = createSignal("");
 const [indexedUid, setIndexedUid] = createSignal(false);
 
 
+// initiate auth state based on indexed database
 const user = await dbReadAll("Credentials");
 
 if (user && user?.length === 0) {
@@ -27,10 +27,10 @@ if (user && user?.length !== 0) {
         setIndexedUid(true);
     }
 } 
-console.log(user);
 
 
-export async function queryChallenge() {
+// auth functions
+export async function authQueryChallenge() {
 	const [data, error] = await queryHelper.direct("db", () => trpc.challenge.query());
 
 	if (data?.message) {
@@ -43,11 +43,24 @@ export async function queryChallenge() {
 	if (!data) {
 		console.error("No data received from challenge query", error);
 	}
-
 	return { authentication: undefined, challenge: "" };
 }
 
+async function regQueryChallenge() {
+    const [data, error] = await queryHelper.direct("db", () => trpc.challenge.query());
 
+    if (data?.message) {
+        const registration: any = await client.register({
+            user: userName(),
+            challenge: data.message,
+        });
+        return { registration, challenge: data.message };
+    }
+    if (!data) {
+        console.error("No data received from challenge query", error);
+    }
+    return { registration: undefined, challenge: "" };
+}
 
 async function validateAuthentication(challenge: string, authentication: any) {
     try {
@@ -66,34 +79,47 @@ async function validateAuthentication(challenge: string, authentication: any) {
     }
 }
 
+async function validateRegistration(challenge: string, registration: any) {
+    try {
+        console.log("Sending registration request to server");
+        const [registryData, registryError] = await queryHelper.direct("auth", async () => {
+            return await trpc.registry.mutate({
+                challenge :challenge,
+                registry: registration,
+            });
+        });
+        console.log("registration response:", registryData, "Error:", registryError);
+        return { registryData, registryError };
+    } catch (error) {
+        console.error("Error in registration request:", error);
+        return { registryData: null, registryError: error };
+    }
+}
+
+
+const authResult = document.getElementById("auth_result") as HTMLElement;
+const credentialsDiv = document.getElementById("credentialsDiv") as HTMLElement;
 
 function updateSucceededAuth() {
-    const credentialsDiv = document.getElementById("credentialsDiv") as HTMLElement;
-    if (!credentialsDiv) return; 
-
     credentialsDiv.textContent = '';
 
     const fragment = document.createDocumentFragment();
 
     fragment.append( element.configure('p', {  className: 'hint', style: 'margin-top: 0;',append: [
-
         element.configure('span', { textContent: "device registered." })
-
     ]}));
 
     credentialsDiv.append(fragment);
-
-    const authResult = document.getElementById("auth_result");
-    if (authResult) authResult.textContent = "";
+    authResult.textContent = "";
 }
 
 
-
+// initial ui based on states
 (async () => {
-    const credentialsDiv = document.getElementById("credentialsDiv") as HTMLElement;
     console.log(indexedUid())
     if (indexedUid() === false) {
         credentialsDiv.textContent = '';
+
         const fragment = document.createDocumentFragment();
         
         fragment.append(
@@ -129,16 +155,12 @@ function updateSucceededAuth() {
 })();
 
 
-
+// get user name
 document.getElementById("credentials")!.addEventListener("input",(e)=>{
     if((e!.target as HTMLInputElement).matches("#user_name")){
        const value = (e!.target as HTMLInputElement).value;
        setUserName(value.toString());
-       if(userName() === "") {
-        (document.getElementById("registration")! as HTMLInputElement).disabled  = true;  
-         } else {
-        (document.getElementById("registration")! as HTMLInputElement).disabled  = false; 
-     } 
+       (document.getElementById("registration")! as HTMLInputElement).disabled  = (userName() === "");
     }
 });
 
@@ -146,80 +168,56 @@ document.getElementById("credentials")!.addEventListener("input",(e)=>{
 document.getElementById("credentials")!.addEventListener("click", (e) => {
     
     if ((e!.target as HTMLInputElement).matches("#registration")) {
+
         (async () => {
-            const [data, error] = await queryHelper.direct("db", () => trpc.challenge.query());
+            try {
+                const { registration, challenge } = await regQueryChallenge();
+                if (!registration){authResult.textContent = "Connection failed"}
+                if ( registration){authResult.textContent = "Connectoing to the server"}
 
-            if (error) { document.getElementById("auth_result")!.textContent = "Connection failed"};
+                const {registryData,registryError} = await validateRegistration(challenge, registration)
 
-            if (data?.message) {
-                console.log(data);
-                const registration: any = await client.register({
-                  user: userName(),
-                  challenge: data.message,
-                });
-                if (registration){document.getElementById("auth_result")!.textContent = "Connectoing to the server"}
+                // handle Succeeded regestration 
+                if (registryError){authResult.textContent = "Registration Failed"; return}
+                if (!registryData){authResult.textContent = "Registration Failed"; return}
+                if (!user) return;
+                const userId = user[0]?.id?.id;
+                if (!userId) return;
 
-                const [registryData, registryError] = await queryHelper.direct("db", async () => {
-                    return await trpc.registry.mutate({
-                        challenge: data.message,
-                        registry: registration,
-                    });
-                });
+                // handle Failed regestration 
+                updateSucceededAuth()                    
+                dbUpdate("Credentials:update", { id: userId, registered: true, UID: registration.id });
+                setIndexedUid(true);  
 
-                console.log("registryData", registryData, registryError)
-
-                if (registryData)  {
-                    
-                    updateSucceededAuth()
-
-                    if (!user) return;
-                    const userId = user[0]?.id?.id;
-                    if (!userId) return;
-
-                    // use registration.id as UID}
-                    dbUpdate("Credentials:update", { id: userId, registered: true, UID: registration.id });
-                    setIndexedUid(true);  
-                }
-
-                if (registryError) {
-                    document.getElementById("auth_result")!.textContent = "Registration Failed"
-                    console.log(registryError?.message)
-                }
-
+            } catch (error) {
+                authResult.textContent = "Registration Failed"
             }
+
         })();
     }
 
+    // start authentication
     if ((e!.target as HTMLInputElement).matches("#authentication")) {
         (async () => {
-            const authResult = document.getElementById("auth_result");
-            if (!authResult){return}
-            
+         
             try {
-                const { authentication, challenge } = await queryChallenge();
-        
+                const { authentication, challenge } = await authQueryChallenge();
                 if (!authentication) { authResult.textContent = "Failed to start authentication"; return; }
-                
-                document.getElementById("auth_result")!.textContent = "Connecting to the server...";
+                authResult.textContent = "Connecting to the server...";
                 
                 const { authData, authError } = await validateAuthentication(challenge, authentication);
-                console.log("Authentication complete", authData, authError);
-
-                
-
+              
+                // handle Faild auth
                 if (authError) {authResult.textContent = "Authentication Failed"; return;}
                 if (!authData) {authResult.textContent = "Authentication Failed"; return;}
-                if (!authData.authenticated || !authData.credentialId) {authResult.textContent = "Authentication Failed"; return; }
-                
+                if (!authData.authenticated || !authData.credentialId) {authResult.textContent = "Authentication Failed"; return; }      
                 if (!user ) { return }
                 if (!user[0].id ) { return }
                 const userId = user[0].id.id;
 
                 // handle Succeeded auth 
                 updateSucceededAuth();
-
                 dbUpdate("Credentials:update", { id: userId, registered: true, UID: authData.credentialId });
-
                 setIndexedUid(true);
             } catch (error) {
                 console.error("Authentication flow error:", error);

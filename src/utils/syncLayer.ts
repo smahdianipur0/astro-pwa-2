@@ -1,7 +1,7 @@
 import {dbReadAll,dbUpsert, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
 import queryHelper  from "../utils/query-helper"
 import { trpc } from "../utils/trpc";
-import { queryChallenge }from "../components/authLogic"
+import { authQueryChallenge }from "../components/authLogic"
 
 type VaultsSchema = {
   id?: string;
@@ -96,7 +96,7 @@ export async function syncVaults(){
   if  (localToCloud && localToCloud.length > 0) {
     (async () => {
 
-      const { authentication, challenge } = await queryChallenge() as any;
+      const { authentication, challenge } = await authQueryChallenge() as any;
 
 
       // Validate and ensure all required fields are present
