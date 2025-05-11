@@ -210,17 +210,17 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
                 // handle Faild auth
                 if (authError) {authResult.textContent = "Authentication Failed"; return;}
                 if (!authData) {authResult.textContent = "Authentication Failed"; return;}
-                if (!authData.authenticated || !authData.credentialId) {authResult.textContent = "Authentication Failed"; return; }      
+               if (!authData.authenticated || !authData.credentialId) {authResult.textContent = "Authentication Failed"; return; }      
                 if (!user ) { return }
-                if (!user[0].id ) { return }
-                const userId = user[0].id.id;
+                const userId = user[0]?.id?.id;
+                if (!userId) return;
 
                 // handle Succeeded auth 
                 updateSucceededAuth();
                 dbUpdate("Credentials:update", { id: userId, registered: true, UID: authData.credentialId });
                 setIndexedUid(true);
+
             } catch (error) {
-                console.error("Authentication flow error:", error);
                 authResult.textContent = "Authentication Failed";
             }
         })();
