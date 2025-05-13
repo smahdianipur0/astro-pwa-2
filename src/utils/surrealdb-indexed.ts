@@ -260,3 +260,29 @@ export async function dbDeleteAll<T extends TableName>(tableName: T): Promise<vo
 		await db.close();
 	}
 }
+
+// export async function dbDump<T>(data:Array<T>): Promise<void> {
+// 	const db = await getDb();
+// 	if (!db) {
+// 		console.error("Database not initialized");
+// 		return;
+// 	}
+// 	try { 
+// 		await db.query(`
+// 			BEGIN TRANSACTION;
+
+// 			FOR $item IN $data {
+//     			UPSERT vaults CONTENT $item;
+// 			};
+	  
+// 			COMMIT TRANSACTION; `,
+// 		  { data :data }
+// 		  );
+		
+
+// 	} catch (err: unknown) {
+// 		console.error(`Failed `, err instanceof Error ? err.message : String(err));
+// 	} finally {
+// 		await db.close();
+// 	}
+// }

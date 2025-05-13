@@ -210,7 +210,7 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
                 // handle Faild auth
                 if (authError) {authResult.textContent = "Authentication Failed"; return;}
                 if (!authData) {authResult.textContent = "Authentication Failed"; return;}
-               if (!authData.authenticated || !authData.credentialId) {authResult.textContent = "Authentication Failed"; return; }      
+                if (!authData.authenticated || !authData.credentialId) {authResult.textContent = "Authentication Failed"; return; }      
                 if (!user ) { return }
                 const userId = user[0]?.id?.id;
                 if (!userId) return;
