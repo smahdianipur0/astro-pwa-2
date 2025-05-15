@@ -231,3 +231,20 @@ details.right-to-left[open] summary + *  {
   -moz-user-select: none;
   user-select: none;
 }
+
+
+.shiny-text {
+    color: #b5b5b5a4;
+    background: linear-gradient(120deg,#fff0 40%,#fffc,#fff0 60%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    display: inline-block;
+    animation: shine 2s linear infinite;
+}
+@keyframes shine {
+  0% { background-position: 100%; }
+  50% { opacity: 60%; }
+  100% { background-position: -100%; }
+}
+

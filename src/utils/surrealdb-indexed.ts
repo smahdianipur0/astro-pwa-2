@@ -261,7 +261,7 @@ export async function dbDeleteAll<T extends TableName>(tableName: T): Promise<vo
 	}
 }
 
-// export async function dbDump<T>(data:Array<T>): Promise<void> {
+// export async function dbDump<T extends TableName>(table: T ,data:ReadAllResultTypes[T]): Promise<void> {
 // 	const db = await getDb();
 // 	if (!db) {
 // 		console.error("Database not initialized");
@@ -272,11 +272,12 @@ export async function dbDeleteAll<T extends TableName>(tableName: T): Promise<vo
 // 			BEGIN TRANSACTION;
 
 // 			FOR $item IN $data {
-//     			UPSERT vaults CONTENT $item;
+// 				UPSERT (type::table({$table})) CONTENT (type::thing({$item}));
 // 			};
 	  
 // 			COMMIT TRANSACTION; `,
-// 		  { data :data }
+// 		  { data :data,
+// 		   table:table }
 // 		  );
 		
 
@@ -286,3 +287,22 @@ export async function dbDeleteAll<T extends TableName>(tableName: T): Promise<vo
 // 		await db.close();
 // 	}
 // }
+
+// const email = await dbReadAll("Emails");
+
+// console.log(email)
+
+// const data = [
+//     {
+//         "crreatedAt": "2025-05-14T19:56:47.631Z",
+//         "email": "jamal2@gmail.com",
+//         "id": "Emails:9eyfwjauce625h0b71ko"
+//     },
+//     {
+//         "crreatedAt": "2025-05-14T19:56:47.631Z",
+//         "email": "kolsum2@gmail.com",
+//         "id": "Emails:9eyfwjauce625h0b71kj"
+//     }
+// ]
+
+// dbDump("Emails", data);

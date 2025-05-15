@@ -1,4 +1,4 @@
-import {dbReadAll,dbUpsert, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
+import { dbReadAll,dbUpsert, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
 import queryHelper  from "../utils/query-helper"
 import { trpc } from "../utils/trpc";
 import { authQueryChallenge }from "../components/authLogic"
@@ -10,7 +10,6 @@ type VaultsSchema = {
   status?: "deleted" | "available";
   updatedAt: string;
 }[];
-
 
 interface dbArrays {
   [key: string]: any;
@@ -26,6 +25,7 @@ interface dbError{
   [key: string]: any;
   message: string
 }
+
 
 function syncArrays<T extends dbArrays>(local: T[], cloud: T[], key: string): 
 { localToCloud: T[]; cloudToLocal: T[] } {
@@ -116,7 +116,7 @@ export async function syncVaults(){
         return await trpc.syncvaults.mutate({
             challenge,
             authenticationData: authentication,
-            vaults: localToCloud
+            vaults: localToCloud 
         });
       });
       console.log(authData, authError)

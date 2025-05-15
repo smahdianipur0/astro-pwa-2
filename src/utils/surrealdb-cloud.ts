@@ -113,8 +113,8 @@ export async function dbQueryRole(userID: string, vaultName: string): Promise<ob
         console.log(String(errorObject.result));
         throw new Error(String(errorObject.result));
       }
+      console.log("unknown error");
       throw new Error("unknown error");
-      console.log("unknown error")
     }
   } 
   catch (err: unknown) {

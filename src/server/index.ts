@@ -113,7 +113,7 @@ export const appRouter = router({
                         credentialObj,
                         {
                             challenge: input.challenge,
-                            origin: "https://keypass.vercel.app",
+                            origin: "http://localhost:4321",
                             userVerified: true,
                         }
                     );
