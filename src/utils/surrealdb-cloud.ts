@@ -29,7 +29,7 @@ type TableName = "users" | "vaults" | "cards" ;
 
 export type Schemas = {
   users: { UID: string, vaultCount: number, cardCount: number; credentials: object;  };
-  vaults: {name: string; updatedAt: string, status:"available" | "deleted"};
+  vaults: {name: string; updatedAt: string, status:"available" | "deleted", role?: "owner" | "viewer"};
   cards: {name: string, data:string[]; updatedAt: string, status:"available" | "deleted"}
 };
 
@@ -71,6 +71,20 @@ export type hasVault = {
   out: string;
   role: string;
 }
+
+export function unwrapRecord(data: Array<Record<string, any>>): Array<Record<string, any>> {
+  return data.map(obj => {
+    const newObj = { ...obj };
+
+    if (typeof obj.id === 'string' && obj.id.includes(':')) {
+      const [tb, id] = obj.id.split(':');
+      newObj.id = { tb, id };
+    }
+
+    return newObj;
+  });
+}
+
 
 
 export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: T, data: PermittedTypes[T]): Promise<string> {

@@ -2,6 +2,7 @@ import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import type { Context } from "./context.ts";
 import { 
+    unwrapRecord,
     dbCreateUser, 
     dbCreateVault, 
     dbDeleteVault, 
@@ -10,7 +11,8 @@ import {
     dbQueryRole,
     dbRelateVault,
     dbUpdateVault,
-    dbUpserelate } from "../utils/surrealdb-cloud";
+    dbUpserelate,
+    type ReadAllResultTypes } from "../utils/surrealdb-cloud";
 import { server } from '@passwordless-id/webauthn'
 import { registrationInputSchema, authenticationInputSchema, credentialSchema, UID, syncVaultsSchema } from './schemas';
 
@@ -22,8 +24,9 @@ const t = initTRPC.context<Context>().create({
     },
 });
 
-
 export const router = t.router;
+
+
 
 export const appRouter = router({
 
@@ -121,7 +124,8 @@ export const appRouter = router({
                     
                     if (!authenticationParsed.userVerified) { throw new Error("Authentication failed"); }
                     
-                    input.vaults.forEach(async (entry) => {
+                    const unwrapedVaults = unwrapRecord(input.vaults) as ReadAllResultTypes["vaults"];
+                    unwrapedVaults.forEach(async (entry) => {
                         console.log("what enterded the loop",entry);
                         if(entry.role === "owner") {
 
