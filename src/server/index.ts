@@ -149,7 +149,8 @@ export const appRouter = router({
 
         dbquery: t.procedure
         .mutation(async () =>{
-            const data = await dbUpdateVault("hello", new Date().toISOString(), "deleted");
+            // const data = await dbUpdateVault("hello", new Date().toISOString(), "deleted");
+            const data = "hi";
             console.log(data)
             return data
         })
