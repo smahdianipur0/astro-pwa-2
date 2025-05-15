@@ -2,7 +2,7 @@ import '../../styles/corvu.css'
 import Popover from '@corvu/popover'
 import type { VoidComponent } from 'solid-js'
 
-const VaultMenu: VoidComponent = (props) => {
+const Menu: VoidComponent = (props) => {
   return (
     <Popover
       floatingOptions={{
@@ -25,4 +25,4 @@ const VaultMenu: VoidComponent = (props) => {
   )
 }
 
-export default VaultMenu
+export default Menu

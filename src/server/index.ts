@@ -4,12 +4,9 @@ import type { Context } from "./context.ts";
 import { 
     unwrapRecord,
     dbCreateUser, 
-    dbCreateVault, 
-    dbDeleteVault, 
     dbQueryUser, 
     dbReadVault, 
     dbQueryRole,
-    dbRelateVault,
     dbUpdateVault,
     dbUpserelate,
     type ReadAllResultTypes } from "../utils/surrealdb-cloud";

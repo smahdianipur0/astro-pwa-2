@@ -1,10 +1,10 @@
 import { dbReadAll,dbUpsert, dbReadRelation, type ReadAllResultTypes, dbDeleteAll } from "../utils/surrealdb-indexed"
 import queryHelper  from "../utils/query-helper"
 import { trpc } from "../utils/trpc";
-import { authQueryChallenge }from "../components/authLogic"
+import { authQueryChallenge }from "../logic/auth"
 
 
-type VaultsSchema = ReadAllResultTypes["Vaults"];
+type VaultsSchema = (Omit<ReadAllResultTypes["Vaults"][number], "id"> & {id?: string;})[];
 
 type CardDetail = ({
   vault: string;

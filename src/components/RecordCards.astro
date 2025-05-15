@@ -1,9 +1,18 @@
-import { cardsList, setcardsList, updateCardsList} from "./cardsLogic"
-import { selectedVault} from "./recordsLogic"
-import { createSignal, createEffect } from "solid-js";
-import { element } from "../utils/elementUtils";
-import { dbUpserelate, dbReadRelation, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
+---
 
+---
+
+<div id="cards-array" class="skeleton-parrent">
+    <div class="skeleton"></div>
+</div>
+
+<script>
+
+import { cardsList, setcardsList, } from "../logic/records"
+import { selectedVault} from "../logic/records"
+import { createEffect } from "solid-js";
+import { element } from "../utils/elementUtils";
+import { dbReadRelation } from "../utils/surrealdb-indexed"
 
 
 const intialcardsList = await dbReadRelation("Vaults", "Vaults_has", "Cards", selectedVault());
@@ -81,3 +90,5 @@ createEffect(() => {(async () => {
     cardsArray.append(fragment);
 
 })();});
+
+</script>

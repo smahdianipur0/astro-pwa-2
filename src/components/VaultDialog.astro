@@ -1,14 +1,50 @@
+---
+import Dialog from './ui/Dialog.astro';
+---
+
+<Dialog identifier= 'create-vault-dialog'>
+
+  <h3 style="margin-top: 0;">Create vault</h3>
+  <p class="hint" id="vault-hint"></p>
+
+  <input type="text" name="vault-name" id="vault-name-input">
+  <div class="flex-center-childs" style="gap:var(--gap);margin-top:var(--gap-x04);">
+    
+    <button class="unstyle-button not-prose max-width" >Cancel</button>
+    <button class="max-width" id="create-vault-button" disabled>Create</button>
+    
+  </div>
+
+</Dialog>
+
+<Dialog identifier= 'delete-vault-dialog'>
+
+  <h3 style="margin-top: 0;">Delete vault</h3>
+
+  <select name="delete vaults" class="max-width prose" id="delete-vault-list" > </select>
+
+  <div class="flex-center-childs" style="gap:var(--gap);margin-top:var(--gap-x04);"> 
+
+    <button class="unstyle-button not-prose max-width" >Cancel</button>
+    <button class="max-width" id="delete-vault-button" style="--primary:62.31% 0.246 27" disabled>Delete</button>
+    
+  </div>
+
+</Dialog>
+
+<script>
+
 import { element } from "../utils/elementUtils";
-import { createSignal, createEffect } from "solid-js";
-import { dbCreate, dbReadAll, dbUpdate, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
-import {updateCardsList} from "./cardsLogic"
+import { createEffect } from "solid-js";
+import { dbCreate, dbReadAll, dbUpdate} from "../utils/surrealdb-indexed"
+import { createVaultName,   setCreateVaultName,
+         vaultsList,        setVaultsList,
+         editableVaultList, setEditableVaultList,
+         creationAllowed,   setCreationAllowed,
+         selectedVault,     setSelectedVault
+        } from '../logic/records'
 
 
-const [createVaultName, setCreateVaultName]            = createSignal("");
-const [vaultsList, setVaultsList]                      = createSignal<ReadAllResultTypes["Vaults"]>([]);
-export const [editableVaultList, setEditableVaultList] = createSignal<ReadAllResultTypes["Vaults"]>([]);
-const [creationAllowed, setCreationAllowed]            = createSignal(true);
-export const [selectedVault, setSelectedVault]         = createSignal("");
 
 const intialvaults = await dbReadAll("Vaults");
 if (intialvaults){setVaultsList(intialvaults);};
@@ -37,22 +73,10 @@ document.getElementById("credentials")!.addEventListener("change",(e)=>{
 
 (async () => {
 
-    const vaultMenu          = (await element.wait("#vault-menu"))          as HTMLElement;
     const createVaultButton  = (await element.wait("#create-vault-button")) as HTMLButtonElement
     const vaultNameInput     = (await element.wait("#vault-name-input"))    as HTMLInputElement
-
     const deleteVaultButton  = (await element.wait("#delete-vault-button")) as HTMLButtonElement
     const selectDeleteVaults = (await element.wait("#delete-vault-list"))   as HTMLSelectElement;
-
-
-    vaultMenu.addEventListener("click",(e)=>{
-        if((e!.target as HTMLInputElement).matches("#vault-create")){
-            (document.getElementById("create-vault-dialog") as HTMLDialogElement).showModal();
-        };
-        if((e!.target as HTMLInputElement).matches("#vault-delete")){
-            (document.getElementById("delete-vault-dialog") as HTMLDialogElement).showModal();
-        };
-    });
 
 
     document.getElementById("create-vault-dialog")!.addEventListener("input",(e)=>{
@@ -153,3 +177,6 @@ createEffect(() => {
     cardVaultlist.append(fragment2Clone);
 
 });
+
+
+</script>

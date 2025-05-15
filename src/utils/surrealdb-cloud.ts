@@ -1,6 +1,5 @@
 import { Surreal, RecordId } from 'surrealdb';
 
-
 let db: Surreal | null = null;;
 
 (async () => {
@@ -56,8 +55,6 @@ export type ReadResultTypes = {[K in keyof Schemas]: {id?: { tb: string; id: str
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
 
-
-
 export type Credentials = {
   UID: string;
   credentials: object;
@@ -89,8 +86,6 @@ export function unwrapRecord(data: Array<Record<string, any>>): Array<Record<str
 
 export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: T, data: PermittedTypes[T]): Promise<string> {
   if (!db) throw new Error("Database not connected.");
-  let result: string | undefined;
-
 
   const outRecord = `${action.split(":")[0]}:${data.id}`;
   let inRecord = ""
@@ -227,46 +222,6 @@ export async function dbQueryRole(userID: string, vaultName: string): Promise<ob
   }
 }
 
-export async function dbCreateVault(userID: string,vaultName: string, updatedAt:string, status:string ): Promise<object | undefined> {
- 
-  if (!db) throw new Error("Database not connected.")
-
-  try {
-    const response = await db.query_raw(`
-      BEGIN TRANSACTION;
-      LET $user = (SELECT id FROM users WHERE UID = $UID);
-      LET $vaultCount = (SELECT vaultCount FROM users WHERE UID = $UID);
-      LET $vault = (CREATE vaults SET id = $vaultName, name = $vaultName, updatedAt = $updatedAt, status = $status);
-      
-      INSERT RELATION INTO has_vault {
-        in:  $user[0].id,
-        out: $vault[0].id,
-        role: "owner"
-      };
-
-      UPSERT users SET vaultCount = $vaultCount[0].vaultCount + 1 WHERE UID = $UID;
-      COMMIT TRANSACTION; `,
-    { UID: userID, vaultName: vaultName, updatedAt:updatedAt, status:status}
-    );
-    console.log(response);
-
-    if (response[response.length - 1].status === 'OK') {
-      return{message : "OK"}
-    } else if (response[response.length - 1].status === 'ERR') {
-      const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
-      if (errorObject) {
-        console.log(String(errorObject.result));
-        throw new Error(String(errorObject.result));
-      }
-      throw new Error("unknown error");
-      console.log("unknown error")
-    }
-  } 
-  catch (err: unknown) {
-    console.log(err);
-    throw new Error(err instanceof Error ? err.message : String(err))
-	}
-}
 
 export async function dbRelateVault(userID: string,vaultName: string ): Promise<object | undefined> {
 
@@ -340,79 +295,6 @@ export async function dbReadVault(userID: string ): Promise<object | undefined> 
       }
       console.log("unknown error");
       throw new Error("unknown error");
-    }
-  } 
-  catch (err: unknown) {
-    console.log(err);
-    throw new Error(err instanceof Error ? err.message : String(err))
-  }
-}
-
-export async function dbDeleteVault(userID: string, vaultName: string ): Promise<any | undefined> {
- 
-  if (!db) throw new Error("Database not connected.")
-
-  try {
-    const response = await db.query_raw(`
-      BEGIN TRANSACTION;
-      LET $user = (SELECT id FROM users WHERE UID = $UID);
-      LET $vaultCount =(SELECT vaultCount FROM users WHERE UID = $UID);
-
-      LET $vaultExists = (SELECT * FROM vaults WHERE name = $VAULT);
-
-      IF count($vaultExists) = 0 {
-        THROW "Vault does not exist";
-      };
-
-      DELETE FROM vaults WHERE name = $VAULT ;
-      UPSERT users SET vaultCount = $vaultCount[0].vaultCount - 1 WHERE id = $user[0].id;
-      COMMIT TRANSACTION;
-      `, { UID:userID, VAULT: vaultName }
-    );
-    console.log(response);
-
-    if (response[response.length - 1].status === 'OK') {
-      return{message : "${vaultName} Deleted"}
-    } else if (response.filter(item => item.status === 'ERR')) {
-      const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
-      if (errorObject) {
-        console.log(errorObject);
-        throw new Error(String(errorObject.result));
-      }
-      throw new Error("unknown error");
-    }
-  } catch(err:unknown){
-    console.log(err);
-    throw new Error(err instanceof Error ? err.message : String(err))
-  } 
-}
-
-export async function dbUpdateVault(vaultName: string, updatedAt: string, status: string ): Promise<object | undefined> {
- 
-  if (!db) throw new Error("Database not connected.")
-
-  try {
-    const response = await db.query_raw(`
-      BEGIN TRANSACTION;
-
-      LET $vault = (SELECT id FROM vaults WHERE name = $vaultName);
-      UPDATE $vault[0].id SET updatedAt = $updatedAt , status = $status;
-
-      COMMIT TRANSACTION; `,
-    { vaultName: vaultName, updatedAt: updatedAt, status: status }
-    );
-    console.log(response);
-
-    if (response[response.length - 1].status === 'OK') {
-      return{message : "OK"}
-    } else if (response[response.length - 1].status === 'ERR') {
-      const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
-      if (errorObject) {
-        console.log(String(errorObject.result));
-        throw new Error(String(errorObject.result));
-      }
-      throw new Error("unknown error");
-      console.log("unknown error")
     }
   } 
   catch (err: unknown) {
