@@ -140,19 +140,6 @@ export const appRouter = router({
                             });
                         console.log(dbUpsr);
                         }
-
-                        
-
-                        // if(entry.role === "owner" && entry.status === "available") {
-                        //     console.log("adding to cloud");
-                        //     console.log(entry);
-                        //     await dbCreateVault(credentialObj.id, entry.name, entry.updatedAt, entry.status);
-                        // }
-                        // if(entry.role === "owner" && entry.status === "deleted") {
-                        //     console.log("updating cloud");
-                        //     console.log(entry);
-                        //     await dbUpdateVault(entry.name, entry.updatedAt, entry.status);
-                        // }
                     });
 
                     return {
