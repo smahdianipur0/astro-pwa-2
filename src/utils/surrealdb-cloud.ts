@@ -25,6 +25,39 @@ let db: Surreal | null = null;;
   }
 })();
 
+type TableName = "users" | "vaults" | "cards" ;
+
+export type Schemas = {
+  users: { UID: string, vaultCount: number, cardCount: number; credentials: object;  };
+  vaults: {name: string; updatedAt: string, status:"available" | "deleted"};
+  cards: {name: string, data:string[]; updatedAt: string, status:"available" | "deleted"}
+};
+
+type rTableName = "vaults_has";
+
+export type rSchemas = {
+  vaults_has : {in: string, role?:string}
+};
+
+
+type PermittedTypes = {
+  [K in keyof Schemas as `${K & string}:create`]: { id?: string } & Partial<Schemas[K]>;} & {
+
+  [K in keyof Schemas as `${K & string}:update`]: { id: string } & Partial<Schemas[K]>;} & {
+
+  [K in keyof Schemas as `${K & string}:delete`]: { id: string };} & {
+
+  [K in keyof Schemas as `${K & string}:upserelate`]: { id: string } & Partial<Schemas[K]> & 
+    {[K in keyof rSchemas as `to:${K & string}`]: Partial<rSchemas[K]>;};
+};
+
+
+export type ReadResultTypes = {[K in keyof Schemas]: {id?: { tb: string; id: string }} & Schemas[K];};
+export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
+
+
+
+
 export type Credentials = {
   UID: string;
   credentials: object;
@@ -38,6 +71,63 @@ export type hasVault = {
   out: string;
   role: string;
 }
+
+
+export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: T, data: PermittedTypes[T]): Promise<string> {
+  if (!db) throw new Error("Database not connected.");
+  let result: string | undefined;
+
+
+  const outRecord = `${action.split(":")[0]}:${data.id}`;
+  let inRecord = ""
+  let rTable = "";
+  let rValiues: { [key: string]: any } = {};
+  let outValues:   { [key: string]: any } = {};
+
+  Object.entries(data).forEach(([key, value]) => {
+    if (key.startsWith("to:")) {
+      rTable = key;
+      const relationValue = value as Partial<rSchemas[keyof rSchemas]>;
+      rValiues = { ...relationValue };
+      delete rValiues.in;
+      inRecord = `${(rTable.split("_")[0]).split(":")[1]}:${relationValue.in}`;
+
+    } else {
+      outValues[key] = value;
+    }
+  });
+
+
+  if (rTable === "" || rValiues.length === 0){ console.log("incomplete data"); return"incomplete data";}
+  try { 
+    await db.query(`
+      BEGIN TRANSACTION;
+
+      IF record::exists(type::thing({$outRecord})) {
+        UPSERT (type::table({$outTable})) CONTENT $outValues;
+
+      } ELSE { 
+        CREATE (type::thing({$outRecord})) CONTENT $outValues;
+        RELATE (type::thing({$inRecord}))-> (type::table({$rTable})) -> (type::thing({$outRecord})) CONTENT $rValiues;
+      };
+    
+      COMMIT TRANSACTION; `,
+      { outTable  :action.split(":")[0], 
+      outValues :outValues, 
+      rTable    :rTable.split(":")[1], 
+      outRecord :outRecord,
+      inRecord  :inRecord,
+      rValiues  :rValiues  }
+      );
+      console.log(action.split(":")[0],outValues,rTable.split(":")[1],outRecord,inRecord,rValiues)
+      return "done"
+  } catch (err: unknown) {
+    
+    throw new Error(`Failed to create entry in ${action}: ${err}`);
+
+  }
+}
+
 
 
 export async function dbCreateUser(userID: string, credential: object): Promise<string | undefined> {

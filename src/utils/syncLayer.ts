@@ -1,15 +1,15 @@
-import { dbReadAll,dbUpsert, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
+import { dbReadAll,dbUpsert, dbReadRelation, type ReadAllResultTypes, dbDeleteAll } from "../utils/surrealdb-indexed"
 import queryHelper  from "../utils/query-helper"
 import { trpc } from "../utils/trpc";
 import { authQueryChallenge }from "../components/authLogic"
 
-type VaultsSchema = {
-  id?: string;
-  name: string;
-  role?: "owner" | "viewer";
-  status?: "deleted" | "available";
-  updatedAt: string;
-}[];
+
+type VaultsSchema = ReadAllResultTypes["Vaults"];
+
+type CardDetail = ({
+  vault: string;
+  contains: ReadAllResultTypes["Cards"];
+})[];
 
 interface dbArrays {
   [key: string]: any;
@@ -59,23 +59,33 @@ function syncArrays<T extends dbArrays>(local: T[], cloud: T[], key: string):
 
 export async function syncVaults(){
 
-  const indexedArray = await dbReadAll("Vaults")      as ReadAllResultTypes["Vaults"] ;
-  const credentials  = await dbReadAll("Credentials") as ReadAllResultTypes["Credentials"] ;
-  const UID = credentials[0].UID
+  const indexedVaults = await dbReadAll("Vaults")      as ReadAllResultTypes["Vaults"] ;
+  const credentials   = await dbReadAll("Credentials") as ReadAllResultTypes["Credentials"] ;
+  const UID = credentials[0].UID;
+
+  let indexedCards:CardDetail = [];
+
+  indexedVaults.forEach(async (entry) => {
+    const vaultId = entry.id?.id;
+    if (!vaultId)return;
+    const cards = await dbReadRelation("Vaults", "Vaults_has", "Cards", vaultId);
+    if(!cards)return;
+    indexedCards.push({vault: vaultId, contains: cards});
+  });
 
   const [data, error] = await queryHelper.direct("cloudVaults", async () => {
     return await trpc.queryVaults.query({UID: UID}) as dbObject;
   });
 
-  if (error){ console.log(error); return}
+  if (error){console.log(error); return}
 
 
   if (!data?.message) return
-  const transformedArray = data.message.map(item => item.out);
-  console.log("whats on indexed:",indexedArray,"whats on cloud",transformedArray)
+  const cloudVaults = data.message.map(item => item.out);
+  console.log("whats on indexed:",indexedVaults,"whats on cloud",cloudVaults)
   const {localToCloud, cloudToLocal} = syncArrays<VaultsSchema[number]>(
-    indexedArray as VaultsSchema, 
-    transformedArray as VaultsSchema, 
+    indexedVaults as VaultsSchema, 
+    cloudVaults as VaultsSchema, 
     "name"
   );
   console.log("localToCloud", localToCloud,"cloudToLocal",cloudToLocal)
@@ -86,11 +96,10 @@ export async function syncVaults(){
           id: entry.name,
           name: entry.name,
           status: entry.status,
-          role: entry.role,
+          role: "owner",
           updatedAt: entry.updatedAt,
         });
       });
-    
     console.log("added to local");
   };
   if  (localToCloud && localToCloud.length > 0) {
@@ -122,4 +131,7 @@ export async function syncVaults(){
       console.log(authData, authError)
     })();  
   };
+
+
 }
+

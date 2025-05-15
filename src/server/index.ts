@@ -9,7 +9,8 @@ import {
     dbReadVault, 
     dbQueryRole,
     dbRelateVault,
-    dbUpdateVault } from "../utils/surrealdb-cloud";
+    dbUpdateVault,
+    dbUpserelate } from "../utils/surrealdb-cloud";
 import { server } from '@passwordless-id/webauthn'
 import { registrationInputSchema, authenticationInputSchema, credentialSchema, UID, syncVaultsSchema } from './schemas';
 
@@ -121,16 +122,33 @@ export const appRouter = router({
                     if (!authenticationParsed.userVerified) { throw new Error("Authentication failed"); }
                     
                     input.vaults.forEach(async (entry) => {
-                        if(entry.role === "owner" && entry.status === "available") {
-                            console.log("adding to cloud");
-                            console.log(entry);
-                            await dbCreateVault(credentialObj.id, entry.name, entry.updatedAt, entry.status);
+                        console.log("what enterded the loop",entry);
+                        if(entry.role === "owner") {
+
+                        const dbUpsr =  await dbUpserelate("vaults:upserelate", {
+                                id:entry.id?.id ?? "", 
+                                name:entry.name,
+                                status:entry.status,
+                                updatedAt:entry.updatedAt,
+                                "to:vaults_has" : {
+                                    in:credentialObj.id,
+                                }
+                            });
+                        console.log(dbUpsr);
                         }
-                        if(entry.role === "owner" && entry.status === "deleted") {
-                            console.log("updating cloud");
-                            console.log(entry);
-                            await dbUpdateVault(entry.name, entry.updatedAt, entry.status);
-                        }
+
+                        
+
+                        // if(entry.role === "owner" && entry.status === "available") {
+                        //     console.log("adding to cloud");
+                        //     console.log(entry);
+                        //     await dbCreateVault(credentialObj.id, entry.name, entry.updatedAt, entry.status);
+                        // }
+                        // if(entry.role === "owner" && entry.status === "deleted") {
+                        //     console.log("updating cloud");
+                        //     console.log(entry);
+                        //     await dbUpdateVault(entry.name, entry.updatedAt, entry.status);
+                        // }
                     });
 
                     return {

@@ -1,6 +1,7 @@
 import { element } from "../utils/elementUtils";
 import { createSignal, createEffect } from "solid-js";
 import { dbCreate, dbReadAll, dbUpdate, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
+import {updateCardsList} from "./cardsLogic"
 
 
 const [createVaultName, setCreateVaultName]            = createSignal("");
@@ -30,7 +31,7 @@ createEffect(() => {
 // bind SelectedVault signal
 document.getElementById("credentials")!.addEventListener("change",(e)=>{
     if((e!.target as HTMLInputElement).matches("#vault-list")){
-        setSelectedVault((e!.target as HTMLInputElement).value)
+        setSelectedVault((e!.target as HTMLInputElement).value);
     };
 });
 
@@ -86,7 +87,8 @@ document.getElementById("credentials")!.addEventListener("change",(e)=>{
                     id:id, 
                     name: value,
                     updatedAt: new Date().toISOString(),
-                    status:"deleted"
+                    status:"deleted",
+                    role: "owner"
                 });
 
                 const vaults = await dbReadAll("Vaults");

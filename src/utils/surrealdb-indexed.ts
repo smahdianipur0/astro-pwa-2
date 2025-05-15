@@ -261,48 +261,17 @@ export async function dbDeleteAll<T extends TableName>(tableName: T): Promise<vo
 	}
 }
 
-// export async function dbDump<T extends TableName>(table: T ,data:ReadAllResultTypes[T]): Promise<void> {
-// 	const db = await getDb();
-// 	if (!db) {
-// 		console.error("Database not initialized");
-// 		return;
-// 	}
-// 	try { 
-// 		await db.query(`
-// 			BEGIN TRANSACTION;
+const indexedArray = await dbReadAll("Vaults") as ReadAllResultTypes["Vaults"] ;
 
-// 			FOR $item IN $data {
-// 				UPSERT (type::table({$table})) CONTENT (type::thing({$item}));
-// 			};
-	  
-// 			COMMIT TRANSACTION; `,
-// 		  { data :data,
-// 		   table:table }
-// 		  );
-		
+let cardDetail:object[] = [];
 
-// 	} catch (err: unknown) {
-// 		console.error(`Failed `, err instanceof Error ? err.message : String(err));
-// 	} finally {
-// 		await db.close();
-// 	}
-// }
+indexedArray.forEach(async (entry) => {
+  const vaultId = entry.id?.id;
+  if (!vaultId)return
+  const cards = await dbReadRelation("Vaults", "Vaults_has", "Cards", vaultId);
+  cardDetail.push({vault: vaultId, contains: cards})
+});
 
-// const email = await dbReadAll("Emails");
+console.log(cardDetail);
 
-// console.log(email)
-
-// const data = [
-//     {
-//         "crreatedAt": "2025-05-14T19:56:47.631Z",
-//         "email": "jamal2@gmail.com",
-//         "id": "Emails:9eyfwjauce625h0b71ko"
-//     },
-//     {
-//         "crreatedAt": "2025-05-14T19:56:47.631Z",
-//         "email": "kolsum2@gmail.com",
-//         "id": "Emails:9eyfwjauce625h0b71kj"
-//     }
-// ]
-
-// dbDump("Emails", data);
+// dbDeleteAll("Vaults");

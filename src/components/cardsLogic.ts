@@ -7,7 +7,7 @@ const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLM
 
 // signals
 export const [cardsList, setcardsList]                = createSignal<ReadAllResultTypes["Cards"]>([]);
-const [addCardSelectedVault, setAddCardSelectedVault] = createSignal("");
+export const [addCardSelectedVault, setAddCardSelectedVault] = createSignal("");
 const [selectedCard, setSelectedCard]                 = createSignal("");
 const [cardName, setCardName]                         = createSignal("");
 
@@ -17,8 +17,13 @@ const selectVaultToAddCard = document.getElementById("select-vault-for-card") as
 if (selectVaultToAddCard){ setAddCardSelectedVault(selectVaultToAddCard.options[0]?.value)}
 
 // initialize cardsList
-const intialcardsList = await dbReadRelation("Vaults", "Vaults_has", "Cards", addCardSelectedVault());
-if (intialcardsList) {setcardsList(intialcardsList)}
+export async function updateCardsList(): Promise<void> {
+  const initialCardsList = await dbReadRelation("Vaults", "Vaults_has", "Cards", addCardSelectedVault());
+  if (initialCardsList) {setcardsList(initialCardsList);}
+}
+
+updateCardsList();
+
 
 // update cardsList
 createEffect(() => { (async () => {
@@ -155,6 +160,7 @@ window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => 
         "to:Vaults_has": {
             in: data.get("select vault") as string} 
         });
+    updateCardsList();
     return true;
 };
 

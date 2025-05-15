@@ -1,11 +1,18 @@
-import {cardsList, setcardsList} from "./cardsLogic"
+import { cardsList, setcardsList, updateCardsList} from "./cardsLogic"
+import { selectedVault} from "./recordsLogic"
 import { createSignal, createEffect } from "solid-js";
 import { element } from "../utils/elementUtils";
 import { dbUpserelate, dbReadRelation, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
 
 
- const intialcardsList = await dbReadRelation("Vaults", "Vaults_has", "Cards", "test3");
- if (intialcardsList) {setcardsList(intialcardsList)}
+
+const intialcardsList = await dbReadRelation("Vaults", "Vaults_has", "Cards", selectedVault());
+if (intialcardsList) {setcardsList(intialcardsList)};
+
+createEffect(() => { (async () => {
+ 	const intialcardsList = await dbReadRelation("Vaults", "Vaults_has", "Cards", selectedVault());
+  if (intialcardsList) {setcardsList(intialcardsList)};
+})(); });
 
 
 
@@ -23,7 +30,8 @@ createEffect(() => {(async () => {
       fragment.append(
       	element.configure('div', {className:"card-border", style:"margin-block: var(--gap-x04);", append:[
         	element.configure('div',  { className: "card glass box-shadow", style:"padding: var(--gap-x04);", append: [
-         		element.configure('div', { className: 'flex-spread-childs',append: [
+         		element.configure('div', { className: 'flex-spread-childs', 
+         		style:"border-bottom: 1px solid oklch(var(--gray-25) / 1); padding-bottom: var(--gap-x02);margin-bottom: var(--gap-x02);", append: [
 
 		            element.configure('p', { className: 'ellipsis', 
 		              style: "width: 20ch; font-weight: 600; font-style: italic;",
@@ -55,7 +63,8 @@ createEffect(() => {(async () => {
 
           		]}),
 
-	          	element.configure('div', { style:"display: flex; flex-direction: column;", append: 
+
+	       element.configure('div', { style:"display: flex; flex-direction: column;", append: 
 					(entry.data ?? []).map((dataItem) => {
 				    return element.configure('button', { dataset: {action: 'copy'},
 				    	textContent: dataItem,
