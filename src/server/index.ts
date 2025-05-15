@@ -7,7 +7,6 @@ import {
     dbQueryUser, 
     dbReadVault, 
     dbQueryRole,
-    dbUpdateVault,
     dbUpserelate,
     type ReadAllResultTypes } from "../utils/surrealdb-cloud";
 import { server } from '@passwordless-id/webauthn'
