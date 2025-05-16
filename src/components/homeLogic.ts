@@ -54,12 +54,12 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
 
 // checkboxes for password generator
 document.getElementById("generate")!.addEventListener("change",(e)=>{
-   if ((e!.target as HTMLInputElement).matches("#random")) {
+   if ((e!.target as HTMLInputElement).matches("#first-tab-id-pass")) {
          if ((e.target as HTMLInputElement).checked) {
             setCurrentPass(password());
          }
       }
-   if ((e!.target as HTMLInputElement).matches("#manual")) {
+   if ((e!.target as HTMLInputElement).matches("#second-tab-id-pass")) {
       if ((e.target as HTMLInputElement).checked) {
          setCurrentPass(mpassword());
       }
