@@ -101,15 +101,16 @@ input{
 
 .toast {
  position: fixed; 
- background-color: oklch(var(--gray-10) / 0.5);
+ background-color: oklch(var(--gray-10) / 0.3);
  border-radius: var(--radius-b);
  border: 1px solid  oklch(var(--gray-25) / 1);
  bottom: -100%;
+ scale: 0.55;
  width: 200px; 
  left: calc(50% - 100px ); 
  padding: var(--default-padding);
  box-sizing: border-box;
- transition: bottom 0.15s ease-out;  
+ transition: bottom 0.25s var(--move), scale 0.5s var(--appear);  
  z-index: var(--z-layer-top);
  color: var(--success);
  margin-bottom: var(--gap-x04);
