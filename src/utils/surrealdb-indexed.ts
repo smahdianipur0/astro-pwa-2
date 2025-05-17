@@ -2,6 +2,8 @@ import { Surreal, RecordId } from "surrealdb";
 import { surrealdbWasmEngines } from "@surrealdb/wasm";
 import { jsonify } from "surrealdb";
 
+type prettify<T> = {[K in keyof T]: T[K];} & {};
+
 
 export async function getDb() {
 	const db = new Surreal({
@@ -37,20 +39,19 @@ export type rSchemas = {
 	Vaults_has : {in: string, role:string}
 };
 
-
 // Generate CRUD types for all tables
 type PermittedTypes = {
-	[K in keyof Schemas as `${K & string}:create`]: { id?: string } & Partial<Schemas[K]>;} & {
+	[K in keyof Schemas as `${K & string}:create`]: prettify<{ id?: string } & Partial<Schemas[K]>>;} & {
 
-	[K in keyof Schemas as `${K & string}:update`]: { id: string } & Partial<Schemas[K]>;} & {
+	[K in keyof Schemas as `${K & string}:update`]: prettify<{ id: string } & Partial<Schemas[K]>>;} & {
 
 	[K in keyof Schemas as `${K & string}:delete`]: { id: string };} & {
 
-	[K in keyof Schemas as `${K & string}:upserelate`]: { id: string } & Partial<Schemas[K]> & 
+	[K in keyof Schemas as `${K & string}:upserelate`]: prettify<{ id: string } & Partial<Schemas[K]>> & 
 		{[K in keyof rSchemas as `to:${K & string}`]: Partial<rSchemas[K]>;};
 };
 
-export type ReadResultTypes = {[K in keyof Schemas]: {id?: { tb: string; id: string }} & Schemas[K];};
+export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: { tb: string; id: string }} & Schemas[K]>;};
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
 

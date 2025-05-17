@@ -1,5 +1,7 @@
 import { Surreal, RecordId } from 'surrealdb';
 
+type prettify<T> = {[K in keyof T]: T[K];} & {};
+
 let db: Surreal | null = null;;
 
 (async () => {
@@ -40,18 +42,17 @@ export type rSchemas = {
 
 
 type PermittedTypes = {
-  [K in keyof Schemas as `${K & string}:create`]: { id?: string } & Partial<Schemas[K]>;} & {
+  [K in keyof Schemas as `${K & string}:create`]: prettify<{ id?: string } & Partial<Schemas[K]>>;} & {
 
-  [K in keyof Schemas as `${K & string}:update`]: { id: string } & Partial<Schemas[K]>;} & {
+  [K in keyof Schemas as `${K & string}:update`]: prettify<{ id: string } & Partial<Schemas[K]>>;} & {
 
   [K in keyof Schemas as `${K & string}:delete`]: { id: string };} & {
 
-  [K in keyof Schemas as `${K & string}:upserelate`]: { id: string } & Partial<Schemas[K]> & 
+  [K in keyof Schemas as `${K & string}:upserelate`]: prettify<{ id: string } & Partial<Schemas[K]>> & 
     {[K in keyof rSchemas as `to:${K & string}`]: Partial<rSchemas[K]>;};
 };
 
-
-export type ReadResultTypes = {[K in keyof Schemas]: {id?: { tb: string; id: string }} & Schemas[K];};
+export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: { tb: string; id: string }} & Schemas[K]>;};
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
 
@@ -81,7 +82,6 @@ export function unwrapRecord(data: Array<Record<string, any>>): Array<Record<str
     return newObj;
   });
 }
-
 
 
 export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: T, data: PermittedTypes[T]): Promise<string> {
@@ -184,6 +184,36 @@ export async function dbQueryUser(userID: string): Promise<object | undefined> {
     return credentialObj;
   } catch (err: unknown) {
     throw new Error(`Error in dbQueryUser: ${err}`);
+  }
+}
+
+export async function dbCheckID(ID: string): Promise<object | undefined> {
+  if (!db) throw new Error("Database not connected.");
+
+  try {
+    const checkedID = await db.query(
+      'RETURN string::is::record($ID);',
+      { ID: ID }
+    );
+    
+    return checkedID;
+  } catch (err: unknown) {
+    throw new Error(`Error in checking ID: ${err}`);
+  }
+} 
+
+export async function checkExistance(ID: string): Promise<object | undefined> {
+  if (!db) throw new Error("Database not connected.");
+
+  try {
+    const checkedID = await db.query(
+      'RETURN record::exists(type::thing({$ID}));',
+      { ID: ID }
+    );
+    
+    return checkedID;
+  } catch (err: unknown) {
+    throw new Error(`Error in checking ID: ${err}`);
   }
 }
 
