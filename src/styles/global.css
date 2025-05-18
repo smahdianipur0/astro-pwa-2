@@ -19,7 +19,8 @@
 .hide-checkbox{
   opacity: 0; 
   pointer-events: none;
-  position: absolute
+  position: absolute;
+  top: 0;
 }
 
 .skeleton{
