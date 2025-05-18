@@ -1,6 +1,6 @@
 import { Surreal, RecordId } from "surrealdb";
 import { surrealdbWasmEngines } from "@surrealdb/wasm";
-import { jsonify } from "surrealdb";
+
 
 type prettify<T> = {[K in keyof T]: T[K];} & {};
 

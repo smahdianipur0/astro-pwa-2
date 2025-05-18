@@ -1,4 +1,4 @@
-import { Surreal, RecordId } from 'surrealdb';
+import { Surreal } from 'surrealdb';
 
 type prettify<T> = {[K in keyof T]: T[K];} & {};
 
