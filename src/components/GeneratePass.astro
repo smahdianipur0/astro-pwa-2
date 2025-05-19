@@ -12,20 +12,9 @@ import TempList from '../components/TempList.astro';
     <CharactersCount />
     <CharactersPattern />
 
-
     <div class="flex-center-childs not-prose " style=" position: relative;">
-      <div id="add-drawer-trigger" class="text-as-button blink" style="left:0;">
-        
-        <Drawer client:load>
-          <fragment slot="trigger">
-            <svg width="24" height="24" fill="none" style="padding: 1px;" viewBox="0 0 24 24">
-              <path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z" fill="oklch(var(--gray-95))"/>
-            </svg>
-          </fragment>
-          <fragment slot="content"><TempList /></fragment>
-          
-        </Drawer>
-      </div>
+
+      <TempList />
 
       <button id="gp" name="copy password" class="text-as-button skeleton-parrent" style=" margin-inline: 0;
         margin-top: var(--gap-x04); 
