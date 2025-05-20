@@ -66,14 +66,14 @@ function updateSucceededAuth() {
         
         fragment.append(
             element.configure('div', {className: 'prose',
-                style: 'display: flex; gap: var(--gap); justify-content: space-between;',
+                style: 'display: flex; gap: var(--size-sm0); justify-content: space-between;',
                 append: [
                     element.configure('input', {id: 'user_name',
                         type: 'text', placeholder: 'Name',autocomplete: 'off',
-                        style: 'margin-bottom: var(--gap); width: 100%;'}),
+                        style: 'margin-bottom: var(--size-sm0); width: 100%;'}),
 
                     element.configure('button', {id: 'registration',
-                        style: 'margin-bottom: var(--gap); width: fit-content; white-space: nowrap;',
+                        style: 'margin-bottom: var(--size-sm0); width: fit-content; white-space: nowrap;',
                         textContent: 'Sign Up',
                         disabled: true})
                 ]

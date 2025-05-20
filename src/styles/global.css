@@ -28,7 +28,7 @@
    font-family: inherit;
    height: 1.5ch;
    width: 30ch;
-   margin: calc( (var(--gap-x05) - 1.5ch) / 2 ) 0;
+   margin: calc( (var(--size-sm4) - 1.5ch) / 2 ) 0;
    border-radius: 4ch;
    background-color: oklch(80% 0 0 / 0.4);
    background: linear-gradient(
@@ -50,7 +50,7 @@
 }
 
 .skeleton-parrent{
-  line-height: var(--gap-x05); 
+  line-height: var(--size-sm4); 
   overflow: hidden;
 }
 
@@ -66,7 +66,7 @@
   border: 1px solid oklch(100% 0 0 /0.0);
   color: oklch(var(--gray-75));
   font-size:var(--font-sm1);
-  line-height: var(--gap-x04); 
+  line-height: var(--size-sm3); 
   font-weight: 300; 
 }
 
@@ -122,7 +122,7 @@
   width: min(100%, 65ch);
   border-radius: 0;
   padding: var(--default-padding);
-  margin: 0 var(--gap-x03);
+  margin: 0 var(--size-sm2);
   position: relative;
 }
 
@@ -130,7 +130,7 @@
   display:flex ;
   place-content: space-between;
   width: min(100%, 65ch) ;
-  height: var(--gap-x07);
+  height: var(--size-md4);
   background-color: oklch(var(--gray-15) / 75%);
   padding: var(--default-padding);
   align-items: center
@@ -151,7 +151,7 @@
 }
 
 .entries-list > .entry-item:last-of-type {
-  margin-bottom: var(--gap-x06);
+  margin-bottom: var(--size-md2);
 }
 
 .entries-list > :not(:last-child){
@@ -162,7 +162,7 @@
 display: flex;
 justify-content: flex-end;
 align-items: center;
-gap: var(--gap);
+gap: var(--size-sm0);
 }
 
 details.right-to-left {
@@ -187,7 +187,7 @@ summary.right-to-left {
 @keyframes details-show-rtl {
   from {
     opacity: 0;
-    transform: translateY(-50%) translateX(var(--gap-x02));
+    transform: translateY(-50%) translateX(var(--size-sm1));
   }
   to {
     opacity: 1;
@@ -204,7 +204,7 @@ details.right-to-left[open] > .s-container {
 } 
 
 details.right-to-left > *:not(summary):nth-child(2) {
-  margin-inline: var(--gap);
+  margin-inline: var(--size-sm0);
   color: var(--danger);
   font-size: var(--font-sm1);
 } 
@@ -214,7 +214,7 @@ details.right-to-left[open] summary + *  {
   right: 100%;
   top: 50%;
   transform: translateY(-50%);
-  margin-right: var(--gap);
+  margin-right: var(--size-sm0);
 } 
 
 @keyframes blink {

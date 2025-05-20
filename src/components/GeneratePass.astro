@@ -16,23 +16,23 @@ import TempList from '../components/TempList.astro';
       <TempList />
 
       <button id="gp" name="copy password" class="text-as-button skeleton-parrent" style=" margin-inline: 0;
-        margin-top: var(--gap-x04); 
-        margin-bottom: var(--gap-x04);
+        margin-top: var(--size-sm3); 
+        margin-bottom: var(--size-sm3);
         font-weight: 300;
         font-size:var(--font-lg1);">
         <div class="skeleton" style="width:15ch"> </div>
       </button>
 
-      <button id="redo" name="regenerate password" class="redo_container text-as-button blink" style="right: 0; margin-right: calc(var(--gap)* -1);" >↻</button>
+      <button id="redo" name="regenerate password" class="redo_container text-as-button blink" style="right: 0; margin-right: calc(var(--size-sm0)* -1);" >↻</button>
 
-      <p id="ttc" class="hint" style="margin-top: var(--gap-x04); 
-      margin-bottom: var(--gap-x04);
+      <p id="ttc" class="hint" style="margin-top: var(--size-sm3); 
+      margin-bottom: var(--size-sm3);
       position: absolute;
       width: 18ch;
       right: calc(50% - 9ch );
       text-align: center;
-      line-height: var(--gap-x06);
-      top : calc(var(--gap-x07) * var(--x02));"> tap to copy </p>
+      line-height: var(--size-md2);
+      top : var(--size-lg1);"> tap to copy </p>
 
     </div>
   </fragment>
@@ -40,25 +40,25 @@ import TempList from '../components/TempList.astro';
 
   <fragment slot="tab2">
     <div class=" prose" style="display: flex;
-      gap: var(--gap);
+      gap: var(--size-sm0);
       justify-content: space-between;
-      margin:var(--gap-x04) 0">
+      margin:var(--size-sm3) 0">
       <input autocomplete="off" id="mPassword" type="text" style="
-        margin-bottom: var(--gap);" placeholder="Password">
-      <button id="copyMPassword" style="margin-bottom:var(--gap);" disabled> Copy </button>
+        margin-bottom: var(--size-sm0);" placeholder="Password">
+      <button id="copyMPassword" style="margin-bottom:var(--size-sm0);" disabled> Copy </button>
     </div>
   </fragment>
 </Tabs>
 
-<div style=" margin-top:var(--gap-x04); margin-bottom: var(--gap); overflow: hidden">
+<div style=" margin-top:var(--size-sm3); margin-bottom: var(--size-sm0); overflow: hidden">
 
   <div id="gu" class="skeleton-parrent">
     <div style="width:15ch;" class="skeleton"> </div>
   </div>
 
-  <div style="position:relative; height:var(--gap); place-content:center">
-    <div style="position: absolute; top: var(--gap-xxs);" id="box-place-holder"></div>
-    <div style="position: absolute; top: var(--gap-xxs);" id="box"></div> 
+  <div style="position:relative; height:var(--size-sm0); place-content:center">
+    <div style="position: absolute; top: var(--size-xs3);" id="box-place-holder"></div>
+    <div style="position: absolute; top: var(--size-xs3);" id="box"></div> 
   </div>
 
   <div id="s1" class="skeleton-parrent">
@@ -89,8 +89,8 @@ import TempList from '../components/TempList.astro';
   position: absolute;
   font-size:var(--font-lg1); 
   font-weight: 300; 
-  margin-top: var(--gap-x04); 
-  margin-bottom: var(--gap-x04);
+  margin-top: var(--size-sm3); 
+  margin-bottom: var(--size-sm3);
 }
 
 .text-as-button{
@@ -99,7 +99,7 @@ import TempList from '../components/TempList.astro';
   padding: var(--thin-padding);
   color: oklch(var(--gray-95));
   opacity: 1;
-  margin-left: calc( var(--gap) * -1);
+  margin-left: calc( var(--size-sm0) * -1);
 }
 
 .text-as-button:disabled{
@@ -120,10 +120,10 @@ import TempList from '../components/TempList.astro';
   transition: width 0.2s, background-color 0.2s, background-position 0.2s ;
   border-radius: var(--radius-a);
   background-color: red; 
-  height: var(--gap-3xs);
+  height: var(--size-xs4);
   background-image: linear-gradient(to right, #f21616, #f02f11, #d47a20, #719deb, #6977e3, #7643b1, #5d43b1);
   background-clip: content-box;
-  background-size: 300% var(--gap);
+  background-size: 300% var(--size-sm0);
   --box-w: 36%;
   --box-p: 0%;
   width: var(--box-w);
@@ -136,7 +136,7 @@ import TempList from '../components/TempList.astro';
   border-radius: var(--radius-a);
   align-items: center;
   background-color: oklch( var(--gray-95) / 0.2); 
-  height: var(--gap-3xs);
+  height: var(--size-xs4);
   width: 100% ;
   box-shadow: inset 0px 1px 2px oklch(0% 0 0 / 0.3) ;
 }

@@ -3,7 +3,7 @@ import DrawerFromRight from './ui/DrawerFromRght';
 import Dialog from "../components/ui/Dialog.astro"
 ---
 
-<div class="max-width flex-center-childs"style="margin-bottom: var(--gap-x06);">
+<div class="max-width flex-center-childs"style="margin-bottom: var(--size-md2);">
   <DrawerFromRight client:load>
 
     <fragment slot="trigger">
@@ -14,15 +14,24 @@ import Dialog from "../components/ui/Dialog.astro"
     </fragment>
 
     <fragment slot="content">
-        <div data-corvu-no-drag class="flex-center-childs" style="align-items: baseline;
-              padding-inline: var(--gap-x02);
-              height:100%;
-              margin-left: var(--gap-x03);
-              overflow-y: scroll;" >
-          <div class="card-border"  style="margin-left: calc(var(--gap-x03)* -1);">
+        <div data-corvu-no-drag style="margin-left: var(--size-sm2);
+        position:absolute;
+        inset:0;
+        top:var(--size-sm4);
+        height: calc(var(--drawer-heigt) - var(--size-sm4));
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        gap: var(--size-sm3); 
+        overflow-y: scroll;
+        padding-top: var(--size-sm1);
+        padding-inline: var(--size-sm1);
+        max-width: 100%;
+        overflow-x: hidden;" >
+          <div class="card-border"  style="margin-left: calc(var(--size-sm2)* -1);">
             <div class="card glass box-shadow max-width">
               <div  class="entries-list" id="recent-del-list">
-                <p class="hint" style="padding-block: var(--gap-x04);">No records found</p>
+                <p class="hint" style="padding-block: var(--size-sm3);">No records found</p>
               </div>
             </div>
           </div>
@@ -34,8 +43,8 @@ import Dialog from "../components/ui/Dialog.astro"
         align-items: flex-start;
         background: oklch(var(--gray-10) / 20%);
         border-radius: var(--radius-a);
-        padding: var(--gap-x02);"></div>
-        <div class="flex-center-childs" style="gap:var(--gap);margin-top:var(--gap-x04);">
+        padding: var(--size-sm1);"></div>
+        <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">
           
           <button class="unstyle-button not-prose max-width" >Cancel</button>
           <button class="max-width" id="confirm-restore">Restore</button>

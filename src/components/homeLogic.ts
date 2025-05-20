@@ -317,7 +317,7 @@ let timeoutId: number | undefined;
 export function showToast() {
   const toastElement = document.getElementById('toast')!;
   if (toastElement) {
-    toastElement.style.bottom = 'var(--gap-x10)';
+    toastElement.style.bottom = 'var(--size-lg1)';
     toastElement.style.scale = '1';
     toastElement.style.transition = 'bottom 0.25s var(--move), scale 0.5s var(--appear)';
 

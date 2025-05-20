@@ -63,7 +63,7 @@
 
 
 [data-corvu-drawer-label] {
-  margin: var(--gap-x04);
+  margin: var(--size-sm3);
   text-align: center;
   font-size: var(--font-lg1);
   line-height: var(--text-height);

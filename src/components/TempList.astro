@@ -18,30 +18,30 @@ import Drawer from '../components/ui/Drawer.tsx';
       <div data-corvu-no-drag style="
       position:absolute;
       inset:0;
-      top:var(--gap-x05);
-      height: calc(var(--drawer-heigt) - var(--gap-x05));
+      top:var(--size-sm4);
+      height: calc(var(--drawer-heigt) - var(--size-sm4));
       display: flex; 
       flex-direction: column; 
       align-items: center; 
-      gap: var(--gap-x04); 
+      gap: var(--size-sm3); 
       overflow-y: scroll;
-      padding-top: var(--gap-x02);
-      padding-inline: var(--gap-x02);
+      padding-top: var(--size-sm1);
+      padding-inline: var(--size-sm1);
       max-width: 100%;
       overflow-x: hidden;">
 
         <Card iden="entries-list-card" >
           <div style="display: flex; flex-direction: column;" class="prose" id="input-group">
-            <input type="text" id="title-input" placeholder="Title" style="margin-bottom: var(--gap-x03);"/>
+            <input type="text" id="title-input" placeholder="Title" style="margin-bottom: var(--size-sm2);"/>
             <div style="display: flex; flex-direction: row;">
-              <input id="auto-pass-entry" type="checkbox" style="height:var(--gap-x07)"> 
+              <input id="auto-pass-entry" type="checkbox" style="height:var(--size-md4)"> 
               <label style="
               place-self: center; 
-              margin-left: var(--gap);" for="auto-pass-entry">Enter Password Manually</label>
+              margin-left: var(--size-sm0);" for="auto-pass-entry">Enter Password Manually</label>
             </div>
             <input type="text" id="password-input" placeholder="Password" readonly />
             
-            <button style="margin-top: var(--gap-x03);"id="add-entry-button">Add</button>
+            <button style="margin-top: var(--size-sm2);"id="add-entry-button">Add</button>
           </div>
         </Card>
           <div id="search-box" class="prose max-width" style="display: flex; 
@@ -50,13 +50,13 @@ import Drawer from '../components/ui/Drawer.tsx';
             <input type="text" id="search-input" style=" position: relative;
             background: oklch(var(--gray-15) / 1);
             border: none ;
-            padding-left: var(--gap-x07);
-            height: var(--gap-x65);
+            padding-left: var(--size-md4);
+            height: var(--size-md3);
             box-shadow: none;"  placeholder="Search">
             <svg style="position: absolute;
             margin: var(--default-padding);
-            margin-inline: var(--gap);
-            height: var(--gap-x04);
+            margin-inline: var(--size-sm0);
+            height: var(--size-sm3);
             padding-top: 2px;
             opacity:0.5;" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 2.5a7.5 7.5 0 0 1 5.964 12.048l4.743 4.745a1 1 0 0 1-1.32 1.497l-.094-.083-4.745-4.743A7.5 7.5 0 1 1 10 2.5Zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z" /></svg>
             <button class="not-prose" id="cancel-search" >Cancel</button>
@@ -65,7 +65,7 @@ import Drawer from '../components/ui/Drawer.tsx';
           <div class="card-border">
             <div class="card glass box-shadow max-width">
               <div class="entries-list not-prose" id="entries-list"> 
-                <p class="hint" style="padding-block:var(--gap-x04)"> Loading records </p>
+                <p class="hint" style="padding-block:var(--size-sm3)"> Loading records </p>
               </div>
             </div>
           </div>
@@ -79,7 +79,7 @@ import Drawer from '../components/ui/Drawer.tsx';
         <h3 style="margin-top: 0;">Edit Item</h3>
         <input type="text" name="title"  class="input-group-top" placeholder="Title" id="updating-temp-title-input"/>
         <input type="text" name="Password" class="input-group-bottom" placeholder="Password" id="updating-temp-pass-input"/>
-        <div class="flex-center-childs" style="gap:var(--gap);margin-top:var(--gap-x04);">
+        <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">
           
           <button class="unstyle-button not-prose max-width" >Cancel</button>
           <button class="max-width" id="update-temp-list-entry">Update</button>
@@ -95,14 +95,14 @@ import Drawer from '../components/ui/Drawer.tsx';
 
 #cancel-search {
   color: oklch(var(--primary));
-  width: var(--gap-x08);
+  width: var(--size-lg1);
   opacity: 0; 
   position: absolute; 
   top: 0;
   right: 0;
   margin: var(--default-padding);
   margin-inline: 0;
-  line-height: var(--gap-x04);
+  line-height: var(--size-sm3);
   transition: opacity 0.1s
 }
 
@@ -120,7 +120,7 @@ import Drawer from '../components/ui/Drawer.tsx';
 
 :root:has(#search-input:focus-within) #search-input,
 :root:has(#search-input:not(:placeholder-shown)) #search-input {
-  width: calc(100% - var(--gap-x09));
+  width: calc(100% - var(--size-lg2));
   transition: width 0.1s;
 }
 
@@ -134,7 +134,7 @@ svg{
   content: 'tap on passwords to copy';
   position: absolute;
   bottom: 0;
-  transform: translateY(var(--gap-x06));
+  transform: translateY(var(--size-md2));
   font-size: var(--font-sm1);
   color: oklch(var(--gray-50) / 1);
 }
@@ -143,10 +143,10 @@ svg{
 summary.right-to-left::before { 
   content: "";
   background-color: oklch(var(--gray-95) / 1);
-  -webkit-mask-image:url('data:image/svg+xml,<svg width="var(--gap-x04)" height="var(--gap-x04)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1.75a3.25 3.25 0 0 1 3.245 3.066L15.25 5h5.25a.75.75 0 0 1 .102 1.493L20.5 6.5h-.796l-1.28 13.02a2.75 2.75 0 0 1-2.561 2.474l-.176.006H8.313a2.75 2.75 0 0 1-2.714-2.307l-.023-.174L4.295 6.5H3.5a.75.75 0 0 1-.743-.648L2.75 5.75a.75.75 0 0 1 .648-.743L3.5 5h5.25A3.25 3.25 0 0 1 12 1.75Zm6.197 4.75H5.802l1.267 12.872a1.25 1.25 0 0 0 1.117 1.122l.127.006h7.374c.6 0 1.109-.425 1.225-1.002l.02-.126L18.196 6.5ZM13.75 9.25a.75.75 0 0 1 .743.648L14.5 10v7a.75.75 0 0 1-1.493.102L13 17v-7a.75.75 0 0 1 .75-.75Zm-3.5 0a.75.75 0 0 1 .743.648L11 10v7a.75.75 0 0 1-1.493.102L9.5 17v-7a.75.75 0 0 1 .75-.75Zm1.75-6a1.75 1.75 0 0 0-1.744 1.606L10.25 5h3.5A1.75 1.75 0 0 0 12 3.25Z" fill="%23fff"/></svg>');
-  mask-image: url('data:image/svg+xml,<svg width="var(--gap-x04)" height="var(--gap-x04)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1.75a3.25 3.25 0 0 1 3.245 3.066L15.25 5h5.25a.75.75 0 0 1 .102 1.493L20.5 6.5h-.796l-1.28 13.02a2.75 2.75 0 0 1-2.561 2.474l-.176.006H8.313a2.75 2.75 0 0 1-2.714-2.307l-.023-.174L4.295 6.5H3.5a.75.75 0 0 1-.743-.648L2.75 5.75a.75.75 0 0 1 .648-.743L3.5 5h5.25A3.25 3.25 0 0 1 12 1.75Zm6.197 4.75H5.802l1.267 12.872a1.25 1.25 0 0 0 1.117 1.122l.127.006h7.374c.6 0 1.109-.425 1.225-1.002l.02-.126L18.196 6.5ZM13.75 9.25a.75.75 0 0 1 .743.648L14.5 10v7a.75.75 0 0 1-1.493.102L13 17v-7a.75.75 0 0 1 .75-.75Zm-3.5 0a.75.75 0 0 1 .743.648L11 10v7a.75.75 0 0 1-1.493.102L9.5 17v-7a.75.75 0 0 1 .75-.75Zm1.75-6a1.75 1.75 0 0 0-1.744 1.606L10.25 5h3.5A1.75 1.75 0 0 0 12 3.25Z" fill="%23fff"/></svg>');
-  width: var(--gap-x04);
-  height: var(--gap-x04);
+  -webkit-mask-image:url('data:image/svg+xml,<svg width="var(--size-sm3)" height="var(--size-sm3)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1.75a3.25 3.25 0 0 1 3.245 3.066L15.25 5h5.25a.75.75 0 0 1 .102 1.493L20.5 6.5h-.796l-1.28 13.02a2.75 2.75 0 0 1-2.561 2.474l-.176.006H8.313a2.75 2.75 0 0 1-2.714-2.307l-.023-.174L4.295 6.5H3.5a.75.75 0 0 1-.743-.648L2.75 5.75a.75.75 0 0 1 .648-.743L3.5 5h5.25A3.25 3.25 0 0 1 12 1.75Zm6.197 4.75H5.802l1.267 12.872a1.25 1.25 0 0 0 1.117 1.122l.127.006h7.374c.6 0 1.109-.425 1.225-1.002l.02-.126L18.196 6.5ZM13.75 9.25a.75.75 0 0 1 .743.648L14.5 10v7a.75.75 0 0 1-1.493.102L13 17v-7a.75.75 0 0 1 .75-.75Zm-3.5 0a.75.75 0 0 1 .743.648L11 10v7a.75.75 0 0 1-1.493.102L9.5 17v-7a.75.75 0 0 1 .75-.75Zm1.75-6a1.75 1.75 0 0 0-1.744 1.606L10.25 5h3.5A1.75 1.75 0 0 0 12 3.25Z" fill="%23fff"/></svg>');
+  mask-image: url('data:image/svg+xml,<svg width="var(--size-sm3)" height="var(--size-sm3)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1.75a3.25 3.25 0 0 1 3.245 3.066L15.25 5h5.25a.75.75 0 0 1 .102 1.493L20.5 6.5h-.796l-1.28 13.02a2.75 2.75 0 0 1-2.561 2.474l-.176.006H8.313a2.75 2.75 0 0 1-2.714-2.307l-.023-.174L4.295 6.5H3.5a.75.75 0 0 1-.743-.648L2.75 5.75a.75.75 0 0 1 .648-.743L3.5 5h5.25A3.25 3.25 0 0 1 12 1.75Zm6.197 4.75H5.802l1.267 12.872a1.25 1.25 0 0 0 1.117 1.122l.127.006h7.374c.6 0 1.109-.425 1.225-1.002l.02-.126L18.196 6.5ZM13.75 9.25a.75.75 0 0 1 .743.648L14.5 10v7a.75.75 0 0 1-1.493.102L13 17v-7a.75.75 0 0 1 .75-.75Zm-3.5 0a.75.75 0 0 1 .743.648L11 10v7a.75.75 0 0 1-1.493.102L9.5 17v-7a.75.75 0 0 1 .75-.75Zm1.75-6a1.75 1.75 0 0 0-1.744 1.606L10.25 5h3.5A1.75 1.75 0 0 0 12 3.25Z" fill="%23fff"/></svg>');
+  width: var(--size-sm3);
+  height: var(--size-sm3);
 } 
 
 details.right-to-left[open] > summary::before {

@@ -11,7 +11,7 @@ import Card from './ui/Card.astro';
       <span id="key_indic" class="key-indicator"></span>
     </div>
   
-    <div style="position: relative; margin-bottom: var(--gap-x04);">
+    <div style="position: relative; margin-bottom: var(--size-sm3);">
       <input id="iv" type="text" class="input-group-bottom glass" name="IV" placeholder="IV">
       <span id="iv_indic" class="key-indicator"></span>
     </div>
@@ -30,7 +30,7 @@ import Card from './ui/Card.astro';
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-bottom: 0.1px solid oklch(var(--gray-25) );
-  line-height: var(--gap-x05);
+  line-height: var(--size-sm4);
 }
 
 .input-group-top:focus{
@@ -48,7 +48,7 @@ import Card from './ui/Card.astro';
   border-top-right-radius: 0;
   border-bottom-left-radius: var(--radius-a);
   border-bottom-right-radius: var(--radius-a);
-  line-height: var(--gap-x05);
+  line-height: var(--size-sm4);
 }
  
 .input-group-bottom:focus{
@@ -60,9 +60,9 @@ import Card from './ui/Card.astro';
 }
 
 .key-indicator {
-  line-height: var(--gap-x05);
+  line-height: var(--size-sm4);
   position: absolute;
-  right: var(--gap-x03);
+  right: var(--size-sm2);
   top: 50%;
   transform: translateY(-50%);
   color: #777;

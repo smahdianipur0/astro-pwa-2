@@ -1,16 +1,16 @@
 <div class="prose" style="display: flex;
-gap: var(--gap);
+gap: var(--size-sm0);
 justify-content: space-between;">
   <input autocomplete="off" id="email_entry" type="text" style="
-  margin-bottom: var(--gap);
+  margin-bottom: var(--size-sm0);
   width: 100%;" placeholder="Email">
-  <button id="add_email" style="margin-bottom: var(--gap);
+  <button id="add_email" style="margin-bottom: var(--size-sm0);
   width: fit-content;
   white-space: nowrap;" disabled>Add</button>
 </div>
 
 <div class="entries-list not-prose" id="emails-list" style="
-padding-inline: var(--gap-x02);
+padding-inline: var(--size-sm1);
 height:100%;">
     <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
         <div>
@@ -151,7 +151,7 @@ createEffect(() => {
   content: 'tap on email to copy';
   position: absolute;
   bottom: 0;
-  transform: translateY(var(--gap-x06));
+  transform: translateY(var(--size-md2));
   font-size: var(--font-sm1);
   color: oklch(var(--gray-50) / 1);
 }

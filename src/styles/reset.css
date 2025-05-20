@@ -9,7 +9,7 @@
 
 :host,
 html {
-  line-height: var(--gap-x05);
+  line-height: var(--size-sm4);
   -webkit-text-size-adjust: 100%;
   -moz-tab-size: 4;
   -o-tab-size: 4;

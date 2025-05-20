@@ -20,29 +20,29 @@
   
   
 
-  --gap: 1.1ch;                             /* sm0 */
-  --gap-3xs: calc(var(--gap) / var(--x05)); /* xs4 */
-  --gap-xxs: calc(var(--gap) / var(--x04)); /* xs3 */
-  --gap-xs:  calc(var(--gap) / var(--x03)); /* xs2 */
-  --gap-x02: calc(var(--gap) * var(--x02)); /* sm1 */
-  --gap-x03: calc(var(--gap) * var(--x03)); /* sm2 */
-  --gap-x04: calc(var(--gap) * var(--x04)); /* sm3 */
-  --gap-x05: calc(var(--gap) * var(--x05)); /* sm4 */
-  --gap-x55: calc(var(--gap) * var(--x55)); /* md1 */
-  --gap-x06: calc(var(--gap) * var(--x06)); /* md2 */
-  --gap-x65: calc(var(--gap) * var(--x65)); /* md3 */
-  --gap-x07: calc(var(--gap) * var(--x07)); /* md4 */
-  --gap-x08: calc(var(--gap) * var(--x08)); /* lg1 */
-  --gap-x09: calc(var(--gap) * var(--x09)); /* lg2 */
-  --gap-x10: calc(var(--gap) * var(--x10)); /* lg3 */
+  --size-sm0: 1.1ch;
+  --size-xs4: calc(var(--size-sm0) / var(--x05)); 
+  --size-xs3: calc(var(--size-sm0) / var(--x04)); 
+  --size-xs2: calc(var(--size-sm0) / var(--x03)); 
+  --size-sm1: calc(var(--size-sm0) * var(--x02)); 
+  --size-sm2: calc(var(--size-sm0) * var(--x03)); 
+  --size-sm3: calc(var(--size-sm0) * var(--x04)); 
+  --size-sm4: calc(var(--size-sm0) * var(--x05)); 
+  --size-md1: calc(var(--size-sm0) * var(--x55)); 
+  --size-md2: calc(var(--size-sm0) * var(--x06)); 
+  --size-md3: calc(var(--size-sm0) * var(--x65)); 
+  --size-md4: calc(var(--size-sm0) * var(--x07)); 
+  --size-lg1: calc(var(--size-sm0) * var(--x08)); 
+  --size-lg2: calc(var(--size-sm0) * var(--x09)); 
+  --size-lg3: calc(var(--size-sm0) * var(--x10)); 
 
 
-  --default-padding: calc( (var(--gap-x65) - var(--gap-x05)) / 2)  var(--gap-x03);
-  --thin-padding: 0.1ch var(--gap);
+  --default-padding: calc( (var(--size-md3) - var(--size-sm4)) / 2)  var(--size-sm2);
+  --thin-padding: 0.1ch var(--size-sm0);
 
 
-  --radius-a: calc(var(--gap-x65) * 0.227);
-  --radius-b: calc(var(--gap-x65) * 0.365);
+  --radius-a: calc(var(--size-md3) * 0.227);
+  --radius-b: calc(var(--size-md3) * 0.365);
 
   --z-layer-top: 4;
   --z-layer-higher: 3;

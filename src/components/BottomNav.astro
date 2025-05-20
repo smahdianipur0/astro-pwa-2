@@ -80,15 +80,15 @@ allTabRadios.forEach((radio) => {
 
 
 .svg-icon{
-    width: var(--gap-x06);
-    height: var(--gap-x06);
+    width: var(--size-md2);
+    height: var(--size-md2);
     padding: 2px;
 }
 
 .bottom-nav{
   z-index: var(--z-layer-higher);
   background-color: oklch(var(--gray-10) / 0.5);
-  height: var(--gap-x10);
+  height: var(--size-lg3);
   justify-content: space-around;
   width: 100%;
   display: flex;
@@ -98,8 +98,8 @@ allTabRadios.forEach((radio) => {
 }
 
 .nav-div{
-    width: var(--gap-x10);
-    height: var(--gap-x08) ;
+    width: var(--size-lg3);
+    height: var(--size-lg1) ;
     display: flex; 
     flex-direction: column;
     justify-content: space-around; 
@@ -167,23 +167,23 @@ allTabRadios.forEach((radio) => {
 @media only screen and (min-width: 450px) {
   .bottom-nav{
     bottom: auto;
-    top: var(--gap);
-    height: var(--gap-x08);
+    top: var(--size-sm0);
+    height: var(--size-lg1);
     border-radius: var(--radius-b);
-    width: calc(100% - var(--gap-x04) - var(--gap-x04));
+    width: calc(100% - var(--size-sm3) - var(--size-sm3));
     left: unset;
-    right: var(--gap-x04);
+    right: var(--size-sm3);
     border: 1px solid oklch(var(--gray-95) / 0.04);
   }
 
   .grid-layout{
-    margin-top: var(--gap-x10);
+    margin-top: var(--size-lg3);
   }
 
   .nav-div {
   flex-direction: row;
-  height: var(--gap-x06);
-  width: calc( var(--gap-xx1) + var(--gap-x04));
+  height: var(--size-md2);
+  width: calc( var(--size-sm0-xx1) + var(--size-sm3));
   margin-top: auto;
   margin-bottom: auto;
   }
@@ -193,7 +193,7 @@ allTabRadios.forEach((radio) => {
     margin-top: auto;
     margin-bottom: auto;
     text-align: start;
-    padding-inline: var(--gap);
+    padding-inline: var(--size-sm0);
   }
 
   .toast {

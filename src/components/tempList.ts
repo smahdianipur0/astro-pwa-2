@@ -74,7 +74,7 @@ createEffect(() => {
     isSearching() ? searchArray().length === 0 : listEntries().length === 0) { 
     fragment.append(element.configure("p", {textContent: "No records found", 
       className:"hint", 
-      style:"padding-block :var(--gap-x04)" }));
+      style:"padding-block :var(--size-sm3)" }));
 
   } else {
     (isSearching() ? searchArray() as ReadAllResultTypes["PasswordEntry"]  : (listEntries() as ReadAllResultTypes["PasswordEntry"] ?? [])
@@ -110,7 +110,7 @@ createEffect(() => {
             }),
 
             element.configure('button', { dataset: {action: 'update'},id: entry.id?.id ?? '', append: [
-              element.draw("svg", { style: "width: var(--gap-x04); height: var(--gap-x04);",viewBox: "0 0 24 24", fill: "none",append: 
+              element.draw("svg", { style: "width: var(--size-sm3); height: var(--size-sm3);",viewBox: "0 0 24 24", fill: "none",append: 
                 element.draw("path", {d: "M21.03 2.97a3.578 3.578 0 0 1 0 5.06L9.062 20a2.25 2.25 0 0 1-.999.58l-5.116 1.395a.75.75 0 0 1-.92-.921l1.395-5.116a2.25 2.25 0 0 1 .58-.999L15.97 2.97a3.578 3.578 0 0 1 5.06 0ZM15 6.06 5.062 16a.75.75 0 0 0-.193.333l-1.05 3.85 3.85-1.05A.75.75 0 0 0 8 18.938L17.94 9 15 6.06Zm2.03-2.03-.97.97L19 7.94l.97-.97a2.079 2.079 0 0 0-2.94-2.94Z"})
               })
             ]}),
