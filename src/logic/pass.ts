@@ -29,7 +29,7 @@ export const pass = createStore({
     	updateRPassword() { this.set('rPassword', generate_password(
     		this.get("length"), this.get("addSpecialCha"), this.get("addNumber"), this.get("capitalizeFirstLetter")
     	)); },
-    	setmPassword (input: string) { this.set('mPassword', input); },
+    	setMPassword (input: string) { this.set('mPassword', input); },
     	setPassword  (input: string) { this.set('mPassword', input); },
 
     	setLength                (value: number)  { this.set('length', value); },
