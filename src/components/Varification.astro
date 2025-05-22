@@ -38,3 +38,64 @@
 <div id="varif_copy_hint" class="hint" style="height:var(--size-sm3);"></div>
 
 </div>
+
+<script>
+
+import { pass } from '../logic/pass';
+import { showToast } from '../logic/misc'
+  
+document.getElementById("varification")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#varification-key")){
+      const value = (e!.target as HTMLInputElement).value;
+      pass.setVarificationKey(value.toString())
+   }
+   if((e!.target as HTMLInputElement).matches("#varification-key-ops")){
+      const value = (e!.target as HTMLInputElement).value;
+      pass.setKeyMode(value.toString())
+   }
+});
+
+pass.on(["secretKey","varificationKey","keyIvIsValid", "otpRes", "countDown"], pl => {
+
+    switch (true) {
+        case (pass.get("secretKey") === ""):
+          document.getElementById("varif_detail")!.textContent = ""
+          document.getElementById("varif_detail_res")!.textContent = "";
+          document.getElementById("varif_hint")!.textContent = "";
+          document.getElementById("varif_copy_hint")!.textContent = "";
+          break;
+ 
+        case (pass.get("secretKey") !== pass.get("varificationKey") && (!pass.get("keyIvIsValid") || pass.get("secretKey") === "Invalid Credentials")):
+          document.getElementById("varif_detail")!.textContent = pass.get("secretKey");
+          document.getElementById("varif_detail_res")!.textContent = "";
+          document.getElementById("varif_hint")!.textContent = "";
+          document.getElementById("varif_copy_hint")!.textContent = "";
+          break;
+ 
+        case (pass.get("otpRes") === "The provided key is not valid."):
+          document.getElementById("varif_detail")!.textContent = pass.get("otpRes");
+          document.getElementById("varif_detail_res")!.textContent = "";
+          document.getElementById("varif_hint")!.textContent = "";
+          document.getElementById("varif_copy_hint")!.textContent = "";
+          break;
+ 
+        default:
+          document.getElementById("varif_detail")!.textContent = "Varification Code:";
+          document.getElementById("varif_detail_res")!.textContent = pass.get("otpRes");
+          document.getElementById("varif_hint")!.textContent =
+             "This code is valid for the next ".concat(pass.get("countDown").toString(), " seconds.");
+          document.getElementById("varif_copy_hint")!.textContent = "Tap to copy";
+   }
+});
+
+document.getElementById("varification")!.addEventListener("click", (e) => {
+   if (
+      (e!.target as HTMLInputElement).matches("#varif_detail ,#varif_detail_res, #varif_copy_hint",) &&
+      document.getElementById("varif_detail_res")!.textContent !== ""
+   ) {
+      navigator.clipboard.writeText(pass.get("otpRes"));
+      showToast();
+   }
+});
+
+</script>

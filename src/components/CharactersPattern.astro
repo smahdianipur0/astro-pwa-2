@@ -24,6 +24,33 @@
   </div>
 </div>
 
+<script>
+  
+import { pass } from '../logic/pass';
+
+document.getElementById("generate")!.addEventListener("change",(e)=>{
+
+  if((e!.target as HTMLInputElement).matches("#add_special_cha")){
+    pass.setAddSpecialCha((e!.target as HTMLInputElement).checked)
+  }
+  if((e!.target as HTMLInputElement).matches("#add_number")){
+    pass.setAddNumber((e!.target as HTMLInputElement).checked)
+ 
+  }
+  if((e!.target as HTMLInputElement).matches("#capitalize_first_letter")){
+    pass.setCapitalizeFirstLetter((e!.target as HTMLInputElement).checked)
+  }
+
+});
+
+pass.on(["length"], pl => {
+  (document.getElementById("char_input")!  as HTMLInputElement).value     = pl.value.toString();
+  (document.getElementById("plus_chars")!  as HTMLInputElement).disabled  = (pl.value >= 20);
+  (document.getElementById("minus_chars")! as HTMLInputElement).disabled  = (pl.value <= 12);
+})
+
+</script>
+
 <style is:global>
 
 #l_capitalize_first_letter::after{

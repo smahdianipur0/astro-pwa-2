@@ -80,6 +80,111 @@ import TempList from '../components/TempList.astro';
 </details>
 
 
+<script>
+  
+import { pass } from '../logic/pass';
+import { showToast } from '../logic/misc'
+
+document.getElementById("generate")!.addEventListener("change",(e)=>{
+  if ((e!.target as HTMLInputElement).matches("#first-tab-id-pass")) {
+    if ((e.target as HTMLInputElement).checked) {
+      pass.setPassword(pass.get("rPassword"))
+    }
+  }
+  if ((e!.target as HTMLInputElement).matches("#second-tab-id-pass")) {
+    if ((e.target as HTMLInputElement).checked) {
+      pass.setPassword(pass.get("mPassword"))
+    }
+  }
+});
+
+pass.on(["rPassword"], pl => {
+  document.getElementById("gp")!.textContent = pl.value;
+});
+
+document.getElementById("redo")!.classList.remove('blink');
+
+document.getElementById("generate")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#gp ,#ttc")){
+      navigator.clipboard.writeText(pass.get("rPassword"));  
+      showToast(); 
+   }
+
+  if((e!.target as HTMLInputElement).matches("#copyMPassword")){
+      if(pass.get("rPassword") !== "") {
+         navigator.clipboard.writeText(pass.get("mPassword"));  
+         showToast(); 
+      }
+  }
+
+  if((e!.target as HTMLInputElement).matches("#redo")){
+    pass.updateRPassword();
+  }
+});
+
+pass.on(['guessable'], pl => {document.getElementById("gu")!.textContent = pl.value})
+
+pass.on(['strength1'], pl => {document.getElementById("s1")!.textContent = pl.value })
+
+pass.on(['strength2'], pl => {
+  if( pl.value !== "Zxcvbn cannot evaluate a blank password") {
+    document.getElementById("s2")!.textContent = pl.value
+   } else {
+      document.getElementById("s2")!.textContent = ""  
+   }
+})
+
+pass.on(['guessable'], pl =>{
+  const gu = pl.value;
+  
+  document.getElementById("box")!.style.setProperty("--box-w", 
+    gu === "Enter password" ? "0%" :
+    gu === "Too Guessable" ? "36%" :
+    gu === "Very Guessable" ? "52%" :
+    gu === "Somewhat Guessable" ? "68%" :
+    gu === "Safely Unguessable" ? "84%" :
+    gu === "Very Unguessable" ? "100%" : "0%"
+ );
+  document.getElementById("box")!.style.setProperty("--box-p", 
+    gu === "Enter password" ? "0%" :
+    gu === "Too Guessable" ? "0%" :
+    gu === "Very Guessable" ? "16%" :
+    gu === "Somewhat Guessable" ? "32%" :
+    gu === "Safely Unguessable" ? "48%" :
+    gu === "Very Unguessable" ? "64%" : "0%"
+ );
+})
+
+
+pass.on(["encryptedPass", "keyIvIsValid"], pl => {
+  document.getElementById("encrypted-pass")!.textContent = pass.get("encryptedPass");
+    if(pass.get("encryptedPass") !== "" && pass.get("keyIvIsValid") === true) {
+      (document.getElementById("encrypted-pass")! as HTMLButtonElement).disabled  = false;
+      (document.getElementById("encrypted-pass-copy")! as HTMLButtonElement).disabled  = false;
+      document.getElementById("encrypted-pass-copy")!.textContent = "tap to copy";
+    } else {
+      (document.getElementById("encrypted-pass")! as HTMLButtonElement).disabled  = true;
+      (document.getElementById("encrypted-pass-copy")! as HTMLButtonElement).disabled  = true;
+      document.getElementById("encrypted-pass-copy")!.textContent = "";  
+    }
+
+})
+
+
+// copy Encrypted Pasword
+document.getElementById("generate")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#encrypted-pass, #encrypted-pass-copy")){
+      if(pass.get("encryptedPass") !== "" && pass.get("keyIvIsValid") === true) {
+         navigator.clipboard.writeText(pass.get("encryptedPass"));  
+         showToast(); 
+      }
+   }
+});
+
+
+pass.updateRPassword();
+</script>
+
 <style is:global>
 
 #redo,

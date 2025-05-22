@@ -78,17 +78,33 @@ import Card from './ui/Card.astro';
 
 <script>
 
-import queryHelper  from "../utils/query-helper"
-import { trpc } from "../utils/trpc";
+// import queryHelper  from "../utils/query-helper"
+// import { trpc } from "../utils/trpc";
 
-type serverRespone = {message:string; [key:string]: unknown}  | undefined
-document.getElementById("key-IV")!.addEventListener("click", (e) => {
-  if ((e!.target as HTMLInputElement).matches("#test")) {
-    (async () => {
-    const [data, error] = await queryHelper.direct("db", () => trpc.dbquery.mutate()) as [serverRespone, serverRespone];
-    console.log(data?.message ?? error?.message ?? "");
-    })();
-  }
+// type serverRespone = {message:string; [key:string]: unknown}  | undefined
+// document.getElementById("key-IV")!.addEventListener("click", (e) => {
+//   if ((e!.target as HTMLInputElement).matches("#test")) {
+//     (async () => {
+//     const [data, error] = await queryHelper.direct("db", () => trpc.dbquery.mutate()) as [serverRespone, serverRespone];
+//     console.log(data?.message ?? error?.message ?? "");
+//     })();
+//   }
+// });
+
+import {count_characters } from "../pkg/rust_lib";
+import { pass } from '../logic/pass';
+
+document.getElementById("key-IV")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#key")){
+      const value = (e!.target as HTMLInputElement).value;
+      pass.setKey(value.toString())
+      document.getElementById("key_indic")!.textContent = count_characters(pass.get("key")).toString();
+   }
+   if((e!.target as HTMLInputElement).matches("#iv")){
+      const value = (e!.target as HTMLInputElement).value;
+      pass.setIV(value.toString())
+      document.getElementById("iv_indic")!.textContent = count_characters(pass.get("iv")).toString();
+   }
 });
 
 </script>

@@ -6,8 +6,10 @@ import {
   getEntryById,
   type ReadAllResultTypes } from "../utils/surrealdb-indexed";
 import { element } from "../utils/elementUtils";
-import { password, showToast } from "../components/homeLogic.ts";
-import { createEffect } from "solid-js";
+// import { password } from "../components/homeLogic.ts";
+import { pass } from '../logic/pass';
+import { showToast } from "../logic/misc.ts";
+import {createSignal, createEffect } from "solid-js";
 import Fuse from 'fuse.js'
 import {listTitle,              setListTitle,
         listPassword,           setListPassword,
@@ -24,6 +26,11 @@ import {listTitle,              setListTitle,
 // initialize entries
 (async () => {setListEntries(await dbReadAll("PasswordEntry")  ?? []);})();
 (async () => {setListRecentDel(await dbReadAll("RecentDelPass") ?? []);})();
+
+const [password, setPassword] = createSignal("");
+
+setPassword(pass.get("rPassword"));
+pass.on(["rPassword"], pl => { setPassword(pl.value)});
 
 createEffect(() => { setListPassword(password()) });
 

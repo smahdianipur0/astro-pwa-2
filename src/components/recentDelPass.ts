@@ -1,6 +1,6 @@
 import { dbCreate, dbDelete, dbReadAll, getEntryById } from "../utils/surrealdb-indexed";
 import { element } from "../utils/elementUtils";
-import { showToast } from "../components/homeLogic";
+import { showToast } from "../logic/misc";
 import {  createEffect } from "solid-js";
 import {listEntries,  setListEntries,
         listRecentDel,setListRecentDel,} from '../logic/tempList'
