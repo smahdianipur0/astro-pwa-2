@@ -26,7 +26,7 @@ export const pass = createStore({
 
 		key:             "",
 		iv :             "",
-		varificationKey: "", //sKey
+		varificationKey: "", 
 		keyMode:         "Auto",
 
 		otpRes:    "",
@@ -62,12 +62,12 @@ export const pass = createStore({
     	setVarificationKey  (input: string)  { this.set('varificationKey', input) },
     	setKeyMode          (input: string)  { this.set('keyMode', input) },
 
-    	updateOtpRes (){       
+    	updateOtpRes (){
     		try { const { otp, expires } = TOTP.generate(this.get("secretKey").replace(/\s/g, ""));
          	this.set("otpRes" ,(otp.toString()));
 	      } catch (error) {
 	      	this.set("otpRes" ,"The provided key is not valid.");
-	      }
+	      }	   
 	   },
 	   updateCountDown(){  	
 		   const currentTime = Math.round(new Date().getTime() / 1000);
@@ -98,7 +98,7 @@ export const pass = createStore({
 	   ),	    
 	    keyIvIsValid: derive(
 	      ['key', 'iv'] as const, 
-	      ({ get }) => ( 
+	      ({ get }) => (
 	      	count_characters(get('key')) === "✔️" && 
 	      	count_characters(get('iv'))  === "✔️"
 	      )
@@ -109,7 +109,7 @@ export const pass = createStore({
 	   ),
 	   secretKey: derive(
 	      ['keyMode', 'key', 'iv', 'keyIsEnc', 'varificationKey'] as const, 
-	      ({ get }) =>  {
+	      ({ get }) =>  { 
 	      	if (get("keyMode") === "Plain" || 
  				   	get("keyMode") === "Auto" && get("keyIsEnc") === false ) {
 		      	return get("varificationKey");
