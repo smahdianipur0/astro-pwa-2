@@ -60,50 +60,25 @@ document.getElementById("encryption")!.addEventListener("input",(e)=>{
       const value = (e!.target as HTMLInputElement).value;
       pass.setCipherText(value.toString())
    }
-   
 });
 
-// dispaly encrypted text
-pass.on(["resultE"], pl => {
-   document.getElementById("result_e")!.textContent = pl.value;
 
-   if (pl.value === "") {
-      document.getElementById("result_e")!.textContent = "Enter Plain Text";
-   }
+// display results and disable copying false results
+const resultE = document.getElementById("result_e") as HTMLInputElement;
+const resultD = document.getElementById("result_d") as HTMLInputElement;
+
+pass.on(["resultE"], ({ value }) => {
+   resultE.textContent = value || "Enter Plain Text";
+   const invalidValues = ["IV is not 16 Characters", "Key is not 16 Characters", ""];
+   resultE.disabled = invalidValues.includes(value);
 });
 
-// dispaly decrypted text
-pass.on(["resultD"], pl => {
-   document.getElementById("result_d")!.textContent = pl.value;
-
-   if (pl.value === "") {
-      document.getElementById("result_d")!.textContent = "Enter Cipher Text";
-   }
+pass.on(["resultD"], ({ value }) => {
+   resultD.textContent = value || "Enter Cipher Text";
+   const invalidValues = ["IV is not 16 Characters", "Key is not 16 Characters","Invalid Credentials", ""];
+   resultD.disabled = invalidValues.includes(value);
 });
 
-// disable copying false encrypted results
-pass.on(["resultE"], pl => {
-   if(pl.value !== "IV is not 16 Characters" &&
-      pl.value !== "Key is not 16 Characters" &&
-      pl.value !== "") {
-      (document.getElementById("result_e")! as HTMLInputElement).disabled  = false;
-   } else{
-      (document.getElementById("result_e")! as HTMLInputElement).disabled  = true;
-   }
-})
-
-// disable copying false decrypted results
-pass.on(["resultD"], pl => {
-   if(pl.value !== "IV is not 16 Characters" &&
-      pl.value !== "Key is not 16 Characters" &&
-      pl.value !== "Invalid Credentials"&&
-      pl.value !== "") {
-      (document.getElementById("result_d")! as HTMLInputElement).disabled  = false;
-   } else{
-      (document.getElementById("result_d")! as HTMLInputElement).disabled  = true;
-   }
-
-})
 
 // copy encryption and decryption
 document.getElementById("encryption")!.addEventListener("click",(e)=>{
@@ -119,6 +94,5 @@ document.getElementById("encryption")!.addEventListener("click",(e)=>{
       showToast();
    }
 });
-
 
 </script>

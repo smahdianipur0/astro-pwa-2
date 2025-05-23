@@ -1,7 +1,7 @@
 <textarea id="text_for_qr" rows="2" 
 placeholder="Please enter some text"></textarea>
 
-<div class="qr">
+<div class="qr" style=" margin-left: calc(50% - 80px); margin-top: var(--size-sm3);">
 	<canvas id="gqr" style="width: 0;"></canvas>
 </div>
 
@@ -26,12 +26,3 @@ document.getElementById("generateQR")!.addEventListener("input",(e)=>{
 });
 
 </script>
-
-<style>
-
-.qr{
-	margin-left: calc(50% - 80px);
-	margin-top: var(--size-sm3);
-}
-
-</style>
