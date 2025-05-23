@@ -55,7 +55,7 @@ document.getElementById("varification")!.addEventListener("input",(e)=>{
    }
 });
 
-pass.on(["secretKey","varificationKey","keyIvIsValid", "otpRes", "countDown"], pl => {
+pass.on(["keyIvIsValid", "otpRes", "countDown"], pl => {
 
     switch (true) {
         case (pass.get("secretKey") === ""):
