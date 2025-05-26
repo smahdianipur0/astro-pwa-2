@@ -1,26 +1,26 @@
 import { dbCreate, dbDelete, dbReadAll, getEntryById } from "../utils/surrealdb-indexed";
 import { element } from "../utils/elementUtils";
 import { showToast } from "../logic/misc";
-import {  createEffect } from "solid-js";
-import {listEntries,  setListEntries,
-        listRecentDel,setListRecentDel,} from '../logic/tempList'
+import { tempList } from "../logic/tempList.ts" 
+
 
 (async () => {
 
   const recentdellist  = (await element.wait("#recent-del-list"))  as HTMLElement;
 
-    // render recent deleted entries based on signal
-  createEffect(() => {
+  tempList.updateRecentDelEntries();
+
+  tempList.on(["recentDelEntries"], ({value}) => {
     recentdellist.textContent = '';
     const fragment = document.createDocumentFragment();
 
-    if (listRecentDel().length === 0){
+    if (value.length === 0){
       fragment.append(element.configure("p", {textContent: "No records found", 
         className:"hint",
         style:"padding-block:var(--size-sm3)" }));
     } else {
     
-    (listRecentDel() ?? [])
+    (value ?? [])
     .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
     .forEach((entry) => {
       fragment.append(
@@ -72,7 +72,7 @@ import {listEntries,  setListEntries,
     if (deleteButton) {
       (async () => {
         await dbDelete("RecentDelPass:delete", deleteButton.id);
-        await setListRecentDel(await dbReadAll("RecentDelPass") ?? []);
+        tempList.updateRecentDelEntries();
       })();
     }
     const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
@@ -120,10 +120,10 @@ import {listEntries,  setListEntries,
 
         if (title && password) {
           await dbCreate("PasswordEntry:create", {title:title, password:password, crreatedAt: crreatedAt });
-          setListEntries(await dbReadAll("PasswordEntry") ?? []);
+          tempList.updateEntries();
 
           await dbDelete("RecentDelPass:delete", id);
-          setListRecentDel(await dbReadAll("RecentDelPass") ?? []);
+          tempList.updateRecentDelEntries();
         }
       })();
     }

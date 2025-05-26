@@ -1,38 +1,9 @@
-import {
-  dbCreate,
-  dbUpdate,
-  dbDelete,
-  dbReadAll,
-  getEntryById,
-  type ReadAllResultTypes } from "../utils/surrealdb-indexed";
+
 import { element } from "../utils/elementUtils";
-// import { password } from "../components/homeLogic.ts";
 import { pass } from '../logic/pass';
 import { showToast } from "../logic/misc.ts";
-import {createSignal, createEffect } from "solid-js";
-import Fuse from 'fuse.js'
-import {listTitle,              setListTitle,
-        listPassword,           setListPassword,
-        listEntries,            setListEntries,
-        updtingEntry,           setUpdtingEntry,
-        updatingListEntryTitle, setUpdatingListEntryTitle,
-        updatingListEntryPass,  setUpdatingListEntryPass,
-        searchInput,            setSearchInput,
-        isSearching,            setIsSearching,
-        searchArray,            setSearchArray,
-        listRecentDel,          setListRecentDel,} from '../logic/tempList.ts'
-
-
-// initialize entries
-(async () => {setListEntries(await dbReadAll("PasswordEntry")  ?? []);})();
-(async () => {setListRecentDel(await dbReadAll("RecentDelPass") ?? []);})();
-
-const [password, setPassword] = createSignal("");
-
-setPassword(pass.get("rPassword"));
-pass.on(["rPassword"], pl => { setPassword(pl.value)});
-
-createEffect(() => { setListPassword(password()) });
+import {dbCreate,dbUpdate,dbDelete, getEntryById,} from "../utils/surrealdb-indexed";
+import { tempList } from "../logic/tempList.ts" 
 
 
 
@@ -49,42 +20,43 @@ createEffect(() => { setListPassword(password()) });
   
   document.getElementById("search-box")!.addEventListener("input",(e)=>{
     if((e!.target as HTMLInputElement).matches("#search-input")){
-       setSearchInput((e!.target as HTMLInputElement).value);
+       tempList.setSearchInput((e!.target as HTMLInputElement).value)
     }
   });
 
   document.getElementById("search-box")!.addEventListener("click",(e)=>{
     if((e!.target as HTMLInputElement).matches("#cancel-search")){
-      searchInputEl.value = ''
-        setSearchInput('');
-      setIsSearching(false)
+      searchInputEl.value = '';
+      tempList.setSearchInput('');
+      tempList.setIsSearching(false)
     }
   });
 
-  searchInputEl.addEventListener("focus", (e) => {setIsSearching(true);});
-  searchInputEl.addEventListener("blur", (e) => {setIsSearching(searchInput().trim() !== "")});
+  searchInputEl.addEventListener("focus", (e) => {tempList.setIsSearching(true);});
+  searchInputEl.addEventListener("blur", (e) => {tempList.setIsSearching(tempList.get("searchInput").trim() !== "")});
 
 
-  createEffect(() => {
-    const fuse = new Fuse(listEntries(), { keys: ['title'] });
-    const searched = fuse.search(searchInput()).map(entry => entry.item);
-    setSearchArray(searched);
-  });
 
+// initilize 
+tempList.updateEntries();
+tempList.setPassword(pass.get("rPassword"));
+pass.on(["rPassword"], ({value}) => { tempList.setPassword(value)});
 
 // render entries based on signal
-createEffect(() => {
+tempList.on(["isSearching", "searchArray", "entries"], pl => {
+
   entriesList.textContent = '';
   const fragment = document.createDocumentFragment();
-
   if (
-    isSearching() ? searchArray().length === 0 : listEntries().length === 0) { 
+    tempList.get("isSearching") ? tempList.get("searchArray").length === 0 : tempList.get("entries").length === 0) { 
+
     fragment.append(element.configure("p", {textContent: "No records found", 
       className:"hint", 
       style:"padding-block :var(--size-sm3)" }));
 
   } else {
-    (isSearching() ? searchArray() as ReadAllResultTypes["PasswordEntry"]  : (listEntries() as ReadAllResultTypes["PasswordEntry"] ?? [])
+
+    (tempList.get("isSearching") ? tempList.get("searchArray")  : (tempList.get("entries") ?? [])
     .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())).
     forEach((entry) => {
 
@@ -128,7 +100,8 @@ createEffect(() => {
   };
   
   entriesList.append(fragment);
-  });
+});
+
 
   // delete entry
   entriesList.addEventListener("click", (e) => {
@@ -138,11 +111,11 @@ createEffect(() => {
         const entry = await getEntryById("PasswordEntry", deleteButton.id);
         if (entry) {
           const { title, password,crreatedAt  } = entry;
-          await dbCreate("RecentDelPass:create", {title: title, password: password, crreatedAt: crreatedAt });
-          setListRecentDel(await dbReadAll("RecentDelPass") ?? []);
+          await dbCreate("RecentDelPass:create", {title: title, password: password, crreatedAt: crreatedAt });         
+          tempList.updateRecentDelEntries();
         }
         await dbDelete("PasswordEntry:delete", deleteButton.id)
-        setListEntries((await dbReadAll("PasswordEntry")) ?? []);
+        tempList.updateEntries();
       })();
     }
 
@@ -151,19 +124,29 @@ createEffect(() => {
   if (updateButton) {
     (async () => {
       (document.getElementById("edit-temp-list-dialog") as HTMLDialogElement).showModal();
-        setUpdtingEntry(updateButton.id);
         const entry = await getEntryById("PasswordEntry", updateButton.id);
         if (entry) {
           const { title, password } = entry;
-          console.log(title, password);
-          setUpdatingListEntryTitle(title);
           (document.getElementById("updating-temp-title-input") as HTMLInputElement).value = title;
-
-          setUpdatingListEntryPass(password);
           (document.getElementById("updating-temp-pass-input") as HTMLInputElement).value = password;
+          (document.getElementById("edit-temp-list-dialog") as HTMLDialogElement).setAttribute("data-_", updateButton.id);
+
         }
     })();
-  }
+  };
+
+  // update dialog confirm
+  document.getElementById("edit-temp-list-dialog")!.addEventListener("click", (e) => {
+    if((e!.target as HTMLInputElement).matches("#update-temp-list-entry")) {
+      (async () => {
+      dbUpdate("PasswordEntry:update", {
+        id: (document.getElementById("edit-temp-list-dialog") as HTMLDialogElement).dataset._!, 
+        title:(document.getElementById("updating-temp-title-input") as HTMLInputElement).value, 
+        password:(document.getElementById("updating-temp-pass-input") as HTMLInputElement).value});
+      tempList.updateEntries();
+      })();
+    }
+  });
 
   // copy password
   const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
@@ -180,15 +163,15 @@ createEffect(() => {
     if ((e!.target as HTMLInputElement).matches("#add-entry-button")) {
       (async () => {
         await dbCreate("PasswordEntry:create", {
-          title:listTitle(),
-          password: listPassword(),
+          title:tempList.get("title"),
+          password: tempList.get("password"),
           crreatedAt: new Date().toISOString()
         });
-        setListTitle("");
+        tempList.setTitle("")
         if ((document.getElementById("auto-pass-entry") as HTMLInputElement).checked){
-          setListPassword("");
+          tempList.setPassword("");
         }
-        setListEntries((await dbReadAll("PasswordEntry")) ?? []);
+        tempList.updateEntries();
         addEntryButton.style.setProperty("--primary", "65% 0.12 174"); 
         addEntryButton.textContent= "Added";
         setTimeout(() => {
@@ -203,12 +186,10 @@ createEffect(() => {
     if ((e!.target as HTMLInputElement).matches("#auto-pass-entry")) {
       if ((e.target as HTMLInputElement).checked) {
     passwordInput.readOnly = false;
-         setListPassword('');
+    tempList.setPassword("")
       } else {
         passwordInput.readOnly = true;
-        createEffect(() => {
-          setListPassword(password());
-        });
+        tempList.setPassword(pass.get("rPassword"))
       }
    }
   });
@@ -216,43 +197,20 @@ createEffect(() => {
   // bind input values to signals
   inputGroup.addEventListener("input", (e) => {
     if ((e!.target as HTMLInputElement).matches("#title-input")) {
-      setListTitle((e!.target as HTMLInputElement).value);
+      tempList.setTitle((e!.target as HTMLInputElement).value);
     }
     if ((e!.target as HTMLInputElement).matches("#password-input")) {
-      setListPassword((e!.target as HTMLInputElement).value);
-    }
-  });
-
-
-  // update dialog inputs
-  document.getElementById("edit-temp-list-dialog")!.addEventListener("input", (e) => {
-      if ((e!.target as HTMLInputElement).matches("#updating-temp-title-input")) {
-      setUpdatingListEntryTitle((e!.target as HTMLInputElement).value);
-    }
-    if ((e!.target as HTMLInputElement).matches("#updating-temp-pass-input")) {
-      setUpdatingListEntryPass((e!.target as HTMLInputElement).value);
-    }
-  });
-
-  // update dialog confirm
-  document.getElementById("edit-temp-list-dialog")!.addEventListener("click", (e) => {
-    if((e!.target as HTMLInputElement).matches("#update-temp-list-entry")) {
-      (async () => {
-      dbUpdate("PasswordEntry:update", {
-        id: updtingEntry(), 
-        title:updatingListEntryTitle(), 
-        password:updatingListEntryPass()});
-      setListEntries((await dbReadAll("PasswordEntry")) ?? []);
-      })();
+      tempList.setPassword((e!.target as HTMLInputElement).value);
     }
   });
 
 
   // bind signals to input values
-  createEffect(() => { titleInput.value = listTitle();});
+  tempList.on(["title"], ({value}) => { titleInput.value = value})
 
-  createEffect(() => { passwordInput.value = listPassword();});
+  tempList.on(["password"], ({value}) => { 
+    passwordInput.value = value;
+    addEntryButton.disabled = (!value)
+  });
 
-  // update add entry button state
-  createEffect(() => { addEntryButton.disabled = (!listPassword());});
 })();
