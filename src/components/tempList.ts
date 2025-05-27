@@ -36,12 +36,6 @@ import { tempList } from "../logic/tempList.ts"
   searchInputEl.addEventListener("blur", (e) => {tempList.setIsSearching(tempList.get("searchInput").trim() !== "")});
 
 
-
-// initilize 
-tempList.updateEntries();
-tempList.setPassword(pass.get("rPassword"));
-pass.on(["rPassword"], ({value}) => { tempList.setPassword(value)});
-
 // render entries based on signal
 tempList.on(["isSearching", "searchArray", "entries"], pl => {
 
@@ -204,7 +198,6 @@ tempList.on(["isSearching", "searchArray", "entries"], pl => {
     }
   });
 
-
   // bind signals to input values
   tempList.on(["title"], ({value}) => { titleInput.value = value})
 
@@ -212,5 +205,10 @@ tempList.on(["isSearching", "searchArray", "entries"], pl => {
     passwordInput.value = value;
     addEntryButton.disabled = (!value)
   });
+
+  // initilize 
+  tempList.updateEntries();
+  tempList.setPassword(pass.get("rPassword"));
+  pass.on(["rPassword"], ({value}) => { tempList.setPassword(value)});
 
 })();

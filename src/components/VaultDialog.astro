@@ -15,7 +15,7 @@ import Dialog from './ui/Dialog.astro';
     
   </div>
 
-</Dialog>
+</Dialog> 
 
 <Dialog identifier= 'delete-vault-dialog'>
 
@@ -40,41 +40,16 @@ import { dbCreate, dbReadAll, dbUpdate} from "../utils/surrealdb-indexed"
 import { createVaultName,   setCreateVaultName,
          vaultsList,        setVaultsList,
          editableVaultList, setEditableVaultList,
-         creationAllowed,   setCreationAllowed,
-         selectedVault,     setSelectedVault
         } from '../logic/records'
 
 
 
-const intialvaults = await dbReadAll("Vaults");
-if (intialvaults){setVaultsList(intialvaults);};
-
 
 createEffect(() => { setEditableVaultList(vaultsList().filter(item => item.status === "available" && item.role === "owner")) });
-createEffect(() => { setCreationAllowed(editableVaultList().length < 3) });
-
-createEffect(() => { 
-    (async () => {
-        const vaultHint = (await element.wait("#vault-hint")) as HTMLElement;
-        if (creationAllowed()){
-            vaultHint.textContent = "You can create a new vault. You can have up to 3 vaults in total" 
-        } else {
-            vaultHint.textContent = "You already own 3 vaults, which is the maximum allowed. Need a new one? Try deleting an existing vault first."
-        }
-    })();
-});
-
-// bind SelectedVault signal
-document.getElementById("credentials")!.addEventListener("change",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#vault-list")){
-        setSelectedVault((e!.target as HTMLInputElement).value);
-    };
-});
 
 (async () => {
 
     const createVaultButton  = (await element.wait("#create-vault-button")) as HTMLButtonElement
-    const vaultNameInput     = (await element.wait("#vault-name-input"))    as HTMLInputElement
     const deleteVaultButton  = (await element.wait("#delete-vault-button")) as HTMLButtonElement
     const selectDeleteVaults = (await element.wait("#delete-vault-list"))   as HTMLSelectElement;
 
@@ -121,8 +96,7 @@ document.getElementById("credentials")!.addEventListener("change",(e)=>{
         };
     });
 
-    createEffect(() => { createVaultButton.disabled = (!creationAllowed() || createVaultName() === "")});
-    createEffect(() => { vaultNameInput.disabled    = (!creationAllowed()) });
+    createEffect(() => { createVaultButton.disabled = ( createVaultName() === "")});
     createEffect(() => { deleteVaultButton.disabled = editableVaultList().length === 0});
 
 })();
@@ -136,10 +110,7 @@ createEffect(() => {
 
     const fragment = document.createDocumentFragment();
 
-    if (vaultsList().filter(item => item.status === "available").length === 0){
-
-        fragment.append(element.configure("option", {textContent: "No vaults found"}));
-    } else { 
+    if (vaultsList().filter(item => item.status === "available").length !== 0){
          (vaultsList() ?? [])
          .filter(item => item.status === "available")
          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
@@ -161,13 +132,10 @@ createEffect(() => {
 
     const fragment2 = document.createDocumentFragment();
 
-    if (editableVaultList().length === 0){
-        fragment2.append(element.configure("option", {textContent: "No vaults found"}));
-    } else { 
+    if (editableVaultList().length !== 0){
          (editableVaultList() ?? [])
          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
          .forEach((entry) => {
-
             fragment2.append( element.configure("option", {textContent:entry.name, id:entry.id?.id}));
         });
     }

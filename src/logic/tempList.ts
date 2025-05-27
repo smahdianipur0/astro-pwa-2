@@ -20,8 +20,8 @@ export const tempList = createStore({
     	setSearchInput  (value: string)  { this.set('searchInput', value) },
     	setIsSearching  (value: boolean) { this.set('isSearching', value) },
 
-    	async updateEntries          () {( this.set('entries', await dbReadAll("PasswordEntry") ?? []!)) },
-    	async updateRecentDelEntries () {( this.set('recentDelEntries',  await dbReadAll("RecentDelPass") ?? []!));}
+    	async updateEntries          () { this.set('entries', await dbReadAll("PasswordEntry") ?? []!) },
+    	async updateRecentDelEntries () { this.set('recentDelEntries',  await dbReadAll("RecentDelPass") ?? []!);}
     }, 
 
     derived: {

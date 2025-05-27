@@ -14,6 +14,8 @@ import RecordCards from './RecordCards.astro'
 
   <VaultMenu/>
 
+  <select name="vaults" class="max-width" id="vault-list" disabled></select>
+
 </Card>
 
 <VaultDialog/>
@@ -21,3 +23,41 @@ import RecordCards from './RecordCards.astro'
 <AddCardDialog/>
 
 <RecordCards/>
+
+
+
+<script>
+
+
+import { dbReadAll, getEntryById} from "../utils/surrealdb-indexed"
+import { createEffect } from "solid-js";
+import {vaultsList,        setVaultsList,
+        selectedVault,     setSelectedVault} from '../logic/records'
+
+
+const intialvaults = await dbReadAll("Vaults");
+if (intialvaults){setVaultsList(intialvaults);};
+
+
+document.getElementById("credentials")!.addEventListener("change",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#vault-list")){
+        setSelectedVault((e!.target as HTMLInputElement).value);
+    };
+});
+
+
+createEffect(() => {(async () => {
+    if(selectedVault() !== undefined) {
+        const selected = await getEntryById("Vaults", selectedVault());
+            if (selected?.role === "owner") {
+              (document.getElementById("select-vault-for-card") as HTMLSelectElement).value = selected.name;  
+            }
+        }
+})()});
+
+createEffect(() => { 
+  (document.getElementById("vault-list") as HTMLSelectElement).value = selectedVault()
+});
+
+
+</script>
