@@ -8,30 +8,18 @@
 
 <script>
 
-import { cardsList, setcardsList, } from "../logic/records"
-import { selectedVault} from "../logic/records"
-import { createEffect } from "solid-js";
 import { element } from "../utils/elementUtils";
-import { dbReadRelation } from "../utils/surrealdb-indexed"
+import { records } from "../logic/records"  
 
+records.on(["selectedVault"], pl => {records.updateCardsList()})
 
-const intialcardsList = await dbReadRelation("Vaults", "Vaults_has", "Cards", selectedVault());
-if (intialcardsList) {setcardsList(intialcardsList)};
-
-createEffect(() => { (async () => {
- 	const intialcardsList = await dbReadRelation("Vaults", "Vaults_has", "Cards", selectedVault());
-  if (intialcardsList) {setcardsList(intialcardsList)};
-})(); });
-
-
-
-createEffect(() => {(async () => {
+records.on(["cardsList"], ({value}) => { (async () => {
 
     const fragment = document.createDocumentFragment();
     const cardsArray = document.getElementById("cards-array")!;
     cardsArray.textContent = "";
     
-    const availableCards = (cardsList() ?? []).filter(item => item.status === "available");
+    const availableCards = (value ?? []).filter(item => item.status === "available");
 
     availableCards.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
     .forEach((entry) => {

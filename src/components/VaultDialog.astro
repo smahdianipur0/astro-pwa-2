@@ -35,17 +35,9 @@ import Dialog from './ui/Dialog.astro';
 <script>
 
 import { element } from "../utils/elementUtils";
-import { createEffect } from "solid-js";
-import { dbCreate, dbReadAll, dbUpdate} from "../utils/surrealdb-indexed"
-import { createVaultName,   setCreateVaultName,
-         vaultsList,        setVaultsList,
-         editableVaultList, setEditableVaultList,
-        } from '../logic/records'
+import { dbCreate, dbUpdate} from "../utils/surrealdb-indexed"
+import { records } from "../logic/records"
 
-
-
-
-createEffect(() => { setEditableVaultList(vaultsList().filter(item => item.status === "available" && item.role === "owner")) });
 
 (async () => {
 
@@ -53,10 +45,9 @@ createEffect(() => { setEditableVaultList(vaultsList().filter(item => item.statu
     const deleteVaultButton  = (await element.wait("#delete-vault-button")) as HTMLButtonElement
     const selectDeleteVaults = (await element.wait("#delete-vault-list"))   as HTMLSelectElement;
 
-
     document.getElementById("create-vault-dialog")!.addEventListener("input",(e)=>{
         if((e!.target as HTMLInputElement).matches("#vault-name-input")){
-             setCreateVaultName((e!.target as HTMLInputElement).value)
+             records.setVaultName((e!.target as HTMLInputElement).value)
         };
     });
 
@@ -65,14 +56,13 @@ createEffect(() => { setEditableVaultList(vaultsList().filter(item => item.statu
 
             (async () => {
                 await dbCreate("Vaults:create", {
-                    id:createVaultName(),
-                    name:createVaultName(), 
+                    id:records.get("vaultName"),
+                    name:records.get("vaultName"), 
                     updatedAt: new Date().toISOString(),
                     status: "available",
                     role: "owner" 
                 });
-                const vaults = await dbReadAll("Vaults");
-                if (vaults){setVaultsList(vaults)};
+                records.updateVaultsList();
             })();
         };
     });
@@ -90,61 +80,35 @@ createEffect(() => { setEditableVaultList(vaultsList().filter(item => item.statu
                     role: "owner"
                 });
 
-                const vaults = await dbReadAll("Vaults");
-                if (vaults){setVaultsList(vaults)};
+                records.updateVaultsList();
             })();
         };
     });
 
-    createEffect(() => { createVaultButton.disabled = ( createVaultName() === "")});
-    createEffect(() => { deleteVaultButton.disabled = editableVaultList().length === 0});
+    records.on (["vaultName"], ({value}) => {createVaultButton.disabled = (value === "")});
+    records.on (["editableVaultList"], ({value}) => {deleteVaultButton.disabled = (value.length === 0)});
 
 })();
 
-createEffect(() => { 
 
-    //vaults list
-    const vaultlist = document.getElementById("vault-list") as HTMLSelectElement
-    vaultlist.textContent = "";
-    vaultlist.disabled = false;
-
-    const fragment = document.createDocumentFragment();
-
-    if (vaultsList().filter(item => item.status === "available").length !== 0){
-         (vaultsList() ?? [])
-         .filter(item => item.status === "available")
-         .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-         .forEach((entry) => {
-
-            fragment.append( element.configure("option", {textContent:entry.id?.id }));
-        });
-    }
-    vaultlist.append(fragment);
-
+records.on(["vaultsList"], ({value}) => {
 
     //delete vaults list
     const deleteVaultlist = document.getElementById("delete-vault-list") as HTMLSelectElement
     deleteVaultlist.textContent = "";
 
-    //vaults list for card creation
-    const cardVaultlist = document.getElementById("select-vault-for-card") as HTMLSelectElement
-    cardVaultlist.textContent = "";
+    const fragment = document.createDocumentFragment();
 
-    const fragment2 = document.createDocumentFragment();
-
-    if (editableVaultList().length !== 0){
-         (editableVaultList() ?? [])
+    if (records.get("editableVaultList").length !== 0){
+         (records.get("editableVaultList") ?? [])
          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
          .forEach((entry) => {
-            fragment2.append( element.configure("option", {textContent:entry.name, id:entry.id?.id}));
+            fragment.append( element.configure("option", {textContent:entry.name, id:entry.id?.id}));
         });
     }
 
-    const fragment2Clone = fragment2.cloneNode(true);
-    deleteVaultlist.append(fragment2);
-    cardVaultlist.append(fragment2Clone);
+    deleteVaultlist.append(fragment);
 
 });
-
 
 </script>

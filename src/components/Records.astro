@@ -28,36 +28,55 @@ import RecordCards from './RecordCards.astro'
 
 <script>
 
+import { getEntryById } from "../utils/surrealdb-indexed"
+import { records } from "../logic/records"
+import { element } from "../utils/elementUtils";
 
-import { dbReadAll, getEntryById} from "../utils/surrealdb-indexed"
-import { createEffect } from "solid-js";
-import {vaultsList,        setVaultsList,
-        selectedVault,     setSelectedVault} from '../logic/records'
-
-
-const intialvaults = await dbReadAll("Vaults");
-if (intialvaults){setVaultsList(intialvaults);};
-
-
+// bind valut select elment value
 document.getElementById("credentials")!.addEventListener("change",(e)=>{
     if((e!.target as HTMLInputElement).matches("#vault-list")){
-        setSelectedVault((e!.target as HTMLInputElement).value);
+        records.setSelectedVault((e!.target as HTMLInputElement).value);
     };
 });
 
-
-createEffect(() => {(async () => {
-    if(selectedVault() !== undefined) {
-        const selected = await getEntryById("Vaults", selectedVault());
+// change the selcted valuts and card creation dialog when valut select elment value changes
+records.on(["selectedVault"], ({value}) => { (async () => {
+    if(value !== undefined) {
+        const selected = await getEntryById("Vaults", value);
             if (selected?.role === "owner") {
               (document.getElementById("select-vault-for-card") as HTMLSelectElement).value = selected.name;  
             }
         }
 })()});
 
-createEffect(() => { 
-  (document.getElementById("vault-list") as HTMLSelectElement).value = selectedVault()
+// vice versa
+records.on(["selectedVault"], ({value}) => {
+  (document.getElementById("vault-list") as HTMLSelectElement).value = value
 });
 
+
+records.on(["vaultsList"], ({value}) => {
+    const vaultlist = document.getElementById("vault-list") as HTMLSelectElement
+    vaultlist.textContent = "";
+    vaultlist.disabled = false;
+
+    const fragment = document.createDocumentFragment();
+
+    if (value.filter(item => item.status === "available").length !== 0){
+         (value ?? [])
+         .filter(item => item.status === "available")
+         .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+         .forEach((entry) => {
+
+            fragment.append( element.configure("option", {textContent:entry.id?.id }));
+        });
+    }
+    vaultlist.append(fragment);
+
+    const selectVault = document.getElementById("vault-list") as HTMLSelectElement;
+    if (selectVault){ records.setSelectedVault(selectVault.options[0]?.value)}
+});
+
+records.updateVaultsList();
 
 </script>

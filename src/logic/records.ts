@@ -1,11 +1,40 @@
-import { createSignal } from "solid-js";
-import { type ReadAllResultTypes } from "../utils/surrealdb-indexed"
+import { dbReadAll, dbReadRelation, type ReadAllResultTypes } from "../utils/surrealdb-indexed"
+import { createStore, derive } from "../utils/state"
 
-export const [createVaultName, setCreateVaultName]     = createSignal("");
-export const [vaultsList, setVaultsList]               = createSignal<ReadAllResultTypes["Vaults"]>([]);
-export const [editableVaultList, setEditableVaultList] = createSignal<ReadAllResultTypes["Vaults"]>([]);
-export const [selectedVault, setSelectedVault]         = createSignal("");
+export const records = createStore({
+    state: { 
+    	vaultName: "" ,
+    	cardName:  "" ,
 
-export const [cardsList, setcardsList]                       = createSignal<ReadAllResultTypes["Cards"]>([]);
-export const [selectedCard, setSelectedCard]                 = createSignal("");
-export const [cardName, setCardName]                         = createSignal("");
+    	vaultsList:([]) as ReadAllResultTypes["Vaults"] | [],
+    	cardsList:([])  as ReadAllResultTypes["Cards"] | [],
+
+    	selectedVault: "",
+    	selectedCard:  "",
+    },
+
+    methods: {
+    	setVaultName(value: string) { this.set('vaultName', value); },
+    	setCardName(value: string)  { this.set('cardName', value); },
+
+    	async updateVaultsList () { this.set('vaultsList', await dbReadAll("Vaults") ?? []!) },
+    	async updateCardsList ()  { 
+    		if (this.get("selectedVault") !== "") { this.set('cardsList', await dbReadRelation(
+    			"Vaults", "Vaults_has", "Cards", this.get("selectedVault")
+    			) ?? []!) 
+    		}
+    	},
+    	
+    	setSelectedVault(value: string) { this.set('selectedVault', value); },
+    	setSelectedCard(value: string)  { this.set('selectedCard', value); },
+    }, 
+
+    derived: {
+	    editableVaultList: derive(
+	      ['vaultsList'] as const, 
+	      ({ get }) => ( 
+	      	(get("vaultsList")as ReadAllResultTypes["Vaults"] | [])
+	      	.filter(item => item.status === "available" && item.role === "owner"))
+	    )
+	}
+});

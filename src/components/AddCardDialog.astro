@@ -47,40 +47,12 @@ import Dialog from './ui/Dialog.astro';
 <script>
 
 import { element } from "../utils/elementUtils";
-import { createEffect } from "solid-js";
-import { dbUpserelate, dbReadRelation } from "../utils/surrealdb-indexed"
-import { editableVaultList, selectedVault,  setSelectedVault,
-         cardsList, setcardsList,  
-         selectedCard, setSelectedCard,
-         cardName, setCardName
-          } from "../logic/records";
-          
+import { dbUpserelate } from "../utils/surrealdb-indexed"
+import { records } from "../logic/records"       
 import { customAlphabet } from 'nanoid'
+
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 20)
 
-
-// initialize addCardSelectedVault
-const selectVaultToAddCard = document.getElementById("select-vault-for-card") as HTMLSelectElement;
-if (selectVaultToAddCard){ setSelectedVault(selectVaultToAddCard.options[0]?.value)}
-
-// initialize cardsList
-async function updateCardsList(): Promise<void> {
-    if (selectedVault() !== "") {
-        const initialCardsList = await dbReadRelation("Vaults", "Vaults_has", "Cards", selectedVault());
-         if (initialCardsList) {setcardsList(initialCardsList);}
-    }
-}
-
-updateCardsList();
-
-
-// update cardsList
-createEffect(() => { (async () => {
-    if (selectedVault() !== "") {
-        const initialCardsList = await dbReadRelation("Vaults", "Vaults_has", "Cards", selectedVault());
-         if (initialCardsList) {setcardsList(initialCardsList);}
-    }
-})(); });
 
 // initial handleCardForm
 declare global {
@@ -92,15 +64,10 @@ declare global {
 const dialog = document.getElementById('card-form') as HTMLDialogElement;
 
 
-
 // bind listeners
 document.getElementById("card-menu-div")!.addEventListener("click",(e)=>{
     if((e!.target as HTMLInputElement).matches("#card-form-button")){
         (document.getElementById("card-form") as HTMLDialogElement).showModal();
-        const value = selectedVault();
-        selectVaultToAddCard.value = 
-            Array.from(selectVaultToAddCard.options).some(o => o.value === value) ? value :
-            selectVaultToAddCard.options[0]?.value || '';
     };
 });
 
@@ -116,31 +83,53 @@ dialog!.addEventListener("click",(e)=>{
 
 dialog!.addEventListener("input",(e)=>{
     if((e!.target as HTMLInputElement).matches("#select-vault-for-card")){
-        setSelectedVault((e!.target as HTMLInputElement).value.toString());
+        records.setSelectedVault((e!.target as HTMLInputElement).value.toString());
     };
     if((e!.target as HTMLInputElement).matches("#select-card-list")){
-        setSelectedCard((e!.target as HTMLInputElement).value.toString())
+        records.setSelectedCard((e!.target as HTMLInputElement).value.toString());
+        records.setCardName("")
     };
     if((e!.target as HTMLInputElement).matches("#new-card-input")){
-        setCardName((e!.target as HTMLInputElement).value.toString())
+        records.setCardName((e!.target as HTMLInputElement).value.toString())
     };
 });
 
+
+records.on(["vaultsList"], ({value}) => {
+    // append options
+    const cardVaultlist = document.getElementById("select-vault-for-card") as HTMLSelectElement
+    cardVaultlist.textContent = "";
+
+    const fragment = document.createDocumentFragment();
+
+    if (records.get("editableVaultList").length !== 0){
+         (records.get("editableVaultList") ?? [])
+         .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+         .forEach((entry) => {
+            fragment.append( element.configure("option", {textContent:entry.name, id:entry.id?.id}));
+        });
+    }
+    cardVaultlist.append(fragment);
+
+    const selectCard = document.getElementById("select-card-list") as HTMLSelectElement;
+    if (selectCard){ records.setSelectedCard(selectCard.options[0]?.value)}
+});
+
 // update availible cards to select
-createEffect(() => {
+records.on(["editableVaultList", "cardsList"], pl => {
     (async () => {
         const selectCardList = document.getElementById("select-card-list") as HTMLInputElement;
         if (!selectCardList) return;
 
         selectCardList.textContent = "";
-        setSelectedCard("");
+        records.setSelectedCard("");
 
-        selectCardList.disabled = (editableVaultList().length === 0);
+        selectCardList.disabled = (records.get("editableVaultList").length === 0);
 
-        if (editableVaultList().length !== 0) {
+        if (records.get("editableVaultList").length !== 0) {
             const fragment = document.createDocumentFragment();
 
-            const availableCards = (cardsList() ?? []).filter(item => item.status === "available");
+            const availableCards = (records.get("cardsList") ?? []).filter(item => item.status === "available");
             if (availableCards.length === 0) {
                 fragment.append(element.configure("option", { textContent: "New Card" }));
             } else {
@@ -159,15 +148,14 @@ createEffect(() => {
     })();
 });
 
-// card name input
-createEffect(() => {
+// add new card name input
+records.on(["selectedCard"], ({value}) => {
+    const cardInput = document.getElementById("new-card-input") as HTMLInputElement;
+    if (cardInput) {cardInput.remove()}
+
     const fragment = document.createDocumentFragment();
 
-    if (selectedCard() === "" || selectedCard() === "New Card") {
-
-        const cardInput = document.getElementById("new-card-input") as HTMLInputElement;
-        if (cardInput) {cardInput.remove()}
-
+    if (value === "" || value === "New Card") {
         fragment.append(element.configure("input", {
             style: "margin-top:var(--size-sm1)",
             type: "text", 
@@ -177,16 +165,16 @@ createEffect(() => {
         }));
 
         document.getElementById("card-select-field")!.append(fragment)
-
-    } else {
-        const cardInput = document.getElementById("new-card-input") as HTMLInputElement;
-        if (cardInput) {cardInput.remove()}
-    }
+    } 
 });
 
 // ok button disabled
-createEffect(() => { 
-    (document.getElementById("add-card-button") as HTMLButtonElement).disabled = (selectedCard() === "" && cardName() === "")
+records.on(["selectedCard", "cardName"], pl => {
+    (document.getElementById("add-card-button") as HTMLButtonElement).disabled = (
+        (records.get("selectedCard") === "" || 
+         records.get("selectedCard") === "New Card" ) &&
+         records.get("cardName") === ""
+    )
 });
 
 
@@ -212,12 +200,12 @@ window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => 
         "to:Vaults_has": {
             in: data.get("select vault") as string} 
         });
-    updateCardsList();
+
+    records.updateCardsList()
     return true;
 };
 
 // reset the form on close
-
 dialog.addEventListener('close', () => {
     const cardInput = document.getElementById("new-card-input") as HTMLInputElement;
     if (cardInput) { cardInput.value = "" }
@@ -240,5 +228,4 @@ dialog.addEventListener('close', () => {
 
 // await dbReadRelation("Vaults", "Vaults_has", "Cards", "test3")
   
-
 </script>
