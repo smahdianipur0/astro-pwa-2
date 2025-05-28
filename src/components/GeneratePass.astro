@@ -20,7 +20,7 @@ import TempList from '../components/TempList.astro';
         margin-bottom: var(--size-sm3);
         font-weight: 300;
         font-size:var(--font-lg1);">
-        <div class="skeleton" style="width:15ch"> </div>
+        <div class="skeleton" style="width:var(--size-xl1)"> </div>
       </button>
 
       <button id="redo" name="regenerate password" class="redo_container text-as-button blink" style="right: 0; margin-right: calc(var(--size-sm0)* -1);" >↻</button>
@@ -28,8 +28,8 @@ import TempList from '../components/TempList.astro';
       <p id="ttc" class="hint" style="margin-top: var(--size-sm3); 
       margin-bottom: var(--size-sm3);
       position: absolute;
-      width: 18ch;
-      right: calc(50% - 9ch );
+      width: var(--size-xl2);
+      right: calc(50% - (var(--size-xl2) / 2) );
       text-align: center;
       line-height: var(--size-md2);
       top : var(--size-lg1);"> tap to copy </p>
@@ -53,7 +53,7 @@ import TempList from '../components/TempList.astro';
 <div style=" margin-top:var(--size-sm3); margin-bottom: var(--size-sm0); overflow: hidden">
 
   <div id="gu" class="skeleton-parrent">
-    <div style="width:15ch;" class="skeleton"> </div>
+    <div style="width:var(--size-xl1);" class="skeleton"> </div>
   </div>
 
   <div style="position:relative; height:var(--size-sm0); place-content:center">
@@ -74,7 +74,7 @@ import TempList from '../components/TempList.astro';
 <details name="encrypted password" class="prose" >
   <summary>Encrypted Password</summary>
   <button id="encrypted-pass" class="skeleton-parrent not-prose text-as-button" disabled>
-    <div style="width:15ch;" class="skeleton"> </div>
+    <div style="width:var(--size-xl1);" class="skeleton"> </div>
   </button>
   <button id="encrypted-pass-copy" class="hint not-prose" style="display: block;"></button>
 </details>
@@ -204,7 +204,7 @@ pass.updateRPassword();
   padding: var(--thin-padding);
   color: oklch(var(--gray-95));
   opacity: 1;
-  margin-left: calc( var(--size-sm0) * -1);
+  margin-left: calc( (var(--size-sm0) + 1px) * -1 );
 }
 
 .text-as-button:disabled{

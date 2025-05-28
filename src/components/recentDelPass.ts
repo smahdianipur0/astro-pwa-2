@@ -28,12 +28,12 @@ import { tempList } from "../logic/tempList.ts"
           element.configure('div', { append: [
 
             element.configure('p', { className: 'hint ellipsis',
-              style: "width:20ch",
+              style: "width:var(--size-xl2)",
               textContent: entry.title || 'untitled'}),
 
             element.configure('button', { dataset: {action: 'copy'},
               className: 'ellipsis',
-              style:"text-align: start; width: 19ch;",
+              style:"text-align: start; width:var(--size-xl2);",
               id: entry.password ?? '',
               textContent: entry.password ?? ''})
 

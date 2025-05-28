@@ -1,6 +1,6 @@
 .prose {
   color: oklch(var(--gray-75) );
-  max-width: 65ch
+  max-width: var(--size-xl7)
 }
 
 ::backdrop {
@@ -87,7 +87,7 @@
     background-color: oklch(var(--gray-10) / 65%);
     scale: 0.65;
     scale: 0.8 0.6;
-    border-radius: 20ch;
+    border-radius: 100px;
     filter: blur(15px);
     mix-blend-mode: soft-light;
 }

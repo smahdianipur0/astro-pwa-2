@@ -133,16 +133,6 @@ allTabRadios.forEach((radio) => {
   color: oklch(var(--primary));  
 } 
 
-.sub-route {
-  appearance: none;
-  -webkit-appearance: none;
-  cursor: pointer;
-  width: 25ch;
-  transition-duration: 0.2s;
-  background-color: transparent;
-}
-
-
 .tab-content {
     display: none;
     width: 100%;
@@ -181,11 +171,10 @@ allTabRadios.forEach((radio) => {
   }
 
   .nav-div {
-  flex-direction: row;
-  height: var(--size-md2);
-  width: calc( var(--size-sm0-xx1) + var(--size-sm3));
-  margin-top: auto;
-  margin-bottom: auto;
+    flex-direction: row;
+    height: var(--size-md2);
+    margin-top: auto;
+    margin-bottom: auto;
   }
 
   .nav-text{

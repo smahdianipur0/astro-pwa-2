@@ -1,7 +1,7 @@
 <div style="display: flex; place-content: space-between;">
   <label for="varification-key-ops" class="hint">Enter Plain or Encrypted Varification Key</label>
   <select id="varification-key-ops" class="hint" name="detect mode" style="
-  width: 15ch ;
+  width: var(--size-xl1) ;
   margin: 1px;
   color: oklch(var(--gray-95) );">
   <option selected>Auto</option>
@@ -25,11 +25,13 @@
     font-weight: 300;
     font-size:var(--font-lg1);
     height:var(--size-sm4);">
-    <div class="skeleton" style="width:10ch"></div>
+    <div class="skeleton" style="width:var(--size-lg4)"></div>
   </div>
 
-  <button name="copy code" id="varif_detail_res" class=" not-prose copy">
-    <div class="skeleton" style="width:5ch; font-variant-numeric: tabular-nums;"></div>
+  <button name="copy code" id="varif_detail_res" class=" not-prose copy" style="
+  font-variant-numeric: tabular-nums; 
+  font-size:var(--font-lg1);">
+    <div class="skeleton" style="width:var(--size-lg1);"></div>
   </button>
 
 </div>

@@ -10,7 +10,7 @@ padding-top: var(--size-sm3);
 height:100%;">
     <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
         <div>
-            <button data-action="copy" class="ellipsis shiny-text" style="text-align: start; width: 19ch;">name@gmail.com</button>
+            <button data-action="copy" class="ellipsis shiny-text" style="text-align: start; width: var(--size-xl2);">name@gmail.com</button>
         </div>
         <div class="s-container">
             <details name="delete-item" class="right-to-left">
@@ -20,7 +20,7 @@ height:100%;">
     </div>
     <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
         <div>
-            <button data-action="copy" class="ellipsis shiny-text" style="text-align: start; width: 19ch;">name@yahoo.com</button>
+            <button data-action="copy" class="ellipsis shiny-text" style="text-align: start; width: var(--size-xl2);">name@yahoo.com</button>
         </div>
         <div class="s-container">
             <details name="delete-item" class="right-to-left">
@@ -30,7 +30,7 @@ height:100%;">
     </div>
     <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
         <div>
-            <button data-action="copy" class="ellipsis shiny-text" style="text-align: start; width: 19ch;">name@outlook.com</button>
+            <button data-action="copy" class="ellipsis shiny-text" style="text-align: start; width: var(--size-xl2);">name@outlook.com</button>
         </div>
         <div class="s-container">
             <details name="delete-item" class="right-to-left">
@@ -113,7 +113,7 @@ createEffect(() => {
           element.configure('div', { append: [
               element.configure('button', { dataset: {action: 'copy'}, 
                 className: 'ellipsis',
-                style:"text-align: start; width: 19ch;",
+                style:"text-align: start; width: var(--size-xl2);",
                 id: entry.email ?? '',
                 textContent: entry.email ?? ''
               })

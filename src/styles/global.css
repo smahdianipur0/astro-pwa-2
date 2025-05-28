@@ -26,10 +26,10 @@
 .skeleton{
    font-size: inherit;
    font-family: inherit;
-   height: 1.5ch;
-   width: 30ch;
-   margin: calc( (var(--size-sm4) - 1.5ch) / 2 ) 0;
-   border-radius: 4ch;
+   height: var(--size-sm0);
+   width: var(--size-xl4);
+   margin: calc( (var(--size-sm4) - var(--size-sm0)) / 2 ) 0;
+   border-radius: 100px;
    background-color: oklch(80% 0 0 / 0.4);
    background: linear-gradient(
     100deg,
@@ -97,7 +97,7 @@
 
 .card-border{
   background: var(--border); 
-  width: min(100%, 65ch); 
+  width: min(100%, var(--size-xl7)); 
   padding: 1px;border-radius: 
   var(--radius-b);
 }
@@ -119,7 +119,7 @@
 .entry-item{
   display: flex;
   place-content: space-between;
-  width: min(100%, 65ch);
+  width: min(100%, var(--size-xl7));
   border-radius: 0;
   padding: var(--default-padding);
   margin: 0 var(--size-sm2);
@@ -129,7 +129,7 @@
 .menu-item{
   display:flex ;
   place-content: space-between;
-  width: min(100%, 65ch) ;
+  width: min(100%, var(--size-xl7)) ;
   height: var(--size-md4);
   background-color: oklch(var(--gray-15) / 75%);
   padding: var(--default-padding);
@@ -200,7 +200,7 @@ details.right-to-left[open] > *:not(summary) {
 } 
 
 details.right-to-left[open] > .s-container {
-  width: 10ch;
+  width: var(--size-lg4);
 } 
 
 details.right-to-left > *:not(summary):nth-child(2) {

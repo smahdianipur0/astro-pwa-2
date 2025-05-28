@@ -66,7 +66,7 @@ records.on(["cardsList"], ({value}) => { (async () => {
 				    return element.configure('button', { dataset: {action: 'copy'},
 				    	textContent: dataItem,
 				    	className: 'ellipsis',
-				    	style:"text-align: start; width: 19ch; font-weight: 200",
+				    	style:"text-align: start; width: var(--size-xl2); font-weight: 200",
 				    });
 				  })
 				}),

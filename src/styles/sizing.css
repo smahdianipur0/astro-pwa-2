@@ -11,6 +11,7 @@
   --x08: 5.40;
   --x09: 6.87;
   --x10: 8.75;
+  --x11: 11.13;
 
   --font-sm2: calc(100% / var(--x03));
   --font-sm1: calc(100% / var(--x02));
@@ -20,10 +21,11 @@
   
   
 
-  --size-sm0: 0.671em;
+  --size-sm0: 0.665em;
   --size-xs4: calc(var(--size-sm0) / var(--x05)); 
   --size-xs3: calc(var(--size-sm0) / var(--x04)); 
   --size-xs2: calc(var(--size-sm0) / var(--x03)); 
+  --size-xs1: calc(var(--size-sm0) / var(--x02)); 
   --size-sm1: calc(var(--size-sm0) * var(--x02)); 
   --size-sm2: calc(var(--size-sm0) * var(--x03)); 
   --size-sm3: calc(var(--size-sm0) * var(--x04)); 
@@ -34,11 +36,21 @@
   --size-md4: calc(var(--size-sm0) * var(--x07)); 
   --size-lg1: calc(var(--size-sm0) * var(--x08)); 
   --size-lg2: calc(var(--size-sm0) * var(--x09)); 
-  --size-lg3: calc(var(--size-sm0) * var(--x10)); 
+  --size-lg3: calc(var(--size-sm0) * var(--x10));
+  --size-lg4: calc(var(--size-sm0) * var(--x11)); 
+  --size-xl1: calc(var(--size-lg4) * var(--x02)); 
+  --size-xl2: calc(var(--size-lg4) * var(--x03)); 
+  --size-xl3: calc(var(--size-lg4) * var(--x04)); 
+  --size-xl4: calc(var(--size-lg4) * var(--x05)); 
+  --size-xl5: calc(var(--size-lg4) * var(--x06)); 
+  --size-xl6: calc(var(--size-lg4) * var(--x07)); 
+  --size-xl7: calc(var(--size-lg4) * var(--x08)); 
+
+
 
 
   --default-padding: calc( (var(--size-md3) - var(--size-sm4)) / 2)  var(--size-sm2);
-  --thin-padding: 0.1ch var(--size-sm0);
+  --thin-padding: 0.06em var(--size-sm0);
 
 
   --radius-a: calc(var(--size-md3) * 0.227);

@@ -37,11 +37,11 @@ const dynamicCss = `
  }
 
   .${wrapperClass}:has(#${tab1Id}:checked) .tab-indicator {
-    transform: translate3d(-5ch, 0, 0);
+    transform: translate3d(calc(var(--size-lg3) / -2 ), 0, 0);
   }
 
   .${wrapperClass}:has(#${tab2Id}:checked) .tab-indicator {
-    transform: translate3d(5ch, 0, 0);
+    transform: translate3d(calc(var(--size-lg3) / 2 ), 0, 0);
   }
 
 `;
@@ -56,7 +56,7 @@ const dynamicCss = `
   <input type="radio" class="hide-checkbox" name={name} id={tab1Id} checked/>
   <input type="radio" class="hide-checkbox" name={name} id={tab2Id} />
 
-  <div style=" width: calc(20ch + 4px);
+  <div style=" width: calc((var(--size-lg3) * 2) + 4px);
   display: inline-block;
   justify-content: center;
   align-items: center;
@@ -91,7 +91,7 @@ const dynamicCss = `
   height: var(--size-md2);
   line-height: var(--size-sm4);
   cursor: pointer;
-  width: 10ch;
+  width: var(--size-lg3);
   z-index: var(--z-layer-middle);
   text-align: center;
   color: oklch(var(--gray-95) / .5);
@@ -106,7 +106,7 @@ const dynamicCss = `
 
 
 .tab-indicator {
- width: 10ch;
+ width: var(--size-lg3);
  position: relative;
  display: inline-block;
  justify-content: center;
