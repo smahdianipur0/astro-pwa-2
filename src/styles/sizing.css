@@ -20,7 +20,7 @@
   
   
 
-  --size-sm0: 1.1ch;
+  --size-sm0: 0.671em;
   --size-xs4: calc(var(--size-sm0) / var(--x05)); 
   --size-xs3: calc(var(--size-sm0) / var(--x04)); 
   --size-xs2: calc(var(--size-sm0) / var(--x03)); 
