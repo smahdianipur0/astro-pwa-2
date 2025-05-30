@@ -33,7 +33,7 @@ interface Node {
   fn: (ctx: any) => any;
   deps: Set<string>;
   dependents: Set<string>;
-  subs: Set<{ callback: Subscriber<any>; isSingleEventSubscriber: boolean }>
+  subs: Set<Subscriber<any>>;
 }
 
 type EventKey<S, D extends DerivedDef<S>, M extends MethodsDef<S, D>> = Extract<keyof S | keyof D | keyof M, string>;
@@ -60,8 +60,6 @@ export function createStore<S extends object, D extends DerivedDef<S>, M extends
   const methods = options?.methods ?? ({} as M);
 
   const lastEmittedDerivedValues = new Map<string, any>();
-  let notificationQueue = new Map<Subscriber<any>, any>();
-  let flushScheduled = false;
 
   const context = {
     isUpdating: false,
@@ -91,26 +89,14 @@ export function createStore<S extends object, D extends DerivedDef<S>, M extends
     }
   };
 
-  function flushNotifications() {
-    const queueToProcess = notificationQueue;
-    notificationQueue = new Map();
-    queueToProcess.forEach((payload, subscriber) => {
-      try {subscriber(payload);
-      } catch (e) {console.error('flushNotifications:', e);}
-    });
-    flushScheduled = false;
-  }
-
   const batch = <T>(fn: () => T): T => {
     if (context.isUpdating) return fn();
     context.isUpdating = true;
-    let result: T;
-    try { result = fn(); context.runPending();
-    } finally {
-      if (notificationQueue.size > 0) { flushNotifications() }
+    try { return fn(); }
+    finally {
       context.isUpdating = false;
+      context.runPending();
     }
-    return result;
   };
 
   const nodes = new Map<string, Node>();
@@ -178,14 +164,10 @@ export function createStore<S extends object, D extends DerivedDef<S>, M extends
   })();
 
   function emit(name: string, type: Node["kind"], payload: unknown) {
-    const event = { type, name,...(type === "method" ? { args: payload } : { value: payload })};
-
-    nodes.get(name)?.subs.forEach(wrapper => {
-      if (wrapper.isSingleEventSubscriber || !context.isUpdating) {
-        wrapper.callback(event);
-      } else {
-        notificationQueue.set(wrapper.callback, event);
-      }
+    nodes.get(name)?.subs.forEach((cb) => {
+      try {
+        cb({ type, name, ...(type === "method" ? { args: payload } : { value: payload }) });
+      } catch {}
     });
   }
   
@@ -227,21 +209,13 @@ export function createStore<S extends object, D extends DerivedDef<S>, M extends
   }
 
   function on<E extends EventKey<S, D, M>>(events: readonly E[], cb: Subscriber<any>): void {
-    const wrapper = {
-      callback: cb as Subscriber<any>,
-      isSingleEventSubscriber: (events.length === 1),
-    };
-    events.forEach(e => {
+    Array.from(new Set(events.map(String))).forEach(e => {
       const node = nodes.get(e);
-      if (node) node.subs.add(wrapper);
+      if (node) node.subs.add(cb);
     });
   }
 
-  function unsubscribe() {
-    nodes.forEach(node => node.subs.clear());
-    notificationQueue.clear();
-    flushScheduled = false;
-  }
+  function unsubscribe() { nodes.forEach(node => node.subs.clear()) }
 
   return { get: getState, ...processed, on, unsubscribe } as Store<S, D, M>;
   

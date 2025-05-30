@@ -11,19 +11,18 @@ import TempList from '../components/TempList.astro';
     <CharactersCount />
     <CharactersPattern />
 
-    <div class="flex-center-childs not-prose " style=" position: relative;">
+    <div class="flex-spread-childs not-prose " style=" position: relative;font-size:var(--font-lg1);">
 
       <TempList />
 
-      <button id="gp" name="copy password" class="text-as-button skeleton-parrent" style=" margin-inline: 0;
-        margin-top: var(--size-sm3); 
+      <button id="gp" name="copy password" class="text-as-button skeleton-parrent" style=" margin-top: var(--size-sm3); 
         margin-bottom: var(--size-sm3);
         font-weight: 300;
-        font-size:var(--font-lg1);">
+        ">
         <div class="skeleton" style="width:var(--size-xl1)"> </div>
       </button>
 
-      <button id="redo" name="regenerate password" class="redo_container text-as-button blink" style="right: 0; margin-right: calc(var(--size-sm0)* -1);" >↻</button>
+      <button id="redo" name="regenerate password" class=" flex-center-childs text-as-button blink" style="right: 0; margin-right: calc(var(--size-sm0)* -1);" >↻</button>
 
       <p id="ttc" class="hint" style="margin-top: var(--size-sm3); 
       margin-bottom: var(--size-sm3);
@@ -187,17 +186,6 @@ pass.updateRPassword();
 
 <style is:global>
 
-#redo,
-#add-drawer-trigger {
-  display: flex;
-  place-content: center;
-  position: absolute;
-  font-size:var(--font-lg1); 
-  font-weight: 300; 
-  margin-top: var(--size-sm3); 
-  margin-bottom: var(--size-sm3);
-}
-
 .text-as-button{
   border: 1px solid transparent;
   border-radius: var(--radius-a);
@@ -205,6 +193,7 @@ pass.updateRPassword();
   color: oklch(var(--gray-95));
   opacity: 1;
   margin-left: calc( (var(--size-sm0) + 1px) * -1 );
+  height: var(--size-md1);
 }
 
 .text-as-button:disabled{
