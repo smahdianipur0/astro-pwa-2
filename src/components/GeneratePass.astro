@@ -9,6 +9,7 @@ import TempList from '../components/TempList.astro';
 
   <fragment slot="tab1">
     <CharactersCount />
+    <div style="border-bottom: 1px solid oklch(var(--gray-25) / 1);" ></div>
     <CharactersPattern />
 
     <div class="flex-spread-childs not-prose " style=" position: relative;font-size:var(--font-lg1);">
@@ -24,9 +25,7 @@ import TempList from '../components/TempList.astro';
 
       <button id="redo" name="regenerate password" class=" flex-center-childs text-as-button blink" style="right: 0; margin-right: calc(var(--size-sm0)* -1);" >↻</button>
 
-      <p id="ttc" class="hint" style="margin-top: var(--size-sm3); 
-      margin-bottom: var(--size-sm3);
-      position: absolute;
+      <p id="ttc" class="hint" style="position: absolute;
       width: var(--size-xl2);
       right: calc(50% - (var(--size-xl2) / 2) );
       text-align: center;
@@ -41,7 +40,7 @@ import TempList from '../components/TempList.astro';
     <div class=" prose" style="display: flex;
       gap: var(--size-sm0);
       justify-content: space-between;
-      margin:var(--size-sm3) 0">
+      margin: var(--size-md4) 0 0">
       <input autocomplete="off" id="mPassword" type="text" style="
         margin-bottom: var(--size-sm0);" placeholder="Password">
       <button id="copyMPassword" style="margin-bottom:var(--size-sm0);" disabled> Copy </button>
