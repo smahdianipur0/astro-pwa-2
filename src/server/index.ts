@@ -150,9 +150,12 @@ export const appRouter = router({
         dbquery: t.procedure
         .mutation(async () =>{
             // const data = await dbUpdateVault("hello", new Date().toISOString(), "deleted");
+            let shit
+            try { shit = await dbQueryRole("xs0cyUIiz_QEZ0FdExMMlvdSpWM", "test2")} catch {}
+            console.log(shit);;
             const data = "hi";
             console.log(data)
-            return data
+            // return data
         })
 
 });

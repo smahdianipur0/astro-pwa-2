@@ -2,29 +2,28 @@ import { Surreal } from 'surrealdb';
 
 type prettify<T> = {[K in keyof T]: T[K];} & {};
 
-let db: Surreal | null = null;;
+let db: Surreal | null = null;
+let connectPromise: Promise<void> | null = null;
 
-(async () => {
-  if(!db){
-     db = new Surreal();   
-    try {
-      console.log("Attempting to connect to SurrealDB...");
-      await db.connect("wss://new-instance-06a2fsk7u9qnndnf9s5cldv158.aws-use1.surreal.cloud", {
+async function ensureConnected() {
+  if (!db) {
+    db = new Surreal();
+    connectPromise =  db.connect("wss://new-instance-06a2fsk7u9qnndnf9s5cldv158.aws-use1.surreal.cloud", {
       namespace: import.meta.env.SURREALDB_NAMESPACE,
       database: import.meta.env.SURREALDB_DATABASE,
       auth: {
         username: import.meta.env.SURREALDB_USERNAME,
         password: import.meta.env.SURREALDB_PASSWORD,
-      }
-    });
+      },
+    }).then(() => {
       console.log("Connected to SurrealDB successfully.");
-    } catch (err) {
-      console.error("Failed to connect to SurrealDB:", err instanceof Error ? err.message : String(err));
-      await db.close();
+    }).catch(async (err) => {
+      console.error("Failed to connect to SurrealDB:", err);
       throw err;
-    }
+    });
   }
-})();
+  return connectPromise!;
+}
 
 type TableName = "users" | "vaults" | "cards" ;
 
@@ -85,6 +84,8 @@ export function unwrapRecord(data: Array<Record<string, any>>): Array<Record<str
 
 
 export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: T, data: PermittedTypes[T]): Promise<string> {
+
+  await ensureConnected();
   if (!db) throw new Error("Database not connected.");
 
   const outRecord = `${action.split(":")[0]}:${data.id}`;
@@ -140,6 +141,8 @@ export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: 
 
 
 export async function dbCreateUser(userID: string, credential: object): Promise<string | undefined> {
+
+  await ensureConnected();
   if (!db) throw new Error("Database not connected.");
   let result: string | undefined;
 
@@ -164,6 +167,8 @@ export async function dbCreateUser(userID: string, credential: object): Promise<
 }
 
 export async function dbQueryUser(userID: string): Promise<object | undefined> {
+
+  await ensureConnected();
   if (!db) throw new Error("Database not connected.");
 
   try {
@@ -188,6 +193,8 @@ export async function dbQueryUser(userID: string): Promise<object | undefined> {
 }
 
 export async function dbCheckID(ID: string): Promise<object | undefined> {
+
+  await ensureConnected();
   if (!db) throw new Error("Database not connected.");
 
   try {
@@ -203,6 +210,8 @@ export async function dbCheckID(ID: string): Promise<object | undefined> {
 } 
 
 export async function checkExistance(ID: string): Promise<object | undefined> {
+
+  await ensureConnected();
   if (!db) throw new Error("Database not connected.");
 
   try {
@@ -219,7 +228,8 @@ export async function checkExistance(ID: string): Promise<object | undefined> {
 
 export async function dbQueryRole(userID: string, vaultName: string): Promise<object | undefined> {
   
-  if (!db) throw new Error("Database not connected.")
+  await ensureConnected();
+  if (!db) throw new Error("Database not connected."); 
 
   try {
     const response = await db.query_raw(`
@@ -253,8 +263,10 @@ export async function dbQueryRole(userID: string, vaultName: string): Promise<ob
 }
 
 
+
 export async function dbRelateVault(userID: string,vaultName: string ): Promise<object | undefined> {
 
+  await ensureConnected();
   if (!db) throw new Error("Database not connected.")
 
   try {
@@ -302,7 +314,8 @@ export async function dbRelateVault(userID: string,vaultName: string ): Promise<
 }
 
 export async function dbReadVault(userID: string ): Promise<object | undefined> {
- 
+  
+  await ensureConnected();
   if (!db) throw new Error("Database not connected.")
 
     try {
