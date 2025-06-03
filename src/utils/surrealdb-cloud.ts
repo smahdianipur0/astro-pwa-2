@@ -231,21 +231,34 @@ export async function dbQueryRole(userID: string, vaultName: string): Promise<ob
   await ensureConnected();
   if (!db) throw new Error("Database not connected."); 
 
+  const vaultId = `vaults${vaultName}`;
+
   try {
     const response = await db.query_raw(`
       BEGIN TRANSACTION;
-      LET $user = (SELECT id FROM users WHERE UID = $UID);
-      LET $vault = (SELECT id FROM vaults WHERE name = $vaultName);
-      SELECT role FROM has_vault WHERE in = $user[0].id AND out = $vault[0].id ;
-      COMMIT TRANSACTION;`,
-      { UID: userID, vaultName: vaultName});
 
-    
-    console.log(response);
+      LET $user = (SELECT id FROM users WHERE UID = $UID);
+
+      LET $vault = (SELECT id FROM vaults WHERE name = $vaultName);
+
+      LET $role = SELECT role FROM has_vault WHERE in = $user[0].id AND out = $vault[0].id ;
+
+
+      IF $role[0].role = 'owner' { RETURN 'owner' }
+      ELSE IF $role[0].role = 'viewer' { RETURN'viewer' }
+      ELSE {
+        IF record::exists(type::thing({$vaultId})) {
+          RETURN "viewer"
+          } ELSE { RETURN 'owner'};  
+      };
+
+      COMMIT TRANSACTION;
+      `,
+      { UID: userID, vaultName: vaultName, vaultId:vaultId });
+
 
     if (response[response.length - 1].status === 'OK') {
-      console.log(response[2].result);
-      return{message : response[2].result}
+      return{response}
     } else if (response[response.length - 1].status === 'ERR') {
       const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
       if (errorObject) {
