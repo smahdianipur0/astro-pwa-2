@@ -262,17 +262,35 @@ export async function dbDeleteAll<T extends TableName>(tableName: T): Promise<vo
 	}
 }
 
-const indexedArray = await dbReadAll("Vaults") as ReadAllResultTypes["Vaults"] ;
+export async function dbquery(  query: string, params: { [key: string]: any }): Promise<any> {
+	const db = await getDb();
+	try {
+		const recs = await db.query(query, params) ;
+		return recs; 
+	} catch (err) {
+		console.error(`Query failed`, err);
+		return undefined;
+	} finally {
+		await db.close();
+	}
+}
+
+const indexedArray = await dbReadAll("Cards") as ReadAllResultTypes["Cards"] ;
 
 let cardDetail:object[] = [];
 
 indexedArray.forEach(async (entry) => {
-  const vaultId = entry.id?.id;
-  if (!vaultId)return
-  const cards = await dbReadRelation("Vaults", "Vaults_has", "Cards", vaultId);
-  cardDetail.push({vault: vaultId, contains: cards})
+	const CardId = entry.id?.toString();
+	if (!CardId)return
+	const cards = await dbquery(
+		`SELECT <-Vaults_has<-Vaults FROM (type::thing($card));`,
+		{card: CardId}
+	);
+
+	cardDetail.push({vault:cards[0][0]["<-Vaults_has"]["<-Vaults"][0].id, ...entry})
 });
 
 console.log(cardDetail);
 
-// dbDeleteAll("Vaults");
+// dbDeleteAll("Cards");
+// console.log(await dbReadAll("Vaults_has") )
