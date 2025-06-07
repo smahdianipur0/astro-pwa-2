@@ -204,12 +204,6 @@
   content: "";
   background: var(--border);
   border-radius: var(--radius-b);
-  box-shadow: 
-    oklch(28% .02 268 / var(--box-shadow-opacity)) 0px 1px 1px -.5px, 
-    oklch(28% .02 268 / var(--box-shadow-opacity)) 0px 3px 3px -1.5px, 
-    oklch(28% .02 268 / var(--box-shadow-opacity)) 0px 6px 6px -3px, 
-    oklch(32% .07 268 / var(--box-shadow-opacity)) 0px 12px 12px -6px, 
-    oklch(32% .07 268 / var(--box-shadow-opacity)) 0px 24px 24px -12px;
   z-index: var(--z-layer-beneath);
   margin: -1px;
   position: absolute;

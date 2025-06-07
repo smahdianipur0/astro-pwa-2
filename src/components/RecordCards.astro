@@ -25,7 +25,7 @@ records.on(["cardsList"], ({value}) => { (async () => {
     .forEach((entry) => {
 
       fragment.append(
-      	element.configure('fieldset', { style:"margin-block: var(--size-sm3);", append:[
+      	element.configure('fieldset', { className: "box-shadow", style:"margin-block: var(--size-sm3);", append:[
         	element.configure('div',  { className: "not-prose", append: [
          		element.configure('div', { className: 'flex-spread-childs', 
          		style:"border-bottom: 1px solid oklch(var(--gray-25) / 1); padding-bottom: var(--size-sm1);margin-bottom: var(--size-sm1);", append: [
