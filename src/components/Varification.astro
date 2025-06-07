@@ -1,42 +1,46 @@
-<div style="display: flex; place-content: space-between;">
-  <label for="varification-key-ops">Varification key Format</label>
-  <select id="varification-key-ops" name="detect mode">
-  <option selected>Auto</option>
-  <option>Plain</option>
-  <option>Encrypted</option>
-  </select>
-</div>
-<textarea id="varification-key" class=" dent-shadow" style="
-  margin-top: var(--size-sm1); margin-bottom: var(--size-sm3);" rows="2" placeholder="Varification Key">
-</textarea>
+<fieldset id="varification"> <legend>Varification Code</legend>
+    <div style="display: flex; place-content: space-between;">
+      <label for="varification-key-ops">Varification key Format</label>
+      <select id="varification-key-ops" name="detect mode">
+      <option selected>Auto</option>
+      <option>Plain</option>
+      <option>Encrypted</option>
+      </select>
+    </div>
+    <textarea id="varification-key" class=" dent-shadow" style="
+      margin-top: var(--size-sm1); margin-bottom: var(--size-sm3);" rows="2" placeholder="Varification Key">
+    </textarea>
 
-<div style="overflow: hidden;">
-  <div style="
-  display: flex;
-  position: relative;
-  justify-content: space-between;
-  align-items: center;">
+    <div style="overflow: hidden;">
+      <div style="
+      color: oklch(var(--gray-95));
+      display: flex;
+      position: relative;
+      justify-content: space-between;
+      align-items: center;">
 
-  <div id="varif_detail" style="
-  	line-height: var(--size-sm4);
-    font-weight: 300;
-    font-size:var(--font-lg1);
-    height:var(--size-sm4);">
-    <div class="skeleton" style="width:var(--size-lg4)"></div>
-  </div>
+      <div id="varif_detail" style="
+      	line-height: var(--size-sm4);
+        font-weight: 300;
+        font-size:var(--font-lg1);
+        height:var(--size-sm4);">
+        <div class="skeleton" style="width:var(--size-lg4)"></div>
+      </div>
 
-  <button name="copy code" id="varif_detail_res" class=" not-prose copy" style="
-  font-variant-numeric: tabular-nums; 
-  font-size:var(--font-lg1);">
-    <div class="skeleton" style="width:var(--size-lg1);"></div>
-  </button>
+      <button name="copy code" id="varif_detail_res" class=" not-prose copy" style="
+      font-variant-numeric: tabular-nums; 
+      font-size:var(--font-lg1);">
+        <div class="skeleton" style="width:var(--size-lg1);"></div>
+      </button>
 
-</div>
+    </div>
 
-<div id="varif_hint" class="hint" style="height:var(--size-sm3);" ></div>
-<div id="varif_copy_hint" class="hint" style="height:var(--size-sm3);"></div>
+    <div id="varif_hint" class="hint" style="height:var(--size-sm3);" ></div>
+    <div id="varif_copy_hint" class="hint" style="height:var(--size-sm3);"></div>
 
-</div>
+    </div>
+
+</fieldset>
 
 <script>
 

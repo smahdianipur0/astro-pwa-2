@@ -1,9 +1,8 @@
 ---
 import ThemeToggle from '../components/ThemeToggle.astro';
-import Card from './ui/Card.astro';
 ---
 
-<Card title = "Key and IV" iden='key-IV'>
+<fieldset class="prose" id="key-IV"><legend>Key and IV</legend>
   <form autocomplete="off">
 
     <div style="position: relative;">
@@ -18,7 +17,9 @@ import Card from './ui/Card.astro';
     
   </form>
   <!-- <button id="test">test</button> -->
-</Card>
+</fieldset>
+
+
 
 <div class="entries-list"> <div class="menu-item" >  <ThemeToggle/> </div></div>
 

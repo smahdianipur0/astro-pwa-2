@@ -1,5 +1,4 @@
 ---
-import Card from "../components/ui/Card.astro";
 import Dialog from "../components/ui/Dialog.astro"
 import RecentDelPass from "../components/RecentDelPass.astro"
 import Drawer from '../components/ui/Drawer.tsx';
@@ -15,10 +14,9 @@ import Drawer from '../components/ui/Drawer.tsx';
     </fragment>
     <fragment slot="content">
 
-      <div data-corvu-no-drag class="drawer-content" >
+      <div data-corvu-no-drag class="prose drawer-content" >
 
-
-        <Card iden="entries-list-card" >
+        <fieldset id="entries-list-car">
           <div style="display: flex; flex-direction: column;" class="prose" id="input-group">
             <input type="text" id="title-input" placeholder="Title" style="margin-bottom: var(--size-sm2);"/>
             <div style="display: flex; flex-direction: row;">
@@ -31,10 +29,12 @@ import Drawer from '../components/ui/Drawer.tsx';
             
             <button style="margin-top: var(--size-sm2);"id="add-entry-button">Add</button>
           </div>
-        </Card>
+        </fieldset>
+
           <div id="search-box" class="prose max-width" style="display: flex; 
           flex-direction: row;
-          position:relative;">
+          position:relative;
+          width: min(100%, var(--size-xl7));">
             <input type="text" id="search-input" style=" position: relative;
             background: oklch(var(--gray-15) / 1);
             border: none ;
@@ -50,13 +50,12 @@ import Drawer from '../components/ui/Drawer.tsx';
             <button class="not-prose" id="cancel-search" >Cancel</button>
           </div>
 
-          <div class="card-border">
-            <div class="card glass box-shadow max-width">
-              <div class="entries-list not-prose" id="entries-list"> 
-                <p class="hint" style="padding-block:var(--size-sm3)"> Loading records </p>
-              </div>
+
+          <fieldset style="padding: 0; color: oklch(var(--gray-95));">
+            <div class="entries-list not-prose" id="entries-list"> 
+              <p class="hint" style="padding-block:var(--size-sm3)"> Loading records </p>
             </div>
-          </div>
+          </fieldset>
 
           
       <RecentDelPass/>

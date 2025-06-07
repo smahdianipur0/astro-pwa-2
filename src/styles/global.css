@@ -95,20 +95,6 @@
   text-overflow: ellipsis;
 }
 
-.card-border{
-  background: var(--border); 
-  width: min(100%, var(--size-xl7)); 
-  padding: 1px;border-radius: 
-  var(--radius-b);
-}
-
-.card{
-  --box-shadow-opacity: 0.06;
-  border-radius: var(--radius-b);
-  contain: paint;
-  background-color: oklch(var(--gray-10) / 0.5);
-}
-
 .entries-list{
   display: flex;
   flex-direction: column;

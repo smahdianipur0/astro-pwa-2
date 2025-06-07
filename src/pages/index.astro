@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/ui/Card.astro';
 import GeneratePass from '../components/GeneratePass.astro'; 
 import Encdec from '../components/Encdec.astro';
 import Varification from '../components/Varification.astro';
@@ -15,23 +14,18 @@ import Records from '../components/Records.astro';
 
 
 	<div  class="tab-content one" > 
-	  <div class="grid-layout">
-	     
-			<Card title = "Generate Password" iden='generate'>
-				<GeneratePass/>
-			</Card>	
-
-			<Card title = "Varification Code" iden='varification'>
-				<Varification/> 
-		 	</Card>  
-
+	  <div class="prose grid-layout">
+	     	
+			<GeneratePass/>
+			<Varification/> 
+		
 	  </div> 
 	</div>
 
 
 
 	<div class="tab-content two">
-		<div class="grid-layout"> 
+		<div class="prose grid-layout">
 
 			<Records>
 
@@ -39,26 +33,20 @@ import Records from '../components/Records.astro';
 	</div>
 
 	<div class="tab-content three"> 
-		<div class="grid-layout" > 
-
-			<Card title = "AES Encryption" iden='encryption'>
-				<Encdec/>
-			</Card>
-
-	 		<Card title = "Frequently Used Emails" iden='emails'>
-	 			<Emails/>
-	 		</Card>
-
-	 		<Card title = "Generate QR Code" iden='generateQR'>
-				<QRCode/> 
-	 		</Card> 
+		<div class="prose grid-layout" > 
+		
+			<Encdec/>
+ 			<Emails/>
+			<QRCode/> 
 
 		</div>
 	</div>
 
 	<div id="testAbout" class="tab-content four"> 
-		<div class="grid-layout">
+		<div class="grid-layout prose">
+
 	   		<About/>
+	   		
 		</div>
 	</div>
     

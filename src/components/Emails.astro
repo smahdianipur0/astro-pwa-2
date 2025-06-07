@@ -1,46 +1,46 @@
-<div class="prose" style="display: flex;
-gap: var(--size-sm0);
-justify-content: space-between;">
-  <input autocomplete="off" id="email_entry" type="text" style="width: 100%;" placeholder="Email">
-  <button id="add_email" style="width: fit-content;white-space: nowrap;" disabled>Add</button>
-</div>
+<fieldset id="emails"><legend>Frequently Used Emails</legend>
+  <div class="prose" style="display: flex;
+  gap: var(--size-sm0);
+  justify-content: space-between;">
+    <input autocomplete="off" id="email_entry" type="text" style="width: 100%;" placeholder="Email">
+    <button id="add_email" style="width: fit-content;white-space: nowrap;" disabled>Add</button>
+  </div>
 
-<div class="entries-list not-prose" id="emails-list" style="
-padding-top: var(--size-sm3);
-height:100%;">
-    <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
-        <div>
-            <button data-action="copy" class="ellipsis shiny-text" style="text-align: start; width: var(--size-xl2);">name@gmail.com</button>
-        </div>
-        <div class="s-container">
-            <details name="delete-item" class="right-to-left">
-                <summary class="right-to-left shiny-text"></summary>
-            </details>
-        </div>
-    </div>
-    <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
-        <div>
-            <button data-action="copy" class="ellipsis shiny-text" style="text-align: start; width: var(--size-xl2);">name@yahoo.com</button>
-        </div>
-        <div class="s-container">
-            <details name="delete-item" class="right-to-left">
-                <summary class="right-to-left shiny-text"></summary>
-            </details>
-        </div>
-    </div>
-    <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
-        <div>
-            <button data-action="copy" class="ellipsis shiny-text" style="text-align: start; width: var(--size-xl2);">name@outlook.com</button>
-        </div>
-        <div class="s-container">
-            <details name="delete-item" class="right-to-left">
-                <summary class="right-to-left shiny-text"></summary>
-            </details>
-        </div>
-    </div>
-
-</div>
-
+  <div class="entries-list not-prose" id="emails-list" style="
+  padding-top: var(--size-sm3);
+  height:100%;">
+      <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
+          <div>
+              <button data-action="copy" class="ellipsis shiny-text" style="text-align: start; width: var(--size-xl2);">name@gmail.com</button>
+          </div>
+          <div class="s-container">
+              <details name="delete-item" class="right-to-left">
+                  <summary class="right-to-left shiny-text"></summary>
+              </details>
+          </div>
+      </div>
+      <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
+          <div>
+              <button data-action="copy" class="ellipsis shiny-text" style="text-align: start; width: var(--size-xl2);">name@yahoo.com</button>
+          </div>
+          <div class="s-container">
+              <details name="delete-item" class="right-to-left">
+                  <summary class="right-to-left shiny-text"></summary>
+              </details>
+          </div>
+      </div>
+      <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
+          <div>
+              <button data-action="copy" class="ellipsis shiny-text" style="text-align: start; width: var(--size-xl2);">name@outlook.com</button>
+          </div>
+          <div class="s-container">
+              <details name="delete-item" class="right-to-left">
+                  <summary class="right-to-left shiny-text"></summary>
+              </details>
+          </div>
+      </div>
+  </div>
+</fieldset>
 
 <script>
 
@@ -113,7 +113,7 @@ createEffect(() => {
           element.configure('div', { append: [
               element.configure('button', { dataset: {action: 'copy'}, 
                 className: 'ellipsis',
-                style:"text-align: start; width: var(--size-xl2);",
+                style:"text-align: start; width: var(--size-xl2); color: oklch(var(--gray-95))",
                 id: entry.email ?? '',
                 textContent: entry.email ?? ''
               })

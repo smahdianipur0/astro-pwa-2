@@ -1,22 +1,21 @@
 ---
-import Card from './ui/Card.astro';
 import Auth from './Auth.astro'
 import VaultMenu from './VaultMenu.astro'
 import VaultDialog from './VaultDialog.astro'
 import AddCardDialog from './AddCardDialog.astro'
 import RecordCards from './RecordCards.astro'
-
 ---
 
-<Card title="credentials" iden='credentials'>
+
+<fieldset id="credentials"> <legend>credentials</legend>
 
   <Auth/>
 
   <VaultMenu/>
 
   <select name="vaults" class="max-width" id="vault-list" disabled></select>
+</fieldset>
 
-</Card>
 
 <VaultDialog/>
 

@@ -1,48 +1,49 @@
 ---
 import Tabs from '../components/ui/Tabs.astro';
 ---
+<fieldset id="encryption"><legend>AES Encryption</legend>
+   <Tabs name="encdec" tab1Label="Encrypt" tab2Label="Decrypt" >
+      <fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab1">
 
-<Tabs name="encdec" tab1Label="Encrypt" tab2Label="Decrypt" >
-   <fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab1">
+         <textarea 
+            id="plain_text" 
+            class=" dent-shadow" 
+            style="margin-top: var(--size-md4); margin-bottom: var(--size-sm3);" 
+            rows="2" 
+            placeholder="Plain Text"></textarea>
 
-      <textarea 
-         id="plain_text" 
-         class=" dent-shadow" 
-         style="margin-top: var(--size-md4); margin-bottom: var(--size-sm3);" 
-         rows="2" 
-         placeholder="Plain Text"></textarea>
+         <label 
+            style=" margin-bottom: var(--size-sm0); font-size: var(--font-sm1); opacity: 0.6;">
+            Encrypted Text : </label>
 
-      <label 
-         style=" margin-bottom: var(--size-sm0); font-size: var(--font-sm1); opacity: 0.6;">
-         Encrypted Text : </label>
+         <button 
+            class="not-prose max-width text-as-button" 
+            style="word-wrap: break-word; text-align:justify;" 
+            id="result_e"></button>
 
-      <button 
-         class="not-prose max-width text-as-button" 
-         style="word-wrap: break-word; text-align:justify;" 
-         id="result_e"></button>
-
-   </fragment>
+      </fragment>
 
 
-   <fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab2">
+      <fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab2">
 
-      <textarea 
-         id="cipher_text" 
-         rows="2" 
-         placeholder="Cipher Text"
-         style="margin-top: var(--size-md4); margin-bottom: var(--size-sm3);"></textarea>
+         <textarea 
+            id="cipher_text" 
+            rows="2" 
+            placeholder="Cipher Text"
+            style="margin-top: var(--size-md4); margin-bottom: var(--size-sm3);"></textarea>
 
-      <label 
-         style="margin-bottom: var(--size-sm0); font-size: var(--font-sm1); opacity: 0.6;">
-         Decrypted Text :</label>
+         <label 
+            style="margin-bottom: var(--size-sm0); font-size: var(--font-sm1); opacity: 0.6;">
+            Decrypted Text :</label>
 
-      <button 
-         class="not-prose max-width text-as-button" 
-         style="word-wrap: break-word; text-align:justify;"
-         id="result_d"></button>
+         <button 
+            class="not-prose max-width text-as-button" 
+            style="word-wrap: break-word; text-align:justify;"
+            id="result_d"></button>
 
-   </fragment>
-</Tabs>
+      </fragment>
+   </Tabs>
+</fieldset>
 
 <script>
 

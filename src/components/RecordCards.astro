@@ -2,7 +2,7 @@
 
 ---
 
-<div id="cards-array" class="skeleton-parrent">
+<div id="cards-array">
     <div class="skeleton"></div>
 </div>
 
@@ -25,8 +25,8 @@ records.on(["cardsList"], ({value}) => { (async () => {
     .forEach((entry) => {
 
       fragment.append(
-      	element.configure('div', {className:"card-border", style:"margin-block: var(--size-sm3);", append:[
-        	element.configure('div',  { className: "card glass box-shadow", style:"padding: var(--size-sm3);", append: [
+      	element.configure('fieldset', { style:"margin-block: var(--size-sm3);", append:[
+        	element.configure('div',  { className: "not-prose", append: [
          		element.configure('div', { className: 'flex-spread-childs', 
          		style:"border-bottom: 1px solid oklch(var(--gray-25) / 1); padding-bottom: var(--size-sm1);margin-bottom: var(--size-sm1);", append: [
 

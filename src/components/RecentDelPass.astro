@@ -3,7 +3,7 @@ import DrawerFromRight from './ui/DrawerFromRght';
 import Dialog from "../components/ui/Dialog.astro"
 ---
 
-<div class="max-width flex-center-childs"style="margin-bottom: var(--size-md2);">
+<div class="max-width flex-center-childs not-prose"style="margin-bottom: var(--size-md2);">
   <DrawerFromRight client:load>
 
     <fragment slot="trigger">
@@ -14,14 +14,12 @@ import Dialog from "../components/ui/Dialog.astro"
     </fragment>
 
     <fragment slot="content">
-        <div data-corvu-no-drag class="drawer-content" style="margin-left: var(--size-sm2);" >
-          <div class="card-border"  style="margin-left: calc(var(--size-sm2)* -1);">
-            <div class="card glass box-shadow max-width">
-              <div  class="entries-list" id="recent-del-list">
-                <p class="hint" style="padding-block: var(--size-sm3);">No records found</p>
-              </div>
+        <div data-corvu-no-drag class=" prose drawer-content" style="margin-left: var(--size-sm2);" >
+          <fieldset style="padding: 0; color: oklch(var(--gray-95));">
+            <div  class="entries-list not-prose" id="recent-del-list">
+              <p class="hint" style="padding-block: var(--size-sm3);">No records found</p>
             </div>
-          </div>
+          </fieldset>
         </div> 
       <Dialog identifier="restore-dialog">
         <h3 style="margin-top: 0;">Restore Item</h3>
