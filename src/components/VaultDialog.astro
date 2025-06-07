@@ -4,31 +4,29 @@ import Dialog from './ui/Dialog.astro';
 
 <Dialog identifier= 'create-vault-dialog'>
 
-  <h3 style="margin-top: 0;">Create vault</h3>
-  <p class="hint" id="vault-hint"></p>
+    <h3 style="margin-top: 0;">Create vault</h3>
 
-  <input type="text" name="vault-name" id="vault-name-input">
-  <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">
-    
-    <button class="unstyle-button not-prose max-width" >Cancel</button>
-    <button class="max-width" id="create-vault-button" disabled>Create</button>
-    
-  </div>
+    <p class="hint" id="vault-hint"></p>
+
+    <input type="text" name="vault-name" id="vault-name-input">
+
+    <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">
+        <button class="unstyle-button not-prose max-width" >Cancel</button>
+        <button class="max-width" id="create-vault-button" disabled>Create</button>
+    </div>
 
 </Dialog> 
 
 <Dialog identifier= 'delete-vault-dialog'>
 
-  <h3 style="margin-top: 0;">Delete vault</h3>
+    <h3 style="margin-top: 0;">Delete vault</h3>
 
-  <select name="delete vaults" class="max-width prose" id="delete-vault-list" > </select>
+    <select name="delete vaults" class="max-width prose" id="delete-vault-list" > </select>
 
-  <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);"> 
-
-    <button class="unstyle-button not-prose max-width" >Cancel</button>
-    <button class="max-width" id="delete-vault-button" style="--primary:62.31% 0.246 27" disabled>Delete</button>
-    
-  </div>
+    <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);"> 
+        <button class="unstyle-button not-prose max-width" >Cancel</button>
+        <button class="max-width" id="delete-vault-button" style="--primary:62.31% 0.246 27" disabled>Delete</button>
+    </div>
 
 </Dialog>
 

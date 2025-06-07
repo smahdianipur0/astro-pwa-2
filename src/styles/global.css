@@ -95,6 +95,41 @@
   text-overflow: ellipsis;
 }
 
+
+.input-group-top{
+  border: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 0.1px solid oklch(var(--gray-25) );
+  line-height: var(--size-sm4);
+}
+
+.input-group-top:focus{
+  border: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 0.1px solid oklch(var(--gray-25) );
+  background: transparent;
+  background-color:oklch(var(--gray-10) / 0.75); 
+}
+
+.input-group-bottom{
+  border: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: var(--radius-a);
+  border-bottom-right-radius: var(--radius-a);
+  line-height: var(--size-sm4);
+}
+ 
+.input-group-bottom:focus{
+  border: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background: transparent;
+  background-color:oklch(var(--gray-10) / 0.75); 
+}
+
 .entries-list{
   display: flex;
   flex-direction: column;
@@ -234,3 +269,60 @@ details.right-to-left[open] summary + *  {
   100% { background-position: -100%; }
 }
 
+.tertiary-btn{
+  display: flex;
+  flex-wrap: wrap;
+  place-content: center;
+  border-radius: var(--radius-a);
+  color: oklch(var(--gray-95) / 1);
+  background-color: oklch(var(--gray-25));
+  text-align: center;
+  align-items: center;
+  position: relative;
+  width: var(--size-lg2);
+  height: var(--size-md1) ;
+}
+
+.tertiary-btn:disabled::after{
+  content: "";
+  border-radius: inherit;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: oklch(var(--gray-10) / 0.4);
+}
+
+.char-icon {
+  fill: oklch(var(--gray-95) / 1);
+}
+
+.divider{
+  position:absolute;
+  border: 0.25px solid oklch(var(--gray-95) / 0.1);
+  height: calc((var(--size-md2)  - 3px) - 10px);
+  margin-top: calc(((var(--size-md2)  - 3px) - ((var(--size-md2)  - 3px) - 10px)) / 2);
+  right: calc( var(--size-lg1) - 0.25px );
+  z-index: var(--z-layer-middle);
+}
+
+
+.text-as-button{
+  border: 1px solid transparent;
+  border-radius: var(--radius-a);
+  padding: var(--thin-padding);
+  color: oklch(var(--gray-95));
+  opacity: 1;
+  margin-left: calc( (var(--size-sm0) + 1px) * -1 );
+  height: var(--size-md1);
+}
+
+.text-as-button:disabled{
+  color: oklch(var(--gray-75));
+}
+
+.text-as-button:focus,
+.text-as-button:hover {
+  border: 1px solid oklch(var(--gray-25) / 1);
+}

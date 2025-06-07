@@ -9,13 +9,13 @@ import RecordCards from './RecordCards.astro'
 
 <fieldset class="box-shadow" id="credentials"> <legend>credentials</legend>
 
-  <Auth/>
+    <Auth/>
 
-  <VaultMenu/>
+    <VaultMenu/>
 
-  <select name="vaults" class="max-width" id="vault-list" disabled></select>
+    <select name="vaults" class="max-width" id="vault-list" disabled></select>
+
 </fieldset>
-
 
 <VaultDialog/>
 
@@ -24,10 +24,8 @@ import RecordCards from './RecordCards.astro'
 <RecordCards/>
 
 
-
 <script>
 
-import { getEntryById } from "../utils/surrealdb-indexed"
 import { records } from "../logic/records"
 import { element } from "../utils/elementUtils";
 
@@ -38,17 +36,6 @@ document.getElementById("credentials")!.addEventListener("change",(e)=>{
     };
 });
 
-// change the selcted valuts and card creation dialog when valut select elment value changes
-records.on(["selectedVault"], ({value}) => { (async () => {
-    if(value !== undefined) {
-        const selected = await getEntryById("Vaults", value);
-            if (selected?.role === "owner") {
-              (document.getElementById("select-vault-for-card") as HTMLSelectElement).value = selected.name;  
-            }
-        }
-})()});
-
-// vice versa
 records.on(["selectedVault"], ({value}) => {
   (document.getElementById("vault-list") as HTMLSelectElement).value = value
 });

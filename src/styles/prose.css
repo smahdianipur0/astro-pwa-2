@@ -119,8 +119,6 @@
   position: relative;
 }
 
-
-
 .prose :where(select):not(:where([class~=not-prose],[class~=not-prose] *)):focus{
   background-color: oklch(var(--gray-25) / 1);
   outline: 1px solid transparent;
@@ -165,12 +163,6 @@
   line-height: var(--size-sm4);
 }
 
-.prose > fieldset.has-legend:first-child
-  :not(:where([class~=not-prose],[class~=not-prose] *)) {
-  /* same value as your “has legend” rule */
-  margin-top: 2rem;
-}
-
 .prose :where(input[type="text"], input[type="url"], input[type="password"], input[type="email"]):not(:where([class~=not-prose],[class~=not-prose] *)):focus,
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)):focus {
   border-radius: var(--radius-a);
@@ -191,6 +183,7 @@
 }
 
 .prose :where(fieldset):not(:where([class~=not-prose],[class~=not-prose] *)) {
+  display: inline-block;
   width: min(100%, var(--size-xl7));
   border-radius: var(--radius-b);
   background-color: oklch(var(--gray-10) / .5);

@@ -5,79 +5,114 @@ import CharactersPattern from '../components/CharactersPattern.astro';
 import TempList from '../components/TempList.astro';
 ---
 
-<fieldset class="box-shadow" style="color: oklch(var(--gray-95));" id="generate"><legend>Generate Password</legend>
-  <Tabs name="pass" tab1Label="Random" tab2Label="Manual" >
+<fieldset class="box-shadow" style="color: oklch(var(--gray-95));" id="generate">
+    <legend>Generate Password</legend>
+    <Tabs name="pass" tab1Label="Random" tab2Label="Manual" >
 
-    <fragment slot="tab1">
-      <CharactersCount />
-      <div style="border-bottom: 1px solid oklch(var(--gray-25) / 1);" ></div>
-      <CharactersPattern />
+        <fragment slot="tab1">
 
-      <div class="flex-spread-childs not-prose " style=" position: relative;font-size:var(--font-lg1);">
+            <CharactersCount />
+            <div style="border-bottom: 1px solid oklch(var(--gray-25) / 1);" ></div>
+            <CharactersPattern />
 
-        <TempList />
+            <div class="flex-spread-childs not-prose " style=" position: relative;font-size:var(--font-lg1);">
 
-        <button id="gp" name="copy password" class="text-as-button skeleton-parrent" style=" margin-top: var(--size-sm3); 
-          margin-bottom: var(--size-sm3);
-          font-weight: 300;
-          ">
-          <div class="skeleton" style="width:var(--size-xl1)"> </div>
+                <TempList />
+
+                <button 
+                    id="gp" 
+                    name="copy password" 
+                    class="text-as-button skeleton-parrent" 
+                    style=" margin-top: var(--size-sm3); 
+                    margin-bottom: var(--size-sm3);
+                    font-weight: 300;">
+
+                    <div class="skeleton" style="width:var(--size-xl1)"> </div>
+                </button>
+
+                <button 
+                    id="redo" 
+                    name="regenerate password" 
+                    class=" flex-center-childs text-as-button blink" 
+                    style="right: 0; margin-right: calc(var(--size-sm0)* -1);" >
+                    ↻</button>
+
+                <p 
+                    id="ttc" 
+                    class="hint" 
+                    style="position: absolute;
+                    width: var(--size-xl2);
+                    right: calc(50% - (var(--size-xl2) / 2) );
+                    text-align: center;
+                    line-height: var(--size-md2);
+                    top : var(--size-lg1);"> 
+                    tap to copy </p>
+            </div>
+        </fragment>
+
+
+        <fragment slot="tab2">
+            <div 
+                class=" prose" 
+                style="display: flex;
+                gap: var(--size-sm0);
+                justify-content: space-between;
+                margin: var(--size-md4) 0 0">
+
+                <input 
+                    autocomplete="off" 
+                    id="mPassword" 
+                    type="text" 
+                    style="margin-bottom: var(--size-sm0);" 
+                    placeholder="Password">
+
+                <button 
+                id="copyMPassword" 
+                style="margin-bottom:var(--size-sm0);" disabled> 
+                Copy </button>
+
+            </div>
+        </fragment>
+    </Tabs>
+
+    <div style=" margin-top:var(--size-sm3); margin-bottom: var(--size-sm0); overflow: hidden">
+
+        <div id="gu" class="skeleton-parrent">
+          <div style="width:var(--size-xl1);" class="skeleton"> </div>
+        </div>
+
+        <div style="position:relative; height:var(--size-sm0); place-content:center">
+            <div style="position: absolute; top: var(--size-xs3);" id="box-place-holder"></div>
+            <div style="position: absolute; top: var(--size-xs3);" id="box"></div> 
+        </div>
+
+        <div id="s1" class="skeleton-parrent">
+            <div style="width:80% ;" class="skeleton"> </div>
+        </div>
+    
+        <div id="s2" class="skeleton-parrent">
+            <div style="width:65% ;" class="skeleton"> </div>
+        </div>
+
+    </div>
+
+    <details name="encrypted password" class="prose" >
+
+        <summary>Encrypted Password</summary>
+
+        <button 
+            id="encrypted-pass" 
+            class="skeleton-parrent not-prose text-as-button" disabled>
+
+            <div style="width:var(--size-xl1);" class="skeleton"> </div>
         </button>
 
-        <button id="redo" name="regenerate password" class=" flex-center-childs text-as-button blink" style="right: 0; margin-right: calc(var(--size-sm0)* -1);" >↻</button>
+        <button 
+            id="encrypted-pass-copy" 
+            class="hint not-prose" 
+            style="display: block;"></button>
 
-        <p id="ttc" class="hint" style="position: absolute;
-        width: var(--size-xl2);
-        right: calc(50% - (var(--size-xl2) / 2) );
-        text-align: center;
-        line-height: var(--size-md2);
-        top : var(--size-lg1);"> tap to copy </p>
-
-      </div>
-    </fragment>
-
-
-    <fragment slot="tab2">
-      <div class=" prose" style="display: flex;
-        gap: var(--size-sm0);
-        justify-content: space-between;
-        margin: var(--size-md4) 0 0">
-        <input autocomplete="off" id="mPassword" type="text" style="
-          margin-bottom: var(--size-sm0);" placeholder="Password">
-        <button id="copyMPassword" style="margin-bottom:var(--size-sm0);" disabled> Copy </button>
-      </div>
-    </fragment>
-  </Tabs>
-
-  <div style=" margin-top:var(--size-sm3); margin-bottom: var(--size-sm0); overflow: hidden">
-
-    <div id="gu" class="skeleton-parrent">
-      <div style="width:var(--size-xl1);" class="skeleton"> </div>
-    </div>
-
-    <div style="position:relative; height:var(--size-sm0); place-content:center">
-      <div style="position: absolute; top: var(--size-xs3);" id="box-place-holder"></div>
-      <div style="position: absolute; top: var(--size-xs3);" id="box"></div> 
-    </div>
-
-    <div id="s1" class="skeleton-parrent">
-      <div style="width:80% ;" class="skeleton"> </div>
-    </div>
-    
-    <div id="s2" class="skeleton-parrent">
-      <div style="width:65% ;" class="skeleton"> </div>
-    </div>
-
-  </div>
-
-  <details name="encrypted password" class="prose" >
-    <summary>Encrypted Password</summary>
-    <button id="encrypted-pass" class="skeleton-parrent not-prose text-as-button" disabled>
-      <div style="width:var(--size-xl1);" class="skeleton"> </div>
-    </button>
-    <button id="encrypted-pass-copy" class="hint not-prose" style="display: block;"></button>
-  </details>
-
+    </details>
 </fieldset>
 
 <script>
@@ -185,29 +220,7 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
 pass.updateRPassword();
 </script>
 
-<style is:global>
-
-.text-as-button{
-  border: 1px solid transparent;
-  border-radius: var(--radius-a);
-  padding: var(--thin-padding);
-  color: oklch(var(--gray-95));
-  opacity: 1;
-  margin-left: calc( (var(--size-sm0) + 1px) * -1 );
-  height: var(--size-md1);
-}
-
-.text-as-button:disabled{
-  color: oklch(var(--gray-75));
-}
-
-
-
-.text-as-button:focus,
-.text-as-button:hover {
-  border: 1px solid oklch(var(--gray-25) / 1);
-}
-
+<style>
 
 #box {
   display: flex;

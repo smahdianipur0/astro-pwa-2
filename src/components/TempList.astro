@@ -6,75 +6,122 @@ import Drawer from '../components/ui/Drawer.tsx';
 
 <div id="add-drawer-trigger" class="text-as-button blink flex-center-childs" >
   
-  <Drawer client:load>
-    <fragment slot="trigger">
-      <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-        <path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z" fill="oklch(var(--gray-95))"/>
-      </svg>
-    </fragment>
-    <fragment slot="content">
+    <Drawer client:load>
+        <fragment slot="trigger">
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z" fill="oklch(var(--gray-95))"/>
+            </svg>
+        </fragment>
 
-      <div data-corvu-no-drag class="prose drawer-content" >
+        <fragment slot="content">
 
-        <fieldset class="box-shadow" id="entries-list-car">
-          <div style="display: flex; flex-direction: column;" class="prose" id="input-group">
-            <input type="text" id="title-input" placeholder="Title" style="margin-bottom: var(--size-sm2);"/>
-            <div style="display: flex; flex-direction: row;">
-              <input id="auto-pass-entry" type="checkbox" style="height:var(--size-md4)"> 
-              <label style="
-              place-self: center; 
-              margin-left: var(--size-sm0);" for="auto-pass-entry">Enter Password Manually</label>
+            <div data-corvu-no-drag class="prose drawer-content" >
+
+                <fieldset class="box-shadow" id="entries-list-car">
+                    <div 
+                        style="display: flex; flex-direction: column;" 
+                        class="prose"
+                        id="input-group">
+
+                        <input 
+                            type="text" 
+                            id="title-input" 
+                            placeholder="Title" 
+                            style="margin-bottom: var(--size-sm2);"/>
+
+                        <div style="display: flex; flex-direction: row;">
+                            <input 
+                                type="checkbox"
+                                id="auto-pass-entry" 
+                                style="height:var(--size-md4)"> 
+
+                            <label 
+                                style=" place-self: center; margin-left: var(--size-sm0);" 
+                                for="auto-pass-entry">
+                                Enter Password Manually</label>
+                        </div>
+
+                        <input 
+                            type="text" 
+                            id="password-input"
+                            placeholder="Password" readonly />
+                        
+                        <button 
+                            style="margin-top: var(--size-sm2);"
+                            id="add-entry-button">
+                            Add</button>
+                    </div>
+                </fieldset>
+
+                <div 
+                id="search-box" 
+                class="prose max-width" 
+                style="display: flex; 
+                flex-direction: row;
+                position:relative;
+                width: min(100%, var(--size-xl7));">
+
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        placeholder="Search"
+                        style=" position: relative;
+                        background: oklch(var(--gray-15) / 1);
+                        border: none ;
+                        padding-left: var(--size-md4);
+                        height: var(--size-md3);
+                        box-shadow: none;" >
+                    <svg 
+                        style="position: absolute;
+                        margin: var(--default-padding);
+                        margin-inline: var(--size-sm0);
+                        height: var(--size-sm3);
+                        padding-top: 2px;
+                        opacity:0.5;" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 2.5a7.5 7.5 0 0 1 5.964 12.048l4.743 4.745a1 1 0 0 1-1.32 1.497l-.094-.083-4.745-4.743A7.5 7.5 0 1 1 10 2.5Zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z" />
+                    </svg>
+
+                    <button class="not-prose" id="cancel-search" >Cancel</button>
+                </div>
+
+
+                <fieldset class="box-shadow" style="padding: 0; color: oklch(var(--gray-95));">
+                    <div class="entries-list not-prose" id="entries-list"> 
+                        <p class="hint" style="padding-block:var(--size-sm3)"> Loading records </p>
+                    </div>
+                </fieldset>
+
+              
+                <RecentDelPass/>
+
             </div>
-            <input type="text" id="password-input" placeholder="Password" readonly />
-            
-            <button style="margin-top: var(--size-sm2);"id="add-entry-button">Add</button>
-          </div>
-        </fieldset>
 
-          <div id="search-box" class="prose max-width" style="display: flex; 
-          flex-direction: row;
-          position:relative;
-          width: min(100%, var(--size-xl7));">
-            <input type="text" id="search-input" style=" position: relative;
-            background: oklch(var(--gray-15) / 1);
-            border: none ;
-            padding-left: var(--size-md4);
-            height: var(--size-md3);
-            box-shadow: none;"  placeholder="Search">
-            <svg style="position: absolute;
-            margin: var(--default-padding);
-            margin-inline: var(--size-sm0);
-            height: var(--size-sm3);
-            padding-top: 2px;
-            opacity:0.5;" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 2.5a7.5 7.5 0 0 1 5.964 12.048l4.743 4.745a1 1 0 0 1-1.32 1.497l-.094-.083-4.745-4.743A7.5 7.5 0 1 1 10 2.5Zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z" /></svg>
-            <button class="not-prose" id="cancel-search" >Cancel</button>
-          </div>
+            <Dialog identifier="edit-temp-list-dialog">
 
+                <h3 style="margin-top: 0;">Edit Item</h3>
 
-          <fieldset class="box-shadow" style="padding: 0; color: oklch(var(--gray-95));">
-            <div class="entries-list not-prose" id="entries-list"> 
-              <p class="hint" style="padding-block:var(--size-sm3)"> Loading records </p>
-            </div>
-          </fieldset>
+                <input 
+                    type="text" 
+                    name="title"  
+                    class="input-group-top" 
+                    placeholder="Title" 
+                    id="updating-temp-title-input"/>
 
-          
-      <RecentDelPass/>
+                <input 
+                    type="text" 
+                    name="Password" 
+                    class="input-group-bottom" 
+                    placeholder="Password" 
+                    id="updating-temp-pass-input"/>
 
-      </div>
+                <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">           
+                  <button class="unstyle-button not-prose max-width" >Cancel</button>
+                  <button class="max-width" id="update-temp-list-entry">Update</button>  
+                </div>
 
-      <Dialog identifier="edit-temp-list-dialog">
-        <h3 style="margin-top: 0;">Edit Item</h3>
-        <input type="text" name="title"  class="input-group-top" placeholder="Title" id="updating-temp-title-input"/>
-        <input type="text" name="Password" class="input-group-bottom" placeholder="Password" id="updating-temp-pass-input"/>
-        <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">
-          
-          <button class="unstyle-button not-prose max-width" >Cancel</button>
-          <button class="max-width" id="update-temp-list-entry">Update</button>
-          
-        </div>
-      </Dialog>
-    </fragment>      
-  </Drawer>
+            </Dialog>
+        </fragment>      
+    </Drawer>
 </div>
 
 <style is:global>
@@ -93,7 +140,7 @@ import Drawer from '../components/ui/Drawer.tsx';
   max-width: 100%;
  }
 
- .drawer-content:first-child{
+.drawer-content:first-child{
   padding-top: var(--size-md4);
  }
 

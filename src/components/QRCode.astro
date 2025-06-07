@@ -1,10 +1,15 @@
-<fieldset class="box-shadow" id="generateQR"> <legend>Generate QR Code</legend>
-   <textarea id="text_for_qr" rows="2" 
-       placeholder="Please enter some text"></textarea>
+<fieldset class="box-shadow" id="generateQR"> 
+    <legend>Generate QR Code</legend>
 
-   <div class="qr" style=" margin-left: calc(50% - 80px); margin-top: var(--size-sm3);">
-   	<canvas id="gqr" style="width: 0;"></canvas>
-   </div>
+    <textarea 
+        id="text_for_qr" 
+        rows="2" 
+        placeholder="Please enter some text"></textarea>
+
+    <div class="qr" style=" margin-left: calc(50% - 80px); margin-top: var(--size-sm3);">
+        <canvas id="gqr" style="width: 0;"></canvas>
+    </div>
+    
 </fieldset>
 
 <script>

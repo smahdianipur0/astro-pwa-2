@@ -1,53 +1,100 @@
 ---
 import Dialog from './ui/Dialog.astro';
 ---
-<div class="not-prose" id="card-menu-div" style="display: flex; flex-direction: row-reverse; align-items: flex-start;height: var(--size-lg1);" >   
-  <button id="card-form-button" class="tertiary-btn">
-  <svg width="24" height="24" fill="none" style="pointer-events: none;padding: 1px; width: var(--size-sm3);" viewBox="0 0 24 24">
-    <path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z" />
-  </svg>
-  <p style="padding-right: var(--size-xs3);pointer-events: none;">Add</p> 
-</button>
-</div>
 
+<div 
+    class="not-prose"
+    id="card-menu-div"
+    style="display: flex; 
+    flex-direction: 
+    row-reverse; 
+    align-items: 
+    flex-start; 
+    height: var(--size-lg1);">
+
+    <button id="card-form-button" class="tertiary-btn"> 
+
+        <svg width="24" height="24"fill="none" style="pointer-events: none; padding: 1px; width: var(--size-sm3);" viewBox="0 0 24 24">
+            <path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z"/>
+        </svg>
+
+        <p style="padding-right: var(--size-xs3); pointer-events: none;"> Add </p>
+
+    </button>
+
+</div>
 
 <Dialog identifier="card-form" formHandler="return handleCardForm(this, event);">
 
-  <p>
-    <label for="select vault">Vault:</label>
-    <select name="select vault" class="max-width prose" id="select-vault-for-card" ></select>
-  </p>
+    <p>
+        <label for="select vault">Vault:</label>
 
-  <p id= "card-select-field">
-    <label for="select card">card:</label>
-    <select name="select card" class="max-width prose" id="select-card-list" ></select>
-  </p>
-  
-  <div id="card-fields">
-    <textarea name="comments"></textarea>
-  </div>
- 
+        <select
+          name="select vault"
+          class="max-width prose"
+          id="select-vault-for-card"></select> 
+    </p>
 
-  <div id="card-form-add-field" class="not-prose" style="display: flex; flex-direction: row-reverse; align-items: flex-start;height: var(--size-lg1); margin-top: var(--size-xs2);" >   
-    <button type="button" id="add-field" class="tertiary-btn">
-    <svg width="24" height="24" fill="none" style="pointer-events: none;padding: 1px; width: var(--size-sm3);" viewBox="0 0 24 24">
-      <path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z" />
-    </svg>
-    <p style="padding-right: var(--size-xs3);pointer-events: none;">Add</p> 
-  </button>
-  </div>
+    <p id="card-select-field">
+        <label for="select card">Card:</label>
 
+        <select
+          name="select card"
+          class="max-width prose"
+          id="select-card-list"></select>
+    </p>
 
-  <menu class="flex-center-childs" style="gap:var(--size-sm0);margin-top: var(--size-sm3);">
-    <button class="max-width not-prose unstyle-button" type="submit" value="cancel">Cancel</button>
-    <button class="max-width" type="submit" value="confirm" id="add-card-button">OK</button>
-  </menu>
+    <div id="card-fields">
+        <textarea name="comments"></textarea>
+    </div>
+
+    <div
+        id="card-form-add-field"
+        class="not-prose"
+        style="display: flex; 
+        flex-direction: row-reverse; 
+        align-items: flex-start; 
+        height: var(--size-lg1); 
+        margin-top: var(--size-xs2);">
+
+        <button
+            type="button"
+            id="add-field"
+            class="tertiary-btn">
+
+        <svg width="24" height="24" fill="none" style="pointer-events: none; padding: 1px; width: var(--size-sm3);" viewBox="0 0 24 24">
+            <path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z"/>
+        </svg>
+
+        <p style="padding-right: var(--size-xs3); pointer-events: none;"> Add</p>
+
+        </button>
+    </div>
+
+    <menu 
+        class="flex-center-childs"
+        style="gap: var(--size-sm0); 
+        margin-top: var(--size-sm3);">
+
+    <button
+        class="max-width not-prose unstyle-button"
+        type="submit"
+        value="cancel">
+        Cancel</button>
+
+    <button
+        class="max-width"
+        type="submit"
+        value="confirm"
+        id="add-card-button">
+        OK</button>
+    </menu>
 </Dialog>
 
 <script>
 
 import { element } from "../utils/elementUtils";
-import { dbUpserelate } from "../utils/surrealdb-indexed"
+import { dbUpserelate, getEntryById } from "../utils/surrealdb-indexed"
 import { records } from "../logic/records"       
 import { customAlphabet } from 'nanoid'
 
@@ -94,6 +141,15 @@ dialog!.addEventListener("input",(e)=>{
     };
 });
 
+// change the selcted valuts and card creation dialog when valut select elment value changes
+records.on(["selectedVault"], ({value}) => { (async () => {
+    if(value !== undefined) {
+        const selected = await getEntryById("Vaults", value);
+            if (selected?.role === "owner") {
+              (document.getElementById("select-vault-for-card") as HTMLSelectElement).value = selected.name;  
+            }
+        }
+})()});
 
 records.on(["vaultsList"], ({value}) => {
     // append options
