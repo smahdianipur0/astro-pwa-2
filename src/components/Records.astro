@@ -1,11 +1,9 @@
 ---
 import Auth from './Auth.astro'
 import VaultMenu from './VaultMenu.astro'
-import VaultDialog from './VaultDialog.astro'
 import AddCardDialog from './AddCardDialog.astro'
 import RecordCards from './RecordCards.astro'
 ---
-
 
 <fieldset class="box-shadow" id="credentials"> <legend>credentials</legend>
 
@@ -17,8 +15,6 @@ import RecordCards from './RecordCards.astro'
 
 </fieldset>
 
-<VaultDialog/>
-
 <AddCardDialog/>
 
 <RecordCards/>
@@ -27,7 +23,7 @@ import RecordCards from './RecordCards.astro'
 <script>
 
 import { records } from "../logic/records"
-import { element } from "../utils/elementUtils";
+import { el } from "../utils/elementUtils";
 
 // bind valut select elment value
 document.getElementById("credentials")!.addEventListener("change",(e)=>{
@@ -54,7 +50,7 @@ records.on(["vaultsList"], ({value}) => {
          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
          .forEach((entry) => {
 
-            fragment.append( element.configure("option", {textContent:entry.id?.id }));
+            fragment.append( el.c("option", {textContent:entry.id?.id }));
         });
     }
     vaultlist.append(fragment);

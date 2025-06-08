@@ -1,8 +1,8 @@
 
-import { element } from "../utils/elementUtils";
+import { el } from "../utils/elementUtils";
 import { pass } from '../logic/pass';
 import { showToast } from "../logic/misc.ts";
-import {dbCreate,dbUpdate,dbDelete, getEntryById,} from "../utils/surrealdb-indexed";
+import { dbCreate,dbUpdate,dbDelete, getEntryById } from "../utils/surrealdb-indexed";
 import { tempList } from "../logic/tempList.ts" 
 
 
@@ -10,12 +10,12 @@ import { tempList } from "../logic/tempList.ts"
 (async () => {
   document.getElementById("add-drawer-trigger")!.classList.remove('blink');
 
-  const inputGroup     = (await element.wait("#input-group"))      as HTMLElement;
-  const entriesList    = (await element.wait("#entries-list"))     as HTMLElement;
-  const passwordInput  = (await element.wait("#password-input"))   as HTMLInputElement;
-  const titleInput     = (await element.wait("#title-input"))      as HTMLInputElement;
-  const addEntryButton = (await element.wait("#add-entry-button")) as HTMLButtonElement;
-  const searchInputEl  = (await element.wait("#search-input"))     as HTMLInputElement;
+  const inputGroup     = (await el.wait("#input-group"))      as HTMLElement;
+  const entriesList    = (await el.wait("#entries-list"))     as HTMLElement;
+  const passwordInput  = (await el.wait("#password-input"))   as HTMLInputElement;
+  const titleInput     = (await el.wait("#title-input"))      as HTMLInputElement;
+  const addEntryButton = (await el.wait("#add-entry-button")) as HTMLButtonElement;
+  const searchInputEl  = (await el.wait("#search-input"))     as HTMLInputElement;
 
   
   document.getElementById("search-box")!.addEventListener("input",(e)=>{
@@ -44,7 +44,7 @@ tempList.on(["isSearching", "searchArray", "entries"], pl => {
   if (
     tempList.get("isSearching") ? tempList.get("searchArray").length === 0 : tempList.get("entries").length === 0) { 
 
-    fragment.append(element.configure("p", {textContent: "No records found", 
+    fragment.append(el.c("p", {textContent: "No records found", 
       className:"hint", 
       style:"padding-block :var(--size-sm3)" }));
 
@@ -55,36 +55,36 @@ tempList.on(["isSearching", "searchArray", "entries"], pl => {
     forEach((entry) => {
 
       fragment.append(
-        element.configure('div', { className: 'entry-item', append: [
-          element.configure('div', {append: [
+        el.c('div', { className: 'entry-item', append: [
+          el.c('div', {append: [
 
-            element.configure('p', { className: 'hint ellipsis', 
+            el.c('p', { className: 'hint ellipsis', 
               style: "width: var(--size-xl2)",
               textContent: entry.title || 'untitled'}),
 
-            element.configure('button', {dataset: {action: 'copy'}, 
+            el.c('button', {dataset: {action: 'copy'}, 
               className: 'ellipsis',
               style:"text-align: start; width: var(--size-xl2);",
               id: entry.password ?? '',
               textContent: entry.password ?? ''})
           ]}),
 
-          element.configure('div', {className: 's-container',append: [
+          el.c('div', {className: 's-container',append: [
 
-            element.configure('details', { 
+            el.c('details', { 
               name: 'delete-item', 
               className: 'right-to-left',
               append: [
-                element.configure('summary',{ className: 'right-to-left' }), 
-                element.configure('button', { dataset: {action: 'delete'},
+                el.c('summary',{ className: 'right-to-left' }), 
+                el.c('button', { dataset: {action: 'delete'},
                   id: entry.id?.id ?? '',
                   textContent: ' Delete'}),
               ]
             }),
 
-            element.configure('button', { dataset: {action: 'update'},id: entry.id?.id ?? '', append: [
-              element.draw("svg", { style: "width: var(--size-sm3); height: var(--size-sm3);",viewBox: "0 0 24 24", fill: "none",append: 
-                element.draw("path", {d: "M21.03 2.97a3.578 3.578 0 0 1 0 5.06L9.062 20a2.25 2.25 0 0 1-.999.58l-5.116 1.395a.75.75 0 0 1-.92-.921l1.395-5.116a2.25 2.25 0 0 1 .58-.999L15.97 2.97a3.578 3.578 0 0 1 5.06 0ZM15 6.06 5.062 16a.75.75 0 0 0-.193.333l-1.05 3.85 3.85-1.05A.75.75 0 0 0 8 18.938L17.94 9 15 6.06Zm2.03-2.03-.97.97L19 7.94l.97-.97a2.079 2.079 0 0 0-2.94-2.94Z"})
+            el.c('button', { dataset: {action: 'update'},id: entry.id?.id ?? '', append: [
+              el.d("svg", { style: "width: var(--size-sm3); height: var(--size-sm3);",viewBox: "0 0 24 24", fill: "none",append: 
+                el.d("path", {d: "M21.03 2.97a3.578 3.578 0 0 1 0 5.06L9.062 20a2.25 2.25 0 0 1-.999.58l-5.116 1.395a.75.75 0 0 1-.92-.921l1.395-5.116a2.25 2.25 0 0 1 .58-.999L15.97 2.97a3.578 3.578 0 0 1 5.06 0ZM15 6.06 5.062 16a.75.75 0 0 0-.193.333l-1.05 3.85 3.85-1.05A.75.75 0 0 0 8 18.938L17.94 9 15 6.06Zm2.03-2.03-.97.97L19 7.94l.97-.97a2.079 2.079 0 0 0-2.94-2.94Z"})
               })
             ]}),
           ]})

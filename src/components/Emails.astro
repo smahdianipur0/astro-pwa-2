@@ -74,7 +74,7 @@
 
 import { createSignal, createEffect } from 'solid-js';
 import { dbCreate, dbReadAll, dbDelete , type ReadAllResultTypes} from "../utils/surrealdb-indexed";
-import { element } from "../utils/elementUtils";
+import { el } from "../utils/elementUtils";
 import { showToast } from "../logic/misc.ts";
 
 const [emailEntery, setEmailEntery] = createSignal("");
@@ -134,12 +134,12 @@ createEffect(() => {
   .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
   .forEach((entry) => {
     fragment.append(
-      element.configure('div', { className: 'entry-item',
+      el.c('div', { className: 'entry-item',
         style: 'background-color:transparent; padding-inline: 0;',
         append: [
 
-          element.configure('div', { append: [
-              element.configure('button', { dataset: {action: 'copy'}, 
+          el.c('div', { append: [
+              el.c('button', { dataset: {action: 'copy'}, 
                 className: 'ellipsis',
                 style:"text-align: start; width: var(--size-xl2); color: oklch(var(--gray-95))",
                 id: entry.email ?? '',
@@ -147,10 +147,10 @@ createEffect(() => {
               })
           ]}),
 
-          element.configure('div', {className: 's-container', append: [
-            element.configure('details', {name: 'delete-item',className: 'right-to-left', append: [
-              element.configure('summary', { className: 'right-to-left' }),
-              element.configure('button', { dataset: {action: 'delete' },
+          el.c('div', {className: 's-container', append: [
+            el.c('details', {name: 'delete-item',className: 'right-to-left', append: [
+              el.c('summary', { className: 'right-to-left' }),
+              el.c('button', { dataset: {action: 'delete' },
                   id: entry.id?.id ?? '',
                   textContent: ' Delete'
                 })

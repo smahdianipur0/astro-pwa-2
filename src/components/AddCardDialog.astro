@@ -93,7 +93,7 @@ import Dialog from './ui/Dialog.astro';
 
 <script>
 
-import { element } from "../utils/elementUtils";
+import { el } from "../utils/elementUtils";
 import { dbUpserelate, getEntryById } from "../utils/surrealdb-indexed"
 import { records } from "../logic/records"       
 import { customAlphabet } from 'nanoid'
@@ -122,7 +122,7 @@ dialog!.addEventListener("click",(e)=>{
     if((e!.target as HTMLInputElement).matches("#AddCardDialog-add-comment")){
         e.preventDefault();
         const fragment = document.createDocumentFragment();
-        fragment.append(element.configure('textarea', {name:"comments"}) );
+        fragment.append(el.c('textarea', {name:"comments"}) );
         document.getElementById("AddCardDialog-comments")!.append(fragment)
         return false
     };
@@ -162,7 +162,7 @@ records.on(["vaultsList"], ({value}) => {
          (records.get("editableVaultList") ?? [])
          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
          .forEach((entry) => {
-            fragment.append( element.configure("option", {textContent:entry.name, id:entry.id?.id}));
+            fragment.append( el.c("option", {textContent:entry.name, id:entry.id?.id}));
         });
     }
     cardVaultlist.append(fragment);
@@ -187,14 +187,14 @@ records.on(["editableVaultList", "cardsList"], pl => {
 
             const availableCards = (records.get("cardsList") ?? []).filter(item => item.status === "available");
             if (availableCards.length === 0) {
-                fragment.append(element.configure("option", { textContent: "New Card" }));
+                fragment.append(el.c("option", { textContent: "New Card" }));
             } else {
-                fragment.append(element.configure("option", { textContent: "New Card" }));
+                fragment.append(el.c("option", { textContent: "New Card" }));
                 availableCards
                     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
                     .forEach((entry) => {
                         fragment.append(
-                            element.configure("option", { textContent: entry.name, id: entry.id?.id })
+                            el.c("option", { textContent: entry.name, id: entry.id?.id })
                         );
                     });
             }
@@ -212,7 +212,7 @@ records.on(["selectedCard"], ({value}) => {
     const fragment = document.createDocumentFragment();
 
     if (value === "" || value === "New Card") {
-        fragment.append(element.configure("input", {
+        fragment.append(el.c("input", {
             style: "margin-top:var(--size-sm1)",
             type: "text", 
             placeholder:"Card Name",

@@ -77,12 +77,6 @@ document.getElementById("generate")!.addEventListener("change",(e)=>{
 
 });
 
-pass.on(["length"], pl => {
-  (document.getElementById("char_input")!  as HTMLInputElement).value     = pl.value.toString();
-  (document.getElementById("plus_chars")!  as HTMLInputElement).disabled  = (pl.value >= 20);
-  (document.getElementById("minus_chars")! as HTMLInputElement).disabled  = (pl.value <= 12);
-})
-
 </script>
 
 <style is:global>

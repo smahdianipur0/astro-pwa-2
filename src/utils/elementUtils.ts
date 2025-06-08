@@ -10,8 +10,8 @@ type ElementProps = {
 type ValidTagNames = keyof HTMLElementTagNameMap;
 type ValidSvgTagNames = keyof SVGElementTagNameMap;
 
-export const element = {
-    configure: <T extends ValidTagNames>(tag: T, { append, dataset, ...props }: ElementProps): HTMLElementTagNameMap[T] => {
+export const el = {
+    c: <T extends ValidTagNames>(tag: T, { append, dataset, ...props }: ElementProps): HTMLElementTagNameMap[T] => {
     const element = document.createElement(tag) as HTMLElementTagNameMap[T];
     
     if (append) {
@@ -27,7 +27,7 @@ export const element = {
     return Object.assign(element, props);
   },
 
-  draw: <T extends ValidSvgTagNames>(tag: T,{ append, dataset, style, ...props }: ElementProps): SVGElementTagNameMap[T] => {
+  d: <T extends ValidSvgTagNames>(tag: T,{ append, dataset, style, ...props }: ElementProps): SVGElementTagNameMap[T] => {
     const element = document.createElementNS("http://www.w3.org/2000/svg",tag) as SVGElementTagNameMap[T];
   
     if (append) {

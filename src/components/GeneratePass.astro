@@ -157,6 +157,17 @@ document.getElementById("generate")!.addEventListener("click",(e)=>{
   }
 });
 
+// manual password input
+document.getElementById("generate")!.addEventListener("input",(e)=>{
+
+    if((e!.target as HTMLInputElement).matches("#mPassword")){
+      const value = (e!.target as HTMLInputElement).value;
+      pass.setMPassword(value);
+
+      (document.getElementById("copyMPassword")! as HTMLInputElement).disabled = (pass.get("mPassword") === "")
+    }
+});
+
 pass.on(['guessable'], pl => {document.getElementById("gu")!.textContent = pl.value})
 
 pass.on(['strength1'], pl => {document.getElementById("s1")!.textContent = pl.value })
