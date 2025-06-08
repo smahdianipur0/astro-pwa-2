@@ -1,16 +1,17 @@
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import type { Context } from "./context.ts";
+import {z} from "zod"
 import { 
-    unwrapRecord,
     dbCreateUser, 
     dbQueryUser, 
     dbReadVault, 
     dbQueryRole,
     dbUpserelate,
-    type ReadAllResultTypes } from "../utils/surrealdb-cloud";
+    type ReadAllResultTypes} from "../utils/surrealdb-cloud";
 import { server } from '@passwordless-id/webauthn'
 import { registrationInputSchema, authenticationInputSchema, credentialSchema, UID, syncVaultsSchema } from './schemas';
+
 
 
 const t = initTRPC.context<Context>().create({
@@ -55,109 +56,113 @@ export const appRouter = router({
         .mutation(async ({ input }) => {
             
             try {
-                const dbResult = await dbQueryUser(input.authenticationData.id);
-
-                const parsedCredential = credentialSchema.safeParse(dbResult);
-                if (!parsedCredential.success) { throw new Error("Credential does not match expected schema"); }
-
-                const credentialObj = parsedCredential.data;
-
-                try {
-                    const authenticationParsed = await server.verifyAuthentication(
-                        input.authenticationData,
-                        credentialObj,
-                        {
-                            challenge: input.challenge,
-                            origin: "http://localhost:4321",
-                            userVerified: true,
-                        }
-                    );
+                const {authenticationParsed, credentialObj} = await verifyAuthentication(input.authenticationData, input.challenge)
+             
+                return {
+                    message: authenticationParsed.userVerified ? "Authentication successful" : "Authentication failed",
+                    authenticated: authenticationParsed.userVerified,
+                    credentialId: credentialObj.id
+                };
                     
-                    return {
-                        message: authenticationParsed.userVerified ? "Authentication successful" : "Authentication failed",
-                        authenticated: authenticationParsed.userVerified,
-                        credentialId: credentialObj.id
-                    };
-                    
-                } catch (verifyError) { throw new Error(`Authentication verification error: ${verifyError}`); }
             } catch (error) { throw new Error(`Authentication verification error: ${error}`);}
         }),        
 
-        greet: t.procedure
+    greet: t.procedure
         .query(async () => {
             return { message: `Hello` };
         }),
 
-        queryVaults : t.procedure
+    queryVaults : t.procedure
         .input(UID)
         .query(async({ input }) => { 
             return await dbReadVault(input.UID)
          }),
 
-        syncvaults : t.procedure
+    syncvaults : t.procedure
         .input(syncVaultsSchema)
         .mutation(async ({ input }) => {
             console.log("Authentication request received:", input.authenticationData.id);
             
             try {
-                const dbResult = await dbQueryUser(input.authenticationData.id);
+                const {authenticationParsed, credentialObj} = await verifyAuthentication(input.authenticationData, input.challenge);
+ 
+                const rolePromises = (input.vaults as ReadAllResultTypes["vaults"]).map(async entry => {
+                  try {
+                    const dbRole = await dbQueryRole(credentialObj.id, entry.id as string);
+                    return { ...entry, role: dbRole };
+                  } catch (err) {
+                    throw new Error(`Failed to fetch role for item ${entry.id}: ${err}`);
+                  }
+                });
 
-                const parsedCredential = credentialSchema.safeParse(dbResult);
-                if (!parsedCredential.success) { throw new Error("Credential does not match expected schema"); }
+                const reconciledRoles = await Promise.all(rolePromises);
 
-                const credentialObj = parsedCredential.data;
-
-                try {
-                    const authenticationParsed = await server.verifyAuthentication(
-                        input.authenticationData,
-                        credentialObj,
-                        {
-                            challenge: input.challenge,
-                            origin: "http://localhost:4321",
-                            userVerified: true,
-                        }
-                    );
-                    
-                    if (!authenticationParsed.userVerified) { throw new Error("Authentication failed"); }
-                    
-                    const unwrapedVaults = unwrapRecord(input.vaults) as ReadAllResultTypes["vaults"];
-                    unwrapedVaults.forEach(async (entry) => {
-                        console.log("what enterded the loop",entry);
-                        if(entry.role === "owner") {
-
-                        const dbUpsr =  await dbUpserelate("vaults:upserelate", {
-                                id:entry.id?.id ?? "", 
-                                name:entry.name,
-                                status:entry.status,
-                                updatedAt:entry.updatedAt,
-                                "to:vaults_has" : {
-                                    in:credentialObj.id,
-                                }
-                            });
-                        console.log(dbUpsr);
-                        }
+                const upsertPromises = reconciledRoles.filter(entry => entry.role === "owner").map(async entry => {
+                    const result = await dbUpserelate("vaults:upserelate", {
+                        id: (entry.id as string).split(":")[1] ?? "",
+                        name: entry.name,
+                        status: entry.status,
+                        updatedAt: entry.updatedAt,
+                        "to:vaults_has": { in: credentialObj.id, role: entry.role },
                     });
+                    return { id: entry.id, result };
+                });
 
-                    return {
-                        message: "Sync successful",
-                        credentialId: credentialObj.id
-                    };
-                    
-                } catch (verifyError) { throw new Error(`Authentication verification error: ${verifyError}`); }
+                const upsertResults = await Promise.all(upsertPromises);
+
+                for (const { id, result } of upsertResults) {
+                  if (result !== "OK") { throw new Error(`Failed to update vault ${id}: ${result}`)}
+                }
+                return {
+                  message: "Sync successful",
+                  credentialId: credentialObj.id,
+                };
+
             } catch (error) { throw new Error(`Authentication verification error: ${error}`);}
         }),   
 
-        dbquery: t.procedure
+    dbquery: t.procedure
         .mutation(async () =>{
-            // const data = await dbUpdateVault("hello", new Date().toISOString(), "deleted");
             let shit
             try { shit = await dbQueryRole("xs0cyUIiz_QEZ0FdExMMlvdSpWM", "test2")} catch {}
             console.log(shit);;
             const data = "hi";
             console.log(data)
-            // return data
         })
 
 });
 
 export type AppRouter = typeof appRouter;
+
+
+type AuthenticationData = z.infer<typeof authenticationInputSchema>['authenticationData'];
+type CredentialObj = z.infer<typeof credentialSchema>;
+
+async function verifyAuthentication(authenticationData: AuthenticationData,challenge: string): 
+Promise<{ authenticationParsed: Awaited<ReturnType<typeof server.verifyAuthentication>>; credentialObj: CredentialObj }> {
+  const dbResult = await dbQueryUser(authenticationData.id);
+
+  const parsedCredential = credentialSchema.safeParse(dbResult);
+  if (!parsedCredential.success) {
+    throw new Error("Credential does not match expected schema");
+  }
+
+  const credentialObj = parsedCredential.data;
+
+  let authenticationParsed;
+  try {
+    authenticationParsed = await server.verifyAuthentication(authenticationData, credentialObj, {
+      challenge,
+      origin: "http://localhost:4321",
+      userVerified: true,
+    });
+
+    if (!authenticationParsed.userVerified) {
+      throw new Error("Authentication failed");
+    }
+  } catch (verifyError) {
+    throw new Error(`Authentication verification error: ${verifyError}`);
+  }
+
+  return { authenticationParsed, credentialObj };
+}

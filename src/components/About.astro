@@ -1,33 +1,33 @@
 ---
 import ThemeToggle from '../components/ThemeToggle.astro';
 ---
-<fieldset class="box-shadow" id="key-IV">
+<fieldset class="box-shadow" id="About-ki">
   <legend>Key and IV</legend>
 
   <form autocomplete="off">
     <div style="position: relative;">
 
       <input
-        id="key"
+        id="About-ki-k-input"
         type="text"
         class="input-group-top glass"
         name="Key"
         placeholder="Key"/>
 
-      <span id="key_indic" class="key-indicator"></span> 
+      <span id="About-ki-k-chars" class="key-indicator"></span> 
 
     </div>
 
     <div style="position: relative; margin-bottom: var(--size-sm3);">
 
       <input
-        id="iv"
+        id="About-ki-i-input"
         type="text"
         class="input-group-bottom glass"
         name="IV"
         placeholder="IV"/>
 
-      <span id="iv_indic" class="key-indicator"></span>
+      <span id="About-ki-i-chars" class="key-indicator"></span>
 
     </div>
   </form>
@@ -65,7 +65,7 @@ import ThemeToggle from '../components/ThemeToggle.astro';
 // import { trpc } from "../utils/trpc";
 
 // type serverRespone = {message:string; [key:string]: unknown}  | undefined
-// document.getElementById("key-IV")!.addEventListener("click", (e) => {
+// document.getElementById("About-ki")!.addEventListener("click", (e) => {
 //   if ((e!.target as HTMLInputElement).matches("#test")) {
 //     (async () => {
 //     const [data, error] = await queryHelper.direct("db", () => trpc.dbquery.mutate()) as [serverRespone, serverRespone];
@@ -77,16 +77,16 @@ import ThemeToggle from '../components/ThemeToggle.astro';
 import {count_characters } from "../pkg/rust_lib";
 import { pass } from '../logic/pass';
 
-document.getElementById("key-IV")!.addEventListener("input",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#key")){
+document.getElementById("About-ki")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#About-ki-k-input")){
       const value = (e!.target as HTMLInputElement).value;
       pass.setKey(value.toString())
-      document.getElementById("key_indic")!.textContent = count_characters(pass.get("key")).toString();
+      document.getElementById("About-ki-k-chars")!.textContent = count_characters(pass.get("key")).toString();
    }
-   if((e!.target as HTMLInputElement).matches("#iv")){
+   if((e!.target as HTMLInputElement).matches("#About-ki-i-input")){
       const value = (e!.target as HTMLInputElement).value;
       pass.setIV(value.toString())
-      document.getElementById("iv_indic")!.textContent = count_characters(pass.get("iv")).toString();
+      document.getElementById("About-ki-i-chars")!.textContent = count_characters(pass.get("iv")).toString();
    }
 });
 

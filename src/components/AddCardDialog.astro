@@ -4,7 +4,7 @@ import Dialog from './ui/Dialog.astro';
 
 <div 
     class="not-prose"
-    id="card-menu-div"
+    id="AddCardDialog-div"
     style="display: flex; 
     flex-direction: 
     row-reverse; 
@@ -12,7 +12,7 @@ import Dialog from './ui/Dialog.astro';
     flex-start; 
     height: var(--size-lg1);">
 
-    <button id="card-form-button" class="tertiary-btn"> 
+    <button id="AddCardDialog-add" class="tertiary-btn"> 
 
         <svg width="24" height="24"fill="none" style="pointer-events: none; padding: 1px; width: var(--size-sm3);" viewBox="0 0 24 24">
             <path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z"/>
@@ -24,32 +24,32 @@ import Dialog from './ui/Dialog.astro';
 
 </div>
 
-<Dialog identifier="card-form" formHandler="return handleCardForm(this, event);">
+<Dialog identifier="AddCardDialog" formHandler="return handleCardForm(this, event);">
 
     <p>
-        <label for="select vault">Vault:</label>
+        <label for="AddCardDialog-vault">Vault:</label>
 
         <select
           name="select vault"
           class="max-width prose"
-          id="select-vault-for-card"></select> 
+          id="AddCardDialog-vault"></select> 
     </p>
 
-    <p id="card-select-field">
-        <label for="select card">Card:</label>
+    <p id="AddCardDialog-card-field">
+        <label for="AddCardDialog-card-select">Card:</label>
 
         <select
           name="select card"
           class="max-width prose"
-          id="select-card-list"></select>
+          id="AddCardDialog-card-select"></select>
     </p>
 
-    <div id="card-fields">
+    <div id="AddCardDialog-comments">
         <textarea name="comments"></textarea>
     </div>
 
     <div
-        id="card-form-add-field"
+        id="AddCardDialog-add-comment-field"
         class="not-prose"
         style="display: flex; 
         flex-direction: row-reverse; 
@@ -59,7 +59,7 @@ import Dialog from './ui/Dialog.astro';
 
         <button
             type="button"
-            id="add-field"
+            id="AddCardDialog-add-comment"
             class="tertiary-btn">
 
         <svg width="24" height="24" fill="none" style="pointer-events: none; padding: 1px; width: var(--size-sm3);" viewBox="0 0 24 24">
@@ -86,7 +86,7 @@ import Dialog from './ui/Dialog.astro';
         class="max-width"
         type="submit"
         value="confirm"
-        id="add-card-button">
+        id="AddCardDialog-ok">
         OK</button>
     </menu>
 </Dialog>
@@ -108,35 +108,35 @@ declare global {
     }
 }
 
-const dialog = document.getElementById('card-form') as HTMLDialogElement;
+const dialog = document.getElementById('AddCardDialog') as HTMLDialogElement;
 
 
 // bind listeners
-document.getElementById("card-menu-div")!.addEventListener("click",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#card-form-button")){
-        (document.getElementById("card-form") as HTMLDialogElement).showModal();
+document.getElementById("AddCardDialog-div")!.addEventListener("click",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#AddCardDialog-add")){
+        (document.getElementById("AddCardDialog") as HTMLDialogElement).showModal();
     };
 });
 
 dialog!.addEventListener("click",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#add-field")){
+    if((e!.target as HTMLInputElement).matches("#AddCardDialog-add-comment")){
         e.preventDefault();
         const fragment = document.createDocumentFragment();
         fragment.append(element.configure('textarea', {name:"comments"}) );
-        document.getElementById("card-fields")!.append(fragment)
+        document.getElementById("AddCardDialog-comments")!.append(fragment)
         return false
     };
 });
 
 dialog!.addEventListener("input",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#select-vault-for-card")){
+    if((e!.target as HTMLInputElement).matches("#AddCardDialog-vault")){
         records.setSelectedVault((e!.target as HTMLInputElement).value.toString());
     };
-    if((e!.target as HTMLInputElement).matches("#select-card-list")){
+    if((e!.target as HTMLInputElement).matches("#AddCardDialog-card-select")){
         records.setSelectedCard((e!.target as HTMLInputElement).value.toString());
         records.setCardName("")
     };
-    if((e!.target as HTMLInputElement).matches("#new-card-input")){
+    if((e!.target as HTMLInputElement).matches("#AddCardDialog-card-input")){
         records.setCardName((e!.target as HTMLInputElement).value.toString())
     };
 });
@@ -146,14 +146,14 @@ records.on(["selectedVault"], ({value}) => { (async () => {
     if(value !== undefined) {
         const selected = await getEntryById("Vaults", value);
             if (selected?.role === "owner") {
-              (document.getElementById("select-vault-for-card") as HTMLSelectElement).value = selected.name;  
+              (document.getElementById("AddCardDialog-vault") as HTMLSelectElement).value = selected.name;  
             }
         }
 })()});
 
 records.on(["vaultsList"], ({value}) => {
     // append options
-    const cardVaultlist = document.getElementById("select-vault-for-card") as HTMLSelectElement
+    const cardVaultlist = document.getElementById("AddCardDialog-vault") as HTMLSelectElement
     cardVaultlist.textContent = "";
 
     const fragment = document.createDocumentFragment();
@@ -167,14 +167,14 @@ records.on(["vaultsList"], ({value}) => {
     }
     cardVaultlist.append(fragment);
 
-    const selectCard = document.getElementById("select-card-list") as HTMLSelectElement;
+    const selectCard = document.getElementById("AddCardDialog-card-select") as HTMLSelectElement;
     if (selectCard){ records.setSelectedCard(selectCard.options[0]?.value)}
 });
 
 // update availible cards to select
 records.on(["editableVaultList", "cardsList"], pl => {
     (async () => {
-        const selectCardList = document.getElementById("select-card-list") as HTMLInputElement;
+        const selectCardList = document.getElementById("AddCardDialog-card-select") as HTMLInputElement;
         if (!selectCardList) return;
 
         selectCardList.textContent = "";
@@ -206,7 +206,7 @@ records.on(["editableVaultList", "cardsList"], pl => {
 
 // add new card name input
 records.on(["selectedCard"], ({value}) => {
-    const cardInput = document.getElementById("new-card-input") as HTMLInputElement;
+    const cardInput = document.getElementById("AddCardDialog-card-input") as HTMLInputElement;
     if (cardInput) {cardInput.remove()}
 
     const fragment = document.createDocumentFragment();
@@ -216,17 +216,17 @@ records.on(["selectedCard"], ({value}) => {
             style: "margin-top:var(--size-sm1)",
             type: "text", 
             placeholder:"Card Name",
-            id:"new-card-input",
+            id:"AddCardDialog-card-input",
             name: "new card"
         }));
 
-        document.getElementById("card-select-field")!.append(fragment)
+        document.getElementById("AddCardDialog-card-field")!.append(fragment)
     } 
 });
 
 // ok button disabled
 records.on(["selectedCard", "cardName"], pl => {
-    (document.getElementById("add-card-button") as HTMLButtonElement).disabled = (
+    (document.getElementById("AddCardDialog-ok") as HTMLButtonElement).disabled = (
         (records.get("selectedCard") === "" || 
          records.get("selectedCard") === "New Card" ) &&
          records.get("cardName") === ""
@@ -242,7 +242,7 @@ window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => 
   
     const data = new FormData(form);
 
-    const selectElement = document.getElementById("select-card-list") as HTMLSelectElement;
+    const selectElement = document.getElementById("AddCardDialog-card-select") as HTMLSelectElement;
     const selectedOptionId = selectElement.options[selectElement.selectedIndex].id;
 
     const id   = ( data.get("select card") === "New Card") ? nanoid() : selectedOptionId;
@@ -263,7 +263,7 @@ window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => 
 
 // reset the form on close
 dialog.addEventListener('close', () => {
-    const cardInput = document.getElementById("new-card-input") as HTMLInputElement;
+    const cardInput = document.getElementById("AddCardDialog-card-input") as HTMLInputElement;
     if (cardInput) { cardInput.value = "" }
    
     const textareas = document.querySelectorAll<HTMLTextAreaElement>('textarea[name="comments"]');

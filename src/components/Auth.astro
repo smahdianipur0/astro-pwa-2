@@ -1,9 +1,9 @@
 ---
 
 ---
-<div id="credentials-div"> <div class="skeleton"></div></div>
+<div id="Auth-target"> <div class="skeleton"></div></div>
 
-<div id="auth_result"></div>
+<div id="Auth-result"></div>
 
 <script>
 
@@ -37,8 +37,8 @@ if (user && user?.length !== 0) {
 } 
 
 
-const authResult = document.getElementById("auth_result") as HTMLElement;
-const credentialsDiv = document.getElementById("credentials-div") as HTMLElement;
+const authResult = document.getElementById("Auth-result") as HTMLElement;
+const credentialsDiv = document.getElementById("Auth-target") as HTMLElement;
 
 function updateSucceededAuth() {
     credentialsDiv.textContent = '';

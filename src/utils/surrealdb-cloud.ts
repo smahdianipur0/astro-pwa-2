@@ -51,7 +51,7 @@ type PermittedTypes = {
     {[K in keyof rSchemas as `to:${K & string}`]: Partial<rSchemas[K]>;};
 };
 
-export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: { tb: string; id: string }} & Schemas[K]>;};
+export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: { tb: string; id: string }| string} & Schemas[K]>;};
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
 
@@ -67,19 +67,6 @@ export type hasVault = {
   in: string;
   out: string;
   role: string;
-}
-
-export function unwrapRecord(data: Array<Record<string, any>>): Array<Record<string, any>> {
-  return data.map(obj => {
-    const newObj = { ...obj };
-
-    if (typeof obj.id === 'string' && obj.id.includes(':')) {
-      const [tb, id] = obj.id.split(':');
-      newObj.id = { tb, id };
-    }
-
-    return newObj;
-  });
 }
 
 
@@ -130,10 +117,10 @@ export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: 
       rValiues  :rValiues  }
       );
       console.log(action.split(":")[0],outValues,rTable.split(":")[1],outRecord,inRecord,rValiues)
-      return "done"
+      return "OK"
   } catch (err: unknown) {
     
-    throw new Error(`Failed to create entry in ${action}: ${err}`);
+    return(`Failed to create entry in ${action}: ${err}`);
 
   }
 }
@@ -226,7 +213,7 @@ export async function checkExistance(ID: string): Promise<object | undefined> {
   }
 }
 
-export async function dbQueryRole(userID: string, vaultName: string): Promise<object | undefined> {
+export async function dbQueryRole(userID: string, vaultName: string): Promise<"owner" | "viewer" | undefined> {
   
   await ensureConnected();
   if (!db) throw new Error("Database not connected."); 
@@ -256,9 +243,11 @@ export async function dbQueryRole(userID: string, vaultName: string): Promise<ob
       `,
       { UID: userID, vaultName: vaultName, vaultId:vaultId });
 
+      if (response[response.length - 1]?.status === 'OK') {
+        const result = response[response.length - 1]?.result;
 
-    if (response[response.length - 1].status === 'OK') {
-      return{response}
+      if (result === "owner" || result === "viewer") {return result;}
+    
     } else if (response[response.length - 1].status === 'ERR') {
       const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
       if (errorObject) {
