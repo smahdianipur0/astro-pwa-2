@@ -1,11 +1,19 @@
 import { Surreal, RecordId } from "surrealdb";
 import { surrealdbWasmEngines } from "@surrealdb/wasm";
+import { 
+	genericCreate, 
+	type PermittedTypes, 
+	type TableName,
+	type rTableName} from "./surrealdb"
 
+
+import { type ReadResultTypes,type ReadAllResultTypes,} from "./surrealdb"
+export { type ReadResultTypes, type ReadAllResultTypes };
 
 type prettify<T> = {[K in keyof T]: T[K];} & {};
 
 
-export async function getDb() {
+async function getDb() {
 	const db = new Surreal({
 		engines: surrealdbWasmEngines(),
 	});
@@ -20,40 +28,6 @@ export async function getDb() {
 	}
 }
 
-// Define Tables and Schemas
-type TableName = "PasswordEntry" | "RecentDelPass" | "Emails" | "Credentials" | "Vaults" | "Cards";
-
-export type Schemas = {
-	PasswordEntry: { title: string; password: string; crreatedAt: string };
-	Emails: { email: string; crreatedAt: string };
-	RecentDelPass: {  title: string; password: string; crreatedAt: string };
-	Credentials: { registered:boolean; UID: string;};
-	Vaults: {name: string; updatedAt: string, status:"available" | "deleted", role:"owner" | "viewer"};
-	Cards: {name: string, data:string[]; updatedAt: string, status:"available" | "deleted"}
-};
-
-
-type rTableName = "Vaults_has";
-
-export type rSchemas = {
-	Vaults_has : {in: string, role:string}
-};
-
-// Generate CRUD types for all tables
-type PermittedTypes = {
-	[K in keyof Schemas as `${K & string}:create`]: prettify<{ id?: string } & Partial<Schemas[K]>>;} & {
-
-	[K in keyof Schemas as `${K & string}:update`]: prettify<{ id: string } & Partial<Schemas[K]>>;} & {
-
-	[K in keyof Schemas as `${K & string}:delete`]: { id: string };} & {
-
-	[K in keyof Schemas as `${K & string}:upserelate`]: prettify<{ id: string } & Partial<Schemas[K]>> & 
-		{[K in keyof rSchemas as `to:${K & string}`]: Partial<rSchemas[K]>;};
-};
-
-export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: { tb: string; id: string }} & Schemas[K]>;};
-export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
-
 
 export async function dbCreate<T extends `${TableName}:create`>(action: T, data: PermittedTypes[T]): Promise<void> {
 	const db = await getDb();
@@ -61,9 +35,8 @@ export async function dbCreate<T extends `${TableName}:create`>(action: T, data:
 		console.error("Database not initialized");
 		return;
 	}
-
 	try { 
-		await db.create<PermittedTypes[T]>(action.split(":")[0], data); 
+		await genericCreate(db, action, data);
 	} catch (err: unknown) {
 		console.error(`Failed to create entry in ${action}:`, err instanceof Error ? err.message : String(err));
 	} finally {

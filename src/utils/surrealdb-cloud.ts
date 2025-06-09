@@ -1,7 +1,16 @@
 import { Surreal } from 'surrealdb';
 import { type Result, Ok, Err, DBConnectionError, DBOperationError } from "./error"
+import { 
+  genericCreate, 
+  type PermittedTypes, 
+  type TableName,
+  type rTableName,
+  type rSchemas} from "./surrealdb"
 
-type prettify<T> = {[K in keyof T]: T[K];} & {};
+
+import { type ReadResultTypes,type ReadAllResultTypes,} from "./surrealdb"
+export { type ReadResultTypes, type ReadAllResultTypes };
+
 
 let db: Surreal | null = null;
 let connectPromise: Promise<void> | null = null;
@@ -26,35 +35,6 @@ async function ensureConnected() {
   return connectPromise!;
 }
 
-type TableName = "Users" | "Vaults" | "Cards" ;
-
-export type Schemas = {
-  Users: { UID: string, credentials: object; updatedAt: string };
-  Vaults: {name: string; updatedAt: string, status:"available" | "deleted", role?: "owner" | "viewer"};
-  Cards: {name: string, data:string[]; updatedAt: string, status:"available" | "deleted"}
-};
-
-type rTableName = "vaults_has";
-
-export type rSchemas = {
-  vaults_has : {in: string, role?:string}
-};
-
-
-type PermittedTypes = {
-  [K in keyof Schemas as `${K & string}:create`]: prettify<{ id?: string } & Partial<Schemas[K]>>;} & {
-
-  [K in keyof Schemas as `${K & string}:update`]: prettify<{ id: string } & Partial<Schemas[K]>>;} & {
-
-  [K in keyof Schemas as `${K & string}:delete`]: { id: string };} & {
-
-  [K in keyof Schemas as `${K & string}:upserelate`]: prettify<{ id: string } & Partial<Schemas[K]>> & 
-    {[K in keyof rSchemas as `to:${K & string}`]: Partial<rSchemas[K]>;};
-};
-
-export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: { tb: string; id: string }| string} & Schemas[K]>;};
-export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
-
 
 export type Credentials = {
   UID: string;
@@ -76,7 +56,7 @@ export async function dbCreate<T extends `${TableName}:create`>(action: T, data:
   if (!db) {return new Err(new DBConnectionError("Database not connected."));}
 
   try { 
-    await db.create<PermittedTypes[T]>(action.split(":")[0], data); 
+    await genericCreate(db, action, data); 
     return new Ok("Ok")
   } catch (err: unknown) {
     return new Err(new DBOperationError(`Failed to create entry in ${action}:`, { cause: err instanceof Error ? err.message : String(err)}));
@@ -213,9 +193,7 @@ export async function dbQueryRole(userID: string, vaultName: string): Promise<"o
       BEGIN TRANSACTION;
 
       LET $user = (SELECT id FROM users WHERE UID = $UID);
-
       LET $vault = (SELECT id FROM vaults WHERE name = $vaultName);
-
       LET $role = SELECT role FROM has_vault WHERE in = $user[0].id AND out = $vault[0].id ;
 
 

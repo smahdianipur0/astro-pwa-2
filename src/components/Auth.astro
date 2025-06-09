@@ -22,10 +22,10 @@ import{
  
 
 // initiate auth state based on indexed database
-const user = await dbReadAll("Credentials");
+const user = await dbReadAll("Users");
 
 if (user && user?.length === 0) {
-    dbCreate("Credentials:create", { registered: false });
+    dbCreate("Users:create", { registered: false });
     setIndexedUid(false);
 }
 
@@ -126,7 +126,7 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
 
                 // handle Failed regestration 
                 updateSucceededAuth()                    
-                dbUpdate("Credentials:update", { id: userId, registered: true, UID: registration.id });
+                dbUpdate("Users:update", { id: userId, registered: true, UID: registration.id });
                 setIndexedUid(true);  
 
             } catch (error) {
@@ -157,7 +157,7 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
 
                 // handle Succeeded auth 
                 updateSucceededAuth();
-                dbUpdate("Credentials:update", { id: userId, registered: true, UID: authData.credentialId });
+                dbUpdate("Users:update", { id: userId, registered: true, UID: authData.credentialId });
                 setIndexedUid(true);
 
             } catch (error) {

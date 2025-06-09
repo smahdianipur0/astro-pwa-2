@@ -28,7 +28,7 @@ export type Err<E> = ErrImpl<E>;
 export type Result<T, E> = Ok<T> | Err<E>;
 
 
-
+// base error
 export class AppError extends Error {
 
   public readonly cause?: unknown;

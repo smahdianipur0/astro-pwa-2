@@ -5,7 +5,6 @@ import { type Result, Ok, Err, handleTRPCError } from "../utils/error"
 import type { Context } from "./context.ts";
 import {z} from "zod"
 import { 
-    dbCreateUser, 
     dbQueryUser, 
     dbReadVault, 
     dbQueryRole,
