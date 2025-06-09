@@ -151,7 +151,7 @@ createEffect(() => {
             el.c('details', {name: 'delete-item',className: 'right-to-left', append: [
               el.c('summary', { className: 'right-to-left' }),
               el.c('button', { dataset: {action: 'delete' },
-                  id: entry.id?.id ?? '',
+                  id: entry.id?.split(":")[1] ?? '',
                   textContent: ' Delete'
                 })
             ]})

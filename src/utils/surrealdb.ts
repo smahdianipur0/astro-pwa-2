@@ -1,15 +1,13 @@
 import { Surreal, RecordId } from "surrealdb";
-import { surrealdbWasmEngines } from "@surrealdb/wasm";
 
 
 type prettify<T> = {[K in keyof T]: T[K];} & {};
 
 
-// Define Tables and Schemas
 export type TableName = "PasswordEntry" | "RecentDelPass" | "Emails" | "Users" | "Vaults" | "Cards";
 
 export type Schemas = {
-    Users: { registered:boolean; UID: string;};
+    Users: { registered:boolean; UID: string; credentials: object; updatedAt: string};
     PasswordEntry: { title: string; password: string; crreatedAt: string };
     Emails: { email: string; crreatedAt: string };
     RecentDelPass: {  title: string; password: string; crreatedAt: string };
@@ -18,10 +16,11 @@ export type Schemas = {
 };
 
 
-export type rTableName = "Vaults_has";
+export type rTableName = "Vaults_has" | "vaults_has";
 
 export type rSchemas = {
-    Vaults_has : {in: string, role:string}
+    Vaults_has : {in: string,  role?: "owner" | "viewer"},
+    vaults_has : {in: string,  role: "owner" | "viewer"}
 };
 
 // Generate CRUD types for all tables
@@ -32,11 +31,12 @@ export type PermittedTypes = {
 
     [K in keyof Schemas as `${K & string}:delete`]: { id: string };} & {
 
-    [K in keyof Schemas as `${K & string}:upserelate`]: prettify<{ id: string } & Partial<Schemas[K]>> & 
-        {[K in keyof rSchemas as `to:${K & string}`]: Partial<rSchemas[K]>;};
+    [K in keyof Schemas as `${K & string}:upserelate`]:prettify<{ id: string } & Partial<Schemas[K]>> & ({
+     [R in keyof rSchemas]: { [P in `to:${R & string}`]: Partial<rSchemas[R]> } }[keyof rSchemas]
+);
 };
 
-export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: { tb: string; id: string }} & Schemas[K]>;};
+export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: string} & Schemas[K]>;};
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
 export async function genericCreate< T extends `${TableName}:create`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<void> {

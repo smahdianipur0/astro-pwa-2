@@ -151,7 +151,7 @@ records.on(["vaultsList"], ({value}) => {
          (records.get("editableVaultList") ?? [])
          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
          .forEach((entry) => {
-            fragment.append( el.c("option", {textContent:entry.name, id:entry.id?.id}));
+            fragment.append( el.c("option", {textContent:entry.name, id:entry.id?.split(":")[1]}));
         });
     }
 

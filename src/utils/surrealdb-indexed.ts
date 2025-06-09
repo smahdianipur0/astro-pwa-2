@@ -10,8 +10,6 @@ import {
 import { type ReadResultTypes,type ReadAllResultTypes,} from "./surrealdb"
 export { type ReadResultTypes, type ReadAllResultTypes };
 
-type prettify<T> = {[K in keyof T]: T[K];} & {};
-
 
 async function getDb() {
 	const db = new Surreal({
@@ -89,7 +87,7 @@ export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: 
 	let rValiues: { [key: string]: any } = {};
 	let outValues:   { [key: string]: any } = {};
 
-	Object.entries(data).forEach(([key, value]) => {
+	(Object.entries(data) as  [string, any]).forEach(([key, value]) => {
 		if (key.startsWith("to:")) {
 			rTable = key;
 			rValiues = {... value}; 

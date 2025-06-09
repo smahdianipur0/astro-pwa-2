@@ -50,7 +50,7 @@ records.on(["vaultsList"], ({value}) => {
          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
          .forEach((entry) => {
 
-            fragment.append( el.c("option", {textContent:entry.id?.id }));
+            fragment.append( el.c("option", {textContent:entry.id?.split(":")[1] }));
         });
     }
     vaultlist.append(fragment);

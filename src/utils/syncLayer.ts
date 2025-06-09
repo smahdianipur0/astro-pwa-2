@@ -60,13 +60,13 @@ function syncArrays<T extends dbArrays>(local: T[], cloud: T[], key: string):
 export async function syncVaults(){
 
   const indexedVaults = await dbReadAll("Vaults")      as ReadAllResultTypes["Vaults"] ;
-  const credentials   = await dbReadAll("Credentials") as ReadAllResultTypes["Credentials"] ;
+  const credentials   = await dbReadAll("Users") as ReadAllResultTypes["Users"] ;
   const UID = credentials[0].UID;
 
   let indexedCards:CardDetail = [];
 
   indexedVaults.forEach(async (entry) => {
-    const vaultId = entry.id?.id;
+    const vaultId = entry.id?.split(":")[1];
     if (!vaultId)return;
     const cards = await dbReadRelation("Vaults", "Vaults_has", "Cards", vaultId);
     if(!cards)return;
