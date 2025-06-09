@@ -1,5 +1,7 @@
 import { initTRPC } from "@trpc/server";
+import { TRPCError } from '@trpc/server';
 import superjson from "superjson";
+import { type Result, Ok, Err, handleTRPCError } from "../utils/error"
 import type { Context } from "./context.ts";
 import {z} from "zod"
 import { 
@@ -8,7 +10,8 @@ import {
     dbReadVault, 
     dbQueryRole,
     dbUpserelate,
-    type ReadAllResultTypes} from "../utils/surrealdb-cloud";
+    type ReadAllResultTypes,
+    dbCreate} from "../utils/surrealdb-cloud";
 import { server } from '@passwordless-id/webauthn'
 import { registrationInputSchema, authenticationInputSchema, credentialSchema, UID, syncVaultsSchema } from './schemas';
 
@@ -37,17 +40,30 @@ export const appRouter = router({
     registry:t.procedure
         .input(registrationInputSchema)      
         .mutation(async ({ input }) => {
-            let addToDb: string | undefined;
+
             const expected = {
                 challenge: input.challenge,
                 origin: "http://localhost:4321",
             }
+
             const registrationParsed = await server.verifyRegistration(input.registry, expected);
-            if (registrationParsed.userVerified === true) {
-                addToDb = await dbCreateUser(registrationParsed.credential.id, registrationParsed.credential);
-                console.log(addToDb); 
+            
+            if (!registrationParsed.userVerified === true) {
+                throw new TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: 'Failed to verify registration.',
+                    cause: registrationParsed,
+                });
             }
-            return { message: addToDb || "User not created" };
+
+            const addToDb = await dbCreate("Users:create", {UID:registrationParsed.credential.id, credentials:registrationParsed.credential});
+            
+            if (addToDb.ok) {
+                return addToDb.value
+            } else { 
+                console.error(addToDb.value); 
+                handleTRPCError(addToDb.value)
+            }
         }),
 
 
@@ -86,7 +102,7 @@ export const appRouter = router({
             try {
                 const {authenticationParsed, credentialObj} = await verifyAuthentication(input.authenticationData, input.challenge);
  
-                const rolePromises = (input.vaults as ReadAllResultTypes["vaults"]).map(async entry => {
+                const rolePromises = (input.vaults as ReadAllResultTypes["Vaults"]).map(async entry => {
                   try {
                     const dbRole = await dbQueryRole(credentialObj.id, entry.id as string);
                     return { ...entry, role: dbRole };
@@ -98,7 +114,7 @@ export const appRouter = router({
                 const reconciledRoles = await Promise.all(rolePromises);
 
                 const upsertPromises = reconciledRoles.filter(entry => entry.role === "owner").map(async entry => {
-                    const result = await dbUpserelate("vaults:upserelate", {
+                    const result = await dbUpserelate("Vaults:upserelate", {
                         id: (entry.id as string).split(":")[1] ?? "",
                         name: entry.name,
                         status: entry.status,

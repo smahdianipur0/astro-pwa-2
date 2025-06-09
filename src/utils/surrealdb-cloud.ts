@@ -1,4 +1,5 @@
 import { Surreal } from 'surrealdb';
+import { type Result, Ok, Err, DBConnectionError, DBOperationError } from "./error"
 
 type prettify<T> = {[K in keyof T]: T[K];} & {};
 
@@ -25,12 +26,12 @@ async function ensureConnected() {
   return connectPromise!;
 }
 
-type TableName = "users" | "vaults" | "cards" ;
+type TableName = "Users" | "Vaults" | "Cards" ;
 
 export type Schemas = {
-  users: { UID: string, vaultCount: number, cardCount: number; credentials: object;  };
-  vaults: {name: string; updatedAt: string, status:"available" | "deleted", role?: "owner" | "viewer"};
-  cards: {name: string, data:string[]; updatedAt: string, status:"available" | "deleted"}
+  Users: { UID: string, credentials: object; updatedAt: string };
+  Vaults: {name: string; updatedAt: string, status:"available" | "deleted", role?: "owner" | "viewer"};
+  Cards: {name: string, data:string[]; updatedAt: string, status:"available" | "deleted"}
 };
 
 type rTableName = "vaults_has";
@@ -67,6 +68,19 @@ export type hasVault = {
   in: string;
   out: string;
   role: string;
+}
+
+export async function dbCreate<T extends `${TableName}:create`>(action: T, data: PermittedTypes[T]): Promise<Result< string, DBConnectionError>> {
+  
+  await ensureConnected();
+  if (!db) {return new Err(new DBConnectionError("Database not connected."));}
+
+  try { 
+    await db.create<PermittedTypes[T]>(action.split(":")[0], data); 
+    return new Ok("Ok")
+  } catch (err: unknown) {
+    return new Err(new DBOperationError(`Failed to create entry in ${action}:`, { cause: err instanceof Error ? err.message : String(err)}));
+  } 
 }
 
 
@@ -126,32 +140,6 @@ export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: 
 }
 
 
-
-export async function dbCreateUser(userID: string, credential: object): Promise<string | undefined> {
-
-  await ensureConnected();
-  if (!db) throw new Error("Database not connected.");
-  let result: string | undefined;
-
-  if (!db) {
-    result = "Database not initialized";
-  } else {
-    try {
-      const entry = await db.create<Credentials>('users', {
-        UID: userID,
-        credentials: credential,
-        vaultCount: 0,
-        cardCount: 0,
-      });
-      result = `User registered`;
-    } catch (err: unknown) {
-      result = "Failed to register user";
-    } finally {
-      await db.close();
-    }
-  }
-  return result;
-}
 
 export async function dbQueryUser(userID: string): Promise<object | undefined> {
 
