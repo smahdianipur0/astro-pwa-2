@@ -118,6 +118,7 @@ import { records } from "../logic/records"
     document.getElementById("delete-vault-dialog")!.addEventListener("click",(e)=>{
         if((e!.target as HTMLInputElement).matches("#delete-vault-button")){
             const id = selectDeleteVaults.options[selectDeleteVaults.selectedIndex]?.id;
+            console.log(id);
             const value = selectDeleteVaults.options[selectDeleteVaults.selectedIndex]?.value;
             (async () => {
                 await dbUpdate("Vaults:update", {
@@ -151,7 +152,7 @@ records.on(["vaultsList"], ({value}) => {
          (records.get("editableVaultList") ?? [])
          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
          .forEach((entry) => {
-            fragment.append( el.c("option", {textContent:entry.name, id:entry.id?.split(":")[1]}));
+            fragment.append( el.c("option", {textContent:entry.name, id:entry.id}));
         });
     }
 

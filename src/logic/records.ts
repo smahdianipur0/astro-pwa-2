@@ -17,13 +17,14 @@ export const records = createStore({
     	setVaultName(value: string) { this.set('vaultName', value); },
     	setCardName(value: string)  { this.set('cardName', value); },
 
-    	async updateVaultsList () { this.set('vaultsList', await dbReadAll("Vaults") ?? []!) },
+    	async updateVaultsList () { this.set('vaultsList', await dbReadAll("Vaults") ?? []) },
     	async updateCardsList ()  { 
     		if (this.get("selectedVault") !== "") { this.set('cardsList', await dbReadRelation(
-    			"Vaults", "Vaults_has", "Cards", this.get("selectedVault")
+    			`Vaults:${this.get("selectedVault")}`, "Vaults_has", "Cards"
     			) ?? []!) 
     		}
     	},
+
     	
     	setSelectedVault(value: string) { this.set('selectedVault', value); },
     	setSelectedCard(value: string)  { this.set('selectedCard', value); },
@@ -38,3 +39,4 @@ export const records = createStore({
 	    )
 	}
 });
+

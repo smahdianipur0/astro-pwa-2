@@ -1,4 +1,4 @@
-import { Surreal, RecordId } from "surrealdb";
+import { Surreal, RecordId, StringRecordId } from "surrealdb";
 import { surrealdbWasmEngines } from "@surrealdb/wasm";
 import { 
 	genericCreate, 
@@ -48,9 +48,11 @@ export async function dbUpdate<T extends `${TableName}:update`>(action: T, data:
 		console.error("Database not initialized");
 		return;
 	}
+	const { id, ...dataWithoutId } = data;
 
 	try {
-		await db.update<PermittedTypes[T]>(new RecordId(action.split(":")[0], data.id), data);
+		console.log(new RecordId(id.split(":")[0], id.split(":")[1]))
+		await db.merge(new RecordId(data.id.split(":")[0], data.id.split(":")[1]), dataWithoutId);
 	} catch (err: unknown) {
 		console.error(`Failed to update entry in ${action}:`, err instanceof Error ? err.message : String(err));
 	} finally {
@@ -129,16 +131,16 @@ export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: 
 }
 
 
-export async function dbDelete<T extends `${TableName}:delete`>(action: T, id: string): Promise<void> {
+export async function dbDelete(id: string): Promise<void> {
 	const db = await getDb();
 	if (!db) {
 		console.error("Database not initialized");
 		return;
 	}
 	try {
-		await db.delete(new RecordId(action.split(":")[0], id));
+		await db.delete(new RecordId(id.split(":")[0], id.split(":")[1]));
 	} catch (err: unknown) {
-		console.error(`Failed to delete entry from ${action}:`, err instanceof Error ? err.message : String(err));
+		console.error(`Failed to delete ${id}:`, err instanceof Error ? err.message : String(err));
 	} finally {
 		await db.close();
 	}
@@ -165,12 +167,10 @@ export async function dbReadAll<T extends TableName>(tableName: T): Promise<Read
 
 // SELECT * FROM {$outTable} WHERE id IN (SELECT VALUE out FROM {$rTable} WHERE in ={$fullinid});
 export async function dbReadRelation<T extends TableName>(
-	inTable: TableName, rTable:rTableName, outTable: T, inid: string
+	inId: string, rTable:rTableName, outTable: T
 	): Promise<ReadAllResultTypes[T] | undefined> {
 	const db = await getDb();
 
-	if (inid =="") {return}
-	const fullinid = `${inTable}:${inid}`
 	if (!db) {
 		console.error("Database not initialized");
 		return undefined;
@@ -180,8 +180,8 @@ export async function dbReadRelation<T extends TableName>(
 		const recs = await db.query(`
 			SELECT * FROM (type::table({$outTable})) 
 			WHERE id IN 
-			(SELECT VALUE out FROM (type::table({$rTable})) WHERE in = (type::thing({$fullinid})));
-			`,{ outTable :outTable,rTable: rTable, fullinid: fullinid }
+			(SELECT VALUE out FROM (type::table({$rTable})) WHERE in = (type::thing({$inId})));
+			`,{ outTable :outTable,rTable: rTable, inId: inId }
 		) ;
 		return recs[0] as ReadAllResultTypes[T]; 
 	} catch (err) {
@@ -205,7 +205,7 @@ export async function getEntryById<T extends TableName>(
 	}
 
 	try {
-		const entry = (await db.select(new RecordId(tableName, recordId))) as unknown as ReadResultTypes[T];
+		const entry = (await db.select(new StringRecordId(recordId))) as unknown as ReadResultTypes[T];
 		return entry;
 	} catch (err) {
 		console.error(`Failed to get entry from ${tableName} with ID ${recordId}:`, err);

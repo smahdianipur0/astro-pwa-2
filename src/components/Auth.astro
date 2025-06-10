@@ -30,7 +30,7 @@ if (user && user?.length === 0) {
 }
 
 if (user && user?.length !== 0) {
-    const userId = user[0].id?.split(":")[1];
+    const userId = user[0].id;
     if (userId && user[0].registered === true) {
         setIndexedUid(true);
     }
@@ -121,7 +121,7 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
                 if (registryError){authResult.textContent = "Registration Failed"; return}
                 if (!registryData){authResult.textContent = "Registration Failed"; return}
                 if (!user) return;
-                const userId = user[0]?.id?.split(":")[1];
+                const userId = user[0]?.id;
                 if (!userId) return;
 
                 // handle Failed regestration 
@@ -152,7 +152,7 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
                 if (!authData) {authResult.textContent = "Authentication Failed"; return;}
                 if (!authData.authenticated || !authData.credentialId) {authResult.textContent = "Authentication Failed"; return; }      
                 if (!user ) { return }
-                const userId = user[0]?.id?.split(":")[1];
+                const userId = user[0]?.id;
                 if (!userId) return;
 
                 // handle Succeeded auth 

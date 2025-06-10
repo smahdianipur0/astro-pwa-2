@@ -144,7 +144,7 @@ dialog!.addEventListener("input",(e)=>{
 // change the selcted valuts and card creation dialog when valut select elment value changes
 records.on(["selectedVault"], ({value}) => { (async () => {
     if(value !== undefined) {
-        const selected = await getEntryById("Vaults", value);
+        const selected = await getEntryById("Vaults", `Vaults:${value}`);
             if (selected?.role === "owner") {
               (document.getElementById("AddCardDialog-vault") as HTMLSelectElement).value = selected.name;  
             }
@@ -162,7 +162,7 @@ records.on(["vaultsList"], ({value}) => {
          (records.get("editableVaultList") ?? [])
          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
          .forEach((entry) => {
-            fragment.append( el.c("option", {textContent:entry.name, id:entry.id?.split(":")[1]}));
+            fragment.append( el.c("option", {textContent:entry.name, id:entry.id}));
         });
     }
     cardVaultlist.append(fragment);
@@ -194,7 +194,7 @@ records.on(["editableVaultList", "cardsList"], pl => {
                     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
                     .forEach((entry) => {
                         fragment.append(
-                            el.c("option", { textContent: entry.name, id: entry.id?.split(":")[1] })
+                            el.c("option", { textContent: entry.name, id: entry.id })
                         );
                     });
             }
@@ -282,6 +282,6 @@ dialog.addEventListener('close', () => {
     }
  });
 
-// await dbReadRelation("Vaults", "Vaults_has", "Cards", "test3")
+// await dbReadRelation("Vaults:test3", "Vaults_has", "Cards")
   
 </script>

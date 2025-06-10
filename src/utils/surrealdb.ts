@@ -32,8 +32,7 @@ export type PermittedTypes = {
     [K in keyof Schemas as `${K & string}:delete`]: { id: string };} & {
 
     [K in keyof Schemas as `${K & string}:upserelate`]:prettify<{ id: string } & Partial<Schemas[K]>> & ({
-     [R in keyof rSchemas]: { [P in `to:${R & string}`]: Partial<rSchemas[R]> } }[keyof rSchemas]
-);
+        [R in keyof rSchemas]: { [P in `to:${R & string}`]: Partial<rSchemas[R]> } }[keyof rSchemas]);
 };
 
 export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: string} & Schemas[K]>;};

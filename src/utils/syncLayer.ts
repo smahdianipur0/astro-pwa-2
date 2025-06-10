@@ -66,9 +66,9 @@ export async function syncVaults(){
   let indexedCards:CardDetail = [];
 
   indexedVaults.forEach(async (entry) => {
-    const vaultId = entry.id?.split(":")[1];
+    const vaultId = entry.id;
     if (!vaultId)return;
-    const cards = await dbReadRelation("Vaults", "Vaults_has", "Cards", vaultId);
+    const cards = await dbReadRelation(vaultId, "Vaults_has", "Cards");
     if(!cards)return;
     indexedCards.push({vault: vaultId, contains: cards});
   });
