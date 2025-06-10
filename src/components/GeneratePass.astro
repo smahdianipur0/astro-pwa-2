@@ -11,45 +11,46 @@ import TempList from '../components/TempList.astro';
 
         <fragment slot="tab1">
 
+            <div class="flex-spread-childs not-prose " style=" position: relative;">
+
+                <div class="text-as-button" style=" margin-top: var(--size-md1);" >
+                    <button 
+                        id="gp" 
+                        name="copy password" 
+                        class="skeleton-parrent" 
+                        style="font-size: var(--font-lg1); font-weight: 300; line-height: var(--size-sm3);">
+
+                        <div class="skeleton" style="width:var(--size-xl1)"> </div>
+                    </button>
+                </div>
+
+                <div class="flex-center-childs", style="margin-right: calc(var(--size-sm0) * -1); gap:calc(var(--size-md1) / 2 ); font-size: var(--font-lg1); margin-top: var(--size-md1);">
+        
+                    <button 
+                        id="redo" 
+                        name="regenerate password" 
+                        class=" flex-center-childs text-as-button blink" 
+                        style="width: var(--size-md1);
+                        border-radius: 100px;" >↻</button>
+                        
+
+                    <TempList />
+
+                </div>
+            </div>
+
+            <p 
+                id="ttc" 
+                class="hint" 
+                style="margin-top: calc(var(--size-sm0) * -1);
+                margin-bottom: var(--size-md4);"> 
+                tap to copy </p>
+
             <CharactersCount />
             <div style="border-bottom: 1px solid oklch(var(--gray-25) / 1);" ></div>
             <CharactersPattern />
 
-            <div class="flex-spread-childs not-prose " style=" position: relative;font-size:var(--font-lg1);">
-
-                <TempList />
-
-                <button 
-                    id="gp" 
-                    name="copy password" 
-                    class="text-as-button skeleton-parrent" 
-                    style=" margin-top: var(--size-sm3); 
-                    margin-bottom: var(--size-sm3);
-                    font-weight: 300;">
-
-                    <div class="skeleton" style="width:var(--size-xl1)"> </div>
-                </button>
-
-                <button 
-                    id="redo" 
-                    name="regenerate password" 
-                    class=" flex-center-childs text-as-button blink" 
-                    style="right: 0; margin-right: calc(var(--size-sm0)* -1);" >
-                    ↻</button>
-
-                <p 
-                    id="ttc" 
-                    class="hint" 
-                    style="position: absolute;
-                    width: var(--size-xl2);
-                    right: calc(50% - (var(--size-xl2) / 2) );
-                    text-align: center;
-                    line-height: var(--size-md2);
-                    top : var(--size-lg1);"> 
-                    tap to copy </p>
-            </div>
         </fragment>
-
 
         <fragment slot="tab2">
             <div 

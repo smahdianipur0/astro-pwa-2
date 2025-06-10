@@ -3,9 +3,9 @@
   --drawer-heigt: 500px
 }
 
-[data-corvu-drawer-trigger] {
+/* [data-corvu-drawer-trigger] {
   width: 100%;
-}
+} */
 
 [data-corvu-drawer-overlay] {
   position: fixed;
