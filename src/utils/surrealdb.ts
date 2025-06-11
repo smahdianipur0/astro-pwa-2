@@ -31,13 +31,83 @@ export type PermittedTypes = {
 
     [K in keyof Schemas as `${K & string}:delete`]: { id: string };} & {
 
-    [K in keyof Schemas as `${K & string}:upserelate`]:prettify<{ id: string } & Partial<Schemas[K]>> & ({
-        [R in keyof rSchemas]: { [P in `to:${R & string}`]: Partial<rSchemas[R]> } }[keyof rSchemas]);
+    [K_OutTable in keyof Schemas as `${K_OutTable & string}:upserelate`]:
+        {
+            [K_InTable in TableName]: {
+                [K_RelTable in rTableName]: [
+                    relationString: `${K_InTable & string}:${string}->${K_RelTable & string}`,
+                    outRecordData: prettify<{ id: string } & Partial<Schemas[K_OutTable]>>,
+                    relationData: prettify<Omit<Partial<rSchemas[K_RelTable]>, 'in'>>
+                ];
+            }[rTableName];
+        }[TableName];
 };
+
+
 
 export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: string} & Schemas[K]>;};
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
 export async function genericCreate< T extends `${TableName}:create`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<void> {
   await db.create<PermittedTypes[T]>(action.split(":")[0], data); 
+}
+
+
+import { surrealdbWasmEngines } from "@surrealdb/wasm";
+async function getDb() {
+    const db = new Surreal({
+        engines: surrealdbWasmEngines(),
+    });
+    try {
+        await db.connect("indxdb://demo");
+        await db.use({ namespace: "hello", database: "demodb" });
+        return db;
+    } catch (err) {
+        console.error("Failed to connect to SurrealDB:", err instanceof Error ? err.message : String(err));
+        await db.close();
+        throw err;
+    }
+}
+
+export async function genericUpserelate< OutTable extends TableName, InTable extends TableName,RelTable extends rTableName>(
+    db: Surreal,
+    action: `${OutTable}:upserelate`, 
+    ...args: PermittedTypes[`${OutTable}:upserelate`] extends [infer RS, infer ORD, infer RD] // Help TS infer tuple elements
+        ? RS extends `${InTable}:${string}->${RelTable}` 
+            ? [relationString: RS, outRecordData: ORD, relationData: RD ]: never 
+        : never 
+): Promise<void> {
+
+    const [relationString, outRecordDataFromArgs, relationDataFromArgs] = args;
+    const outRecordData = outRecordDataFromArgs as prettify<{ id: string } & Partial<Schemas[OutTable]>>;
+    const relationData = relationDataFromArgs as prettify<Omit<Partial<rSchemas[RelTable]>, 'in'>>;
+
+
+    const { id: outRecordId, ...outRecordValues } = outRecordData;
+    const fullOutRecordId = `${action.split(":")[0] as OutTable}:${outRecordId}`; // Or just use OutTable directly
+
+    const [inRecordIdWithTable, rTableFromString] = relationString.split("->");
+
+    await db.query(`
+        BEGIN TRANSACTION;
+
+        LET $out_record_id = type::thing($fullOutRecordIdVar);
+        LET $in_record_id = type::thing($inRecordIdWithTableVar);
+        LET $rel_table_name = type::table($rTableActualVar);
+
+        IF record::exists($out_record_id) {
+            UPDATE $out_record_id MERGE $outRecordValuesVar;
+        } ELSE {
+            CREATE $out_record_id CONTENT $outRecordValuesVar;
+            RELATE $in_record_id->$rel_table_name->$out_record_id CONTENT $relationDataVar;
+        };
+
+        COMMIT TRANSACTION;
+    `, {
+        fullOutRecordIdVar: fullOutRecordId,
+        outRecordValuesVar: outRecordValues,
+        inRecordIdWithTableVar: inRecordIdWithTable,
+        rTableActualVar: rTableFromString, 
+        relationDataVar: relationData,
+    });
 }

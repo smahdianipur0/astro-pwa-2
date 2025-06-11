@@ -113,12 +113,13 @@ export const appRouter = router({
                 const reconciledRoles = await Promise.all(rolePromises);
 
                 const upsertPromises = reconciledRoles.filter(entry => entry.role === "owner").map(async entry => {
-                    const result = await dbUpserelate("Vaults:upserelate", {
+                    const result = await dbUpserelate("Vaults:upserelate", `Vaults:${credentialObj.id}->Vaults_has`, {
                         id: entry.id?.split(":")[1] ?? "",
                         name: entry.name,
                         status: entry.status,
                         updatedAt: entry.updatedAt,
-                        "to:vaults_has": { in: credentialObj.id, role: entry.role },
+                    },{
+                        role: entry.role
                     });
                     return { id: entry.id, result };
                 });
@@ -126,7 +127,7 @@ export const appRouter = router({
                 const upsertResults = await Promise.all(upsertPromises);
 
                 for (const { id, result } of upsertResults) {
-                  if (result !== "OK") { throw new Error(`Failed to update vault ${id}: ${result}`)}
+                  // if (result !== "OK") { throw new Error(`Failed to update vault ${id}: ${result}`)}
                 }
                 return {
                   message: "Sync successful",

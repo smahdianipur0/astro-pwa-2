@@ -2,6 +2,7 @@ import { Surreal, RecordId, StringRecordId } from "surrealdb";
 import { surrealdbWasmEngines } from "@surrealdb/wasm";
 import { 
 	genericCreate, 
+	genericUpserelate,
 	type PermittedTypes, 
 	type TableName,
 	type rTableName} from "./surrealdb"
@@ -66,7 +67,6 @@ export async function dbUpsert<T extends `${TableName}:update`>(action: T, data:
 		console.error("Database not initialized");
 		return;
 	}
-
 	try {
 		await db.upsert<PermittedTypes[T]>(new RecordId(action.split(":")[0], data.id), data);
 	} catch (err: unknown) {
@@ -76,58 +76,25 @@ export async function dbUpsert<T extends `${TableName}:update`>(action: T, data:
 	}
 }
 
-export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: T, data: PermittedTypes[T]): Promise<void> {
+export async function dbUpserelate<OutTable extends TableName, InTable extends TableName, RelTable extends rTableName>(
+    action: `${OutTable}:upserelate`, 
+    ...args: PermittedTypes[`${OutTable}:upserelate`] extends [infer RS, infer ORD, infer RD] 
+        ? RS extends `${InTable}:${string}->${RelTable}` 
+            ? [relationString: RS, outRecordData: ORD, relationData: RD ] : never 
+        : never 
+): Promise<void> {
 	const db = await getDb();
 	if (!db) {
 		console.error("Database not initialized");
 		return;
 	}
-
-	const outRecord = `${action.split(":")[0]}:${data.id}`;
-	let inRecord = ""
-	let rTable = "";
-	let rValiues: { [key: string]: any } = {};
-	let outValues:   { [key: string]: any } = {};
-
-	(Object.entries(data) as  [string, any]).forEach(([key, value]) => {
-		if (key.startsWith("to:")) {
-			rTable = key;
-			rValiues = {... value}; 
-			delete rValiues.in;
-			inRecord = `${(rTable.split("_")[0]).split(":")[1]}:${value.in}`;
-			
-		} else {outValues[key] = value;}
-	});
-
-	if (rTable === "" || rValiues.length === 0){ console.log("incomplete data"); return;}
-	console.log("checked for",outRecord,"should add", (action.split(":")[0]), "with", outValues);
-	try { 
-		await db.query(`
-			BEGIN TRANSACTION;
-
-			IF record::exists(type::thing({$outRecord})) {
-				UPSERT (type::table({$outTable})) CONTENT $outValues;
-
-			} ELSE { 
-				CREATE (type::thing({$outRecord})) CONTENT $outValues;
-				RELATE (type::thing({$inRecord}))-> (type::table({$rTable})) -> (type::thing({$outRecord})) CONTENT $rValiues;
-			};
-	  
-			COMMIT TRANSACTION; `,
-		  { outTable  :action.split(":")[0], 
-			outValues :outValues, 
-			rTable    :rTable.split(":")[1], 
-			outRecord :outRecord,
-			inRecord  :inRecord,
-			rValiues  :rValiues  }
-		  );
-		
-
-	} catch (err: unknown) {
-		console.error(`Failed to create entry in ${action}:`, err instanceof Error ? err.message : String(err));
-	} finally {
-		await db.close();
-	}
+	try{
+		await genericUpserelate(db,action, ...args)
+    } catch (err: unknown) {
+        console.error(`Failed operation for ${action} `, err instanceof Error ? err.message : String(err));
+    } finally {
+        await db.close();
+    }
 }
 
 
@@ -246,6 +213,7 @@ export async function dbquery(  query: string, params: { [key: string]: any }): 
 	}
 }
 
+
 const indexedArray = await dbReadAll("Cards") as ReadAllResultTypes["Cards"] ;
 
 let cardDetail:object[] = [];
@@ -261,7 +229,6 @@ indexedArray.forEach(async (entry) => {
 	cardDetail.push({vault:cards[0][0]["<-Vaults_has"]["<-Vaults"][0].id, ...entry})
 });
 
-console.log(cardDetail);
-
-// dbDeleteAll("Cards");
+// console.log(cardDetail);
 // console.log(await dbReadAll("Vaults_has") )
+

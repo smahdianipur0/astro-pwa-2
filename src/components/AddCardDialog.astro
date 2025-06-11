@@ -247,19 +247,20 @@ window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => 
 
     const id   = ( data.get("select card") === "New Card") ? nanoid() : selectedOptionId;
     const name = ( data.get("select card") === "New Card") ? data.get("new card") as string : data.get("select card") as string ; 
+    const vault = (data.get("select vault") as string);
 
-    dbUpserelate("Cards:upserelate", {
+    dbUpserelate("Cards:upserelate", `Vaults:${vault}->Vaults_has`, {
         id:id, 
         name:name, 
         status:"available", 
-        data: data.getAll('comments') as string[],
-        "to:Vaults_has": {
-            in: data.get("select vault") as string} 
-        });
+        data: data.getAll('comments') as string[]
+    },{});
 
     records.updateCardsList()
     return true;
 };
+
+
 
 // reset the form on close
 dialog.addEventListener('close', () => {

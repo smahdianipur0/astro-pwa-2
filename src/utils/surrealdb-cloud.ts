@@ -2,6 +2,7 @@ import { Surreal } from 'surrealdb';
 import { type Result, Ok, Err, DBConnectionError, DBOperationError } from "./error"
 import { 
   genericCreate, 
+  genericUpserelate,
   type PermittedTypes, 
   type TableName,
   type rTableName,
@@ -50,7 +51,7 @@ export type hasVault = {
   role: string;
 }
 
-export async function dbCreate<T extends `${TableName}:create`>(action: T, data: PermittedTypes[T]): Promise<Result< string, DBConnectionError>> {
+export async function dbCreate<T extends `${TableName}:create`>(action: T, data: PermittedTypes[T]): Promise<Result< string, DBConnectionError | DBOperationError >> {
   
   await ensureConnected();
   if (!db) {return new Err(new DBConnectionError("Database not connected."));}
@@ -64,61 +65,24 @@ export async function dbCreate<T extends `${TableName}:create`>(action: T, data:
 }
 
 
-export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: T, data: PermittedTypes[T]): Promise<string> {
+export async function dbUpserelate<OutTable extends TableName, InTable extends TableName, RelTable extends rTableName>(
+    action: `${OutTable}:upserelate`, 
+    ...args: PermittedTypes[`${OutTable}:upserelate`] extends [infer RS, infer ORD, infer RD] 
+        ? RS extends `${InTable}:${string}->${RelTable}` 
+            ? [relationString: RS, outRecordData: ORD, relationData: RD ] : never 
+        : never 
+): Promise<Result< string, DBConnectionError | DBOperationError >> {
 
   await ensureConnected();
-  if (!db) throw new Error("Database not connected.");
+  if (!db) {return new Err(new DBConnectionError("Database not connected."));}
 
-  const outRecord = `${action.split(":")[0]}:${data.id}`;
-  let inRecord = ""
-  let rTable = "";
-  let rValiues: { [key: string]: any } = {};
-  let outValues:   { [key: string]: any } = {};
-
-  Object.entries(data).forEach(([key, value]) => {
-    if (key.startsWith("to:")) {
-      rTable = key;
-      const relationValue = value as Partial<rSchemas[keyof rSchemas]>;
-      rValiues = { ...relationValue };
-      delete rValiues.in;
-      inRecord = `${(rTable.split("_")[0]).split(":")[1]}:${relationValue.in}`;
-
-    } else {
-      outValues[key] = value;
-    }
-  });
-
-
-  if (rTable === "" || rValiues.length === 0){ console.log("incomplete data"); return"incomplete data";}
-  try { 
-    await db.query(`
-      BEGIN TRANSACTION;
-
-      IF record::exists(type::thing({$outRecord})) {
-        UPSERT (type::table({$outTable})) CONTENT $outValues;
-
-      } ELSE { 
-        CREATE (type::thing({$outRecord})) CONTENT $outValues;
-        RELATE (type::thing({$inRecord}))-> (type::table({$rTable})) -> (type::thing({$outRecord})) CONTENT $rValiues;
-      };
-    
-      COMMIT TRANSACTION; `,
-      { outTable  :action.split(":")[0], 
-      outValues :outValues, 
-      rTable    :rTable.split(":")[1], 
-      outRecord :outRecord,
-      inRecord  :inRecord,
-      rValiues  :rValiues  }
-      );
-      console.log(action.split(":")[0],outValues,rTable.split(":")[1],outRecord,inRecord,rValiues)
-      return "OK"
-  } catch (err: unknown) {
-    
-    return(`Failed to create entry in ${action}: ${err}`);
-
-  }
+  try{
+    await genericUpserelate(db,action, ...args)
+    return new Ok("Ok")
+    } catch (err: unknown) {
+      return new Err(new DBOperationError(`Failed to update or create record in ${action}:`, { cause: err instanceof Error ? err.message : String(err)}));
+    } 
 }
-
 
 
 export async function dbQueryUser(userID: string): Promise<object | undefined> {
