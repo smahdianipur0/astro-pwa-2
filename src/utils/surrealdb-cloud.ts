@@ -3,6 +3,7 @@ import { type Result, Ok, Err, DBConnectionError, DBOperationError } from "./err
 import { 
   genericCreate, 
   genericUpserelate,
+  genericQuery,
   type PermittedTypes, 
   type TableName,
   type rTableName,
@@ -64,6 +65,18 @@ export async function dbCreate<T extends `${TableName}:create`>(action: T, data:
   } 
 }
 
+export async function dbquery( query: string, params: { [key: string]: any }): Promise<Result< any, DBConnectionError | DBOperationError >> {
+
+  await ensureConnected();
+  if (!db) {return new Err(new DBConnectionError("Database not connected."));}
+
+  try {
+    const res = await genericQuery(db,query, params) ;
+    return new Ok(res); 
+} catch (err: unknown) {
+    return new Err(new DBOperationError(`Failed to query in ${query}:`, { cause: err instanceof Error ? err.message : String(err)}));
+  } 
+}
 
 export async function dbUpserelate<OutTable extends TableName, InTable extends TableName, RelTable extends rTableName>(
     action: `${OutTable}:upserelate`, 
@@ -82,33 +95,6 @@ export async function dbUpserelate<OutTable extends TableName, InTable extends T
     } catch (err: unknown) {
       return new Err(new DBOperationError(`Failed to update or create record in ${action}:`, { cause: err instanceof Error ? err.message : String(err)}));
     } 
-}
-
-
-export async function dbQueryUser(userID: string): Promise<object | undefined> {
-
-  await ensureConnected();
-  if (!db) throw new Error("Database not connected.");
-
-  try {
-    console.log("Querying user with ID:", userID);
-    const getobject = await db.query(
-      'SELECT credentials FROM users WHERE UID = $UID ;',
-      { UID: userID }
-    );
-    
-    if (
-        !Array.isArray(getobject) || getobject.length === 0 || 
-        !Array.isArray(getobject[0]) || getobject[0].length === 0 || 
-        !getobject[0][0]?.credentials
-    ) {throw new Error("Invalid credential format");}
-
-    const credentialObj = getobject[0][0].credentials;
-    
-    return credentialObj;
-  } catch (err: unknown) {
-    throw new Error(`Error in dbQueryUser: ${err}`);
-  }
 }
 
 export async function dbCheckID(ID: string): Promise<object | undefined> {
@@ -145,10 +131,12 @@ export async function checkExistance(ID: string): Promise<object | undefined> {
   }
 }
 
-export async function dbQueryRole(userID: string, vaultName: string): Promise<"owner" | "viewer" | undefined> {
+export async function dbQueryRole(userID: string, vaultName: string): 
+Promise<Result< "owner" | "viewer", DBConnectionError | DBOperationError >>
+{
   
   await ensureConnected();
-  if (!db) throw new Error("Database not connected."); 
+  if (!db) {return new Err(new DBConnectionError("Database not connected."));}
 
   const vaultId = `vaults${vaultName}`;
 
@@ -173,24 +161,25 @@ export async function dbQueryRole(userID: string, vaultName: string): Promise<"o
       `,
       { UID: userID, vaultName: vaultName, vaultId:vaultId });
 
-      if (response[response.length - 1]?.status === 'OK') {
-        const result = response[response.length - 1]?.result;
-
-      if (result === "owner" || result === "viewer") {return result;}
-    
-    } else if (response[response.length - 1].status === 'ERR') {
+    if (response[response.length - 1].status === 'ERR') {
       const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
       if (errorObject) {
         console.log(String(errorObject.result));
-        throw new Error(String(errorObject.result));
+        return new Err(new DBOperationError(`Failed to query role for ${userID}:`, { cause: String(errorObject?.result) }));
       }
-      console.log("unknown error");
-      throw new Error("unknown error");
-    }
+      return new Err(new DBOperationError(`unknown error in role for ${userID}:`));
+    } else if (response[response.length - 1]?.status === 'OK') {
+        const result = response[response.length - 1]?.result;
+
+      if (result === "owner" || result === "viewer") { return new Ok(result  as "owner" | "viewer")  }
+    
+    } 
+
+    return new Err(new DBOperationError(`Unexpected result querying role for ${userID}`, {cause: response} ));
   } 
   catch (err: unknown) {
     console.log(err);
-    throw new Error(err instanceof Error ? err.message : String(err))
+     return new Err(new DBOperationError(`unknown error in role for ${userID}`, {cause:err instanceof Error ? err.message : String(err)}));
   }
 }
 

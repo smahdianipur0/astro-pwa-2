@@ -49,24 +49,12 @@ export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: string} & Sc
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
 export async function genericCreate< T extends `${TableName}:create`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<void> {
-  await db.create<PermittedTypes[T]>(action.split(":")[0], data); 
+    await db.create<PermittedTypes[T]>(action.split(":")[0], data); 
 }
 
-
-import { surrealdbWasmEngines } from "@surrealdb/wasm";
-async function getDb() {
-    const db = new Surreal({
-        engines: surrealdbWasmEngines(),
-    });
-    try {
-        await db.connect("indxdb://demo");
-        await db.use({ namespace: "hello", database: "demodb" });
-        return db;
-    } catch (err) {
-        console.error("Failed to connect to SurrealDB:", err instanceof Error ? err.message : String(err));
-        await db.close();
-        throw err;
-    }
+export async function genericQuery(db: Surreal, query: string, params: { [key: string]: any }): Promise<any> {
+    const res = await db.query(query, params) ;
+    return res; 
 }
 
 export async function genericUpserelate< OutTable extends TableName, InTable extends TableName,RelTable extends rTableName>(

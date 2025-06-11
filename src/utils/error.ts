@@ -47,7 +47,7 @@ export class AppError extends Error {
 // Specific error types for different failure domains.
 export class DBConnectionError extends AppError {}
 export class DBOperationError extends AppError {}
-export class validationError extends AppError {}
+export class ValidationError extends AppError {}
 export class AuthenticationError extends AppError {}
 export class NotFoundError extends AppError {}
 

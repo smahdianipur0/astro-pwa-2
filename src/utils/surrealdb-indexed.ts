@@ -3,6 +3,7 @@ import { surrealdbWasmEngines } from "@surrealdb/wasm";
 import { 
 	genericCreate, 
 	genericUpserelate,
+	genericQuery,
 	type PermittedTypes, 
 	type TableName,
 	type rTableName} from "./surrealdb"
@@ -200,11 +201,15 @@ export async function dbDeleteAll<T extends TableName>(tableName: T): Promise<vo
 	}
 }
 
-export async function dbquery(  query: string, params: { [key: string]: any }): Promise<any> {
+export async function dbquery( query: string, params: { [key: string]: any }): Promise<any> {
 	const db = await getDb();
+	if (!db) {
+		console.error("Database not initialized");
+		return undefined;
+	}
 	try {
-		const recs = await db.query(query, params) ;
-		return recs; 
+		const res = await genericQuery(db,query, params) ;
+		return res; 
 	} catch (err) {
 		console.error(`Query failed`, err);
 		return undefined;

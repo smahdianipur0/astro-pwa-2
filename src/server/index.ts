@@ -1,11 +1,11 @@
 import { initTRPC } from "@trpc/server";
 import { TRPCError } from '@trpc/server';
 import superjson from "superjson";
-import { type Result, Ok, Err, handleTRPCError } from "../utils/error"
+import { type Result, Ok, Err, handleTRPCError, AuthenticationError,ValidationError } from "../utils/error"
 import type { Context } from "./context.ts";
 import {z} from "zod"
 import { 
-    dbQueryUser, 
+    dbquery,
     dbReadVault, 
     dbQueryRole,
     dbUpserelate,
@@ -69,17 +69,23 @@ export const appRouter = router({
     authenticate: t.procedure
         .input(authenticationInputSchema)
         .mutation(async ({ input }) => {
-            
-            try {
-                const {authenticationParsed, credentialObj} = await verifyAuthentication(input.authenticationData, input.challenge)
-             
-                return {
-                    message: authenticationParsed.userVerified ? "Authentication successful" : "Authentication failed",
-                    authenticated: authenticationParsed.userVerified,
-                    credentialId: credentialObj.id
-                };
-                    
-            } catch (error) { throw new Error(`Authentication verification error: ${error}`);}
+
+            const result = await verifyAuthentication(input.authenticationData, input.challenge);
+
+            if(result.err) {handleTRPCError(result.value)}
+
+            const { authenticationParsed, credentialObj } = result.value;
+
+            if(!authenticationParsed.userVerified) {
+              throw new TRPCError({code: 'UNAUTHORIZED',message: "Authentication failed"});
+            }
+
+            return {
+                message: "Authentication successful",
+                authenticated: true,
+                credentialId: credentialObj.id
+            }; 
+
         }),        
 
     greet: t.procedure
@@ -96,45 +102,43 @@ export const appRouter = router({
     syncvaults : t.procedure
         .input(syncVaultsSchema)
         .mutation(async ({ input }) => {
-            console.log("Authentication request received:", input.authenticationData.id);
             
-            try {
-                const {authenticationParsed, credentialObj} = await verifyAuthentication(input.authenticationData, input.challenge);
- 
-                const rolePromises = (input.vaults as ReadAllResultTypes["Vaults"]).map(async entry => {
-                  try {
-                    const dbRole = await dbQueryRole(credentialObj.id, entry.id as string);
-                    return { ...entry, role: dbRole };
-                  } catch (err) {
-                    throw new Error(`Failed to fetch role for item ${entry.id}: ${err}`);
-                  }
+            const result = await verifyAuthentication(input.authenticationData, input.challenge);
+
+            if(result.err){handleTRPCError(result.value)}
+
+            const { authenticationParsed, credentialObj } = result.value;
+
+            if(!authenticationParsed.userVerified) {
+                  throw new TRPCError({code: 'UNAUTHORIZED',message: "Authentication failed"});
+            }
+
+            const rolePromises = (input.vaults as ReadAllResultTypes["Vaults"]).map(async entry => {
+
+                const dbRole = await dbQueryRole(credentialObj.id, entry.id as string);
+                if(dbRole.err){handleTRPCError(result.value)}
+                return { ...entry, role: dbRole.value }
+            });
+
+            const reconciledRoles = await Promise.all(rolePromises);
+
+            reconciledRoles.filter(entry => entry.role === "owner").map(async entry => {
+                const result = await dbUpserelate("Vaults:upserelate", `Vaults:${credentialObj.id}->Vaults_has`, {
+                    id: entry.id?.split(":")[1] ?? "",
+                    name: entry.name,
+                    status: entry.status,
+                    updatedAt: entry.updatedAt,
+                },{
+                    role: entry.role
                 });
 
-                const reconciledRoles = await Promise.all(rolePromises);
+                if(result.err){handleTRPCError(result.value)}
+            });
 
-                const upsertPromises = reconciledRoles.filter(entry => entry.role === "owner").map(async entry => {
-                    const result = await dbUpserelate("Vaults:upserelate", `Vaults:${credentialObj.id}->Vaults_has`, {
-                        id: entry.id?.split(":")[1] ?? "",
-                        name: entry.name,
-                        status: entry.status,
-                        updatedAt: entry.updatedAt,
-                    },{
-                        role: entry.role
-                    });
-                    return { id: entry.id, result };
-                });
-
-                const upsertResults = await Promise.all(upsertPromises);
-
-                for (const { id, result } of upsertResults) {
-                  // if (result !== "OK") { throw new Error(`Failed to update vault ${id}: ${result}`)}
-                }
-                return {
-                  message: "Sync successful",
-                  credentialId: credentialObj.id,
-                };
-
-            } catch (error) { throw new Error(`Authentication verification error: ${error}`);}
+            return {
+              message: "Sync successful",
+              credentialId: credentialObj.id,
+            };
         }),   
 
     dbquery: t.procedure
@@ -155,13 +159,26 @@ type AuthenticationData = z.infer<typeof authenticationInputSchema>['authenticat
 type CredentialObj = z.infer<typeof credentialSchema>;
 
 async function verifyAuthentication(authenticationData: AuthenticationData,challenge: string): 
-Promise<{ authenticationParsed: Awaited<ReturnType<typeof server.verifyAuthentication>>; credentialObj: CredentialObj }> {
-  const dbResult = await dbQueryUser(authenticationData.id);
+ Promise<Result<{ authenticationParsed: Awaited<ReturnType<typeof server.verifyAuthentication>>; credentialObj: CredentialObj }, ValidationError | AuthenticationError>> {
 
-  const parsedCredential = credentialSchema.safeParse(dbResult);
-  if (!parsedCredential.success) {
-    throw new Error("Credential does not match expected schema");
-  }
+    const dbResult = await dbquery(
+      'SELECT credentials FROM users WHERE UID = $UID ;',
+      { UID: authenticationData.id }
+    );
+    if (dbResult.err) {return dbResult}
+
+    if (
+        !Array.isArray(dbResult.value) || dbResult.value.length === 0 || 
+        !Array.isArray(dbResult.value[0]) || dbResult.value[0].length === 0 || 
+        !dbResult.value[0][0]?.credentials
+    ) { return new Err(new AuthenticationError("Invalid credential format" ))}
+
+    const dbcredentialObj = dbResult.value[0][0].credentials;
+    const parsedCredential = credentialSchema.safeParse(dbcredentialObj);
+
+    if (!parsedCredential.success) {
+    return new Err(new ValidationError("Credential does not match expected schema", {cause: parsedCredential.error } ))
+    }
 
   const credentialObj = parsedCredential.data;
 
@@ -177,8 +194,8 @@ Promise<{ authenticationParsed: Awaited<ReturnType<typeof server.verifyAuthentic
       throw new Error("Authentication failed");
     }
   } catch (verifyError) {
-    throw new Error(`Authentication verification error: ${verifyError}`);
+    return new Err(new AuthenticationError("Invalid credential format", {cause:`${verifyError}`} ))
   }
 
-  return { authenticationParsed, credentialObj };
+  return new Ok({ authenticationParsed, credentialObj });
 }
