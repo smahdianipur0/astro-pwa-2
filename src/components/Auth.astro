@@ -45,7 +45,7 @@ function updateSucceededAuth() {
 
     const fragment = document.createDocumentFragment();
 
-    fragment.append( el.c('p', {  className: 'hint', style: 'margin-top: 0;',append: [
+    fragment.append( el.c('small', { style: 'margin-top: 0;',append: [
         el.c('span', { textContent: "device registered." })
     ]}));
 
@@ -77,7 +77,7 @@ function updateSucceededAuth() {
                 ]
             }),
 
-            el.c('p', { className: 'hint', style: 'margin-top: 0;', append: [
+            el.c('small', { style: 'margin-top: 0;', append: [
 
                 el.c('span', { textContent: 'Allready Signed Up ? ' }),
                 el.c('button', {

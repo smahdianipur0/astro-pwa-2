@@ -293,6 +293,14 @@
   font-weight: 500
 }
 
+.prose :where(small):not(:where([class~=not-prose],[class~=not-prose] *)) {
+  display: block;
+  color: oklch(var(--gray-75));
+  font-size:var(--font-sm1);
+  line-height: var(--size-sm3); 
+  font-weight: 300; 
+}
+
 .prose :where(strong):not(:where([class~=not-prose],[class~=not-prose] *)) {
   color: oklch(var(--gray-85) );
   font-weight: 600

@@ -15,8 +15,7 @@ import { tempList } from "../logic/tempList.ts"
     const fragment = document.createDocumentFragment();
 
     if (value.length === 0){
-      fragment.append(el.c("p", {textContent: "No records found", 
-        className:"hint",
+      fragment.append(el.c("small", {textContent: "No records found", 
         style:"padding-block:var(--size-sm3)" }));
     } else {
     
@@ -24,22 +23,22 @@ import { tempList } from "../logic/tempList.ts"
     .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
     .forEach((entry) => {
       fragment.append(
-        el.c('div', { className: 'entry-item',append: [
+        el.c('div', { className: 'entry-item ',append: [
           el.c('div', { append: [
 
-            el.c('p', { className: 'hint ellipsis',
+            el.c('small', { className: 'ellipsis',
               style: "width:var(--size-xl2)",
               textContent: entry.title || 'untitled'}),
 
-            el.c('button', { dataset: {action: 'copy'},
-              className: 'ellipsis',
+            el.c('button', {  dataset: {action: 'copy'},
+              className: 'not-prose ellipsis',
               style:"text-align: start; width:var(--size-xl2);",
               id: entry.password ?? '',
               textContent: entry.password ?? ''})
 
           ]}),
 
-          el.c('div', { className: 's-container',append: [
+          el.c('div', { className: 'not-prose s-container',append: [
             el.c('details', {
               name: 'delete-item',
               className: 'right-to-left',
@@ -91,7 +90,7 @@ import { tempList } from "../logic/tempList.ts"
           (document.getElementById("restore-list") as HTMLDialogElement).textContent = "";
           (document.getElementById("restore-list") as HTMLDialogElement)!.append(
 
-            el.c('p', { className: 'hint', style:"margin:0",
+            el.c('small', { style:"margin:0",
               id: entry.crreatedAt ?? '',
               textContent: entry.title || 'untitled'}),
 

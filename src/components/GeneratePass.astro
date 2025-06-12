@@ -39,12 +39,11 @@ import TempList from '../components/TempList.astro';
                 </div>
             </div>
 
-            <p 
+            <small 
                 id="ttc" 
-                class="hint" 
                 style="margin-top: calc(var(--size-sm0) * -1);
-                margin-bottom: var(--size-md4);"> 
-                tap to copy </p>
+                margin-bottom: var(--size-md4);"
+                > tap to copy </small>  
 
             <CharactersCount />
             <div style="border-bottom: 1px solid oklch(var(--gray-25) / 1);" ></div>
@@ -108,10 +107,10 @@ import TempList from '../components/TempList.astro';
             <div style="width:var(--size-xl1);" class="skeleton"> </div>
         </button>
 
-        <button 
+        <small 
             id="encrypted-pass-copy" 
-            class="hint not-prose" 
-            style="display: block;"></button>
+            class="not-prose" 
+            style="display: block;"></small>
 
     </details>
 </fieldset>
