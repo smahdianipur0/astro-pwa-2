@@ -249,7 +249,7 @@ window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => 
     const name = ( data.get("select card") === "New Card") ? data.get("new card") as string : data.get("select card") as string ; 
     const vault = (data.get("select vault") as string);
 
-    dbUpserelate("Cards:upserelate", `Vaults:${vault}->Vaults_has`, {
+    dbUpserelate("Cards:upserelate", `Vaults:${vault}->Contain`, {
         id:id, 
         name:name, 
         status:"available", 

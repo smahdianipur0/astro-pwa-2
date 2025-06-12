@@ -227,13 +227,13 @@ indexedArray.forEach(async (entry) => {
 	const CardId = entry.id?.toString();
 	if (!CardId)return
 	const cards = await dbquery(
-		`SELECT <-Vaults_has<-Vaults FROM (type::thing($card));`,
+		`SELECT <-Contain<-Vaults FROM (type::thing($card));`,
 		{card: CardId}
 	);
 
-	cardDetail.push({vault:cards[0][0]["<-Vaults_has"]["<-Vaults"][0].id, ...entry})
+	cardDetail.push({vault:cards[0][0]["<-Contain"]["<-Vaults"][0].id, ...entry})
 });
 
 // console.log(cardDetail);
-// console.log(await dbReadAll("Vaults_has") )
+// console.log(await dbReadAll("Contain") )
 

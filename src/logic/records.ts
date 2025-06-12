@@ -20,7 +20,7 @@ export const records = createStore({
     	async updateVaultsList () { this.set('vaultsList', await dbReadAll("Vaults") ?? []) },
     	async updateCardsList ()  { 
     		if (this.get("selectedVault") !== "") { this.set('cardsList', await dbReadRelation(
-    			`Vaults:${this.get("selectedVault")}`, "Vaults_has", "Cards"
+    			`Vaults:${this.get("selectedVault")}`, "Contain", "Cards"
     			) ?? []!) 
     		}
     	},

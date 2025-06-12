@@ -6,7 +6,6 @@ import type { Context } from "./context.ts";
 import {z} from "zod"
 import { 
     dbquery,
-    dbReadVault, 
     dbQueryRole,
     dbUpserelate,
     type ReadAllResultTypes,
@@ -96,8 +95,15 @@ export const appRouter = router({
     queryVaults : t.procedure
         .input(UID)
         .query(async({ input }) => { 
-            return await dbReadVault(input.UID)
-         }),
+            const dbResult = await dbquery(`
+                LET $user = (SELECT id FROM users WHERE UID = $UID);
+                SELECT out.* FROM has_vault WHERE in = $user[0].id ;`,
+                { UID: input.UID }
+              );
+            if (dbResult.err) {return handleTRPCError(dbResult.value)}
+
+            return dbResult.value
+            }),
 
     syncvaults : t.procedure
         .input(syncVaultsSchema)
@@ -123,7 +129,7 @@ export const appRouter = router({
             const reconciledRoles = await Promise.all(rolePromises);
 
             reconciledRoles.filter(entry => entry.role === "owner").map(async entry => {
-                const result = await dbUpserelate("Vaults:upserelate", `Vaults:${credentialObj.id}->Vaults_has`, {
+                const result = await dbUpserelate("Vaults:upserelate", `Vaults:${credentialObj.id}->Access`, {
                     id: entry.id?.split(":")[1] ?? "",
                     name: entry.name,
                     status: entry.status,

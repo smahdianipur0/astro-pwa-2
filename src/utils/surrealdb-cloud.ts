@@ -34,22 +34,7 @@ async function ensureConnected() {
       throw err;
     });
   }
-  return connectPromise!;
-}
-
-
-export type Credentials = {
-  UID: string;
-  credentials: object;
-  vaultCount: number;
-  cardCount: number;
-};
-
-export type hasVault = {
-  id: string;
-  in: string;
-  out: string;
-  role: string;
+  return connectPromise;
 }
 
 export async function dbCreate<T extends `${TableName}:create`>(action: T, data: PermittedTypes[T]): Promise<Result< string, DBConnectionError | DBOperationError >> {
@@ -93,7 +78,7 @@ export async function dbUpserelate<OutTable extends TableName, InTable extends T
     await genericUpserelate(db,action, ...args)
     return new Ok("Ok")
     } catch (err: unknown) {
-      return new Err(new DBOperationError(`Failed to update or create record in ${action}:`, { cause: err instanceof Error ? err.message : String(err)}));
+      return new Err(new DBOperationError(`Failed to update or create record in ${action} for ${args[1]}:`, { cause: err instanceof Error ? err.message : String(err)}));
     } 
 }
 
@@ -131,58 +116,55 @@ export async function checkExistance(ID: string): Promise<object | undefined> {
   }
 }
 
-export async function dbQueryRole(userID: string, vaultName: string): 
-Promise<Result< "owner" | "viewer", DBConnectionError | DBOperationError >>
-{
+
+export async function dbQueryRole(userID: string,vaultName: string,)
+: Promise<Result<"owner" | "viewer", DBConnectionError | DBOperationError>> {
+    await ensureConnected();
+
+    if (!db) {return new Err(new DBConnectionError("Database not connected.")) }
   
-  await ensureConnected();
-  if (!db) {return new Err(new DBConnectionError("Database not connected."));}
-
-  const vaultId = `vaults${vaultName}`;
-
-  try {
+    const vaultId = `vaults${vaultName}`;
+  
     const response = await db.query_raw(`
-      BEGIN TRANSACTION;
-
-      LET $user = (SELECT id FROM users WHERE UID = $UID);
-      LET $vault = (SELECT id FROM vaults WHERE name = $vaultName);
-      LET $role = SELECT role FROM has_vault WHERE in = $user[0].id AND out = $vault[0].id ;
-
-
-      IF $role[0].role = 'owner' { RETURN 'owner' }
-      ELSE IF $role[0].role = 'viewer' { RETURN'viewer' }
-      ELSE {
-        IF record::exists(type::thing({$vaultId})) {
-          RETURN "viewer"
-          } ELSE { RETURN 'owner'};  
-      };
-
-      COMMIT TRANSACTION;
-      `,
-      { UID: userID, vaultName: vaultName, vaultId:vaultId });
-
-    if (response[response.length - 1].status === 'ERR') {
-      const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
-      if (errorObject) {
-        console.log(String(errorObject.result));
-        return new Err(new DBOperationError(`Failed to query role for ${userID}:`, { cause: String(errorObject?.result) }));
+        BEGIN TRANSACTION;
+  
+        LET $user = (SELECT id FROM users WHERE UID = $UID);
+        LET $vault = (SELECT id FROM vaults WHERE name = $vaultName);
+        LET $role = SELECT role FROM has_vault WHERE in = $user[0].id AND out = $vault[0].id ;
+  
+  
+        IF $role[0].role = 'owner' { RETURN 'owner' }
+        ELSE IF $role[0].role = 'viewer' { RETURN'viewer' }
+        ELSE {
+          IF record::exists(type::thing({$vaultId})) {
+            RETURN "viewer"
+            } ELSE { RETURN 'owner'};  
+        };
+  
+        COMMIT TRANSACTION;`,
+      { UID: userID, vaultName: vaultName, vaultId: vaultId },
+    );
+  
+    if (response[response.length - 1].status === "ERR") {
+        const errorObject = response.find(
+          (item) => item.result !== "The query was not executed due to a failed transaction",
+        );
+        if (errorObject) {
+          return new Err(new DBOperationError(`Failed to query role for ${userID}:`, { cause: errorObject }));
+        }
+    }
+    if (response[response.length - 1]?.status === "OK") {
+      const result = response[response.length - 1]?.result;
+      if (result === "owner" || result === "viewer") {
+        return new Ok(result as "owner" | "viewer");
       }
-      return new Err(new DBOperationError(`unknown error in role for ${userID}:`));
-    } else if (response[response.length - 1]?.status === 'OK') {
-        const result = response[response.length - 1]?.result;
+      if (result === undefined) {
+        return new Err(new DBOperationError("No Relations Found"));
+      }
+    }
 
-      if (result === "owner" || result === "viewer") { return new Ok(result  as "owner" | "viewer")  }
-    
-    } 
-
-    return new Err(new DBOperationError(`Unexpected result querying role for ${userID}`, {cause: response} ));
-  } 
-  catch (err: unknown) {
-    console.log(err);
-     return new Err(new DBOperationError(`unknown error in role for ${userID}`, {cause:err instanceof Error ? err.message : String(err)}));
-  }
+  return new Err(new DBOperationError(`Unexpected result querying role for ${userID}`, { cause: response }));
 }
-
 
 
 export async function dbRelateVault(userID: string,vaultName: string ): Promise<object | undefined> {
@@ -218,39 +200,6 @@ export async function dbRelateVault(userID: string,vaultName: string ): Promise<
     if (response[response.length - 1].status === 'OK') {
       console.log()
       return{message : "ok"}
-    } else if (response[response.length - 1].status === 'ERR') {
-      const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
-      if (errorObject) {
-        console.log(String(errorObject.result));
-        throw new Error(String(errorObject.result));
-      }
-      console.log("unknown error");
-      throw new Error("unknown error");
-    }
-  } 
-  catch (err: unknown) {
-    console.log(err);
-    throw new Error(err instanceof Error ? err.message : String(err))
-  }
-}
-
-export async function dbReadVault(userID: string ): Promise<object | undefined> {
-  
-  await ensureConnected();
-  if (!db) throw new Error("Database not connected.")
-
-    try {
-      const response = await db.query_raw<hasVault[]>(`
-        
-        LET $user = (SELECT id FROM users WHERE UID = $UID);
-        SELECT out.* FROM has_vault WHERE in = $user[0].id ;
-      `,
-        { UID: userID }
-      );
-      console.log(response);
-      if (response[response.length - 1].status === 'OK') {
-      console.log(response[1].result);
-      return{message : response[1].result}
     } else if (response[response.length - 1].status === 'ERR') {
       const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
       if (errorObject) {

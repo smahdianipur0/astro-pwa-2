@@ -16,11 +16,11 @@ export type Schemas = {
 };
 
 
-export type rTableName = "Vaults_has" | "vaults_has";
+export type rTableName = "Access" | "Contain";
 
 export type rSchemas = {
-    Vaults_has : {in: string,  role?: "owner" | "viewer"},
-    vaults_has : {in: string,  role: "owner" | "viewer"}
+    Access : {role: "owner" | "viewer"},
+    Contain : { },
 };
 
 // Generate CRUD types for all tables
@@ -37,7 +37,7 @@ export type PermittedTypes = {
                 [K_RelTable in rTableName]: [
                     relationString: `${K_InTable & string}:${string}->${K_RelTable & string}`,
                     outRecordData: prettify<{ id: string } & Partial<Schemas[K_OutTable]>>,
-                    relationData: prettify<Omit<Partial<rSchemas[K_RelTable]>, 'in'>>
+                    relationData: prettify<rSchemas[K_RelTable]>
                 ];
             }[rTableName];
         }[TableName];
@@ -72,7 +72,7 @@ export async function genericUpserelate< OutTable extends TableName, InTable ext
 
 
     const { id: outRecordId, ...outRecordValues } = outRecordData;
-    const fullOutRecordId = `${action.split(":")[0] as OutTable}:${outRecordId}`; // Or just use OutTable directly
+    const fullOutRecordId = `${action.split(":")[0] as OutTable}:${outRecordId}`; 
 
     const [inRecordIdWithTable, rTableFromString] = relationString.split("->");
 
