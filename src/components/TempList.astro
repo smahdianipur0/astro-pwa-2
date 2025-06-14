@@ -1,5 +1,4 @@
 ---
-import Dialog from "../components/ui/Dialog.astro"
 import RecentDelPass from "../components/RecentDelPass.astro"
 import Drawer from '../components/ui/Drawer.tsx';
 ---
@@ -15,7 +14,7 @@ style="width: var(--size-md1);border-radius: 100px;">
             </svg>
         </fragment>
 
-        <fragment slot="content">
+        <fragment slot="content" class="prose">
 
             <div data-corvu-no-drag class="prose drawer-content" >
 
@@ -98,30 +97,31 @@ style="width: var(--size-md1);border-radius: 100px;">
 
             </div>
 
-            <Dialog identifier="edit-temp-list-dialog">
+            <dialog id="edit-temp-list-dialog" class="prose">
+                <form method="dialog">
 
-                <h3 style="margin-top: 0;">Edit Item</h3>
+                    <h3 style="margin-top: 0;">Edit Item</h3>
 
-                <input 
-                    type="text" 
-                    name="title"  
-                    class="input-group-top" 
-                    placeholder="Title" 
-                    id="updating-temp-title-input"/>
+                    <input 
+                        type="text" 
+                        name="title"  
+                        class="input-group-top" 
+                        placeholder="Title" 
+                        id="updating-temp-title-input"/>
 
-                <input 
-                    type="text" 
-                    name="Password" 
-                    class="input-group-bottom" 
-                    placeholder="Password" 
-                    id="updating-temp-pass-input"/>
+                    <input 
+                        type="text" 
+                        name="Password" 
+                        class="input-group-bottom" 
+                        placeholder="Password" 
+                        id="updating-temp-pass-input"/>
 
-                <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">           
-                  <button class="unstyle-button not-prose max-width" >Cancel</button>
-                  <button class="max-width" id="update-temp-list-entry">Update</button>  
-                </div>
-
-            </Dialog>
+                    <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">           
+                      <button class="unstyle-button not-prose max-width" >Cancel</button>
+                      <button class="max-width" id="update-temp-list-entry">Update</button>  
+                    </div>
+                </form>
+            </dialog>
         </fragment>      
     </Drawer>
 </div>

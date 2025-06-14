@@ -1,6 +1,5 @@
 ---
 import DrawerFromRight from './ui/DrawerFromRght';
-import Dialog from "../components/ui/Dialog.astro"
 ---
 
 <div class="max-width flex-center-childs not-prose"style="margin-bottom: var(--size-md2);">
@@ -13,7 +12,7 @@ import Dialog from "../components/ui/Dialog.astro"
             </div>
         </fragment>
 
-        <fragment slot="content">
+        <fragment slot="content" class="prose">
 
             <div 
             data-corvu-no-drag 
@@ -31,29 +30,31 @@ import Dialog from "../components/ui/Dialog.astro"
                 </fieldset>
             </div> 
 
-            <Dialog identifier="restore-dialog">
+            <dialog id="restore-dialog">
+                <form method="dialog">           
 
-                <h3 style="margin-top: 0;">Restore Item</h3>
+                    <h3 style="margin-top: 0;">Restore Item</h3>
 
-                <div 
-                    id="restore-list"
-                    style="display: flex;
-                    flex-direction: column;
-                    align-items: flex-start;
-                    background: oklch(var(--gray-10) / 20%);
-                    border-radius: var(--radius-a);
-                    padding: var(--size-sm1);"></div>
+                    <div 
+                        id="restore-list"
+                        style="display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        background: oklch(var(--gray-10) / 20%);
+                        border-radius: var(--radius-a);
+                        padding: var(--size-sm1);"></div>
 
-                <div 
-                    class="flex-center-childs" 
-                    style="gap:var(--size-sm0);
-                    margin-top:var(--size-sm3);">
+                    <div 
+                        class="flex-center-childs" 
+                        style="gap:var(--size-sm0);
+                        margin-top:var(--size-sm3);">
+                      
+                      <button class="unstyle-button not-prose max-width" >Cancel</button>
+                      <button class="max-width" id="confirm-restore">Restore</button>
                   
-                  <button class="unstyle-button not-prose max-width" >Cancel</button>
-                  <button class="max-width" id="confirm-restore">Restore</button>
-              
-                </div>
-            </Dialog>
+                    </div>
+                </form>
+            </dialog>
         </fragment>
     </DrawerFromRight>
 </div>

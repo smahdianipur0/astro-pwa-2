@@ -282,6 +282,22 @@
   animation: details-show 100ms ease-in-out;
 }
 
+.prose :where(dialog):not(:where([class~=not-prose],[class~=not-prose] *)) {
+  width: -moz-available;
+  width: -webkit-fill-available;
+  margin: auto;
+  max-width:min(350px, 100%);
+  padding: var(--size-sm3);
+  border-radius: var(--radius-b);
+  place-content:center;
+  background: oklch(var(--gray-15) / 0.85);
+}
+
+.prose :where(form):not(:where([class~=not-prose],[class~=not-prose] *)) {
+  display:flex; 
+  flex-direction:column;
+}
+
 .prose :where(p):not(:where([class~=not-prose],[class~=not-prose] *)) {
   margin-top: var(--size-sm3);
   margin-bottom: var(--size-sm3)
@@ -732,12 +748,3 @@
   margin-top: var(--size-md2);
   margin-bottom: var(--size-md2)
 }
-
-.prose :where(.prose>:first-child):not(:where([class~=not-prose],[class~=not-prose] *)) {
-  margin-top: 0
-}
-
-.prose :where(.prose>:last-child):not(:where([class~=not-prose],[class~=not-prose] *)) {
-  margin-bottom: 0
-}
-

@@ -1,6 +1,5 @@
 ---
 import Menu from './ui/Menu.tsx';
-import Dialog from './ui/Dialog.astro';
 ---
 
 <div class="flex-spread-childs" style="padding-block: var(--size-sm0);">
@@ -36,33 +35,37 @@ import Dialog from './ui/Dialog.astro';
 </div>
 
 
-<Dialog identifier= 'create-vault-dialog'>
+<dialog id="create-vault-dialog" class="prose">
+    <form method="dialog">
 
-    <h3 style="margin-top: 0;">Create vault</h3>
+        <h3 style="margin-top: 0;">Create vault</h3>
 
-    <small id="vault-hint"></small>
+        <small id="vault-hint"></small>
 
-    <input type="text" name="vault-name" id="vault-name-input">
+        <input type="text" name="vault-name" id="vault-name-input">
 
-    <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">
-        <button class="unstyle-button not-prose max-width" >Cancel</button>
-        <button class="max-width" id="create-vault-button" disabled>Create</button>
-    </div>
+        <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">
+            <button class="unstyle-button not-prose max-width" >Cancel</button>
+            <button class="max-width" id="create-vault-button" disabled>Create</button>
+        </div>
+    </form>
+</dialog>
 
-</Dialog> 
 
-<Dialog identifier= 'delete-vault-dialog'>
+<dialog id="delete-vault-dialog" class="prose">
+    <form method="dialog">
 
-    <h3 style="margin-top: 0;">Delete vault</h3>
+        <h3 style="margin-top: 0;">Delete vault</h3>
 
-    <select name="delete vaults" class="max-width prose" id="delete-vault-list" > </select>
+        <select name="delete vaults" class="max-width prose" id="delete-vault-list" > </select>
 
-    <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);"> 
-        <button class="unstyle-button not-prose max-width" >Cancel</button>
-        <button class="max-width" id="delete-vault-button" style="--primary:62.31% 0.246 27" disabled>Delete</button>
-    </div>
+        <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);"> 
+            <button class="unstyle-button not-prose max-width" >Cancel</button>
+            <button class="max-width" id="delete-vault-button" style="--primary:62.31% 0.246 27" disabled>Delete</button>
+        </div>
 
-</Dialog>
+    </form>
+</dialog>
 
 
 <script>
