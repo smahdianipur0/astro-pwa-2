@@ -138,7 +138,7 @@ dialog!.addEventListener("input",(e)=>{
     };
 });
 
-// change the selcted valuts and card creation dialog when valut select elment value changes
+// mirror selectedVault
 records.on(["selectedVault"], ({value}) => { (async () => {
     if(value !== undefined) {
         const selected = await getEntryById("Vaults", `Vaults:${value}`);
@@ -148,15 +148,15 @@ records.on(["selectedVault"], ({value}) => { (async () => {
         }
 })()});
 
+//update vault options and Sselected Ccard
 records.on(["vaultsList"], ({value}) => {
-    // append options
     const cardVaultlist = document.getElementById("AddCardDialog-vault") as HTMLSelectElement
     cardVaultlist.textContent = "";
 
     const fragment = document.createDocumentFragment();
 
     if (records.get("editableVaultList").length !== 0){
-         (records.get("editableVaultList") ?? [])
+         (records.get("editableVaultList"))
          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
          .forEach((entry) => {
             fragment.append( el.c("option", {textContent:entry.name, id:entry.id}));
@@ -242,8 +242,8 @@ window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => 
     const selectElement = document.getElementById("AddCardDialog-card-select") as HTMLSelectElement;
     const selectedOptionId = selectElement.options[selectElement.selectedIndex].id;
 
-    const id   = ( data.get("select card") === "New Card") ? nanoid() : selectedOptionId;
-    const name = ( data.get("select card") === "New Card") ? data.get("new card") as string : data.get("select card") as string ; 
+    const id    = ( data.get("select card") === "New Card") ? nanoid() : selectedOptionId;
+    const name  = ( data.get("select card") === "New Card") ? data.get("new card") as string : data.get("select card") as string ; 
     const vault = (data.get("select vault") as string);
 
     dbUpserelate("Cards:upserelate", `Vaults:${vault}->Contain`, {
@@ -257,29 +257,19 @@ window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => 
     return true;
 };
 
-
-
 // reset the form on close
 dialog.addEventListener('close', () => {
     const cardInput = document.getElementById("AddCardDialog-card-input") as HTMLInputElement;
     if (cardInput) { cardInput.value = "" }
    
-    const textareas = document.querySelectorAll<HTMLTextAreaElement>('textarea[name="comments"]');
-    if (textareas.length > 1) {
-      const first = textareas[0];
+    const comments = Array.from(
+    document.querySelectorAll<HTMLTextAreaElement>('textarea[name="comments"]')
+    );
+    if (comments.length === 0) return;
 
-
-      for (let i = 1; i < textareas.length; i++) {
-        const textarea = textareas[i];
-        textarea.parentElement?.removeChild(textarea);
-      }
-
-      first.value = "";
-    } else if (textareas.length === 1) {
-      textareas[0].value = "";
-    }
+    const [first, ...rest] = comments;
+    first.value = '';
+    rest.forEach(textarea => textarea.remove());
  });
 
-// await dbReadRelation("Vaults:test3", "Vaults_has", "Cards")
-  
 </script>

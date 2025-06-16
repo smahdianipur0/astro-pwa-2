@@ -1,4 +1,4 @@
-<fieldset class="box-shadow" id="emails" >
+<fieldset class="box-shadow" id="Emails" >
     <legend>Frequently Used Emails</legend>
 
     <div
@@ -9,13 +9,13 @@
 
         <input
             autocomplete="off"
-            id="email_entry"
+            id="Email-input"
             type="text"
             style="width: 100%;"
             placeholder="Email" />
 
         <button 
-            id="add_email" 
+            id="Email-add" 
             style="width: fit-content; 
             white-space: nowrap;" disabled > 
             Add</button>
@@ -23,7 +23,7 @@
 
     <div
         class="entries-list not-prose"
-        id="emails-list"
+        id="Email-list"
         style="padding-top: var(--size-sm3); height: 100%;">
 
         <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
@@ -72,34 +72,40 @@
 
 <script>
 
-import { createSignal, createEffect } from 'solid-js';
 import { dbCreate, dbReadAll, dbDelete , type ReadAllResultTypes} from "../utils/surrealdb-indexed";
 import { el } from "../utils/elementUtils";
 import { showToast } from "../logic/misc.ts";
+import { createStore } from "../utils/state";
 
-const [emailEntery, setEmailEntery] = createSignal("");
-const [emailList, setEmaillist] = createSignal<ReadAllResultTypes["Emails"]>([]);
+const email = createStore({
+    state: { 
+        emailInput: "" ,
+        emailList: ([]) as ReadAllResultTypes["Emails"] | [],
+    },
+    methods: {
+        setEmailInput(value: string) { this.set('emailInput', value); },
+        async updateEmailList(){this.set('emailList',await dbReadAll("Emails") ?? []) }
+    }, 
+});
 
 
-document.getElementById("emails")!.addEventListener("input",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#email_entry")){
+document.getElementById("Emails")!.addEventListener("input",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#Email-input")){
        const value = (e!.target as HTMLInputElement).value;
-       setEmailEntery(value.toString());
-       if(emailEntery() === "") {
-        (document.getElementById("add_email")! as HTMLInputElement).disabled  = true;  
+       email.setEmailInput(value.toString());
+       if(email.get("emailInput") === "") {
+        (document.getElementById("Email-add")! as HTMLInputElement).disabled  = true;  
          } else {
-        (document.getElementById("add_email")! as HTMLInputElement).disabled  = false; 
+        (document.getElementById("Email-add")! as HTMLInputElement).disabled  = false; 
      } 
     }
 });
 
-
-
-document.getElementById("emails")!.addEventListener("click", (e) => {
-  if ((e!.target as HTMLInputElement).matches("#add_email")) {
+document.getElementById("Emails")!.addEventListener("click", (e) => {
+  if ((e!.target as HTMLInputElement).matches("#Email-add")) {
     (async () => {
-      await dbCreate("Emails:create", {email:emailEntery(), crreatedAt: new Date().toISOString()})
-      setEmaillist((await dbReadAll("Emails") ) ?? []);
+      await dbCreate("Emails:create", {email:email.get("emailInput"), crreatedAt: new Date().toISOString()})
+      email.updateEmailList()
     })();
   }
 
@@ -107,7 +113,7 @@ document.getElementById("emails")!.addEventListener("click", (e) => {
   if (deleteButton) {
     (async () => {
       await dbDelete(deleteButton.id);
-      setEmaillist((await dbReadAll("Emails") ) ?? []);
+      email.updateEmailList()
     })();
   }
 
@@ -120,17 +126,14 @@ document.getElementById("emails")!.addEventListener("click", (e) => {
   }
 });
 
-
-setEmaillist((await dbReadAll("Emails") ) ?? []);
-
-createEffect(() => {
-  setEmailEntery("");
-  (document.getElementById("email_entry") as HTMLInputElement).value = "";
-  (document.getElementById("add_email") as HTMLInputElement).disabled = true;
-  document.getElementById("emails-list")!.textContent = '';
+email.on(["emailList"], ({value}) => {  
+  email.setEmailInput("");
+  (document.getElementById("Email-input") as HTMLInputElement).value = "";
+  (document.getElementById("Email-add") as HTMLInputElement).disabled = true;
+  document.getElementById("Email-list")!.textContent = '';
   const fragment = document.createDocumentFragment();
   
-  (emailList() ?? [])
+  (value ?? [])
   .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
   .forEach((entry) => {
     fragment.append(
@@ -161,16 +164,15 @@ createEffect(() => {
     );
   });
   
-  document.getElementById("emails-list")!.append(fragment);
+  document.getElementById("Email-list")!.append(fragment);
 });
 
+email.updateEmailList()
 </script>
 
 <style is:global>
 
-
-
-#emails-list > :last-child::after {
+#Email-list > :last-child::after {
   content: 'tap on email to copy';
   position: absolute;
   bottom: 0;

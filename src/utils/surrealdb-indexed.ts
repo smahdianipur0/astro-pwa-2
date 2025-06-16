@@ -219,20 +219,20 @@ export async function dbquery( query: string, params: { [key: string]: any }): P
 }
 
 
-const indexedArray = await dbReadAll("Cards") as ReadAllResultTypes["Cards"] ;
+// const indexedArray = await dbReadAll("Cards") as ReadAllResultTypes["Cards"] ;
 
-let cardDetail:object[] = [];
+// let cardDetail:object[] = [];
 
-indexedArray.forEach(async (entry) => {
-	const CardId = entry.id?.toString();
-	if (!CardId)return
-	const cards = await dbquery(
-		`SELECT <-Contain<-Vaults FROM (type::thing($card));`,
-		{card: CardId}
-	);
+// indexedArray.forEach(async (entry) => {
+// 	const CardId = entry.id?.toString();
+// 	if (!CardId)return
+// 	const cards = await dbquery(
+// 		`SELECT <-Contain<-Vaults FROM (type::thing($card));`,
+// 		{card: CardId}
+// 	);
 
-	cardDetail.push({vault:cards[0][0]["<-Contain"]["<-Vaults"][0].id, ...entry})
-});
+// 	cardDetail.push({vault:cards[0][0]["<-Contain"]["<-Vaults"][0].id, ...entry})
+// });
 
 // console.log(cardDetail);
 // console.log(await dbReadAll("Contain") )

@@ -1,4 +1,4 @@
-<div class="flex-spread-childs" style="position: relative; padding-top: var(--size-xs3);">
+<div id="CharactersPattern" class="flex-spread-childs" style="position: relative; padding-top: var(--size-xs3);">
 
     <div>Pattern</div>
 
@@ -7,9 +7,9 @@
         position: relative;">
 
     <label
-        id="l_capitalize_first_letter"
+        id="CharactersPattern-cap-label"
         aria-label="Capitalize First Letter"
-        for="capitalize_first_letter"
+        for="CharactersPattern-cap"
         data-menu-label="capitalize"
         class="tertiary-btn first-btn"></label>
 
@@ -17,38 +17,38 @@
 
     <input
         type="checkbox"
-        id="capitalize_first_letter"
+        id="CharactersPattern-cap"
         name="pass-ops"
         data-menu="capitalize"
         class="hide-checkbox"
         checked/>
 
     <label
-        id="l_add_number"
+        id="CharactersPattern-num-label"
         aria-label="Add Number"
-        for="add_number"
-        data-menu-label="add_number"
+        for="CharactersPattern-num"
+        data-menu-label="CharactersPattern-num"
         class="tertiary-btn middle-btn"></label>
 
     <div class="divider" style="right: calc((var(--size-lg2) * 2) - 0.25px);"></div>
 
     <input
         type="checkbox"
-        id="add_number"
+        id="CharactersPattern-num"
         name="pass-ops"
         class="hide-checkbox"
         checked/>
 
     <label
-        id="l_add_special_cha"
+        id="CharactersPattern-special-char-label"
         aria-label="Special Character"
-        for="add_special_cha"
-        data-menu-label="add_special_cha"
+        for="CharactersPattern-special-char"
+        data-menu-label="CharactersPattern-special-char"
         class="tertiary-btn last-btn"></label>
 
     <input
         type="checkbox"
-        id="add_special_cha"
+        id="CharactersPattern-special-char"
         name="pass-ops"
         data-menu="add special cha"
         class="hide-checkbox"
@@ -62,16 +62,16 @@
   
 import { pass } from '../logic/pass';
 
-document.getElementById("generate")!.addEventListener("change",(e)=>{
+document.getElementById("generate")!.addEventListener("CharactersPattern",(e)=>{
 
-  if((e!.target as HTMLInputElement).matches("#add_special_cha")){
+  if((e!.target as HTMLInputElement).matches("#CharactersPattern-special-char")){
     pass.setAddSpecialCha((e!.target as HTMLInputElement).checked)
   }
-  if((e!.target as HTMLInputElement).matches("#add_number")){
+  if((e!.target as HTMLInputElement).matches("#CharactersPattern-num")){
     pass.setAddNumber((e!.target as HTMLInputElement).checked)
  
   }
-  if((e!.target as HTMLInputElement).matches("#capitalize_first_letter")){
+  if((e!.target as HTMLInputElement).matches("#CharactersPattern-cap")){
     pass.setCapitalizeFirstLetter((e!.target as HTMLInputElement).checked)
   }
 
@@ -81,42 +81,42 @@ document.getElementById("generate")!.addEventListener("change",(e)=>{
 
 <style is:global>
 
-#l_capitalize_first_letter::after{
+#CharactersPattern-cap-label::after{
   content: "Abc";
 }
 
-:root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter::after{
+:root:not(:has(#CharactersPattern-cap:checked)) #CharactersPattern-cap-label::after{
   content: "abc";
 }
 
-#l_add_number::after{
+#CharactersPattern-num-label::after{
   content: "123...";
 }
-:root:not(:has(#add_number:checked))  #l_add_number::after{
+:root:not(:has(#CharactersPattern-num:checked))  #CharactersPattern-num-label::after{
   content: "123...";
   text-decoration: line-through;
 }
 
-#l_add_special_cha::after{
+#CharactersPattern-special-char-label::after{
   content: "#+@...";
 }
 
-:root:not(:has(#add_special_cha:checked)) #l_add_special_cha::after{
+:root:not(:has(#CharactersPattern-special-char:checked)) #CharactersPattern-special-char-label::after{
   content: "#+@...";
   text-decoration: line-through;
 }
  
-:root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter,
-:root:not(:has(#add_number:checked)) #l_add_number ,
-:root:not(:has(#add_special_cha:checked)) #l_add_special_cha{
+:root:not(:has(#CharactersPattern-cap:checked)) #CharactersPattern-cap-label,
+:root:not(:has(#CharactersPattern-num:checked)) #CharactersPattern-num-label ,
+:root:not(:has(#CharactersPattern-special-char:checked)) #CharactersPattern-special-char-label{
   background: oklch(var(--gray-15) / 0.3);
   color:oklch(var(--gray-95) / 0.6);
   box-shadow: none;
 }
 
-:root:not(:has(#capitalize_first_letter:checked)) #l_capitalize_first_letter::before ,
-:root:not(:has(#add_number:checked))  #l_add_number::before ,
-:root:not(:has(#add_special_cha:checked)) #l_add_special_cha::before {
+:root:not(:has(#CharactersPattern-cap:checked)) #CharactersPattern-cap-label::before ,
+:root:not(:has(#CharactersPattern-num:checked))  #CharactersPattern-num-label::before ,
+:root:not(:has(#CharactersPattern-special-char:checked)) #CharactersPattern-special-char-label::before {
   content: "";
   background: linear-gradient(to bottom, oklch(45% 0 0 / 0.4) 0%, oklch(100% 0 0 / 0) 180%) border-box;
 }
@@ -140,9 +140,9 @@ document.getElementById("generate")!.addEventListener("change",(e)=>{
   border-left: 0;
 }
 
-:root:has(#capitalize_first_letter:focus-visible) #l_capitalize_first_letter,
-:root:has(#add_number:focus-visible)  #l_add_number ,
-:root:has(#add_special_cha:focus-visible) #l_add_special_cha {
+:root:has(#CharactersPattern-cap:focus-visible) #CharactersPattern-cap-label,
+:root:has(#CharactersPattern-num:focus-visible)  #CharactersPattern-num-label ,
+:root:has(#CharactersPattern-special-char:focus-visible) #CharactersPattern-special-char-label {
 	outline: Highlight auto 1px;
   outline: -webkit-focus-ring-color auto 1px;
 }
