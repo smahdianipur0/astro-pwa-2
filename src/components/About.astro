@@ -2,35 +2,35 @@
 import ThemeToggle from '../components/ThemeToggle.astro';
 ---
 <fieldset class="box-shadow" id="About-ki">
-  <legend>Key and IV</legend>
+    <legend>Key and IV</legend>
 
-  <form autocomplete="off">
-    <div style="position: relative;">
+    <form autocomplete="off">
+        <section style="position: relative;">
 
-      <input
-        id="About-ki-k-input"
-        type="text"
-        class="input-group-top glass"
-        name="Key"
-        placeholder="Key"/>
+            <input
+                id="About-ki-k-input"
+                type="text"
+                name="Key"
+                placeholder="Key"/>
 
-      <span id="About-ki-k-chars" class="key-indicator"></span> 
+            <span 
+                id="About-ki-k-chars" 
+                class="key-indicator"
+                style="top :calc( (var(--size-md3) - var(--size-sm4)) / 2);"></span> 
 
-    </div>
+            <input
+                id="About-ki-i-input"
+                type="text"
+                name="IV"
+                placeholder="IV"/>
 
-    <div style="position: relative; margin-bottom: var(--size-sm3);">
+            <span 
+                id="About-ki-i-chars" 
+                class="key-indicator"
+                style="bottom: calc( (var(--size-md3) - var(--size-sm4)) / 2);" ></span>
 
-      <input
-        id="About-ki-i-input"
-        type="text"
-        class="input-group-bottom glass"
-        name="IV"
-        placeholder="IV"/>
-
-      <span id="About-ki-i-chars" class="key-indicator"></span>
-
-    </div>
-  </form>
+        </section>
+    </form>
 
   <!-- <button id="test">test</button> -->
 </fieldset>
@@ -44,18 +44,11 @@ import ThemeToggle from '../components/ThemeToggle.astro';
 
 <style>
 
-
 .key-indicator {
-  line-height: var(--size-sm4);
   position: absolute;
   right: var(--size-sm2);
-  top: 50%;
-  transform: translateY(-50%);
-  color: #777;
   pointer-events: none;
-
 }
-
 
 </style>
 

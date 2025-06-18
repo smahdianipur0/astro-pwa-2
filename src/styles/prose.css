@@ -293,6 +293,19 @@
   background: oklch(var(--gray-15) / 0.85);
 }
 
+.prose :where(section):not(:where([class~=not-prose],[class~=not-prose] *)) >  input:first-of-type{
+  border: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: .1px solid oklch(var(--gray-25));
+}
+
+.prose :where(section):not(:where([class~=not-prose],[class~=not-prose] *)) >  input:last-of-type{
+  border: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
 .prose :where(form):not(:where([class~=not-prose],[class~=not-prose] *)) {
   display:flex; 
   flex-direction:column;

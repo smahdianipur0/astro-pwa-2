@@ -87,41 +87,6 @@
   text-overflow: ellipsis;
 }
 
-
-.input-group-top{
-  border: none;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border-bottom: 0.1px solid oklch(var(--gray-25) );
-  line-height: var(--size-sm4);
-}
-
-.input-group-top:focus{
-  border: none;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border-bottom: 0.1px solid oklch(var(--gray-25) );
-  background: transparent;
-  background-color:oklch(var(--gray-10) / 0.75); 
-}
-
-.input-group-bottom{
-  border: none;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border-bottom-left-radius: var(--radius-a);
-  border-bottom-right-radius: var(--radius-a);
-  line-height: var(--size-sm4);
-}
- 
-.input-group-bottom:focus{
-  border: none;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  background: transparent;
-  background-color:oklch(var(--gray-10) / 0.75); 
-}
-
 .entries-list{
   display: flex;
   flex-direction: column;
