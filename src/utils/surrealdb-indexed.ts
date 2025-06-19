@@ -4,6 +4,7 @@ import {
 	genericCreate, 
 	genericUpserelate,
 	genericQuery,
+	genericUpdate,
 	type PermittedTypes, 
 	type TableName,
 	type rTableName} from "./surrealdb"
@@ -50,11 +51,8 @@ export async function dbUpdate<T extends `${TableName}:update`>(action: T, data:
 		console.error("Database not initialized");
 		return;
 	}
-	const { id, ...dataWithoutId } = data;
-
 	try {
-		console.log(new RecordId(id.split(":")[0], id.split(":")[1]))
-		await db.merge(new RecordId(data.id.split(":")[0], data.id.split(":")[1]), dataWithoutId);
+		await genericUpdate(db, action, data)
 	} catch (err: unknown) {
 		console.error(`Failed to update entry in ${action}:`, err instanceof Error ? err.message : String(err));
 	} finally {

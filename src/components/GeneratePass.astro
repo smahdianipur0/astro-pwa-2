@@ -184,20 +184,20 @@ pass.on(['guessable'], pl =>{
   const gu = pl.value;
   
   document.getElementById("box")!.style.setProperty("--box-w", 
-    gu === "Enter password" ? "0%" :
-    gu === "Too Guessable" ? "36%" :
-    gu === "Very Guessable" ? "52%" :
+    gu === "Enter password"     ? "0%"  :
+    gu === "Too Guessable"      ? "36%" :
+    gu === "Very Guessable"     ? "52%" :
     gu === "Somewhat Guessable" ? "68%" :
     gu === "Safely Unguessable" ? "84%" :
-    gu === "Very Unguessable" ? "100%" : "0%"
+    gu === "Very Unguessable"   ? "100%": "0%"
  );
   document.getElementById("box")!.style.setProperty("--box-p", 
-    gu === "Enter password" ? "0%" :
-    gu === "Too Guessable" ? "0%" :
-    gu === "Very Guessable" ? "16%" :
+    gu === "Enter password"     ? "0%"  :
+    gu === "Too Guessable"      ? "0%"  :
+    gu === "Very Guessable"     ? "16%" :
     gu === "Somewhat Guessable" ? "32%" :
     gu === "Safely Unguessable" ? "48%" :
-    gu === "Very Unguessable" ? "64%" : "0%"
+    gu === "Very Unguessable"   ? "64%" : "0%"
  );
 })
 

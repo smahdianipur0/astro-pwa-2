@@ -1,119 +1,111 @@
 ---
 interface Props {
-  name: string;
-  tab1Label: string;
-  tab2Label: string;
+    name: string;
+    tab1Label: string;
+    tab2Label: string;
 }
 
 const {
-  name,
-  tab1Label,
-  tab2Label,
+    name,
+    tab1Label,
+    tab2Label,
 } = Astro.props;
 
 const sanitizedName = name.toLowerCase().replace(/[^a-z0-9-_]+/g, '-').replace(/^-+|-+$/g, '');
 const tab1Id = `first-tab-id-${sanitizedName}`
 const tab2Id = `second-tab-id-${sanitizedName}`
-const content1Id = `first-tab-content-${sanitizedName}`
-const content2Id = `second-tab-content-${sanitizedName}`
-const indicator = `${sanitizedName}-indicator`
-
-const wrapperClass = `tabs-wrapper-${name}`;
-const dynamicCss = `
-
-  .${wrapperClass}:has(#${tab1Id}:checked) label[for="${tab1Id}"],
-  .${wrapperClass}:has(#${tab2Id}:checked) label[for="${tab2Id}"] {
-    color: oklch(var(--gray-95, 95%) / 1);
-  }
-
-  .${wrapperClass}:has(#${tab1Id}:checked) #${content1Id},
-  .${wrapperClass}:has(#${tab2Id}:checked) #${content2Id} {
-    display: block;
-  }
-
- .${wrapperClass}:has(#${tab1Id}:focus-visible) label[for="${tab1Id}"],
- .${wrapperClass}:has(#${tab2Id}:focus-visible) label[for="${tab2Id}"]  {
-  outline: Highlight auto 1px;
-  outline: -webkit-focus-ring-color auto 1px;
- }
-
-  .${wrapperClass}:has(#${tab1Id}:checked) #${indicator} {
-    transform: translate3d(calc(var(--size-lg3) / -2 ), 0, 0);
-  }
-
-  .${wrapperClass}:has(#${tab2Id}:checked) #${indicator} {
-    transform: translate3d(calc(var(--size-lg3) / 2 ), 0, 0);
-  }
-
-`;
 ---
 
+<div style="flex-wrap: wrap; position: relative;" class="dhgaq5xt flex-center-childs">
 
-<style set:html={dynamicCss}> </style>
+    <input type="radio" class="hide-checkbox dhgaq5xt-radio-1" name={name} id={tab1Id} checked/>
+    <input type="radio" class="hide-checkbox dhgaq5xt-radio-2" name={name} id={tab2Id}/>
 
+    <label class="dhgaq5xt-label dhgaq5xt-label-1 no-select" for={tab1Id}>{tab1Label}</label>
+    <label class="dhgaq5xt-label dhgaq5xt-label-2 no-select" for={tab2Id}>{tab2Label}</label>
 
-<div style="flex-wrap: wrap; position: relative;" class={`${wrapperClass} flex-center-childs`}>
+    <div 
+        style=" width: calc((var(--size-lg3) * 2) + 6px);
+        display: inline-block;
+        justify-content: center;
+        align-items: center;
+        height: calc(var(--size-md1) + 6px);
+        position: absolute;
+        top:-3px;
+        background-color: oklch(var(--gray-25) / 0.6);
+        border-radius: calc( var(--radius-a) + 3px);
+        padding: 5px;" ></div>
 
-  <input type="radio" class="hide-checkbox" name={name} id={tab1Id} checked/>
-  <input type="radio" class="hide-checkbox" name={name} id={tab2Id} />
+    <div 
+        class="dhgaq5xt-indicator" 
+        style="width: var(--size-lg3);
+        position: relative;
+        display: inline-block;
+        justify-content: center;
+        align-items: center;
+        height: var(--size-md1);
+        position: absolute;
+        top:0;
+        background: var(--tab-indicator-bg) ;
+        border-radius: var(--radius-a);
+        box-shadow: inset 0.8px 0.8px 0px 0px oklch(var(--rim-light)), 1px 2px 2px 0px oklch(0% 0 0 / 0.1) ;
+        transition: transform 250ms var(--move);"></div> 
 
-  <div style=" width: calc((var(--size-lg3) * 2) + 6px);
-  display: inline-block;
-  justify-content: center;
-  align-items: center;
-  height: calc(var(--size-md1) + 6px);
-  position: absolute;
-  top:-3px;
-  background-color: oklch(var(--gray-25) / 0.6);
-  border-radius: calc( var(--radius-a) + 3px);
-  padding: 5px;" ></div>
+    <div class="dhgaq5xt-panel dhgaq5xt-panel-1">
+        <slot name="tab1" /> 
+    </div>
 
-  <label class="tab-label no-select" for={tab1Id}>{tab1Label}</label>
-  <label class="tab-label no-select" for={tab2Id}>{tab2Label}</label>
-
-  <div  id={indicator} style="width: var(--size-lg3);
-  position: relative;
-  display: inline-block;
-  justify-content: center;
-  align-items: center;
-  height: var(--size-md1);
-  position: absolute;
-  top:0;
-  background: var(--tab-indicator-bg) ;
-  border-radius: var(--radius-a);
-  box-shadow: inset 0.8px 0.8px 0px 0px oklch(var(--rim-light)), 1px 2px 2px 0px oklch(0% 0 0 / 0.1) ;
-  transition: transform 250ms var(--move);"></div> 
-
-  <div class="tab-panel" id={content1Id}>
-    <slot name="tab1" /> 
-  </div>
-  <div class="tab-panel" id={content2Id}>
-    <slot name="tab2" /> 
-  </div>
+    <div class="dhgaq5xt-panel dhgaq5xt-panel-2">
+        <slot name="tab2" /> 
+    </div>
 
 </div>
 
 
 <style>
 
-.tab-label{
-  height: var(--size-md1);
-  cursor: pointer;
-  width: var(--size-lg3);
-  z-index: var(--z-layer-middle);
-  text-align: center;
-  color: oklch(var(--gray-95) / .5);
-  background-color: #0000;
-  border: none;
-  justify-self: center;
-  align-items: center;
-  transition: color .2s ease-out;
-  display: grid;
+.dhgaq5xt-label{
+    height: var(--size-md1);
+    cursor: pointer;
+    width: var(--size-lg3);
+    z-index: var(--z-layer-middle);
+    text-align: center;
+    color: oklch(var(--gray-95) / .5);
+    background-color: #0000;
+    border: none;
+    justify-self: center;
+    align-items: center;
+    transition: color .2s ease-out;
+    display: grid;
 }
 
-.tab-panel {
-  width: 100%;
-  display: none; 
+.dhgaq5xt-panel {
+    width: 100%;
+    display: none; 
+}
+
+.dhgaq5xt:has(.dhgaq5xt-radio-1:checked) .dhgaq5xt-label-1,
+.dhgaq5xt:has(.dhgaq5xt-radio-2:checked) .dhgaq5xt-label-2 {
+    color: oklch(var(--gray-95, 95%) / 1);
+}
+
+.dhgaq5xt:has(.dhgaq5xt-radio-1:checked) .dhgaq5xt-panel-1,
+.dhgaq5xt:has(.dhgaq5xt-radio-2:checked) .dhgaq5xt-panel-2 {
+    display: block;
+}
+
+.dhgaq5xt:has(.dhgaq5xt-radio-1:focus-visible) .dhgaq5xt-label-1,
+.dhgaq5xt:has(.dhgaq5xt-radio-2:focus-visible) .dhgaq5xt-label-1  {
+    outline: Highlight auto 1px;
+    outline: -webkit-focus-ring-color auto 1px;
+}
+
+.dhgaq5xt:has(.dhgaq5xt-radio-1:checked) .dhgaq5xt-indicator {
+    transform: translate3d(calc(var(--size-lg3) / -2 ), 0, 0);
+}
+
+.dhgaq5xt:has(.dhgaq5xt-radio-2:checked) .dhgaq5xt-indicator {
+    transform: translate3d(calc(var(--size-lg3) / 2 ), 0, 0);
 }
 
 </style>

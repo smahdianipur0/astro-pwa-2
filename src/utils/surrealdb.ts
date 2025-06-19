@@ -57,6 +57,11 @@ export async function genericQuery(db: Surreal, query: string, params: { [key: s
     return res; 
 }
 
+export async function genericUpdate<T extends `${TableName}:update`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<void> {
+    const { id, ...dataWithoutId } = data;
+    await db.merge(new RecordId(data.id.split(":")[0], data.id.split(":")[1]), dataWithoutId);
+}
+
 export async function genericUpserelate< OutTable extends TableName, InTable extends TableName,RelTable extends rTableName>(
     db: Surreal,
     action: `${OutTable}:upserelate`, 
