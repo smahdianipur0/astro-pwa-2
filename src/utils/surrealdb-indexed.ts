@@ -4,6 +4,13 @@ import {
 	genericCreate, 
 	genericUpserelate,
 	genericQuery,
+	genericUpdate,
+	genericUpsert,
+	genericDelete,
+	genericReadAll,
+	genericReadRelation,
+	genericGetEntryById,
+	genericDeleteAll,
 	type PermittedTypes, 
 	type TableName,
 	type rTableName} from "./surrealdb"
@@ -28,53 +35,35 @@ async function getDb() {
 	}
 }
 
-
-export async function dbCreate<T extends `${TableName}:create`>(action: T, data: PermittedTypes[T]): Promise<void> {
+async function handle<T>(operation: (db: Surreal) => Promise<T>): Promise<T | undefined>{
 	const db = await getDb();
 	if (!db) {
 		console.error("Database not initialized");
-		return;
+		return undefined;
 	}
 	try { 
-		await genericCreate(db, action, data);
+		return await operation(db);
 	} catch (err: unknown) {
-		console.error(`Failed to create entry in ${action}:`, err instanceof Error ? err.message : String(err));
+		console.error(`operation faild`, err instanceof Error ? err.message : String(err));
 	} finally {
 		await db.close();
-	}
+	}	
+}
+
+export async function dbCreate<T extends `${TableName}:create`>(action: T, data: PermittedTypes[T]): Promise<void> {
+	await handle(async (db) => {await genericCreate(db, action, data)})
 }
 
 export async function dbUpdate<T extends `${TableName}:update`>(action: T, data: PermittedTypes[T]): Promise<void> {
-	const db = await getDb();
-	if (!db) {
-		console.error("Database not initialized");
-		return;
-	}
-	const { id, ...dataWithoutId } = data;
-
-	try {
-		console.log(new RecordId(id.split(":")[0], id.split(":")[1]))
-		await db.merge(new RecordId(data.id.split(":")[0], data.id.split(":")[1]), dataWithoutId);
-	} catch (err: unknown) {
-		console.error(`Failed to update entry in ${action}:`, err instanceof Error ? err.message : String(err));
-	} finally {
-		await db.close();
-	}
+	await handle(async (db) => {await genericUpdate(db, action, data)})
 }
 
 export async function dbUpsert<T extends `${TableName}:update`>(action: T, data: PermittedTypes[T]): Promise<void> {
-	const db = await getDb();
-	if (!db) {
-		console.error("Database not initialized");
-		return;
-	}
-	try {
-		await db.upsert<PermittedTypes[T]>(new RecordId(action.split(":")[0], data.id), data);
-	} catch (err: unknown) {
-		console.error(`Failed to insert or update entry in ${action}:`, err instanceof Error ? err.message : String(err));
-	} finally {
-		await db.close();
-	}
+	await handle(async (db) => { await genericUpsert(db, action, data)})
+}
+
+export async function dbDelete(id: string): Promise<void> {
+	await handle(async (db) => {await genericDelete(db, id)});
 }
 
 export async function dbUpserelate<OutTable extends TableName, InTable extends TableName, RelTable extends rTableName>(
@@ -84,138 +73,30 @@ export async function dbUpserelate<OutTable extends TableName, InTable extends T
             ? [relationString: RS, outRecordData: ORD, relationData: RD ] : never 
         : never 
 ): Promise<void> {
-	const db = await getDb();
-	if (!db) {
-		console.error("Database not initialized");
-		return;
-	}
-	try{
-		await genericUpserelate(db,action, ...args)
-    } catch (err: unknown) {
-        console.error(`Failed operation for ${action} `, err instanceof Error ? err.message : String(err));
-    } finally {
-        await db.close();
-    }
-}
-
-
-export async function dbDelete(id: string): Promise<void> {
-	const db = await getDb();
-	if (!db) {
-		console.error("Database not initialized");
-		return;
-	}
-	try {
-		await db.delete(new RecordId(id.split(":")[0], id.split(":")[1]));
-	} catch (err: unknown) {
-		console.error(`Failed to delete ${id}:`, err instanceof Error ? err.message : String(err));
-	} finally {
-		await db.close();
-	}
+	await handle(async (db) => {await genericUpserelate(db,action, ...args)})
 }
 
 export async function dbReadAll<T extends TableName>(tableName: T): Promise<ReadAllResultTypes[T] | undefined> {
-	const db = await getDb();
-
-	if (!db) {
-		console.error("Database not initialized");
-		return undefined;
-	}
-
-	try {
-		const entries = (await db.select(tableName)) as unknown as ReadAllResultTypes[T];
-		return entries;
-	} catch (err) {
-		console.error(`Failed to get entries from ${tableName}:`, err);
-		return undefined;
-	} finally {
-		await db.close();
-	}
+	return await handle(async (db) => { return await genericReadAll(db, tableName)})
 }
 
-// SELECT * FROM {$outTable} WHERE id IN (SELECT VALUE out FROM {$rTable} WHERE in ={$fullinid});
 export async function dbReadRelation<T extends TableName>(
 	inId: string, rTable:rTableName, outTable: T
 	): Promise<ReadAllResultTypes[T] | undefined> {
-	const db = await getDb();
-
-	if (!db) {
-		console.error("Database not initialized");
-		return undefined;
-	}
-
-	try {
-		const recs = await db.query(`
-			SELECT * FROM (type::table({$outTable})) 
-			WHERE id IN 
-			(SELECT VALUE out FROM (type::table({$rTable})) WHERE in = (type::thing({$inId})));
-			`,{ outTable :outTable,rTable: rTable, inId: inId }
-		) ;
-		return recs[0] as ReadAllResultTypes[T]; 
-	} catch (err) {
-		console.error(`Failed to get entries `, err);
-		return undefined;
-	} finally {
-		await db.close();
-	}
+	return await handle(async (db) => { return await genericReadRelation(db, inId, rTable, outTable)})
 }
 
-
-export async function getEntryById<T extends TableName>(
-	tableName: T,
-	recordId: string,
-): Promise<ReadResultTypes[T] | undefined> {
-	const db = await getDb();
-
-	if (!db) {
-		console.error("Database not initialized");
-		return undefined;
-	}
-
-	try {
-		const entry = (await db.select(new StringRecordId(recordId))) as unknown as ReadResultTypes[T];
-		return entry;
-	} catch (err) {
-		console.error(`Failed to get entry from ${tableName} with ID ${recordId}:`, err);
-		return undefined;
-	} finally {
-		await db.close();
-	}
+export async function getEntryById<T extends TableName>(tableName: T, recordId: string,): Promise<ReadResultTypes[T] | undefined> {
+	return await handle(async (db) => { return await genericGetEntryById(db, tableName, recordId)})
 }
 
 
 export async function dbDeleteAll<T extends TableName>(tableName: T): Promise<void> {
-	const db = await getDb();
-
-	if (!db) {
-		console.error("Database not initialized");
-		return undefined;
-	}
-	try {
-		await db.delete(tableName);
-	} catch (err) {
-		console.error(`Failed to get entries from ${tableName}:`, err);
-		return undefined;
-	} finally {
-		await db.close();
-	}
+	await handle(async (db) => {await genericDeleteAll(db,tableName)})
 }
 
 export async function dbquery( query: string, params: { [key: string]: any }): Promise<any> {
-	const db = await getDb();
-	if (!db) {
-		console.error("Database not initialized");
-		return undefined;
-	}
-	try {
-		const res = await genericQuery(db,query, params) ;
-		return res; 
-	} catch (err) {
-		console.error(`Query failed`, err);
-		return undefined;
-	} finally {
-		await db.close();
-	}
+	return await handle(async (db) => { return await genericQuery(db,query, params)}) ;
 }
 
 
@@ -236,4 +117,3 @@ export async function dbquery( query: string, params: { [key: string]: any }): P
 
 // console.log(cardDetail);
 // console.log(await dbReadAll("Contain") )
-
