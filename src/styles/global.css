@@ -23,31 +23,43 @@
   top: 0;
 }
 
+@keyframes blink {
+  0% { opacity: 20%; }
+  50% { opacity: 60%; }
+  100% { opacity: 20%; }
+} 
+
+.blink{
+   animation: blink 1s ease-in-out infinite;
+}
+
+.shiny-text {
+    color: #b5b5b5a4;
+    background: linear-gradient(120deg,#fff0 40%,#fffc,#fff0 60%);
+    background-size:200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    display: inline-block;
+    animation: shine 2s linear infinite;
+}
+@keyframes shine {
+  0% { background-position: 100%; }
+  100% { background-position: -100%; }
+}
+
 .skeleton{
-   font-size: inherit;
-   font-family: inherit;
-   height: var(--size-sm0);
-   width: var(--size-xl4);
-   margin: calc( (var(--size-sm4) - var(--size-sm0)) / 2 ) 0;
-   border-radius: 100px;
-   background-color: oklch(80% 0 0 / 0.4);
-   background: linear-gradient(
-    100deg,
-    rgba(255, 255, 255, 0) 40%,
-    rgba(255, 255, 255, .5) 50%,
-    rgba(255, 255, 255, 0) 60%
-  ) oklch(0.8 0 0 / 0.4);
+  font-size: inherit;
+  font-family: inherit;
+  height: var(--size-sm0);
+  width: var(--size-xl4);
+  margin: calc( (var(--size-sm4) - var(--size-sm0)) / 2 ) 0;
+  border-radius: 100px;
+  background: linear-gradient(120deg,#fff0 40%,#fff5,#fff0 60%) oklch(0.8 0 0 / 0.4);
   background-size: 200% 100%;
   background-position-x: 180%;
-  animation: 1s loading ease-in-out infinite;
-
+  animation: shine 2s linear infinite;
 }
 
-@keyframes loading {
-  to {
-    background-position-x: -20%;
-  }
-}
 
 .skeleton-parrent{
   line-height: var(--size-sm4); 
@@ -196,35 +208,10 @@ details.right-to-left[open] summary + *  {
   margin-right: var(--size-sm0);
 } 
 
-@keyframes blink {
-  0% { opacity: 20%; }
-  50% { opacity: 60%; }
-  100% { opacity: 20%; }
-} 
-
-.blink{
-   animation: blink 1s ease-in-out infinite;
-}
-
 .no-select{
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
-}
-
-
-.shiny-text {
-    color: #b5b5b5a4;
-    background: linear-gradient(120deg,#fff0 40%,#fffc,#fff0 60%);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    display: inline-block;
-    animation: shine 2s linear infinite;
-}
-@keyframes shine {
-  0% { background-position: 100%; }
-  100% { background-position: -100%; }
 }
 
 .tertiary-btn{
