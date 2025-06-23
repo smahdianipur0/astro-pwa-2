@@ -36,7 +36,7 @@
 .shiny-text {
     color: #b5b5b5a4;
     background: linear-gradient(120deg,#fff0 40%,#fffc,#fff0 60%);
-    background-size: max(200%, 100px) max(100%, 50px);
+    background-size:200% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     display: inline-block;
@@ -46,7 +46,6 @@
   0% { background-position: 100%; }
   100% { background-position: -100%; }
 }
-
 
 .skeleton{
   font-size: inherit;
