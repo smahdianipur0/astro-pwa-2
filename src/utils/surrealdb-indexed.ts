@@ -96,7 +96,7 @@ export async function dbDeleteAll<T extends TableName>(tableName: T): Promise<vo
 }
 
 export async function dbquery( query: string, params: { [key: string]: any }): Promise<any> {
-	return await handle(async (db) => { return await genericQuery(db,query, params)}) ;
+		return await handle(async (db) => { return await genericQuery(db,query, params)}) ;
 }
 
 
