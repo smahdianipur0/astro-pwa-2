@@ -62,7 +62,7 @@
   
 import { pass } from '../logic/pass';
 
-document.getElementById("generate")!.addEventListener("CharactersPattern",(e)=>{
+document.getElementById("CharactersPattern")!.addEventListener("change",(e)=>{
 
   if((e!.target as HTMLInputElement).matches("#CharactersPattern-special-char")){
     pass.setAddSpecialCha((e!.target as HTMLInputElement).checked)
