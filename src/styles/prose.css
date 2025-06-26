@@ -737,7 +737,7 @@
   padding: var(--default-padding);
   border-radius: calc( var(--radius-b) - var(--size-xs3));
   position: relative;
-  align-items: center
+  align-items: center;
 }
 
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > :last-child:not(:where([class~=not-prose],[class~=not-prose] *)){
