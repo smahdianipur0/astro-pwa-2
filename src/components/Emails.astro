@@ -23,9 +23,12 @@
 
     <menu
         id="Email-list"
-        style="padding-top: var(--size-sm3); height: 100%; margin-bottom: var(--size-md2);">
+        style="background: transparent; 
+        padding-top: var(--size-sm3); 
+        height: 100%; 
+        margin-bottom: var(--size-md2);">
 
-        <li style="background-color: transparent; padding-inline: 0px;">
+        <li style="width: 100%; background-color: transparent; padding-inline: 0px;">
             <button
                 class="not-prose ellipsis shiny-text"
                 style="text-align: start; width: var(--size-xl2);">
@@ -38,7 +41,7 @@
             </div>
         </li>
 
-        <li style="background-color: transparent; padding-inline: 0px;">
+        <li style="width: 100%; background-color: transparent; padding-inline: 0px;">
             <button
                 class="not-prose ellipsis shiny-text"
                 style="text-align: start; width: var(--size-xl2);">
@@ -51,7 +54,7 @@
             </div>
         </li>
 
-        <li style="background-color: transparent; padding-inline: 0px;">
+        <li style="width: 100%; background-color: transparent; padding-inline: 0px;">
             <button
                 class="not-prose ellipsis shiny-text"
                 style="text-align: start; width: var(--size-xl2);">
@@ -133,7 +136,7 @@ email.on(["emailList"], ({value}) => {
   .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
   .forEach((entry) => {
     fragment.append(
-      el.c('li', { style: 'background-color:transparent; padding-inline: 0;',append: [
+      el.c('li', { style: 'width: 100%; background-color:transparent; padding-inline: 0;',append: [
 
           el.c('div', { append: [
               el.c('button', { dataset: {action: 'copy'}, 
