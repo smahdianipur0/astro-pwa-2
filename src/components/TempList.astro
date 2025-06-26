@@ -87,9 +87,9 @@ style="width: var(--size-md1);border-radius: 100px;">
 
 
                 <fieldset class="box-shadow" style="padding: 0; color: oklch(var(--gray-95));">
-                    <div class="entries-list" id="entries-list"> 
+                    <menu id="entries-list"> 
                         <small  style="padding-block:var(--size-sm3)"> Loading records </small>
-                    </div>
+                    </menu>
                 </fieldset>
 
               
@@ -119,7 +119,7 @@ style="width: var(--size-md1);border-radius: 100px;">
                     </section>
 
                     <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">           
-                      <button class="unstyle-button not-prose max-width" >Cancel</button>
+                      <button class="not-prose max-width" >Cancel</button>
                       <button class="max-width" id="update-temp-list-entry">Update</button>  
                     </div>
                 </form>
@@ -184,8 +184,8 @@ svg{
 }
 
 
-#recent-del-list > .entry-item:last-of-type::after,
-#entries-list > .entry-item:last-of-type::after {
+#recent-del-list > li:last-of-type::after,
+#entries-list > li:last-of-type::after {
   content: 'tap on passwords to copy';
   position: absolute;
   bottom: 0;
@@ -194,6 +194,10 @@ svg{
   color: oklch(var(--gray-50) / 1);
 }
 
+#recent-del-list > li:last-of-type,
+#entries-list > li:last-of-type {
+  margin-bottom: var(--size-md2);
+}
 
 summary.right-to-left::before { 
   content: "";

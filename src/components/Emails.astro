@@ -1,4 +1,4 @@
-<fieldset class="box-shadow" id="Emails" >
+<fieldset class="box-shadow " id="Emails" >
     <legend>Frequently Used Emails</legend>
 
     <div
@@ -21,53 +21,49 @@
             Add</button>
     </div>
 
-    <div
-        class="entries-list not-prose"
+    <menu
         id="Email-list"
-        style="padding-top: var(--size-sm3); height: 100%;">
+        style="padding-top: var(--size-sm3); height: 100%; margin-bottom: var(--size-md2);">
 
-        <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
+        <li style="background-color: transparent; padding-inline: 0px;">
             <button
-                data-action="copy"
-                class="ellipsis shiny-text"
+                class="not-prose ellipsis shiny-text"
                 style="text-align: start; width: var(--size-xl2);">
                 name@gmail.com</button>
 
-            <div class="s-container">
+            <div class="not-prose s-container">
                 <details  name="delete-item" class="right-to-left">
                     <summary class="right-to-left shiny-text"></summary>
                 </details>
             </div>
-        </div>
+        </li>
 
-        <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
+        <li style="background-color: transparent; padding-inline: 0px;">
             <button
-                data-action="copy"
-                class="ellipsis shiny-text"
+                class="not-prose ellipsis shiny-text"
                 style="text-align: start; width: var(--size-xl2);">
                 name@yahoo.com</button>
 
-            <div class="s-container">
+            <div class="not-prose s-container">
                 <details name="delete-item" class="right-to-left">
                     <summary class="right-to-left shiny-text"></summary>
                 </details>
             </div>
-        </div>
+        </li>
 
-        <div class="entry-item" style="background-color: transparent; padding-inline: 0px;">
+        <li style="background-color: transparent; padding-inline: 0px;">
             <button
-                data-action="copy"
-                class="ellipsis shiny-text"
+                class="not-prose ellipsis shiny-text"
                 style="text-align: start; width: var(--size-xl2);">
                 name@outlook.com</button>
 
-            <div class="s-container">
+            <div class="not-prose s-container">
                 <details name="delete-item" class="right-to-left">
                     <summary class="right-to-left shiny-text"></summary>
                 </details>
             </div>
-        </div>
-    </div>
+        </li>
+    </menu>
 </fieldset>
 
 <script>
@@ -137,20 +133,18 @@ email.on(["emailList"], ({value}) => {
   .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
   .forEach((entry) => {
     fragment.append(
-      el.c('div', { className: 'entry-item',
-        style: 'background-color:transparent; padding-inline: 0;',
-        append: [
+      el.c('li', { style: 'background-color:transparent; padding-inline: 0;',append: [
 
           el.c('div', { append: [
               el.c('button', { dataset: {action: 'copy'}, 
-                className: 'ellipsis',
+                className: 'not-prose ellipsis',
                 style:"text-align: start; width: var(--size-xl2); color: oklch(var(--gray-95))",
                 id: entry.email ?? '',
                 textContent: entry.email ?? ''
               })
           ]}),
 
-          el.c('div', {className: 's-container', append: [
+          el.c('div', {className: 'not-prose s-container', append: [
             el.c('details', {name: 'delete-item',className: 'right-to-left', append: [
               el.c('summary', { className: 'right-to-left' }),
               el.c('button', { dataset: {action: 'delete' },
@@ -159,8 +153,7 @@ email.on(["emailList"], ({value}) => {
                 })
             ]})
           ]})
-        ]
-      })
+        ]})
     );
   });
   

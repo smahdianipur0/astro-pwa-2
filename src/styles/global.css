@@ -60,18 +60,9 @@
   animation: shine 2s linear infinite;
 }
 
-
 .skeleton-parrent{
   line-height: var(--size-sm4); 
   overflow: hidden;
-}
-
-.unstyle-button{
-  background: none;
-  border: none;
-  box-shadow: none;
-  color:oklch(var(--gray-95) / 1);
-  cursor: pointer;
 }
 
 .flex-center-childs{
@@ -87,7 +78,6 @@
   align-items: center;
 }
 
-
 .max-width{
   width: -moz-available;
   width: -webkit-fill-available;
@@ -98,56 +88,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.entries-list{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-}
-
-.entries-list > :first-child{
-  border-top-left-radius: var(--radius-a);
-  border-top-right-radius: var(--radius-a);
-}
-
-.entries-list > :last-child{
-  border-bottom-left-radius: var(--radius-a);
-  border-bottom-right-radius: var(--radius-a);
-}
-
-.entries-list > .entry-item:last-of-type {
-  margin-bottom: var(--size-md2);
-}
-
-.entries-list > :not(:last-child){
-  border-bottom:1px solid oklch(var(--gray-25) / 1);
-}
-
-.entry-item{
-  display: flex;
-  place-content: space-between;
-  width: min(100%, var(--size-xl7));
-  border-radius: 0;
-  padding: var(--default-padding);
-  margin: 0 var(--size-sm2);
-  position: relative;
-}
-
-.menu-item{
-  display:flex ;
-  place-content: space-between;
-  width: min(100%, var(--size-xl7)) ;
-  height: var(--size-md4);
-  background-color: oklch(var(--gray-15) / 75%);
-  padding: var(--default-padding);
-  align-items: center
-}
-
-.menu-item:focus, .menu-item:hover{
-  background-color: oklch(var(--gray-25) / 1);
-}
-
 
 .s-container  {
 display: flex;
@@ -237,10 +177,6 @@ details.right-to-left[open] summary + *  {
   left: 0;
   right: 0;
   background: oklch(var(--gray-10) / 0.4);
-}
-
-.char-icon {
-  fill: oklch(var(--gray-95) / 1);
 }
 
 .divider{

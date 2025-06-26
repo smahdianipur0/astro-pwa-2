@@ -13,7 +13,7 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
     <Drawer breakPoints={[0.70]} velocityFunction={() => 1} side="right">
       {(drawerProps) => (
         <>
-          <Drawer.Trigger> {props.trigger}</Drawer.Trigger>
+          <Drawer.Trigger class='not-prose-button'> {props.trigger}</Drawer.Trigger>
           
           <Drawer.Portal>
             <Drawer.Overlay

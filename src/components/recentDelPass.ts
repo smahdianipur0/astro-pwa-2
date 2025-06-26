@@ -23,7 +23,7 @@ import { tempList } from "../logic/tempList.ts"
     .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
     .forEach((entry) => {
       fragment.append(
-        el.c('div', { className: 'entry-item ',append: [
+        el.c('li', { style:"background-color: transparent;", append: [
           el.c('div', { append: [
 
             el.c('small', { className: 'ellipsis',
