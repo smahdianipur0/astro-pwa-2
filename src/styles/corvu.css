@@ -27,7 +27,7 @@
   left: 0px;
   right: 0px;
   bottom: 0px;
-  z-index: var(--z-layer-higher);
+  z-index: var(--z-layer-top);
   display: flex;
   height: 100%;
   max-height: var(--drawer-heigt);

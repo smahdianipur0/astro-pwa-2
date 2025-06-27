@@ -112,16 +112,33 @@ allTabRadios.forEach((radio) => {
 }
 
 .bottom-nav{
-  z-index: var(--z-layer-higher);
-  background-color: oklch(var(--gray-10) / 0.5);
+  z-index: var(--z-layer-top);
+  background-color: oklch(var(--gray-10) / 0.4);
   justify-content: space-around;
   border-radius: 100px;
   width: calc(100% - (var(--size-sm2) * 2));
   display: flex;
   position: fixed;
+  top: auto;
   bottom: var(--size-sm4);
   left: var(--size-sm2);
   right: var(--size-sm2);
+}
+
+.bottom-nav::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 100px;
+  border: 0.5px solid transparent;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  pointer-events: none;
+  background: linear-gradient(to bottom, oklch(100% 0 0 / 10%) 0%, oklch(100% 0 0 / 0%) 180%) border-box;
 }
 
 .nav-div{
@@ -132,6 +149,7 @@ allTabRadios.forEach((radio) => {
     justify-content: space-around; 
     justify-content: center;
     align-items: center;
+    margin-block-end: var(--size-xs4);
 }
 
 .nav-text{
@@ -181,45 +199,9 @@ allTabRadios.forEach((radio) => {
     outline: -webkit-focus-ring-color auto 1px;
 }
 
-@media only screen and (min-width: 450px) {
-  .bottom-nav{
-    bottom: auto;
-    top: var(--size-sm0);
-    height: var(--size-lg1);
-    border-radius: var(--radius-b);
-    width: calc(100% - var(--size-sm3) - var(--size-sm3));
-    left: unset;
-    right: var(--size-sm3);
-    border: 1px solid oklch(var(--gray-95) / 0.04);
-  }
-
-  .grid-layout{
-    margin-top: var(--size-lg3);
-  }
-
-  .nav-div {
-    flex-direction: row;
-    height: var(--size-md2);
-    margin-top: auto;
-    margin-bottom: auto;
-  }
-
-  .nav-text{
-    font-size: var(--font-sm1);
-    margin-top: auto;
-    margin-bottom: auto;
-    text-align: start;
-    padding-inline: var(--size-sm0);
-  }
-
-  .toast {
-    margin-bottom: 0;
-  }
-}
-
 .gradient-blur{
     position: fixed;
-    z-index: var( --z-layer-middle);
+    z-index: var( --z-layer-higher);
     inset: auto 0 0 0;
     height: var(--size-md4);
     pointer-events: none;
@@ -282,5 +264,40 @@ allTabRadios.forEach((radio) => {
   mask: linear-gradient(to bottom,#00000000 87.5%,#000000 100%);
 }
 
+
+@media only screen and (min-width: 450px) {
+  .bottom-nav{
+    bottom: auto;
+    top: var(--size-sm0);
+    height: var(--size-lg1);
+  }
+
+  .grid-layout{
+    margin-top: var(--size-lg3);
+  }
+
+  .nav-div {
+    flex-direction: row;
+    height: var(--size-md2);
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .nav-text{
+    font-size: var(--font-sm1);
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: start;
+    padding-inline: var(--size-sm0);
+  }
+
+  .toast {
+    margin-bottom: 0;
+  }
+  .gradient-blur{
+    inset: 0 0 auto 0;
+    transform: scaleY(-1);
+  }
+}
 
 </style>
