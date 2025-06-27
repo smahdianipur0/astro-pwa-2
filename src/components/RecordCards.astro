@@ -1,4 +1,4 @@
-<div id="cards-array">
+<div id="RecordCards-list">
     <div class="skeleton"></div>
 </div>
 
@@ -12,7 +12,7 @@ records.on(["selectedVault"], pl => {records.updateCardsList()})
 records.on(["cardsList"], ({value}) => { (async () => {
 
     const fragment = document.createDocumentFragment();
-    const cardsArray = document.getElementById("cards-array")!;
+    const cardsArray = document.getElementById("RecordCards-list")!;
     cardsArray.textContent = "";
     
     const availableCards = (value ?? []).filter(item => item.status === "available");

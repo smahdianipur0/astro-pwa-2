@@ -1,4 +1,4 @@
-<fieldset class="box-shadow" id="generateQR"> 
+<fieldset class="box-shadow" id="QRCode"> 
     <legend>Generate QR Code</legend>
 
     <textarea 
@@ -7,7 +7,7 @@
         placeholder="Please enter some text"></textarea>
 
     <div class="qr" style=" margin-left: calc(50% - 80px); margin-top: var(--size-sm3);">
-        <canvas id="gqr" style="width: 0;"></canvas>
+        <canvas id="QRCode-target" style="width: 0;"></canvas>
     </div>
     
 </fieldset>
@@ -15,15 +15,15 @@
 <script>
 import QRCode from 'qrcode'
 	
-document.getElementById("generateQR")!.addEventListener("input",(e)=>{
+document.getElementById("QRCode")!.addEventListener("input",(e)=>{
    if((e!.target as HTMLInputElement).matches("#text_for_qr")){
       const value = (e!.target as HTMLInputElement).value;
       if (value === "") {
-          document.getElementById("gqr")!.style.height = "0"
+          document.getElementById("QRCode-target")!.style.height = "0"
       } else {
-      document.getElementById("gqr")!.style.height = "160px"
+      document.getElementById("QRCode-target")!.style.height = "160px"
       QRCode.toCanvas(
-         document.getElementById("gqr")!,
+         document.getElementById("QRCode-target")!,
          value,
          { width: 160, margin: 1 },
          );

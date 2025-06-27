@@ -8,24 +8,24 @@ import { tempList } from "../logic/tempList.ts"
 
 
 (async () => {
-  document.getElementById("add-drawer-trigger")!.classList.remove('blink');
+  document.getElementById("TempList")!.classList.remove('blink');
 
   const inputGroup     = (await el.wait("#input-group"))      as HTMLElement;
-  const entriesList    = (await el.wait("#entries-list"))     as HTMLElement;
-  const passwordInput  = (await el.wait("#password-input"))   as HTMLInputElement;
-  const titleInput     = (await el.wait("#title-input"))      as HTMLInputElement;
-  const addEntryButton = (await el.wait("#add-entry-button")) as HTMLButtonElement;
-  const searchInputEl  = (await el.wait("#search-input"))     as HTMLInputElement;
+  const entriesList    = (await el.wait("#TempList-list"))     as HTMLElement;
+  const passwordInput  = (await el.wait("#TempList-inputs-password"))   as HTMLInputElement;
+  const titleInput     = (await el.wait("#TempList-inputs-title"))      as HTMLInputElement;
+  const addEntryButton = (await el.wait("#TempList-inputs-add")) as HTMLButtonElement;
+  const searchInputEl  = (await el.wait("#TempList-search-input"))     as HTMLInputElement;
 
   
-  document.getElementById("search-box")!.addEventListener("input",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#search-input")){
+  document.getElementById("TempList-search")!.addEventListener("input",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#TempList-search-input")){
        tempList.setSearchInput((e!.target as HTMLInputElement).value)
     }
   });
 
-  document.getElementById("search-box")!.addEventListener("click",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#cancel-search")){
+  document.getElementById("TempList-search")!.addEventListener("click",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#TempList-search-cancel")){
       searchInputEl.value = '';
       tempList.setSearchInput('');
       tempList.setIsSearching(false)
@@ -45,7 +45,7 @@ tempList.on(["isSearching", "searchArray", "entries"], pl => {
     tempList.get("isSearching") ? tempList.get("searchArray").length === 0 : tempList.get("entries").length === 0) { 
 
     fragment.append(el.c("small", {textContent: "No records found",  
-      style:"padding-block :var(--size-sm3)" }));
+      style:"text-align: center; padding-block :var(--size-sm3)" }));
 
   } else {
 
@@ -116,26 +116,26 @@ tempList.on(["isSearching", "searchArray", "entries"], pl => {
   const updateButton = (e!.target as HTMLInputElement).closest("[data-action='update']");
   if (updateButton) {
     (async () => {
-      (document.getElementById("edit-temp-list-dialog") as HTMLDialogElement).showModal();
+      (document.getElementById("TempList-update") as HTMLDialogElement).showModal();
         const entry = await getEntryById("PasswordEntry", updateButton.id);
         if (entry) {
           const { title, password } = entry;
-          (document.getElementById("updating-temp-title-input") as HTMLInputElement).value = title;
-          (document.getElementById("updating-temp-pass-input") as HTMLInputElement).value = password;
-          (document.getElementById("edit-temp-list-dialog") as HTMLDialogElement).setAttribute("data-_", updateButton.id);
+          (document.getElementById("TempList-update-title") as HTMLInputElement).value = title;
+          (document.getElementById("TempList-update-pass") as HTMLInputElement).value = password;
+          (document.getElementById("TempList-update") as HTMLDialogElement).setAttribute("data-_", updateButton.id);
 
         }
     })();
   };
 
   // update dialog confirm
-  document.getElementById("edit-temp-list-dialog")!.addEventListener("click", (e) => {
-    if((e!.target as HTMLInputElement).matches("#update-temp-list-entry")) {
+  document.getElementById("TempList-update")!.addEventListener("click", (e) => {
+    if((e!.target as HTMLInputElement).matches("#TempList-update-ok")) {
       (async () => {
       dbUpdate("PasswordEntry:update", {
-        id: (document.getElementById("edit-temp-list-dialog") as HTMLDialogElement).dataset._!, 
-        title:(document.getElementById("updating-temp-title-input") as HTMLInputElement).value, 
-        password:(document.getElementById("updating-temp-pass-input") as HTMLInputElement).value});
+        id: (document.getElementById("TempList-update") as HTMLDialogElement).dataset._!, 
+        title:(document.getElementById("TempList-update-title") as HTMLInputElement).value, 
+        password:(document.getElementById("TempList-update-pass") as HTMLInputElement).value});
       tempList.updateEntries();
       })();
     }
@@ -153,7 +153,7 @@ tempList.on(["isSearching", "searchArray", "entries"], pl => {
 
   // add entry
     inputGroup.addEventListener("click", (e) => {
-    if ((e!.target as HTMLInputElement).matches("#add-entry-button")) {
+    if ((e!.target as HTMLInputElement).matches("#TempList-inputs-add")) {
       (async () => {
         await dbCreate("PasswordEntry:create", {
           title:tempList.get("title"),
@@ -161,7 +161,7 @@ tempList.on(["isSearching", "searchArray", "entries"], pl => {
           crreatedAt: new Date().toISOString()
         });
         tempList.setTitle("")
-        if ((document.getElementById("auto-pass-entry") as HTMLInputElement).checked){
+        if ((document.getElementById("TempList-inputs-auto-pass") as HTMLInputElement).checked){
           tempList.setPassword("");
         }
         tempList.updateEntries();
@@ -176,7 +176,7 @@ tempList.on(["isSearching", "searchArray", "entries"], pl => {
     }
 
     // auto-pass entry
-    if ((e!.target as HTMLInputElement).matches("#auto-pass-entry")) {
+    if ((e!.target as HTMLInputElement).matches("#TempList-inputs-auto-pass")) {
       if ((e.target as HTMLInputElement).checked) {
     passwordInput.readOnly = false;
     tempList.setPassword("")
@@ -189,10 +189,10 @@ tempList.on(["isSearching", "searchArray", "entries"], pl => {
 
   // bind input values to signals
   inputGroup.addEventListener("input", (e) => {
-    if ((e!.target as HTMLInputElement).matches("#title-input")) {
+    if ((e!.target as HTMLInputElement).matches("#TempList-inputs-title")) {
       tempList.setTitle((e!.target as HTMLInputElement).value);
     }
-    if ((e!.target as HTMLInputElement).matches("#password-input")) {
+    if ((e!.target as HTMLInputElement).matches("#TempList-inputs-password")) {
       tempList.setPassword((e!.target as HTMLInputElement).value);
     }
   });

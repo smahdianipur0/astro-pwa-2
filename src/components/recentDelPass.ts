@@ -6,7 +6,7 @@ import { tempList } from "../logic/tempList.ts"
 
 (async () => {
 
-  const recentdellist  = (await el.wait("#recent-del-list"))  as HTMLElement;
+  const recentdellist  = (await el.wait("#RecentDelPass-list"))  as HTMLElement;
 
   tempList.updateRecentDelEntries();
 
@@ -16,7 +16,7 @@ import { tempList } from "../logic/tempList.ts"
 
     if (value.length === 0){
       fragment.append(el.c("small", {textContent: "No records found", 
-        style:"padding-block:var(--size-sm3)" }));
+        style:"text-align: center; padding-block:var(--size-sm3)" }));
     } else {
     
     (value ?? [])
@@ -84,11 +84,11 @@ import { tempList } from "../logic/tempList.ts"
     const restoreButton = (e!.target as HTMLInputElement).closest("[data-action='restore']");
     if (restoreButton) {
       (async() => {
-        (document.getElementById("restore-dialog") as HTMLDialogElement).showModal();
+        (document.getElementById("RecentDelPass-restore") as HTMLDialogElement).showModal();
         const entry = await getEntryById("RecentDelPass", restoreButton.id);  
         if (entry) {
-          (document.getElementById("restore-list") as HTMLDialogElement).textContent = "";
-          (document.getElementById("restore-list") as HTMLDialogElement)!.append(
+          (document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement).textContent = "";
+          (document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement)!.append(
 
             el.c('small', { style:"margin:0",
               id: entry.crreatedAt ?? '',
@@ -104,15 +104,15 @@ import { tempList } from "../logic/tempList.ts"
   });
 
 
-  document.getElementById("restore-dialog")!.addEventListener("click", (e) => {
-    if((e!.target as HTMLInputElement).matches("#confirm-restore")) {
+  document.getElementById("RecentDelPass-restore")!.addEventListener("click", (e) => {
+    if((e!.target as HTMLInputElement).matches("#RecentDelPass-restore-ok")) {
       (async () => {
 
-      const title = document.getElementById("restore-list")?.children[0].textContent;
-      const crreatedAt = document.getElementById("restore-list")?.children[0].id as string;
+      const title = document.getElementById("RecentDelPass-restore-item")?.children[0].textContent;
+      const crreatedAt = document.getElementById("RecentDelPass-restore-item")?.children[0].id as string;
 
-      const id = document.getElementById("restore-list")?.children[1].id as string;
-      const password = document.getElementById("restore-list")?.children[1].textContent;
+      const id = document.getElementById("RecentDelPass-restore-item")?.children[1].id as string;
+      const password = document.getElementById("RecentDelPass-restore-item")?.children[1].textContent;
 
 
         if (title && password) {

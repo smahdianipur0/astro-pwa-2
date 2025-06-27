@@ -5,7 +5,7 @@ import CharactersPattern from '../components/CharactersPattern.astro';
 import TempList from '../components/TempList.astro';
 ---
 
-<fieldset class="box-shadow" style="color: oklch(var(--gray-95));" id="generate">
+<fieldset class="box-shadow" style="color: oklch(var(--gray-95));" id="GeneratePass">
     <legend>Generate Password</legend>
     <Tabs name="pass" tab1Label="Random" tab2Label="Manual" >
 
@@ -15,7 +15,7 @@ import TempList from '../components/TempList.astro';
 
                 <div class="text-as-button" style=" margin-top: var(--size-md1);" >
                     <button 
-                        id="gp" 
+                        id="GeneratePass-r-password" 
                         name="copy password" 
                         class="shiny-text" 
                         style="font-size: var(--font-lg1); font-weight: 300; line-height: var(--size-sm3);">
@@ -28,7 +28,7 @@ import TempList from '../components/TempList.astro';
                 <div class="flex-center-childs", style="margin-right: calc(var(--size-sm0) * -1); gap:calc(var(--size-md1) / 2 ); font-size: var(--font-lg1); margin-top: var(--size-md1);">
         
                     <button 
-                        id="redo" 
+                        id="GeneratePass-redo" 
                         name="regenerate password" 
                         class=" flex-center-childs text-as-button blink" 
                         style="width: var(--size-md1);
@@ -41,7 +41,7 @@ import TempList from '../components/TempList.astro';
             </div>
 
             <small 
-                id="ttc" 
+                id="GeneratePass-copy-hint" 
                 style="margin-top: calc(var(--size-sm0) * -1);
                 margin-bottom: var(--size-md4);"
                 > tap to copy </small>  
@@ -62,13 +62,13 @@ import TempList from '../components/TempList.astro';
 
                 <input 
                     autocomplete="off" 
-                    id="mPassword" 
+                    id="GeneratePass-m-input" 
                     type="text" 
                     style="margin-bottom: var(--size-sm0);" 
                     placeholder="Password">
 
                 <button 
-                id="copyMPassword" 
+                id="GeneratePass-m-copy" 
                 style="margin-bottom:var(--size-sm0);" disabled> 
                 Copy </button>
 
@@ -78,7 +78,7 @@ import TempList from '../components/TempList.astro';
 
     <div style=" margin-top:var(--size-sm3); margin-bottom: var(--size-sm0); overflow: hidden">
 
-        <div id="gu" class="skeleton-parrent">
+        <div id="GeneratePass-guessable" class="skeleton-parrent">
           <div style="width:var(--size-xl1);" class="skeleton"> </div>
         </div>
 
@@ -87,11 +87,11 @@ import TempList from '../components/TempList.astro';
             <div style="position: absolute; top: var(--size-xs3);" id="box"></div> 
         </div>
 
-        <div id="s1" class="skeleton-parrent">
+        <div id="GeneratePass-strength1" class="skeleton-parrent">
             <div style="width:80% ;" class="skeleton"> </div>
         </div>
     
-        <div id="s2" class="skeleton-parrent">
+        <div id="GeneratePass-strength2" class="skeleton-parrent">
             <div style="width:65% ;" class="skeleton"> </div>
         </div>
 
@@ -102,7 +102,7 @@ import TempList from '../components/TempList.astro';
         <summary>Encrypted Password</summary>
 
         <button 
-            id="encrypted-pass" 
+            id="GeneratePass-encrypted-pass" 
             class="skeleton-parrent not-prose text-as-button ellipsis max-width" 
             style="text-align: start;"
             disabled>
@@ -111,7 +111,7 @@ import TempList from '../components/TempList.astro';
         </button>
 
         <small 
-            id="encrypted-pass-copy" 
+            id="GeneratePass-encrypted-pass-copy" 
             class="not-prose" 
             style="display: block;"></small>
 
@@ -123,7 +123,7 @@ import TempList from '../components/TempList.astro';
 import { pass } from '../logic/pass';
 import { showToast } from '../logic/misc'
 
-document.getElementById("generate")!.addEventListener("change",(e)=>{
+document.getElementById("GeneratePass")!.addEventListener("change",(e)=>{
   if ((e!.target as HTMLInputElement).matches("#first-tab-id-pass")) {
     if ((e.target as HTMLInputElement).checked) {
       pass.setPassword(pass.get("rPassword"))
@@ -136,52 +136,52 @@ document.getElementById("generate")!.addEventListener("change",(e)=>{
   }
 });
 
-document.getElementById("gp")!.classList.remove('shiny-text');
+document.getElementById("GeneratePass-r-password")!.classList.remove('shiny-text');
 
 pass.on(["rPassword"], pl => {
-  document.getElementById("gp")!.textContent = pl.value;
+  document.getElementById("GeneratePass-r-password")!.textContent = pl.value;
 });
 
-document.getElementById("redo")!.classList.remove('blink');
+document.getElementById("GeneratePass-redo")!.classList.remove('blink');
 
-document.getElementById("generate")!.addEventListener("click",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#gp ,#ttc")){
+document.getElementById("GeneratePass")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#GeneratePass-r-password ,#GeneratePass-copy-hint")){
       navigator.clipboard.writeText(pass.get("rPassword"));  
       showToast(); 
    }
 
-  if((e!.target as HTMLInputElement).matches("#copyMPassword")){
+  if((e!.target as HTMLInputElement).matches("#GeneratePass-m-copy")){
       if(pass.get("rPassword") !== "") {
          navigator.clipboard.writeText(pass.get("mPassword"));  
          showToast(); 
       }
   }
 
-  if((e!.target as HTMLInputElement).matches("#redo")){
+  if((e!.target as HTMLInputElement).matches("#GeneratePass-redo")){
     pass.updateRPassword();
   }
 });
 
 // manual password input
-document.getElementById("generate")!.addEventListener("input",(e)=>{
+document.getElementById("GeneratePass")!.addEventListener("input",(e)=>{
 
-    if((e!.target as HTMLInputElement).matches("#mPassword")){
+    if((e!.target as HTMLInputElement).matches("#GeneratePass-m-input")){
       const value = (e!.target as HTMLInputElement).value;
       pass.setMPassword(value);
 
-      (document.getElementById("copyMPassword")! as HTMLInputElement).disabled = (pass.get("mPassword") === "")
+      (document.getElementById("GeneratePass-m-copy")! as HTMLInputElement).disabled = (pass.get("mPassword") === "")
     }
 });
 
-pass.on(['guessable'], pl => {document.getElementById("gu")!.textContent = pl.value})
+pass.on(['guessable'], pl => {document.getElementById("GeneratePass-guessable")!.textContent = pl.value})
 
-pass.on(['strength1'], pl => {document.getElementById("s1")!.textContent = pl.value })
+pass.on(['strength1'], pl => {document.getElementById("GeneratePass-strength1")!.textContent = pl.value })
 
 pass.on(['strength2'], pl => {
   if( pl.value !== "Zxcvbn cannot evaluate a blank password") {
-    document.getElementById("s2")!.textContent = pl.value
+    document.getElementById("GeneratePass-strength2")!.textContent = pl.value
    } else {
-      document.getElementById("s2")!.textContent = ""  
+      document.getElementById("GeneratePass-strength2")!.textContent = ""  
    }
 })
 
@@ -208,23 +208,23 @@ pass.on(['guessable'], pl =>{
 
 
 pass.on(["encryptedPass", "keyIvIsValid"], pl => {
-  document.getElementById("encrypted-pass")!.textContent = pass.get("encryptedPass");
+  document.getElementById("GeneratePass-encrypted-pass")!.textContent = pass.get("encryptedPass");
     if(pass.get("encryptedPass") !== "" && pass.get("keyIvIsValid") === true) {
-      (document.getElementById("encrypted-pass")! as HTMLButtonElement).disabled  = false;
-      (document.getElementById("encrypted-pass-copy")! as HTMLButtonElement).disabled  = false;
-      document.getElementById("encrypted-pass-copy")!.textContent = "tap to copy";
+      (document.getElementById("GeneratePass-encrypted-pass")! as HTMLButtonElement).disabled  = false;
+      (document.getElementById("GeneratePass-encrypted-pass-copy")! as HTMLButtonElement).disabled  = false;
+      document.getElementById("GeneratePass-encrypted-pass-copy")!.textContent = "tap to copy";
     } else {
-      (document.getElementById("encrypted-pass")! as HTMLButtonElement).disabled  = true;
-      (document.getElementById("encrypted-pass-copy")! as HTMLButtonElement).disabled  = true;
-      document.getElementById("encrypted-pass-copy")!.textContent = "";  
+      (document.getElementById("GeneratePass-encrypted-pass")! as HTMLButtonElement).disabled  = true;
+      (document.getElementById("GeneratePass-encrypted-pass-copy")! as HTMLButtonElement).disabled  = true;
+      document.getElementById("GeneratePass-encrypted-pass-copy")!.textContent = "";  
     }
 
 })
 
 
 // copy Encrypted Pasword
-document.getElementById("generate")!.addEventListener("click",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#encrypted-pass, #encrypted-pass-copy")){
+document.getElementById("GeneratePass")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#GeneratePass-encrypted-pass, #GeneratePass-encrypted-pass-copy")){
       if(pass.get("encryptedPass") !== "" && pass.get("keyIvIsValid") === true) {
          navigator.clipboard.writeText(pass.get("encryptedPass"));  
          showToast(); 

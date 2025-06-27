@@ -5,13 +5,13 @@ import AddCardDialog from './AddCardDialog.astro'
 import RecordCards from './RecordCards.astro'
 ---
 
-<fieldset class="box-shadow" id="credentials"> <legend>credentials</legend>
+<fieldset class="box-shadow" id="Records"> <legend>credentials</legend>
 
     <Auth/>
 
     <VaultMenu/>
 
-    <select name="vaults" class="max-width" id="vault-list" disabled></select>
+    <select name="vaults" class="max-width" id="Records-vaults" disabled></select>
 
 </fieldset>
 
@@ -25,23 +25,22 @@ import RecordCards from './RecordCards.astro'
 
 import { records } from "../logic/records"
 import { el } from "../utils/elementUtils";
-import{dbReadAll} from "../utils/surrealdb-indexed"
 
 
 // bind valut select elment value
-document.getElementById("credentials")!.addEventListener("change",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#vault-list")){
+document.getElementById("Records")!.addEventListener("change",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#Records-vaults")){
         records.setSelectedVault((e!.target as HTMLInputElement).value);
     };
 });
 
 records.on(["selectedVault"], ({value}) => {
-  (document.getElementById("vault-list") as HTMLSelectElement).value = value
+  (document.getElementById("Records-vaults") as HTMLSelectElement).value = value
 });
 
 
 records.on(["vaultsList"], ({value}) => {
-    const vaultlist = document.getElementById("vault-list") as HTMLSelectElement
+    const vaultlist = document.getElementById("Records-vaults") as HTMLSelectElement
     vaultlist.textContent = "";
     vaultlist.disabled = false;
 
@@ -58,7 +57,7 @@ records.on(["vaultsList"], ({value}) => {
     }
     vaultlist.append(fragment);
 
-    const selectVault = document.getElementById("vault-list") as HTMLSelectElement;
+    const selectVault = document.getElementById("Records-vaults") as HTMLSelectElement;
     if (selectVault){ records.setSelectedVault(selectVault.options[0]?.value)}
 });
 

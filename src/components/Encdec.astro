@@ -1,26 +1,26 @@
 ---
 import Tabs from '../components/ui/Tabs.astro';
 ---
-<fieldset class="box-shadow" id="encryption"><legend>AES Encryption</legend>
+<fieldset class="box-shadow" id="Encdec"><legend>AES Encryption</legend>
    <Tabs name="encdec" tab1Label="Encrypt" tab2Label="Decrypt" >
       <fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab1">
 
          <textarea
-            id="plain_text" 
+            id="Encdec-enc-input" 
             class=" dent-shadow" 
             style="margin-top: var(--size-md4); margin-bottom: var(--size-sm3);" 
             rows="2" 
             placeholder="Plain Text"></textarea>
 
          <label 
-            for="result_e"
+            for="Encdec-enc-target"
             style=" margin-bottom: var(--size-sm0); font-size: var(--font-sm1); opacity: 0.6;">
             Encrypted Text : </label>
 
          <button 
             class="not-prose max-width text-as-button" 
             style="word-wrap: break-word; text-align:justify;" 
-            id="result_e"></button>
+            id="Encdec-enc-target"></button>
 
       </fragment>
 
@@ -28,20 +28,20 @@ import Tabs from '../components/ui/Tabs.astro';
       <fragment class="prose" style="color: oklch(var(--gray-95) );" slot="tab2">
 
          <textarea 
-            id="cipher_text" 
+            id="Encdec-dec-input" 
             rows="2" 
             placeholder="Cipher Text"
             style="margin-top: var(--size-md4); margin-bottom: var(--size-sm3);"></textarea>
 
          <label 
-            for="result_d"
+            for="Encdec-dec-target"
             style="margin-bottom: var(--size-sm0); font-size: var(--font-sm1); opacity: 0.6;">
             Decrypted Text :</label>
 
          <button 
             class="not-prose max-width text-as-button" 
             style="word-wrap: break-word; text-align:justify;"
-            id="result_d"></button>
+            id="Encdec-dec-target"></button>
 
       </fragment>
    </Tabs>
@@ -53,13 +53,13 @@ import { showToast } from "../logic/misc.ts";
 import { pass } from '../logic/pass';
 
 // plain and cipher text input
-document.getElementById("encryption")!.addEventListener("input",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#plain_text")){
+document.getElementById("Encdec")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#Encdec-enc-input")){
       const value = (e!.target as HTMLInputElement).value;
       pass.setPlainText(value.toString());
    }
 
-   if((e!.target as HTMLInputElement).matches("#cipher_text")){
+   if((e!.target as HTMLInputElement).matches("#Encdec-dec-input")){
       const value = (e!.target as HTMLInputElement).value;
       pass.setCipherText(value.toString())
    }
@@ -67,8 +67,8 @@ document.getElementById("encryption")!.addEventListener("input",(e)=>{
 
 
 // display results and disable copying false results
-const resultE = document.getElementById("result_e") as HTMLInputElement;
-const resultD = document.getElementById("result_d") as HTMLInputElement;
+const resultE = document.getElementById("Encdec-enc-target") as HTMLInputElement;
+const resultD = document.getElementById("Encdec-dec-target") as HTMLInputElement;
 
 pass.on(["resultE"], ({ value }) => {
    resultE.textContent = value || "Enter Plain Text";
@@ -84,15 +84,15 @@ pass.on(["resultD"], ({ value }) => {
 
 
 // copy encryption and decryption
-document.getElementById("encryption")!.addEventListener("click",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#result_e") &&
-      ((document.getElementById("result_e")! as HTMLInputElement).disabled  === false )){
+document.getElementById("Encdec")!.addEventListener("click",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#Encdec-enc-target") &&
+      ((document.getElementById("Encdec-enc-target")! as HTMLInputElement).disabled  === false )){
       navigator.clipboard.writeText(pass.get("resultE"));  
       showToast();
    }
 
-   if((e!.target as HTMLInputElement).matches("#result_d") &&
-      ((document.getElementById("result_d")! as HTMLInputElement).disabled  === false )){
+   if((e!.target as HTMLInputElement).matches("#Encdec-dec-target") &&
+      ((document.getElementById("Encdec-dec-target")! as HTMLInputElement).disabled  === false )){
       navigator.clipboard.writeText(pass.get("resultD"));  
       showToast();
    }

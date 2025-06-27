@@ -1,10 +1,10 @@
-<fieldset class="box-shadow" id="varification"> 
+<fieldset class="box-shadow" id="Varification"> 
     <legend>Varification Code</legend>
 
     <div style="display: flex; place-content: space-between;">
-        <label for="varification-key-ops">Varification key Format</label>
+        <label for="Varification-ops">Varification key Format</label>
 
-        <select id="varification-key-ops" name="detect mode">
+        <select id="Varification-ops" name="detect mode">
             <option selected>Auto</option>
             <option>Plain</option>
             <option>Encrypted</option>
@@ -12,8 +12,9 @@
     </div>
 
     <textarea 
-        id="varification-key" 
-        class=" dent-shadow" style=" margin-top: var(--size-sm1); 
+        id="Varification-input" 
+        class=" dent-shadow" 
+        style=" margin-top: var(--size-sm1); 
         margin-bottom: var(--size-sm3);" 
         rows="2" 
         placeholder="Varification Key"></textarea>
@@ -28,7 +29,7 @@
             align-items: center;">
 
             <div 
-                id="varif_detail" 
+                id="Varification-detail" 
                 style="line-height: var(--size-sm4);
                 font-weight: 300;
                 font-size:var(--font-lg1);
@@ -39,7 +40,7 @@
 
             <button 
                 name="copy code" 
-                id="varif_detail_res" 
+                id="Varification-target" 
                 class=" not-prose copy" 
                 style="font-variant-numeric: tabular-nums; font-size:var(--font-lg1);">
 
@@ -48,8 +49,8 @@
             
         </div>
 
-        <small id="varif_hint"  style="height:var(--size-sm3);" ></small>
-        <small id="varif_copy_hint" style="height:var(--size-sm3);"></small>
+        <small id="Varification-hint"  style="height:var(--size-sm3);" ></small>
+        <small id="Varification-copy" style="height:var(--size-sm3);"></small>
 
     </div>
 
@@ -60,12 +61,12 @@
 import { pass } from '../logic/pass';
 import { showToast } from '../logic/misc'
   
-document.getElementById("varification")!.addEventListener("input",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#varification-key")){
+document.getElementById("Varification")!.addEventListener("input",(e)=>{
+   if((e!.target as HTMLInputElement).matches("#Varification-input")){
       const value = (e!.target as HTMLInputElement).value;
       pass.setVarificationKey(value.toString())
    }
-   if((e!.target as HTMLInputElement).matches("#varification-key-ops")){
+   if((e!.target as HTMLInputElement).matches("#Varification-ops")){
       const value = (e!.target as HTMLInputElement).value;
       pass.setKeyMode(value.toString())
    }
@@ -73,47 +74,47 @@ document.getElementById("varification")!.addEventListener("input",(e)=>{
 
 
 function clear(){
-    document.getElementById("varif_detail_res")!.textContent = "";
-    document.getElementById("varif_hint")!.textContent = "";
-    document.getElementById("varif_copy_hint")!.textContent = "";
+    document.getElementById("Varification-target")!.textContent = "";
+    document.getElementById("Varification-hint")!.textContent = "";
+    document.getElementById("Varification-copy")!.textContent = "";
 }
 
 pass.on(["otpRes","keyIvIsValid","varificationKey"], pl => {
 
     switch (true) {
         case (pass.get("secretKey") === ""):
-          document.getElementById("varif_detail")!.textContent = ""
+          document.getElementById("Varification-detail")!.textContent = ""
           clear()
           break;
  
         case (pass.get("secretKey") !== pass.get("varificationKey") && (!pass.get("keyIvIsValid") || pass.get("secretKey") === "Invalid Credentials")):
-          document.getElementById("varif_detail")!.textContent = pass.get("secretKey");
+          document.getElementById("Varification-detail")!.textContent = pass.get("secretKey");
           clear()
           break;
  
         case (pass.get("otpRes") === "The provided key is not valid."):
-          document.getElementById("varif_detail")!.textContent = pass.get("otpRes");
+          document.getElementById("Varification-detail")!.textContent = pass.get("otpRes");
           clear()
           break;
  
         default:
-          document.getElementById("varif_detail")!.textContent = "Varification Code:";
-          document.getElementById("varif_detail_res")!.textContent = pass.get("otpRes");
-          document.getElementById("varif_hint")!.textContent = `This code is valid for the next ${pass.get("countDown")} seconds.`;
-          document.getElementById("varif_copy_hint")!.textContent = "Tap to copy";
+          document.getElementById("Varification-detail")!.textContent = "Varification Code:";
+          document.getElementById("Varification-target")!.textContent = pass.get("otpRes");
+          document.getElementById("Varification-hint")!.textContent = `This code is valid for the next ${pass.get("countDown")} seconds.`;
+          document.getElementById("Varification-copy")!.textContent = "Tap to copy";
    }
 });
 
 pass.on(["countDown"], ({value}) =>{
-    if (document.getElementById("varif_detail")!.textContent === "Varification Code:"){
-        document.getElementById("varif_hint")!.textContent = `This code is valid for the next ${pass.get("countDown")} seconds.`;
+    if (document.getElementById("Varification-detail")!.textContent === "Varification Code:"){
+        document.getElementById("Varification-hint")!.textContent = `This code is valid for the next ${pass.get("countDown")} seconds.`;
     }
 })
 
-document.getElementById("varification")!.addEventListener("click", (e) => {
+document.getElementById("Varification")!.addEventListener("click", (e) => {
    if (
-      (e!.target as HTMLInputElement).matches("#varif_detail ,#varif_detail_res, #varif_copy_hint",) &&
-      document.getElementById("varif_detail_res")!.textContent !== ""
+      (e!.target as HTMLInputElement).matches("#Varification-detail ,#Varification-target, #Varification-copy",) &&
+      document.getElementById("Varification-target")!.textContent !== ""
    ) {
       navigator.clipboard.writeText(pass.get("otpRes"));
       showToast();

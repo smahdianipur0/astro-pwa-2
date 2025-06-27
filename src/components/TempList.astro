@@ -3,7 +3,7 @@ import RecentDelPass from "../components/RecentDelPass.astro"
 import Drawer from '../components/ui/Drawer.tsx';
 ---
 
-<div id="add-drawer-trigger" 
+<div id="TempList"
 class="text-as-button blink flex-center-childs"
 style="width: var(--size-md1);border-radius: 100px;">
   
@@ -18,7 +18,7 @@ style="width: var(--size-md1);border-radius: 100px;">
 
             <div data-corvu-no-drag class="prose drawer-content" >
 
-                <fieldset class="box-shadow" id="entries-list-car">
+                <fieldset class="box-shadow" id="TempList-inputs">
                     <div 
                         style="display: flex; flex-direction: column;" 
                         class="prose"
@@ -26,36 +26,36 @@ style="width: var(--size-md1);border-radius: 100px;">
 
                         <input 
                             type="text" 
-                            id="title-input" 
+                            id="TempList-inputs-title" 
                             placeholder="Title" 
                             style="margin-bottom: var(--size-sm2);"/>
 
                         <div style="display: flex; flex-direction: row;">
                             <input 
                                 type="checkbox"
-                                id="auto-pass-entry" 
+                                id="TempList-inputs-auto-pass" 
                                 style="height:var(--size-md4)"> 
 
                             <label 
                                 style=" place-self: center; margin-left: var(--size-sm0);" 
-                                for="auto-pass-entry">
+                                for="TempList-inputs-auto-pass">
                                 Enter Password Manually</label>
                         </div>
 
                         <input 
                             type="text" 
-                            id="password-input"
+                            id="TempList-inputs-password"
                             placeholder="Password" readonly />
                         
                         <button 
                             style="margin-top: var(--size-sm2);"
-                            id="add-entry-button">
+                            id="TempList-inputs-add">
                             Add</button>
                     </div>
                 </fieldset>
 
                 <div 
-                id="search-box" 
+                id="TempList-search" 
                 class="prose max-width" 
                 style="display: flex; 
                 flex-direction: row;
@@ -64,7 +64,7 @@ style="width: var(--size-md1);border-radius: 100px;">
 
                     <input 
                         type="text" 
-                        id="search-input" 
+                        id="TempList-search-input" 
                         placeholder="Search"
                         style=" position: relative;
                         background: oklch(var(--gray-15) / 1);
@@ -82,12 +82,12 @@ style="width: var(--size-md1);border-radius: 100px;">
                             <path d="M10 2.5a7.5 7.5 0 0 1 5.964 12.048l4.743 4.745a1 1 0 0 1-1.32 1.497l-.094-.083-4.745-4.743A7.5 7.5 0 1 1 10 2.5Zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z" />
                     </svg>
 
-                    <button class="not-prose" id="cancel-search" >Cancel</button>
+                    <button class="not-prose" id="TempList-search-cancel" >Cancel</button>
                 </div>
 
 
                 <fieldset class="box-shadow" style="padding: 0; color: oklch(var(--gray-95));">
-                    <menu id="entries-list"> 
+                    <menu id="TempList-list"> 
                         <small  style="padding-block:var(--size-sm3)"> Loading records </small>
                     </menu>
                 </fieldset>
@@ -97,7 +97,7 @@ style="width: var(--size-md1);border-radius: 100px;">
 
             </div>
 
-            <dialog id="edit-temp-list-dialog" class="prose">
+            <dialog id="TempList-update" class="prose">
                 <form method="dialog">
                     
                     <h3 style="margin-top: 0;">Edit Item</h3>
@@ -108,19 +108,19 @@ style="width: var(--size-md1);border-radius: 100px;">
                             type="text" 
                             name="title"  
                             placeholder="Title" 
-                            id="updating-temp-title-input"/>
+                            id="TempList-update-title"/>
 
                         <input 
                             type="text" 
                             name="Password" 
                             placeholder="Password" 
-                            id="updating-temp-pass-input"/>
+                            id="TempList-update-pass"/>
                             
                     </section>
 
                     <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">           
                       <button class="not-prose max-width" >Cancel</button>
-                      <button class="max-width" id="update-temp-list-entry">Update</button>  
+                      <button class="max-width" id="TempList-update-ok">Update</button>  
                     </div>
                 </form>
             </dialog>
@@ -129,6 +129,7 @@ style="width: var(--size-md1);border-radius: 100px;">
 </div>
 
 <style is:global>
+    
 .drawer-content {
   position:absolute;
   inset:0;
@@ -148,7 +149,7 @@ style="width: var(--size-md1);border-radius: 100px;">
   padding-top: var(--size-md4);
  }
 
-#cancel-search {
+#TempList-search-cancel {
   color: oklch(var(--primary));
   width: var(--size-lg1);
   opacity: 0; 
@@ -162,19 +163,19 @@ style="width: var(--size-md1);border-radius: 100px;">
 }
 
 
-:root:has(#search-input:focus-within) #cancel-search,
-:root:has(#search-input:not(:placeholder-shown)) #cancel-search {
+:root:has(#TempList-search-input:focus-within) #TempList-search-cancel,
+:root:has(#TempList-search-input:not(:placeholder-shown)) #TempList-search-cancel {
   opacity: 1; 
   transition: opacity 0.2s;
 }
 
-#search-input {
+#TempList-search-input {
   width: 100%;
   transition: width 0.1s;
 }
 
-:root:has(#search-input:focus-within) #search-input,
-:root:has(#search-input:not(:placeholder-shown)) #search-input {
+:root:has(#TempList-search-input:focus-within) #TempList-search-input,
+:root:has(#TempList-search-input:not(:placeholder-shown)) #TempList-search-input {
   width: calc(100% - var(--size-lg2));
   transition: width 0.1s;
 }
@@ -184,8 +185,8 @@ svg{
 }
 
 
-#recent-del-list > li:last-of-type::after,
-#entries-list > li:last-of-type::after {
+#RecentDelPass-list > li:last-of-type::after,
+#TempList-list > li:last-of-type::after {
   content: 'tap on passwords to copy';
   position: absolute;
   bottom: 0;
@@ -194,8 +195,8 @@ svg{
   color: oklch(var(--gray-50) / 1);
 }
 
-#recent-del-list > li:last-of-type,
-#entries-list > li:last-of-type {
+#RecentDelPass-list > li:last-of-type,
+#TempList-list > li:last-of-type {
   margin-bottom: var(--size-md2);
 }
 

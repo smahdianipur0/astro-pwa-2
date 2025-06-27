@@ -25,20 +25,20 @@ import DrawerFromRight from './ui/DrawerFromRght';
                     class="box-shadow" 
                     style="padding: 0; color: oklch(var(--gray-95)); margin-left: calc(var(--size-sm2) * -1);">
 
-                    <menu id="recent-del-list">
+                    <menu id="RecentDelPass-list">
                         <small style="padding-block: var(--size-sm3);">No records found</small>
                     </menu>
 
                 </fieldset>
             </div> 
 
-            <dialog id="restore-dialog">
+            <dialog id="RecentDelPass-restore">
                 <form method="dialog">           
 
                     <h3 style="margin-top: 0;">Restore Item</h3>
 
                     <div 
-                        id="restore-list"
+                        id="RecentDelPass-restore-item"
                         style="display: flex;
                         flex-direction: column;
                         align-items: flex-start;
@@ -52,7 +52,7 @@ import DrawerFromRight from './ui/DrawerFromRght';
                         margin-top:var(--size-sm3);">
                       
                       <button class="not-prose max-width" >Cancel</button>
-                      <button class="max-width" id="confirm-restore">Restore</button>
+                      <button class="max-width" id="RecentDelPass-restore-ok">Restore</button>
                   
                     </div>
                 </form>
