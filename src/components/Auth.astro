@@ -96,7 +96,7 @@ function updateSucceededAuth() {
 
 
 // get user name
-document.getElementById("credentials")!.addEventListener("input",(e)=>{
+document.getElementById("Auth-target")!.addEventListener("input",(e)=>{
     if((e!.target as HTMLInputElement).matches("#user_name")){
        const value = (e!.target as HTMLInputElement).value;
        setUserName(value.toString());
@@ -105,7 +105,7 @@ document.getElementById("credentials")!.addEventListener("input",(e)=>{
 });
 
 
-document.getElementById("credentials")!.addEventListener("click", (e) => {
+document.getElementById("Auth-target")!.addEventListener("click", (e) => {
     
     if ((e!.target as HTMLInputElement).matches("#registration")) {
 
@@ -117,14 +117,14 @@ document.getElementById("credentials")!.addEventListener("click", (e) => {
 
                 const {registryData,registryError} = await validateRegistration(challenge, registration)
 
-                // handle Succeeded regestration 
+                // handle Failed regestration 
                 if (registryError){authResult.textContent = "Registration Failed"; return}
                 if (!registryData){authResult.textContent = "Registration Failed"; return}
                 if (!user) return;
                 const userId = user[0]?.id;
                 if (!userId) return;
 
-                // handle Failed regestration 
+                // handle Succeeded regestration 
                 updateSucceededAuth()                    
                 dbUpdate("Users:update", { id: userId, registered: true, UID: registration.id });
                 setIndexedUid(true);  

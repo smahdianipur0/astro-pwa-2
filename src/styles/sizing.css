@@ -49,7 +49,8 @@
 
 
 
-  --default-padding: calc( (var(--size-md3) - var(--size-sm4)) / 2)  var(--size-sm2);
+  --padding-3: calc( (var(--size-md3) - var(--size-sm4)) / 2)  var(--size-sm2);
+  --padding-4: calc( (var(--size-md4) - var(--size-sm4)) / 2)  var(--size-sm2);
   --thin-padding: 0.06em var(--size-sm0);
 
 

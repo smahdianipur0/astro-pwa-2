@@ -9,7 +9,7 @@
 }
 
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *)), .prose-btn {
-  padding: var(--default-padding);
+  padding: var(--padding-3);
   padding-block: 0;
   display: flex;
   flex-wrap: wrap;
@@ -119,18 +119,13 @@
   position: relative;
 }
 
-.prose :where(select):not(:where([class~=not-prose],[class~=not-prose] *)):focus{
-  background-color: oklch(var(--gray-25) / 1);
-  outline: 1px solid transparent;
-}
-
 .prose :where(select):not(:where([class~=not-prose],[class~=not-prose] *)):focus-visible {
   outline: Highlight auto 1px;
   outline: -webkit-focus-ring-color auto 1px;
 }
 
 .prose :where(input[type="text"], input[type="url"], input[type="password"], input[type="email"]):not(:where([class~=not-prose],[class~=not-prose] *)){
-  padding: var(--default-padding);
+  padding: var(--padding-3);
   width: 100%;
   display: inline-block;
   border: 1px solid transparent;
@@ -146,7 +141,7 @@
 
 
 .prose :where(textarea):not(:where([class~=not-prose],[class~=not-prose] *)){
-  padding: var(--default-padding);
+  padding: var(--padding-3);
   width: 100%;
   display: inline-block;
   border: 1px solid transparent;
@@ -734,7 +729,7 @@
   place-content: space-between;
   width: calc(100% - (var(--size-xs3) * 2));
   margin-top: var(--size-xs3);
-  padding: var(--default-padding);
+  padding: var(--padding-4);
   border-radius: calc( var(--radius-b) - var(--size-xs3));
   position: relative;
   align-items: center;
@@ -749,11 +744,12 @@
 }
 
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > li:not(:where([class~=not-prose],[class~=not-prose] *)):hover{
-  background-color: oklch(var(--gray-15) / 1);
+  background-color: oklch(var(--gray-95) / 0.05);
 }
 
-.prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > li:not(:where([class~=not-prose],[class~=not-prose] *)):focus{
-  background-color: oklch(var(--gray-25) / 1);
+.prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > li:not(:where([class~=not-prose],[class~=not-prose] *)):active{
+  background-color: oklch(var(--gray-95) / 0.05);
+  scale: 0.98;
 }
 
 .prose :where(hr+*):not(:where([class~=not-prose],[class~=not-prose] *)) {

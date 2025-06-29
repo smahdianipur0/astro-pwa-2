@@ -203,7 +203,7 @@ details.right-to-left[open] summary + *  {
   color: oklch(var(--gray-75));
 }
 
-.text-as-button:focus,
+.text-as-button:active,
 .text-as-button:hover {
   border: 1px solid oklch(var(--gray-25) / 1);
 }
