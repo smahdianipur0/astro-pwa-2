@@ -182,7 +182,7 @@ tempList.on(["isSearching", "searchArray", "entries"], pl => {
     tempList.setPassword("")
       } else {
         passwordInput.readOnly = true;
-        tempList.setPassword(pass.get("rPassword"))
+        tempList.setPassword(pass.get("Password"))
       }
    }
   });
@@ -207,7 +207,7 @@ tempList.on(["isSearching", "searchArray", "entries"], pl => {
 
   // initilize 
   tempList.updateEntries();
-  tempList.setPassword(pass.get("rPassword"));
-  pass.on(["rPassword"], ({value}) => { tempList.setPassword(value)});
+  tempList.setPassword(pass.get("Password"));
+  pass.on(["Password"], ({value}) => { tempList.setPassword(value)});
 
 })();

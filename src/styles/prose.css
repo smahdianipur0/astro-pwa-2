@@ -748,8 +748,7 @@
 }
 
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > li:not(:where([class~=not-prose],[class~=not-prose] *)):active{
-  background-color: oklch(var(--gray-95) / 0.05);
-  scale: 0.98;
+  background-color: oklch(var(--gray-95) / 0.08);
 }
 
 .prose :where(hr+*):not(:where([class~=not-prose],[class~=not-prose] *)) {
