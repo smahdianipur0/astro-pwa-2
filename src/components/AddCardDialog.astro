@@ -22,23 +22,22 @@
 
 <dialog id="AddCardDialog">
     <form method="dialog" onsubmit="return handleCardForm(this, event);">    
-        <p>
+        <p class="flex-spread-childs">
+
             <label for="AddCardDialog-vault">Vault:</label>
+            <select name="select vault" id="AddCardDialog-vault"></select> 
 
-            <select
-              name="select vault"
-              class="max-width prose"
-              id="AddCardDialog-vault"></select> 
         </p>
 
-        <p id="AddCardDialog-card-field">
+        
+        <p class="flex-spread-childs" style="margin-top: 0;" >
+
             <label for="AddCardDialog-card-select">Card:</label>
+            <select name="select card" id="AddCardDialog-card-select"></select>
 
-            <select
-              name="select card"
-              class="max-width prose"
-              id="AddCardDialog-card-select"></select>
         </p>
+        
+        <p id="AddCardDialog-card-field"></p>
 
         <div id="AddCardDialog-comments">
             <textarea name="comments"></textarea>

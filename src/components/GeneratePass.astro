@@ -197,7 +197,6 @@ pass.on(['strength'], ({value}) =>{
     );
 })
 
-
 pass.on(['strength'], ({ value }) => {
   (async () => {
     const strength = (await el.wait("#GeneratePass-strength")) as HTMLElement;
@@ -266,7 +265,7 @@ pass.updateRPassword();
 
 .expandable {
   max-width: calc(( var(--size-sm0) * 2 ) + var(--size-sm3)) ; 
-  transition: max-width 0.3s var(--appear);
+  transition: max-width 0.3s var(--move);
 }
 
 .expandable:hover,

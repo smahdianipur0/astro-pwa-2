@@ -9,9 +9,15 @@ import RecordCards from './RecordCards.astro'
 
     <Auth/>
 
-    <VaultMenu/>
+    <!-- <VaultMenu/> -->
+    <div class="flex-spread-childs max-width" style="align-items: center; margin-block: var(--size-sm0);">
+        <div class="flex-spread-childs max-width" >
+            <label for="Records-vaults">Vaults</label>
+            <select id="Records-vaults" name="vaults" disabled></select>
+        </div>
 
-    <select name="vaults" class="max-width" id="Records-vaults" disabled></select>
+        <VaultMenu/>
+    </div>
 
 </fieldset>
 

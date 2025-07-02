@@ -1,4 +1,4 @@
-<fieldset class="box-shadow" id="Varification"> 
+<fieldset class="box-shadow expandable" id="Varification"> 
     <legend>Varification Code</legend>
 
     <div style="display: flex; place-content: space-between;">
@@ -83,16 +83,19 @@ pass.on(["otpRes","keyIvIsValid","varificationKey"], pl => {
     switch (true) {
         case (pass.get("secretKey") === ""):
           document.getElementById("Varification-detail")!.textContent = ""
+          document.getElementById("Varification")!.style.maxHeight = "calc(((var(--size-sm4) - var(--size-sm0)) / 2) + var(--size-xl2))"
           clear()
           break;
  
         case (pass.get("secretKey") !== pass.get("varificationKey") && (!pass.get("keyIvIsValid") || pass.get("secretKey") === "Invalid Credentials")):
           document.getElementById("Varification-detail")!.textContent = pass.get("secretKey");
+          document.getElementById("Varification")!.style.maxHeight = "var(--size-xl5)"
           clear()
           break;
  
         case (pass.get("otpRes") === "The provided key is not valid."):
           document.getElementById("Varification-detail")!.textContent = pass.get("otpRes");
+          document.getElementById("Varification")!.style.maxHeight = "var(--size-xl5)"
           clear()
           break;
  
@@ -101,6 +104,7 @@ pass.on(["otpRes","keyIvIsValid","varificationKey"], pl => {
           document.getElementById("Varification-target")!.textContent = pass.get("otpRes");
           document.getElementById("Varification-hint")!.textContent = `This code is valid for the next ${pass.get("countDown")} seconds.`;
           document.getElementById("Varification-copy")!.textContent = "Tap to copy";
+          document.getElementById("Varification")!.style.maxHeight = "var(--size-xl5)"
    }
 });
 
@@ -121,3 +125,13 @@ document.getElementById("Varification")!.addEventListener("click", (e) => {
 });
 
 </script>
+
+
+<style>
+
+.expandable {
+  max-height: calc(((var(--size-sm4) - var(--size-sm0)) / 2) + var(--size-xl2)) ; 
+  transition: max-height 0.3s var(--move);
+}
+
+</style>
