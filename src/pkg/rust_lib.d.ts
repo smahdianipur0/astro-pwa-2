@@ -36,14 +36,4 @@ export function generate_password(password_length: number, add_special_char: boo
 * @param {string} password
 * @returns {string}
 */
-export function guessable(password: string): string;
-/**
-* @param {string} password
-* @returns {string}
-*/
 export function calculate_password_strength(password: string): string;
-/**
-* @param {string} password
-* @returns {string}
-*/
-export function calculate_password_strength2(password: string): string;

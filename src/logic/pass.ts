@@ -2,8 +2,6 @@ import { createStore, derive } from '../utils/state';
 import {
    generate_password,
    calculate_password_strength,
-   calculate_password_strength2,
-   guessable,
    encrypt,
    decrypt,
    count_characters
@@ -80,17 +78,9 @@ export const pass = createStore({
     }, 
 
    derived: {
-	    guessable: derive(
-	      ['Password'] as const, 
-	      ({ get }) => ( guessable(get('Password')))
-	   ),
-	    strength1: derive(
+	    strength: derive(
 	      ['Password'] as const, 
 	      ({ get }) => ( calculate_password_strength(get('Password')))
-	   ),
-	    strength2: derive(
-	      ['Password'] as const, 
-	      ({ get }) => ( calculate_password_strength2(get('Password')))
 	   ),
 	    encryptedPass: derive(
 	      ['Password', 'key', 'iv'] as const, 

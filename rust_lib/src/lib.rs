@@ -200,57 +200,17 @@ pub fn generate_password(password_length: usize, add_special_char: bool, add_num
     password
 }
 
-#[wasm_bindgen]
-pub fn guessable(password: &str) -> String {
-
-if password.trim().chars ().count () == 0 { 
-         let errmsg:String  = "Enter password".to_string();
-         return errmsg;
-    }
-    let estimate = zxcvbn(&password, &[]).unwrap();
-    let score = estimate.score();
-
-    match score {
-        e if e == 0 => "Too Guessable".to_string(),
-        e if e == 1 => "Very Guessable".to_string(),
-        e if e == 2 => "Somewhat Guessable".to_string(),
-        e if e == 3 => "Safely Unguessable".to_string(), 
-        _  => "Very Unguessable".to_string(), 
-    }
-
-}
 
 #[wasm_bindgen]
 pub fn calculate_password_strength(password: &str) -> String {
     match zxcvbn::zxcvbn(password, &[]) {
         Ok(entropy) => {
-            // Return the formatted string for offline slow hashing crack time
             format!(
-                 "Slow Hashing: {}",
-                entropy.crack_times().offline_slow_hashing_1e4_per_second(),
-                
-            )
-        },
-        Err(e) => {
-            // Return the error as a string
-            e.to_string()
-        }
-    }
-}
-
-#[wasm_bindgen]
-pub fn calculate_password_strength2(password: &str) -> String {
-    match zxcvbn::zxcvbn(password, &[]) {
-        Ok(entropy) => {
-            // Return the formatted string for offline slow hashing crack time
-            format!(
-                 "Fast Hashing: {}",
-                
+                "{}",                
                 entropy.crack_times().offline_fast_hashing_1e10_per_second()
             )
         },
         Err(e) => {
-            // Return the error as a string
             e.to_string()
         }
     }

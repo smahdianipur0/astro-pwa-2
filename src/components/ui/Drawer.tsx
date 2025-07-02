@@ -2,7 +2,7 @@ import '../../styles/corvu.css'
 import { type ParentComponent, type JSX } from "solid-js";
 import Drawer from "@corvu/drawer";
 
-interface DrawerComponentProps {
+interface DrawerComponentProps { 
   trigger?: JSX.Element;
   content?: JSX.Element;
 }

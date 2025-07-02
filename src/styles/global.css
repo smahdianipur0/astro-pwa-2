@@ -142,7 +142,7 @@ details.right-to-left[open] > .s-container {
 
 details.right-to-left > *:not(summary):nth-child(2) {
   margin-inline: var(--size-sm0);
-  color: var(--danger);
+  color: oklch(var(--danger));
   font-size: var(--font-sm1);
 } 
 

@@ -12,15 +12,6 @@ function getObject(idx) { return heap[idx]; }
 
 let heap_next = heap.length;
 
-function addHeapObject(obj) {
-    if (heap_next === heap.length) heap.push(heap.length + 1);
-    const idx = heap_next;
-    heap_next = heap[idx];
-
-    heap[idx] = obj;
-    return idx;
-}
-
 function dropObject(idx) {
     if (idx < 132) return;
     heap[idx] = heap_next;
@@ -31,6 +22,15 @@ function takeObject(idx) {
     const ret = getObject(idx);
     dropObject(idx);
     return ret;
+}
+
+function addHeapObject(obj) {
+    if (heap_next === heap.length) heap.push(heap.length + 1);
+    const idx = heap_next;
+    heap_next = heap[idx];
+
+    heap[idx] = obj;
+    return idx;
 }
 
 const lTextDecoder = typeof TextDecoder === 'undefined' ? (0, module.require)('util').TextDecoder : TextDecoder;
@@ -236,29 +236,6 @@ export function generate_password(password_length, add_special_char, add_number,
 * @param {string} password
 * @returns {string}
 */
-export function guessable(password) {
-    let deferred2_0;
-    let deferred2_1;
-    try {
-        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        const ptr0 = passStringToWasm0(password, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
-        const len0 = WASM_VECTOR_LEN;
-        wasm.guessable(retptr, ptr0, len0);
-        var r0 = getInt32Memory0()[retptr / 4 + 0];
-        var r1 = getInt32Memory0()[retptr / 4 + 1];
-        deferred2_0 = r0;
-        deferred2_1 = r1;
-        return getStringFromWasm0(r0, r1);
-    } finally {
-        wasm.__wbindgen_add_to_stack_pointer(16);
-        wasm.__wbindgen_export_2(deferred2_0, deferred2_1, 1);
-    }
-}
-
-/**
-* @param {string} password
-* @returns {string}
-*/
 export function calculate_password_strength(password) {
     let deferred2_0;
     let deferred2_1;
@@ -278,29 +255,6 @@ export function calculate_password_strength(password) {
     }
 }
 
-/**
-* @param {string} password
-* @returns {string}
-*/
-export function calculate_password_strength2(password) {
-    let deferred2_0;
-    let deferred2_1;
-    try {
-        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        const ptr0 = passStringToWasm0(password, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
-        const len0 = WASM_VECTOR_LEN;
-        wasm.calculate_password_strength2(retptr, ptr0, len0);
-        var r0 = getInt32Memory0()[retptr / 4 + 0];
-        var r1 = getInt32Memory0()[retptr / 4 + 1];
-        deferred2_0 = r0;
-        deferred2_1 = r1;
-        return getStringFromWasm0(r0, r1);
-    } finally {
-        wasm.__wbindgen_add_to_stack_pointer(16);
-        wasm.__wbindgen_export_2(deferred2_0, deferred2_1, 1);
-    }
-}
-
 function handleError(f, args) {
     try {
         return f.apply(this, args);
@@ -308,6 +262,20 @@ function handleError(f, args) {
         wasm.__wbindgen_export_3(addHeapObject(e));
     }
 }
+
+export function __wbg_new0_7a6141101f2206da() {
+    const ret = new Date();
+    return addHeapObject(ret);
+};
+
+export function __wbg_getTime_0e03c3f524be31ef(arg0) {
+    const ret = getObject(arg0).getTime();
+    return ret;
+};
+
+export function __wbindgen_object_drop_ref(arg0) {
+    takeObject(arg0);
+};
 
 export function __wbindgen_object_clone_ref(arg0) {
     const ret = getObject(arg0);
@@ -343,10 +311,6 @@ export function __wbg_node_43b1089f407e4ec2(arg0) {
 export function __wbindgen_is_string(arg0) {
     const ret = typeof(getObject(arg0)) === 'string';
     return ret;
-};
-
-export function __wbindgen_object_drop_ref(arg0) {
-    takeObject(arg0);
 };
 
 export function __wbg_msCrypto_10fc94afee92bd76(arg0) {
@@ -455,18 +419,8 @@ export function __wbindgen_throw(arg0, arg1) {
     throw new Error(getStringFromWasm0(arg0, arg1));
 };
 
-export function __wbg_new0_7a6141101f2206da() {
-    const ret = new Date();
-    return addHeapObject(ret);
-};
-
 export function __wbg_getFullYear_58caf6b282c65af0(arg0) {
     const ret = getObject(arg0).getFullYear();
-    return ret;
-};
-
-export function __wbg_getTime_0e03c3f524be31ef(arg0) {
-    const ret = getObject(arg0).getTime();
     return ret;
 };
 

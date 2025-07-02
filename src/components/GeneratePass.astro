@@ -3,6 +3,7 @@ import Tabs from '../components/ui/Tabs.astro';
 import CharactersCount from '../components/CharactersCount.astro';
 import CharactersPattern from '../components/CharactersPattern.astro'; 
 import TempList from '../components/TempList.astro';
+import Menu from '../components/ui/Menu';
 ---
 
 <fieldset class="box-shadow" style="color: oklch(var(--gray-95));" id="GeneratePass">
@@ -11,40 +12,29 @@ import TempList from '../components/TempList.astro';
 
         <fragment slot="tab1">
 
-            <div class="flex-spread-childs not-prose " style=" position: relative;">
+            <div class="flex-spread-childs not-prose " style=" position: relative; margin-top: var(--size-md1);">
 
-                <div class="text-as-button" style=" margin-top: var(--size-md1);" >
-                    <button 
-                        id="GeneratePass-r-password" 
-                        name="copy password" 
-                        class="shiny-text" 
-                        style="font-size: var(--font-lg1); font-weight: 300; line-height: var(--size-sm3);">
-                        Loading...
-
-                        <!-- <div class="skeleton" style="width:var(--size-xl1)"> </div> -->
-                    </button>
+                <div 
+                    id="GeneratePass-r-password" 
+                    class="shiny-text" 
+                    style="font-size: var(--font-lg1); font-weight: 300; line-height: var(--size-sm3);">
+                    
+                    <div class="skeleton" style="width:var(--size-xl1)"> </div>
                 </div>
 
-                <div class="flex-center-childs", style="margin-right: calc(var(--size-sm0) * -1); gap:calc(var(--size-md1) / 2 ); font-size: var(--font-lg1); margin-top: var(--size-md1);">
+                <div class="flex-center-childs", style="margin-right: calc(var(--size-sm0) * -1); gap:calc(var(--size-md1) / 2 ); font-size: var(--font-lg1);">
         
                     <button 
                         id="GeneratePass-redo" 
                         name="regenerate password" 
-                        class=" flex-center-childs text-as-button blink" 
-                        style="width: var(--size-md1);
-                        border-radius: 100px;" >↻</button>
-                        
+                        class=" flex-center-childs text-as-button blink">
 
-                    <TempList />
+                        <svg style='width: var(--size-sm3); pointer-events: none;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m14.61 2.47-.077-.067a.748.748 0 0 0-.983.067l-.068.078a.755.755 0 0 0 .068.987l1.971 1.977H8.5l-.233.004C4.785 5.639 2 8.51 2 12.036c0 1.69.64 3.23 1.692 4.39l.072.069a.751.751 0 0 0 1.08-1.033l-.2-.231A5.009 5.009 0 0 1 3.5 12.035c0-2.771 2.239-5.018 5-5.018h6.881l-1.832 1.84-.067.078a.755.755 0 0 0 .068.987.748.748 0 0 0 1.06 0l3.182-3.193.067-.078a.755.755 0 0 0-.067-.987L14.61 2.47Zm5.62 5.101a.751.751 0 0 0-1.05 1.066 5.01 5.01 0 0 1 1.32 3.398c0 2.772-2.239 5.019-5 5.019H8.558l1.905-1.911.074-.086a.755.755 0 0 0-.007-.902l-.067-.077-.084-.073a.748.748 0 0 0-.9.006l-.076.067-3.182 3.194-.073.085a.755.755 0 0 0 .006.902l.067.077 3.182 3.194.084.072c.293.22.71.195.976-.073a.755.755 0 0 0 .068-.987l-.068-.077-1.899-1.906H15.5l.233-.004C19.215 18.432 22 15.56 22 12.035a6.513 6.513 0 0 0-1.697-4.395l-.073-.069Z" fill="oklch (var(--gray-95))"/></svg>
+                    </button>                    
 
                 </div>
             </div>
 
-            <small 
-                id="GeneratePass-copy-hint" 
-                style="margin-top: calc(var(--size-sm0) * -1);
-                margin-bottom: var(--size-md4);"
-                > tap to copy </small>  
 
             <CharactersCount />
             <div style="border-bottom: 1px solid oklch(var(--gray-25) / 1);" ></div>
@@ -68,60 +58,92 @@ import TempList from '../components/TempList.astro';
                     placeholder="Password">
 
                 <button 
-                id="GeneratePass-m-copy" 
-                style="margin-bottom:var(--size-sm0);" disabled> 
-                Copy </button>
+                    id="GeneratePass-m-copy" 
+                    style="margin-bottom:var(--size-sm0);" disabled> 
+                    Copy </button>
 
             </div>
         </fragment>
     </Tabs>
 
-    <div style=" margin-top:var(--size-sm3); margin-bottom: var(--size-sm0); overflow: hidden">
+    <div class="flex-with-gap" style="margin-top:var(--size-sm3); margin-bottom: var(--size-sm0);">
 
-        <div id="GeneratePass-guessable" class="skeleton-parrent">
-          <div style="width:var(--size-xl1);" class="skeleton"> </div>
-        </div>
+        <Menu client:load>
+            <fragment slot="trigger">
+                <div class="text-as-button flex-center-childs">
 
-        <div style="position:relative; height:var(--size-sm0); place-content:center">
-            <div style="position: absolute; top: var(--size-xs3);" id="box-place-holder"></div>
-            <div style="position: absolute; top: var(--size-xs3);" id="box"></div> 
-        </div>
+                    <div 
+                        class="blink"
+                        id="GeneratePass-led" 
+                        style=" --led-color: oklch( 100% 0 0);
+                        border-radius: 100px; 
+                        background-color: var(--led-color); 
+                        width: 5px; height: 5px;
+                        box-shadow: 0px 0px 7px 1px var(--led-color);"></div>
 
-        <div id="GeneratePass-strength1" class="skeleton-parrent">
-            <div style="width:80% ;" class="skeleton"> </div>
-        </div>
-    
-        <div id="GeneratePass-strength2" class="skeleton-parrent">
-            <div style="width:65% ;" class="skeleton"> </div>
+                </div>
+            </fragment>
+
+            <fragment slot="content" > 
+
+                <small 
+                    id="GeneratePass-strength" 
+                    class="skeleton-parrent glass" 
+                    style="width: var(--size-xl4);
+                    border-radius: var(--radius-b);
+                    background-color: oklch(var(--gray-15) / 75%);
+                    padding: var(--size-sm3);
+                    box-shadow: 0px 0px 80px 20px oklch(var(--gray-10) / 40%);">
+
+                    <div style="width: var(--size-xl3);" class="skeleton"> </div>
+                </small>   
+
+            </fragment>
+        </Menu>
+
+        <button id="GeneratePass-copy-hint"  class="not-prose text-as-button flex-center-childs">
+            <svg style='width: var(--size-sm3); pointer-events: none;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5.503 4.627 5.5 6.75v10.504a3.25 3.25 0 0 0 3.25 3.25h8.616a2.251 2.251 0 0 1-2.122 1.5H8.75A4.75 4.75 0 0 1 4 17.254V6.75c0-.98.627-1.815 1.503-2.123ZM17.75 2A2.25 2.25 0 0 1 20 4.25v13a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-13A2.25 2.25 0 0 1 8.75 2h9Zm0 1.5h-9a.75.75 0 0 0-.75.75v13c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75v-13a.75.75 0 0 0-.75-.75Z" fill="oklch (var(--gray-95))"/></svg>
+                <path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm0 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17ZM12 7a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 12 7Z" fill="oklch (var(--gray-95))"/>
+            </svg>
+        </button>
+
+        <Menu client:load>
+
+            <fragment slot="trigger" class="text-as-button flex-center-childs"> 
+                <svg style="width: var(--size-sm3);" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.25 7a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0Z" fill="#fff"/><path d="M15.5 2.05A6.554 6.554 0 0 0 8.95 8.6c0 .387.05.76.11 1.104a.275.275 0 0 1-.07.244l-6.235 6.236a2.75 2.75 0 0 0-.806 1.944V20.3c0 .966.784 1.75 1.75 1.75h2.5a1.75 1.75 0 0 0 1.75-1.75v-1.25H9.7c.69 0 1.25-.56 1.25-1.25v-1.75h1.75a1.25 1.25 0 0 0 1.25-1.204c.496.128 1.02.204 1.55.204a6.554 6.554 0 0 0 6.55-6.55c0-3.631-2.953-6.45-6.55-6.45ZM10.45 8.6a5.054 5.054 0 0 1 5.05-5.05c2.802 0 5.05 2.181 5.05 4.95a5.054 5.054 0 0 1-5.05 5.05c-.68 0-1.38-.171-2.005-.44a.75.75 0 0 0-1.046.69v.75H10.7c-.69 0-1.25.56-1.25 1.25v1.75H7.7c-.69 0-1.25.56-1.25 1.25v1.5a.25.25 0 0 1-.25.25H3.7a.25.25 0 0 1-.25-.25v-2.172c0-.331.132-.65.366-.884l6.236-6.235a1.774 1.774 0 0 0 .486-1.564 4.917 4.917 0 0 1-.088-.845Z" fill="oklch (var(--gray-95))"/></svg>
+            </fragment>
+
+            <fragment slot="content" > 
+                <menu  class="glass" style="width: var(--size-xl4);" id="GeneratePass-encrypted" >
+
+                    <div id="GeneratePass-encrypted-pass" class="ellipsis max-width" style="padding-inline: var(--size-sm3);"></div>
+                    
+                    <li id="GeneratePass-encrypted-pass-copy-li">
+                        <button id="GeneratePass-encrypted-pass-copy" class="not-prose max-width flex-with-gap no-select">
+                            <svg style='width: var(--size-sm3); pointer-events: none;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5.503 4.627 5.5 6.75v10.504a3.25 3.25 0 0 0 3.25 3.25h8.616a2.251 2.251 0 0 1-2.122 1.5H8.75A4.75 4.75 0 0 1 4 17.254V6.75c0-.98.627-1.815 1.503-2.123ZM17.75 2A2.25 2.25 0 0 1 20 4.25v13a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-13A2.25 2.25 0 0 1 8.75 2h9Zm0 1.5h-9a.75.75 0 0 0-.75.75v13c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75v-13a.75.75 0 0 0-.75-.75Z" fill="oklch (var(--gray-95))"/></svg>
+                                <path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm0 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17ZM12 7a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 12 7Z" fill="oklch (var(--gray-95))"/>
+                            </svg>
+                            <div style="pointer-events: none;" > Copy encrypted password </div> 
+                        </button>
+                    </li>
+                    
+                </menu>
+            </fragment>
+        </Menu>
+
+        <div class="not-prose">  
+            <TempList />
         </div>
 
     </div>
 
-    <details name="encrypted password" class="prose" >
-
-        <summary>Encrypted Password</summary>
-
-        <button 
-            id="GeneratePass-encrypted-pass" 
-            class="skeleton-parrent not-prose text-as-button ellipsis max-width" 
-            style="text-align: start;"
-            disabled>
-
-            <div style="width:var(--size-xl1);" class="skeleton"> </div>
-        </button>
-
-        <small 
-            id="GeneratePass-encrypted-pass-copy" 
-            class="not-prose" 
-            style="display: block;"></small>
-
-    </details>
 </fieldset>
 
 <script>
   
 import { pass } from '../logic/pass';
 import { showToast } from '../logic/misc'
+import { el } from '../utils/elementUtils'
 
 document.getElementById("GeneratePass")!.addEventListener("change",(e)=>{
   if ((e!.target as HTMLInputElement).matches("#first-tab-id-pass")) {
@@ -173,96 +195,67 @@ document.getElementById("GeneratePass")!.addEventListener("input",(e)=>{
     }
 });
 
-pass.on(['guessable'], pl => {document.getElementById("GeneratePass-guessable")!.textContent = pl.value})
+document.getElementById("GeneratePass-led")!.classList.remove('blink');
 
-pass.on(['strength1'], pl => {document.getElementById("GeneratePass-strength1")!.textContent = pl.value })
-
-pass.on(['strength2'], pl => {
-  if( pl.value !== "Zxcvbn cannot evaluate a blank password") {
-    document.getElementById("GeneratePass-strength2")!.textContent = pl.value
-   } else {
-      document.getElementById("GeneratePass-strength2")!.textContent = ""  
-   }
-})
-
-pass.on(['guessable'], pl =>{
-  const gu = pl.value;
+pass.on(['strength'], ({value}) =>{
   
-  document.getElementById("box")!.style.setProperty("--box-w", 
-    gu === "Enter password"     ? "0%"  :
-    gu === "Too Guessable"      ? "36%" :
-    gu === "Very Guessable"     ? "52%" :
-    gu === "Somewhat Guessable" ? "68%" :
-    gu === "Safely Unguessable" ? "84%" :
-    gu === "Very Unguessable"   ? "100%": "0%"
- );
-  document.getElementById("box")!.style.setProperty("--box-p", 
-    gu === "Enter password"     ? "0%"  :
-    gu === "Too Guessable"      ? "0%"  :
-    gu === "Very Guessable"     ? "16%" :
-    gu === "Somewhat Guessable" ? "32%" :
-    gu === "Safely Unguessable" ? "48%" :
-    gu === "Very Unguessable"   ? "64%" : "0%"
+  document.getElementById("GeneratePass-led")!.style.setProperty("--led-color", 
+    value.includes("Zxcvbn") ? "oklch( 100% 0 0)"  :
+    value.includes("day")    ? "oklch(var(--warning))" :
+    value.includes("month")  ? "oklch(var(--success))" :
+    value.includes("year")   ? "oklch(var(--primary))" : "oklch(var(--danger))"
  );
 })
 
+pass.on(['strength'], ({value}) => {
+    (async () => {
+
+        const strength = (await el.wait("#GeneratePass-strength")) as HTMLElement;
+
+        if( value !== "Zxcvbn cannot evaluate a blank password") {
+            strength.textContent = 
+            `With an offline attack rate of one billion guesses per second, this password would take an estimated ${value} to compromise.`
+        } else {
+              strength.textContent = value  
+        }
+    })();
+})
 
 pass.on(["encryptedPass", "keyIvIsValid"], pl => {
-  document.getElementById("GeneratePass-encrypted-pass")!.textContent = pass.get("encryptedPass");
-    if(pass.get("encryptedPass") !== "" && pass.get("keyIvIsValid") === true) {
-      (document.getElementById("GeneratePass-encrypted-pass")! as HTMLButtonElement).disabled  = false;
-      (document.getElementById("GeneratePass-encrypted-pass-copy")! as HTMLButtonElement).disabled  = false;
-      document.getElementById("GeneratePass-encrypted-pass-copy")!.textContent = "tap to copy";
-    } else {
-      (document.getElementById("GeneratePass-encrypted-pass")! as HTMLButtonElement).disabled  = true;
-      (document.getElementById("GeneratePass-encrypted-pass-copy")! as HTMLButtonElement).disabled  = true;
-      document.getElementById("GeneratePass-encrypted-pass-copy")!.textContent = "";  
-    }
+    (async () => {
 
-})
+        const encryptedPass = (await el.wait("#GeneratePass-encrypted-pass")) as HTMLButtonElement;
+        const encryptedPassCopy = (await el.wait("#GeneratePass-encrypted-pass-copy")) as HTMLButtonElement;
+    
+        encryptedPass.textContent = pass.get("encryptedPass");
 
-
-// copy Encrypted Pasword
-document.getElementById("GeneratePass")!.addEventListener("click",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#GeneratePass-encrypted-pass, #GeneratePass-encrypted-pass-copy")){
-      if(pass.get("encryptedPass") !== "" && pass.get("keyIvIsValid") === true) {
-         navigator.clipboard.writeText(pass.get("encryptedPass"));  
-         showToast(); 
-      }
-   }
+        if(pass.get("encryptedPass") !== "" && pass.get("keyIvIsValid") === true) {
+            encryptedPass.disabled  = false;
+            encryptedPassCopy.disabled  = false;
+        } else {
+            encryptedPass.disabled  = true;
+            encryptedPassCopy.disabled  = true;
+        }
+    })();
 });
+
+
+//copy Encrypted Pasword
+(async () => {
+
+    const encryptedPass = (await el.wait("#GeneratePass-encrypted")) as HTMLElement;
+
+    encryptedPass.addEventListener("click",(e)=>{
+        if((e!.target as HTMLInputElement).matches("#GeneratePass-encrypted-pass-copy, #GeneratePass-encrypted-pass-copy-li")){
+            if(pass.get("encryptedPass") !== "" && pass.get("keyIvIsValid") === true) {
+                navigator.clipboard.writeText(pass.get("encryptedPass"));  
+                showToast(); 
+            } 
+        };
+    });
+})();
+
 
 
 pass.updateRPassword();
 </script>
-
-<style>
-
-#box {
-  display: flex;
-  align-items: center;
-  transition: width 0.2s, background-color 0.2s, background-position 0.2s ;
-  border-radius: var(--radius-a);
-  background-color: red; 
-  height: var(--size-xs4);
-  background-image: linear-gradient(to right, #f21616, #f02f11, #d47a20, #719deb, #6977e3, #7643b1, #5d43b1);
-  background-clip: content-box;
-  background-size: 300% var(--size-sm0);
-  --box-w: 36%;
-  --box-p: 0%;
-  width: var(--box-w);
-  background-position: var(--box-p);
-  place-content: baseline;
-}
-
-#box-place-holder{
-  display: flex;
-  border-radius: var(--radius-a);
-  align-items: center;
-  background-color: oklch( var(--gray-95) / 0.2); 
-  height: var(--size-xs4);
-  width: 100% ;
-  box-shadow: inset 0px 1px 2px oklch(0% 0 0 / 0.3) ;
-}
-
-</style>
