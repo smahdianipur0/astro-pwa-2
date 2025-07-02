@@ -1,11 +1,10 @@
 /* drawer */
 :root{
-  --drawer-heigt: 500px
+  --drawer-height: 90vh;
+
 }
 
-/* [data-corvu-drawer-trigger] {
-  width: 100%;
-} */
+
 
 [data-corvu-drawer-overlay] {
   position: fixed;
@@ -30,7 +29,7 @@
   z-index: var(--z-layer-top);
   display: flex;
   height: 100%;
-  max-height: var(--drawer-heigt);
+  max-height: var(--drawer-height);
   flex-direction: column;
   border-top-left-radius: var(--radius-b);
   border-top-right-radius:var(--radius-b);

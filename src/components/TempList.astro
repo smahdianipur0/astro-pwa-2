@@ -133,7 +133,7 @@ import Drawer from '../components/ui/Drawer.tsx';
 .drawer-content {
   position:absolute;
   inset:0;
-  height: var(--drawer-heigt);
+  height: var(--drawer-height);
   display: flex; 
   flex-direction: column; 
   align-items: center; 
@@ -178,10 +178,6 @@ import Drawer from '../components/ui/Drawer.tsx';
 :root:has(#TempList-search-input:not(:placeholder-shown)) #TempList-search-input {
   width: calc(100% - var(--size-lg2));
   transition: width 0.1s;
-}
-
-svg{
-  fill: oklch(var(--gray-95))
 }
 
 

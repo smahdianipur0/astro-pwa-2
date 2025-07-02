@@ -162,9 +162,9 @@ document.getElementById("GeneratePass")!.addEventListener("change",(e)=>{
 
 pass.on(["rPassword"], ({value}) => { document.getElementById("GeneratePass-r-password")!.textContent = value;});
 
-document.getElementById("GeneratePass-redo")!.classList.remove('blink');
-document.getElementById("GeneratePass-copy-hint")!.classList.remove('blink');
-document.getElementById("GeneratePass-encrypted-icon")!.classList.remove('blink');
+
+["GeneratePass-redo","GeneratePass-copy-hint", "GeneratePass-encrypted-icon"].forEach(id =>
+    document.getElementById(id)?.classList.remove('blink'));
 
 document.getElementById("GeneratePass")!.addEventListener("click",(e)=>{
    if((e!.target as HTMLInputElement).matches("#GeneratePass-copy-hint")){
@@ -197,19 +197,32 @@ pass.on(['strength'], ({value}) =>{
     );
 })
 
-pass.on(['strength'], ({value}) => {
-    (async () => {
 
-        const strength = (await el.wait("#GeneratePass-strength")) as HTMLElement;
+pass.on(['strength'], ({ value }) => {
+  (async () => {
+    const strength = (await el.wait("#GeneratePass-strength")) as HTMLElement;
 
-        if( value !== "Zxcvbn cannot evaluate a blank password") {
-            strength.textContent = 
-            `With an offline attack rate of one billion guesses per second, this password would take an estimated ${value} to compromise.`
-        } else {
-              strength.textContent = value  
-        }
-    })();
-})
+    strength.textContent = '';
+
+    if (value !== "Zxcvbn cannot evaluate a blank password") {
+
+      strength.appendChild(
+        document.createTextNode('With an offline attack rate of one billion guesses per second, this password would take an estimated ')
+      );
+
+      const u = document.createElement('u');
+      u.textContent = value;
+      strength.appendChild(u);
+
+      strength.appendChild(
+        document.createTextNode(' to compromise.')
+      );
+
+    } else {
+      strength.textContent = value;
+    }
+  })();
+});
 
 pass.on(["encryptedPass", "keyIvIsValid"], pl => {
     (async () => {

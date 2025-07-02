@@ -32,7 +32,7 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
                   background: oklch(var(--gray-10) / 50%);
                   border-top-left-radius: var(--radius-a);
                   border-top-right-radius: var(--radius-a);
-                  height: var(--size-md4);">
+                  height: var(--size-lg1);">
               <Drawer.Close> 
                 
                 <div style="margin-right: var(--size-sm3); display:flex; width: fit-content; align-items: center;">

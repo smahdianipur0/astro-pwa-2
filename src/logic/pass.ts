@@ -17,7 +17,7 @@ export const pass = createStore({
     	mPassword: "",
     	Password : "",
 
-    	length :               16,
+    	length :               18,
     	addSpecialCha:         true,
 		addNumber:             true,
 		capitalizeFirstLetter: true,

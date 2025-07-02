@@ -32,7 +32,7 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
                 background: oklch(var(--gray-10) / 50%);
                 border-top-left-radius: var(--radius-a);
                 border-top-right-radius: var(--radius-a);
-                height: var(--size-md4);">
+                height: var(--size-lg1);">
                 <div class='absolute-center'>{props.title}</div>
                 <Drawer.Close>
                   <svg style="opacity:20%;
