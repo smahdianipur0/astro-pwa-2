@@ -72,9 +72,11 @@
 <script>
 
 import { dbCreate, dbReadAll, dbDelete , type ReadAllResultTypes} from "../utils/surrealdb-indexed";
-import { el } from "../utils/elementUtils";
 import { showToast } from "../logic/misc.ts";
 import { createStore } from "../utils/state";
+import { Emails } from './Emails'
+import { render } from "solid-js/web"
+import { el } from "../utils/elementUtils";
 
 const email = createStore({
     state: { 
@@ -108,14 +110,6 @@ document.getElementById("Emails")!.addEventListener("click", (e) => {
     })();
   }
 
-  const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
-  if (deleteButton) {
-    (async () => {
-      await dbDelete(deleteButton.id);
-      email.updateEmailList()
-    })();
-  }
-
   const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
   if (copyButton) {
     (async () => {
@@ -125,43 +119,41 @@ document.getElementById("Emails")!.addEventListener("click", (e) => {
   }
 });
 
-email.on(["emailList"], ({value}) => {  
-  email.setEmailInput("");
-  (document.getElementById("Email-input") as HTMLInputElement).value = "";
-  (document.getElementById("Email-add") as HTMLInputElement).disabled = true;
-  document.getElementById("Email-list")!.textContent = '';
-  const fragment = document.createDocumentFragment();
-  
-  (value ?? [])
-  .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
-  .forEach((entry) => {
-    fragment.append(
-      el.c('li', { style: 'width: 100%; background-color:transparent; padding-inline: 0;',append: [
 
-          el.c('div', { append: [
-              el.c('button', { dataset: {action: 'copy'}, 
-                className: 'not-prose ellipsis',
-                style:"text-align: start; width: var(--size-xl2); color: oklch(var(--gray-95))",
-                id: entry.email ?? '',
-                textContent: entry.email ?? ''
-              })
-          ]}),
 
-          el.c('div', {className: 'not-prose s-container', append: [
-            el.c('details', {name: 'delete-item',className: 'right-to-left', append: [
-              el.c('summary', { className: 'right-to-left' }),
-              el.c('button', { dataset: {action: 'delete' },
-                  id: entry.id ?? '',   
-                  textContent: ' Delete'
-                })
-            ]})
-          ]})
-        ]})
-    );
-  });
-  
-  document.getElementById("Email-list")!.append(fragment);
+email.on(["emailList"], ({ value }) => {
+    email.setEmailInput("");
+    (document.getElementById("Email-input") as HTMLInputElement).value = "";
+    (document.getElementById("Email-add")   as HTMLInputElement).disabled = true;
+    (document.getElementById("Email-list")  as HTMLElement).textContent = "";
+
+    (value ?? [])
+        .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
+        .forEach((entry) => {
+            render(() => Emails(entry), document.getElementById("Email-list") as HTMLElement);
+        });
+
+
+    const array = value.map((u) => `#Emails-${u.email}`);
+    array.forEach((entry) => {
+        (async () => {
+            const menu = (await el.wait(entry)) as HTMLElement;
+
+            menu.addEventListener("click", (e) => {
+                const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
+                if (deleteButton) {
+                    (async () => {
+                        await dbDelete(deleteButton.id);
+                        email.updateEmailList();
+                    })();
+                    menu.remove();
+                }
+            });
+        })();
+    });
 });
+
+
 
 email.updateEmailList()
 </script>
@@ -176,5 +168,33 @@ email.updateEmailList()
   font-size: var(--font-sm1);
   color: oklch(var(--gray-50) / 1);
 }
+
+summary.right-to-left[data-Emails]::before { 
+  content: "";
+  background-color: oklch(var(--danger) / 1);
+  -webkit-mask-image:url('data:image/svg+xml,<svg width="var(--size-sm3)" height="var(--size-sm3)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1.75a3.25 3.25 0 0 1 3.245 3.066L15.25 5h5.25a.75.75 0 0 1 .102 1.493L20.5 6.5h-.796l-1.28 13.02a2.75 2.75 0 0 1-2.561 2.474l-.176.006H8.313a2.75 2.75 0 0 1-2.714-2.307l-.023-.174L4.295 6.5H3.5a.75.75 0 0 1-.743-.648L2.75 5.75a.75.75 0 0 1 .648-.743L3.5 5h5.25A3.25 3.25 0 0 1 12 1.75Zm6.197 4.75H5.802l1.267 12.872a1.25 1.25 0 0 0 1.117 1.122l.127.006h7.374c.6 0 1.109-.425 1.225-1.002l.02-.126L18.196 6.5ZM13.75 9.25a.75.75 0 0 1 .743.648L14.5 10v7a.75.75 0 0 1-1.493.102L13 17v-7a.75.75 0 0 1 .75-.75Zm-3.5 0a.75.75 0 0 1 .743.648L11 10v7a.75.75 0 0 1-1.493.102L9.5 17v-7a.75.75 0 0 1 .75-.75Zm1.75-6a1.75 1.75 0 0 0-1.744 1.606L10.25 5h3.5A1.75 1.75 0 0 0 12 3.25Z" fill="%23fff"/></svg>');
+  mask-image: url('data:image/svg+xml,<svg width="var(--size-sm3)" height="var(--size-sm3)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1.75a3.25 3.25 0 0 1 3.245 3.066L15.25 5h5.25a.75.75 0 0 1 .102 1.493L20.5 6.5h-.796l-1.28 13.02a2.75 2.75 0 0 1-2.561 2.474l-.176.006H8.313a2.75 2.75 0 0 1-2.714-2.307l-.023-.174L4.295 6.5H3.5a.75.75 0 0 1-.743-.648L2.75 5.75a.75.75 0 0 1 .648-.743L3.5 5h5.25A3.25 3.25 0 0 1 12 1.75Zm6.197 4.75H5.802l1.267 12.872a1.25 1.25 0 0 0 1.117 1.122l.127.006h7.374c.6 0 1.109-.425 1.225-1.002l.02-.126L18.196 6.5ZM13.75 9.25a.75.75 0 0 1 .743.648L14.5 10v7a.75.75 0 0 1-1.493.102L13 17v-7a.75.75 0 0 1 .75-.75Zm-3.5 0a.75.75 0 0 1 .743.648L11 10v7a.75.75 0 0 1-1.493.102L9.5 17v-7a.75.75 0 0 1 .75-.75Zm1.75-6a1.75 1.75 0 0 0-1.744 1.606L10.25 5h3.5A1.75 1.75 0 0 0 12 3.25Z" fill="%23fff"/></svg>');
+  height: var(--size-sm3);
+  width: var(--size-sm3);
+} 
+
+summary.right-to-left[data-Emails]::after { 
+  content: "Delete";
+  line-height: var(--size-sm3);
+  color: oklch(var(--danger));
+} 
+
+details.right-to-left[open] > summary[data-Emails]::before {
+  content: 'Cancel';
+  font-size: inherit;
+  color: oklch(var(--gray-95) / 1);
+  width: var(--size-lg4);
+  line-height: var(--size-sm3);
+  text-align: end
+} 
+
+details.right-to-left[open] > summary[data-Emails]::after {
+  display: none;
+} 
 
 </style>

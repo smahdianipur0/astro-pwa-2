@@ -34,8 +34,7 @@ export function Verification(): JSX.Element {
             );
 
         default:
-            document.getElementById("Varification")!.style.maxHeight =
-                "var(--size-xl5)";
+            document.getElementById("Varification")!.style.maxHeight = "var(--size-xl5)";
             return (
                 <>
                     <div style={parentStyle}>
@@ -48,6 +47,6 @@ export function Verification(): JSX.Element {
                     </small>
                 </>
             );
-            
+
     }
 }

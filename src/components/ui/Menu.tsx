@@ -5,13 +5,14 @@ import type { ParentComponent, JSX } from 'solid-js'
 interface MenuComponentProps {
   trigger?: JSX.Element;
   content?: JSX.Element;
+  offset?: number;
 }
 
 const Menu: ParentComponent<MenuComponentProps> = (props) => {
   return (
     <Popover
       floatingOptions={{
-        offset: 13,
+        offset: props.offset ?? 13 ,
         flip: true,
         shift: true,
       }}
