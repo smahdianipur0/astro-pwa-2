@@ -115,8 +115,9 @@
   color: oklch(var(--gray-95) );
   height: var(--size-md1) ;
   text-align: end;
+  text-align-last: center;
   position: relative;
-  background: transparent;
+  background: oklch( var(--gray-10) / 0.01 );
 }
 
 .prose :where(select):not(:where([class~=not-prose],[class~=not-prose] *)):focus-visible {
