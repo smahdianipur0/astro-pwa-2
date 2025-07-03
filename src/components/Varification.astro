@@ -1,7 +1,7 @@
 <fieldset class="box-shadow expandable" id="Varification"> 
     <legend>Varification Code</legend>
 
-    <div style="display: flex; place-content: space-between;">
+    <div class="flex-spread-childs">
         <label for="Varification-ops">Varification key Format</label>
 
         <select id="Varification-ops" name="detect mode">
@@ -18,47 +18,28 @@
         rows="2" 
         placeholder="Varification Key"></textarea>
 
-    <div style="overflow: hidden;">
+    <div id="Varification-target" style="overflow: hidden;">
 
-        <div 
-            style="color: oklch(var(--gray-95));
+        <div             
+            style="font-size: var(--font-lg1);
             display: flex;
             position: relative;
             justify-content: space-between;
             align-items: center;">
 
-            <div 
-                id="Varification-detail" 
-                style="line-height: var(--size-sm4);
-                font-weight: 300;
-                font-size:var(--font-lg1);
-                height:var(--size-sm4);">
-
                 <div class="skeleton" style="width:var(--size-lg4)"></div>
-            </div>
-
-            <button 
-                name="copy code" 
-                id="Varification-target" 
-                class=" not-prose copy" 
-                style="font-variant-numeric: tabular-nums; font-size:var(--font-lg1);">
-
                 <div class="skeleton" style="width:var(--size-lg1);"></div>
-            </button>
-            
+                       
         </div>
-
-        <small id="Varification-hint"  style="height:var(--size-sm3);" ></small>
-        <small id="Varification-copy" style="height:var(--size-sm3);"></small>
-
     </div>
-
 </fieldset>
 
 <script>
 
 import { pass } from '../logic/pass';
 import { showToast } from '../logic/misc'
+import { el } from '../utils/elementUtils'
+
   
 document.getElementById("Varification")!.addEventListener("input",(e)=>{
    if((e!.target as HTMLInputElement).matches("#Varification-input")){
@@ -72,52 +53,76 @@ document.getElementById("Varification")!.addEventListener("input",(e)=>{
 });
 
 
-function clear(){
-    document.getElementById("Varification-target")!.textContent = "";
-    document.getElementById("Varification-hint")!.textContent = "";
-    document.getElementById("Varification-copy")!.textContent = "";
-}
+const parentStyle = "color: oklch(var(--gray-95)); display: flex; position: relative; justify-content: space-between; align-items: center;"
+const detailStyle = "line-height: var(--size-sm4);font-weight: 300;font-size:var(--font-lg1); height:var(--size-sm4);"
+const resStyle =    "font-variant-numeric: tabular-nums; font-size:var(--font-lg1);"
 
 pass.on(["otpRes","keyIvIsValid","varificationKey"], pl => {
+    const target = document.getElementById("Varification-target") as HTMLSelectElement
+    target.textContent = "";
+
+    const fragment = document.createDocumentFragment();
 
     switch (true) {
         case (pass.get("secretKey") === ""):
-          document.getElementById("Varification-detail")!.textContent = ""
-          document.getElementById("Varification")!.style.maxHeight = "calc(((var(--size-sm4) - var(--size-sm0)) / 2) + var(--size-xl2))"
-          clear()
+            document.getElementById("Varification")!.style.maxHeight = "var(--size-xl2)"
           break;
  
         case (pass.get("secretKey") !== pass.get("varificationKey") && (!pass.get("keyIvIsValid") || pass.get("secretKey") === "Invalid Credentials")):
-          document.getElementById("Varification-detail")!.textContent = pass.get("secretKey");
-          document.getElementById("Varification")!.style.maxHeight = "var(--size-xl5)"
-          clear()
-          break;
+            fragment.append( el.c( "div", { style: parentStyle, append:[
+                el.c("div", { id:"Varification-target-detail",style:detailStyle,textContent: pass.get("secretKey")})
+            ]}));
+            document.getElementById("Varification")!.style.maxHeight = "var(--size-xl5)"
+            break;
  
         case (pass.get("otpRes") === "The provided key is not valid."):
-          document.getElementById("Varification-detail")!.textContent = pass.get("otpRes");
-          document.getElementById("Varification")!.style.maxHeight = "var(--size-xl5)"
-          clear()
-          break;
+            fragment.append( el.c( "div", { style: parentStyle, append:[
+                el.c("div", {id:"Varification-target-detail", style:detailStyle , textContent: pass.get("otpRes")})
+            ]}));
+            document.getElementById("Varification")!.style.maxHeight = "var(--size-xl5)"
+            break;
+
  
         default:
-          document.getElementById("Varification-detail")!.textContent = "Varification Code:";
-          document.getElementById("Varification-target")!.textContent = pass.get("otpRes");
-          document.getElementById("Varification-hint")!.textContent = `This code is valid for the next ${pass.get("countDown")} seconds.`;
-          document.getElementById("Varification-copy")!.textContent = "Tap to copy";
-          document.getElementById("Varification")!.style.maxHeight = "var(--size-xl5)"
+            fragment.append( el.c( "div", { style: parentStyle, append:[
+                el.c("div", { id:"Varification-target-detail" ,style:detailStyle,textContent: "Varification Code:"}),
+
+                el.c("div", {
+                    id:"Varification-target-res",
+                    name:"copy code",
+                    className: "text-as-button",
+                    style:resStyle,
+                    textContent: pass.get("otpRes")})
+            ]}));
+
+            fragment.append(el.c("small", {
+                id:"Varification-hint", 
+                style:"height:var(--size-sm3);",
+                textContent: `This code is valid for the next ${pass.get("countDown")} seconds.`
+            }));
+
+            fragment.append(el.c("small", {
+                id:"Varification-copy", 
+                style:"height:var(--size-sm3);",
+                textContent: "Tap to copy"
+            }))
+
+            document.getElementById("Varification")!.style.maxHeight = "var(--size-xl5)"
    }
+
+    target.append(fragment);
 });
 
 pass.on(["countDown"], ({value}) =>{
-    if (document.getElementById("Varification-detail")!.textContent === "Varification Code:"){
+    if (document.getElementById("Varification-target-detail")!.textContent === "Varification Code:"){
         document.getElementById("Varification-hint")!.textContent = `This code is valid for the next ${pass.get("countDown")} seconds.`;
     }
 })
 
 document.getElementById("Varification")!.addEventListener("click", (e) => {
    if (
-      (e!.target as HTMLInputElement).matches("#Varification-detail ,#Varification-target, #Varification-copy",) &&
-      document.getElementById("Varification-target")!.textContent !== ""
+      (e!.target as HTMLInputElement).matches("#Varification-target-detail ,#Varification-target-res, #Varification-copy",) &&
+      document.getElementById("Varification-target-res")!.textContent !== ""
    ) {
       navigator.clipboard.writeText(pass.get("otpRes"));
       showToast();
@@ -130,8 +135,8 @@ document.getElementById("Varification")!.addEventListener("click", (e) => {
 <style>
 
 .expandable {
-  max-height: calc(((var(--size-sm4) - var(--size-sm0)) / 2) + var(--size-xl2)) ; 
-  transition: max-height 0.3s var(--move);
+    max-height: var(--size-xl2);
+    transition: max-height 0.3s var(--appear-subtle);
 }
 
 </style>
