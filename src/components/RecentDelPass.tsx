@@ -2,6 +2,7 @@ import  type { JSX } from "solid-js";
 import { tempList } from "../logic/tempList.ts" 
 import type { ReadResultTypes } from "../utils/surrealdb-indexed";
 import Menu from "./ui/Menu";
+import DeleteMenu from './ui/DeleteMenu'
 import { restore } from "./recentDelPassScript.ts";
 
 
@@ -35,17 +36,18 @@ export function List(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element {
             }
             content={
 
-                <menu id={`menu-${entry.id?.toString()}`} class="glass" style="flex-direction:row">
+                <menu id={`menu-${entry.id?.toString()}`} class="glass" style="flex-direction:row; font-size:var(--font-sm1)">
                     <li  style="margin-bottom: var(--size-xs3);">
-                        <details class = "right-to-left not-prose">
-                            <summary  class="right-to-left flex-with-gap"></summary>
-                            <button  onClick={()=> 
-                            {
+                      <DeleteMenu
+                        content={
+                          <button  
+                            onClick={()=>  {
                               tempList.deleteRecentDelEntris(entry.id?.toString() ?? '');
                               document.getElementById(`menu-${entry.id?.toString()}`)?.remove();                  
                             }
-                            }>Delete</button>                        
-                        </details> 
+                            }>Delete</button>
+                        }
+                      ></DeleteMenu>                        
                     </li>
 
                     <li>
@@ -81,13 +83,12 @@ export function List(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element {
   }
 }
 
-
 export function dialog(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element {
 
     return (<>
 
-      <small id={entry?.crreatedAt ?? ''} style="margin:0" > {entry?.title || 'untitled'}</small>      
-      <div id={entry?.id ?? ''} class="ellipsis" >{entry?.password ?? ''}</div>
+        <small id={entry?.crreatedAt ?? ''} style="margin:0" > {entry?.title || 'untitled'}</small>      
+        <div id={entry?.id ?? ''} class="ellipsis" >{entry?.password ?? ''}</div>
 
     </>);
 }

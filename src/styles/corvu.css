@@ -73,6 +73,25 @@
   text-align: center;
 }
 
+.drawer-content {
+  position:absolute;
+  inset:0;
+  height: var(--drawer-height);
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: var(--size-sm3); 
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-top: var(--size-sm1);
+  padding-inline: var(--size-sm1);
+  max-width: 100%;
+ }
+
+.drawer-content:first-child{
+  padding-top: var(--size-lg1);
+}
+
 
 
 /* popover */
