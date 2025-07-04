@@ -1,3 +1,7 @@
+---
+const examples = ["name@gmail.com", "name@yahoo.com", "name@outlook.com"]
+---
+
 <fieldset class="box-shadow " id="Emails" >
     <legend>Frequently Used Emails</legend>
 
@@ -21,73 +25,39 @@
             Add</button>
     </div>
 
-    <menu
-        id="Email-list"
+
+    <menu id="Email-list" 
         style="background: transparent; 
         padding-top: var(--size-sm3); 
         height: 100%; 
         margin-bottom: var(--size-md2);">
 
-        <li style="width: 100%; background-color: transparent; padding-inline: 0px;">
-            <button
-                class="not-prose ellipsis shiny-text"
-                style="text-align: start; width: var(--size-xl2);">
-                name@gmail.com</button>
+        {examples.map((item) => (
 
-            <div class="not-prose s-container">
-                <details  name="delete-item" class="right-to-left">
-                    <summary class="right-to-left shiny-text"></summary>
-                </details>
-            </div>
-        </li>
+            <li style="width:100%;background-color:transparent;padding-inline:0;">
+                <div>
+                    <button class="not-prose shiny-text" style="text-align:start;">{item} </button>
+                </div>
 
-        <li style="width: 100%; background-color: transparent; padding-inline: 0px;">
-            <button
-                class="not-prose ellipsis shiny-text"
-                style="text-align: start; width: var(--size-xl2);">
-                name@yahoo.com</button>
+                <div class="not-prose s-container">
+                    <button class="not-prose"> 
+                        <div class="text-as-button blink" style="margin-right:calc(var(--size-sm0)* -1);">
+                            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM18 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="oklch(var(--gray-95))"></path></svg>
+                        </div>
+                    </button>
+                </div>
+            </li>
 
-            <div class="not-prose s-container">
-                <details name="delete-item" class="right-to-left">
-                    <summary class="right-to-left shiny-text"></summary>
-                </details>
-            </div>
-        </li>
-
-        <li style="width: 100%; background-color: transparent; padding-inline: 0px;">
-            <button
-                class="not-prose ellipsis shiny-text"
-                style="text-align: start; width: var(--size-xl2);">
-                name@outlook.com</button>
-
-            <div class="not-prose s-container">
-                <details name="delete-item" class="right-to-left">
-                    <summary class="right-to-left shiny-text"></summary>
-                </details>
-            </div>
-        </li>
+        ))}
     </menu>
+
 </fieldset>
 
 <script>
-
-import { dbCreate, dbReadAll, dbDelete , type ReadAllResultTypes} from "../utils/surrealdb-indexed";
 import { showToast } from "../logic/misc.ts";
-import { createStore } from "../utils/state";
 import { Emails } from './Emails'
 import { render } from "solid-js/web"
-import { el } from "../utils/elementUtils";
-
-const email = createStore({
-    state: { 
-        emailInput: "" ,
-        emailList: ([]) as ReadAllResultTypes["Emails"] | [],
-    },
-    methods: {
-        setEmailInput(value: string) { this.set('emailInput', value); },
-        async updateEmailList(){this.set('emailList',await dbReadAll("Emails") ?? []) }
-    }, 
-});
+import { email } from '../logic/email'
 
 
 document.getElementById("Emails")!.addEventListener("input",(e)=>{
@@ -103,22 +73,18 @@ document.getElementById("Emails")!.addEventListener("input",(e)=>{
 });
 
 document.getElementById("Emails")!.addEventListener("click", (e) => {
-  if ((e!.target as HTMLInputElement).matches("#Email-add")) {
-    (async () => {
-      await dbCreate("Emails:create", {email:email.get("emailInput"), crreatedAt: new Date().toISOString()})
-      email.updateEmailList()
-    })();
-  }
+    if ((e!.target as HTMLInputElement).matches("#Email-add")) { 
+        email.addEmail(email.get("emailInput"))
+    }
 
-  const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
-  if (copyButton) {
-    (async () => {
-      navigator.clipboard.writeText(copyButton.id);  
-       showToast();
-    })();
-  }
+    const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
+    if (copyButton) {
+        (async () => {
+            navigator.clipboard.writeText(copyButton.id);  
+            showToast();
+        })();
+    }
 });
-
 
 
 email.on(["emailList"], ({ value }) => {
@@ -132,30 +98,10 @@ email.on(["emailList"], ({ value }) => {
         .forEach((entry) => {
             render(() => Emails(entry), document.getElementById("Email-list") as HTMLElement);
         });
-
-
-    const array = value.map((u) => `#Emails-${u.email}`);
-    array.forEach((entry) => {
-        (async () => {
-            const menu = (await el.wait(entry)) as HTMLElement;
-
-            menu.addEventListener("click", (e) => {
-                const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
-                if (deleteButton) {
-                    (async () => {
-                        await dbDelete(deleteButton.id);
-                        email.updateEmailList();
-                    })();
-                    menu.remove();
-                }
-            });
-        })();
-    });
 });
 
+email.updateEmailList();
 
-
-email.updateEmailList()
 </script>
 
 <style is:global>
