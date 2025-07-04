@@ -1,6 +1,6 @@
 import { createStore, derive } from '../utils/state';
 import Fuse from 'fuse.js'
-import { dbReadAll,type ReadAllResultTypes } from "../utils/surrealdb-indexed";
+import { dbReadAll, getEntryById, dbCreate, dbDelete, type ReadAllResultTypes } from "../utils/surrealdb-indexed";
 
 
 export const tempList = createStore({
@@ -21,7 +21,18 @@ export const tempList = createStore({
     	setIsSearching  (value: boolean) { this.set('isSearching', value) },
 
     	async updateEntries          () { this.set('entries', await dbReadAll("PasswordEntry") ?? []!) },
-    	async updateRecentDelEntries () { this.set('recentDelEntries',  await dbReadAll("RecentDelPass") ?? []!);}
+    	async updateRecentDelEntries () { this.set('recentDelEntries',  await dbReadAll("RecentDelPass") ?? []!);},
+
+    	async deleteEntries(id) {
+    		const entry = await getEntryById("PasswordEntry", id);
+    		if (entry) {
+	            const { title, password, crreatedAt  } = entry;
+	            await dbCreate("RecentDelPass:create", {title: title, password: password, crreatedAt: crreatedAt });
+	        }
+	        dbDelete(id)
+	        this.set('entries', await dbReadAll("PasswordEntry") ?? []!);
+    		this.set('recentDelEntries',  await dbReadAll("RecentDelPass") ?? []!);
+    	}
     }, 
 
     derived: {
@@ -35,3 +46,15 @@ export const tempList = createStore({
 	    )
 	}
 });
+
+export async function promptToUpdate(id: string){
+	(document.getElementById("TempList-update") as HTMLDialogElement).showModal();
+    const entry = await getEntryById("PasswordEntry", id);
+    if (entry) {
+        const { title, password } = entry;
+        (document.getElementById("TempList-update-title") as HTMLInputElement).value = title;
+        (document.getElementById("TempList-update-pass") as HTMLInputElement).value = password;
+        (document.getElementById("TempList-update") as HTMLDialogElement).setAttribute("data-_", id);
+
+    }
+}

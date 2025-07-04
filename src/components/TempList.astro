@@ -122,28 +122,152 @@ import Drawer from '../components/ui/Drawer.tsx';
   margin-bottom: var(--size-md2);
 }
 
-summary.right-to-left{
-    flex-direction: row-reverse;  
-}
- 
-summary.right-to-left::before { 
-  content: "";
-  background-color: oklch(var(--gray-95) / 1);
-  -webkit-mask-image:url('data:image/svg+xml,<svg width="var(--size-sm3)" height="var(--size-sm3)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1.75a3.25 3.25 0 0 1 3.245 3.066L15.25 5h5.25a.75.75 0 0 1 .102 1.493L20.5 6.5h-.796l-1.28 13.02a2.75 2.75 0 0 1-2.561 2.474l-.176.006H8.313a2.75 2.75 0 0 1-2.714-2.307l-.023-.174L4.295 6.5H3.5a.75.75 0 0 1-.743-.648L2.75 5.75a.75.75 0 0 1 .648-.743L3.5 5h5.25A3.25 3.25 0 0 1 12 1.75Zm6.197 4.75H5.802l1.267 12.872a1.25 1.25 0 0 0 1.117 1.122l.127.006h7.374c.6 0 1.109-.425 1.225-1.002l.02-.126L18.196 6.5ZM13.75 9.25a.75.75 0 0 1 .743.648L14.5 10v7a.75.75 0 0 1-1.493.102L13 17v-7a.75.75 0 0 1 .75-.75Zm-3.5 0a.75.75 0 0 1 .743.648L11 10v7a.75.75 0 0 1-1.493.102L9.5 17v-7a.75.75 0 0 1 .75-.75Zm1.75-6a1.75 1.75 0 0 0-1.744 1.606L10.25 5h3.5A1.75 1.75 0 0 0 12 3.25Z" fill="%23fff"/></svg>');
-  mask-image: url('data:image/svg+xml,<svg width="var(--size-sm3)" height="var(--size-sm3)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1.75a3.25 3.25 0 0 1 3.245 3.066L15.25 5h5.25a.75.75 0 0 1 .102 1.493L20.5 6.5h-.796l-1.28 13.02a2.75 2.75 0 0 1-2.561 2.474l-.176.006H8.313a2.75 2.75 0 0 1-2.714-2.307l-.023-.174L4.295 6.5H3.5a.75.75 0 0 1-.743-.648L2.75 5.75a.75.75 0 0 1 .648-.743L3.5 5h5.25A3.25 3.25 0 0 1 12 1.75Zm6.197 4.75H5.802l1.267 12.872a1.25 1.25 0 0 0 1.117 1.122l.127.006h7.374c.6 0 1.109-.425 1.225-1.002l.02-.126L18.196 6.5ZM13.75 9.25a.75.75 0 0 1 .743.648L14.5 10v7a.75.75 0 0 1-1.493.102L13 17v-7a.75.75 0 0 1 .75-.75Zm-3.5 0a.75.75 0 0 1 .743.648L11 10v7a.75.75 0 0 1-1.493.102L9.5 17v-7a.75.75 0 0 1 .75-.75Zm1.75-6a1.75 1.75 0 0 0-1.744 1.606L10.25 5h3.5A1.75 1.75 0 0 0 12 3.25Z" fill="%23fff"/></svg>');
-  height: var(--size-sm3);
-  width: var(--size-sm3);
-} 
-
-details.right-to-left[open] > summary::before {
-  content: 'Cancel';
-  font-size: inherit;
-  color: oklch(var(--gray-95) / 1);
-  background-color: unset;
-  -webkit-mask-image:none;
-  mask-image: none;
-  width: auto;
-  height: auto;
-} 
-
 </style>
+
+<script>
+
+import { el } from "../utils/elementUtils";
+import { pass } from '../logic/pass';
+import { showToast } from "../logic/misc.ts";
+import { dbCreate,dbUpdate } from "../utils/surrealdb-indexed";
+import { tempList } from "../logic/tempList.ts" 
+import { Templist } from './TempList'
+import { render } from "solid-js/web"
+
+
+
+(async () => {
+  document.getElementById("TempList")!.classList.remove('blink');
+
+  const inputGroup     = (await el.wait("#input-group"))      as HTMLElement;
+  const entriesList    = (await el.wait("#TempList-list"))     as HTMLElement;
+  const passwordInput  = (await el.wait("#TempList-inputs-password"))   as HTMLInputElement;
+  const titleInput     = (await el.wait("#TempList-inputs-title"))      as HTMLInputElement;
+  const addEntryButton = (await el.wait("#TempList-inputs-add")) as HTMLButtonElement;
+  const searchInputEl  = (await el.wait("#TempList-search-input"))     as HTMLInputElement;
+
+  
+  document.getElementById("TempList-search")!.addEventListener("input",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#TempList-search-input")){
+       tempList.setSearchInput((e!.target as HTMLInputElement).value)
+    }
+  });
+
+  document.getElementById("TempList-search")!.addEventListener("click",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#TempList-search-cancel")){
+      searchInputEl.value = '';
+      tempList.setSearchInput('');
+      tempList.setIsSearching(false)
+    }
+  });
+
+  searchInputEl.addEventListener("focus", (e) => {tempList.setIsSearching(true);});
+  searchInputEl.addEventListener("blur", (e) => {tempList.setIsSearching(tempList.get("searchInput").trim() !== "")});
+
+
+// render entries
+tempList.on(["isSearching", "searchArray"], pl => {
+
+  entriesList.textContent = '';
+
+  if (tempList.get("isSearching") ? tempList.get("searchArray").length === 0 : tempList.get("entries").length === 0) { 
+    render(() => Templist(), entriesList);
+  } else {
+
+    (tempList.get("isSearching") ? tempList.get("searchArray")  : (tempList.get("entries") ?? [])
+    .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())).
+    forEach((entry) => {
+      render(() => Templist(entry), entriesList);
+    });
+  };  
+});
+
+
+  entriesList.addEventListener("click", (e) => {
+
+  // update dialog confirm
+  document.getElementById("TempList-update")!.addEventListener("click", (e) => {
+    if((e!.target as HTMLInputElement).matches("#TempList-update-ok")) {
+      (async () => {
+      dbUpdate("PasswordEntry:update", {
+        id: (document.getElementById("TempList-update") as HTMLDialogElement).dataset._!, 
+        title:(document.getElementById("TempList-update-title") as HTMLInputElement).value, 
+        password:(document.getElementById("TempList-update-pass") as HTMLInputElement).value});
+      tempList.updateEntries();
+      })();
+    }
+  });
+
+  // copy password
+  const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
+  if (copyButton) {
+    (async () => {
+      navigator.clipboard.writeText(copyButton.id);  
+       showToast();
+    })();
+  }
+  });
+
+  // add entry
+    inputGroup.addEventListener("click", (e) => {
+    if ((e!.target as HTMLInputElement).matches("#TempList-inputs-add")) {
+      (async () => {
+        await dbCreate("PasswordEntry:create", {
+          title:tempList.get("title"),
+          password: tempList.get("password"),
+          crreatedAt: new Date().toISOString()
+        });
+        tempList.setTitle("")
+        if ((document.getElementById("TempList-inputs-auto-pass") as HTMLInputElement).checked){
+          tempList.setPassword("");
+        }
+        tempList.updateEntries();
+
+        addEntryButton.style.setProperty("--primary", "65% 0.12 174"); 
+        addEntryButton.textContent= "Added";
+        setTimeout(() => {
+          addEntryButton.style.removeProperty("--primary");
+          addEntryButton.textContent= "Add";
+        }, 1000);
+
+      })();
+    }
+
+    // auto-pass entry
+    if ((e!.target as HTMLInputElement).matches("#TempList-inputs-auto-pass")) {
+      if ((e.target as HTMLInputElement).checked) {
+    passwordInput.readOnly = false;
+    tempList.setPassword("")
+      } else {
+        passwordInput.readOnly = true;
+        tempList.setPassword(pass.get("Password"))
+      }
+   }
+  });
+
+  // bind input values to signals
+  inputGroup.addEventListener("input", (e) => {
+    if ((e!.target as HTMLInputElement).matches("#TempList-inputs-title")) {
+      tempList.setTitle((e!.target as HTMLInputElement).value);
+    }
+    if ((e!.target as HTMLInputElement).matches("#TempList-inputs-password")) {
+      tempList.setPassword((e!.target as HTMLInputElement).value);
+    }
+  });
+
+  // bind signals to input values
+  tempList.on(["title"], ({value}) => { titleInput.value = value})
+
+  tempList.on(["password"], ({value}) => { 
+    passwordInput.value = value;
+    addEntryButton.disabled = (!value)
+  });
+
+  // initilize 
+  tempList.updateEntries();
+  tempList.setPassword(pass.get("Password"));
+  pass.on(["Password"], ({value}) => { tempList.setPassword(value)});
+
+})();
+
+</script>
