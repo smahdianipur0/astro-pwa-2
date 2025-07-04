@@ -32,6 +32,11 @@ export const tempList = createStore({
 	        dbDelete(id)
 	        this.set('entries', await dbReadAll("PasswordEntry") ?? []!);
     		this.set('recentDelEntries',  await dbReadAll("RecentDelPass") ?? []!);
+    	},
+
+    	async deleteRecentDelEntris (id) {
+    		await dbDelete(id);
+    		this.set('recentDelEntries',  await dbReadAll("RecentDelPass") ?? []!)
     	}
     }, 
 

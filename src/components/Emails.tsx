@@ -27,11 +27,14 @@ export function Emails(entry:ReadResultTypes["Emails"]): JSX.Element {
                         </div>
                     }
                     content={
-                        <menu id={"Emails-".concat(entry.email)} class="glass">
+                        <menu id={`menu-${entry.id?.toString()}`} class="glass">
                             <li>
                                 <details class = "right-to-left not-prose">
                                     <summary data-Emails class="right-to-left flex-with-gap"></summary>
-                                    <button onClick={() => email.addDelete(entry.id?.toString() ?? '')} >Delete</button>                        
+                                    <button onClick={() =>{ 
+                                        email.addDelete(entry.id?.toString() ?? '');
+                                        document.getElementById(`menu-${entry.id?.toString()}`)?.remove();
+                                    }} >Delete</button>                        
                                 </details> 
                             </li>
                         </menu>

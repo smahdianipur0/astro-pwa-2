@@ -32,11 +32,14 @@ export function Templist(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element 
             }
             content={
 
-                <menu class="glass" style="flex-direction:row">
+                <menu  id={`menu-${entry.id?.toString()}`}  class="glass" style="flex-direction:row">
                     <li style="margin-bottom: var(--size-xs3);">
                         <details class = "right-to-left not-prose">
                             <summary  class="right-to-left flex-with-gap"></summary>
-                            <button onClick={() => tempList.deleteEntries(entry.id?.toString() ?? '')} >Delete</button>                        
+                            <button onClick={() => {
+                              tempList.deleteEntries(entry.id?.toString() ?? '');
+                              document.getElementById(`menu-${entry.id?.toString()}`)?.remove();
+                            }} >Delete</button>                        
                         </details> 
                     </li>
                     <li>
