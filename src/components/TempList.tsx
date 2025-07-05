@@ -23,7 +23,7 @@ export function Templist(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element 
             </button>
           </div>
 
-          <div class="not-prose s-container">
+          <div class="s-container">
           <Menu 
             trigger={
                 <div class='text-as-button flex-center-childs' style="margin-right: calc(var(--size-sm0)* -1);" >
@@ -32,8 +32,8 @@ export function Templist(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element 
             }
             content={
 
-                <menu  id={`menu-${entry.id?.toString()}`}  class="glass" style="flex-direction:row; font-size:var(--font-sm1)">
-                    <li style="margin-bottom: var(--size-xs3);">
+                <menu  id={`menu-${entry.id?.toString()}`}  class="glass menu-horizontal" >
+                    <li>
                       <DeleteMenu  content= {
                         <button  data-action='delete' id={entry.id ?? ''}>Delete</button>  
                       }></DeleteMenu> 
@@ -41,9 +41,7 @@ export function Templist(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element 
                     <li>
                         <button 
                             class="not-prose flex-with-gap" 
-                            style="margin-inline: var(--size-xs3);
-                            color: oklch(var(--gray-95));
-                            height: var(--size-sm3);"
+                            style="color: oklch(var(--gray-95));"
                             data-action='update'
                             id={entry.id ?? ''}>
                             Update

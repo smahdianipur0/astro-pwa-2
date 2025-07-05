@@ -57,14 +57,12 @@
   width: auto;
   height: auto;
   width: var(--size-lg4);
-  line-height: var(--size-sm3);
   text-align: end
 } 
 
 
 .summary::after { 
   content: "Delete";
-  line-height: var(--size-sm3);
   color: oklch(var(--danger));
 } 
 

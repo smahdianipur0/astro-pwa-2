@@ -783,23 +783,52 @@
   height: fit-content;
 }
 
+.prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)).menu-horizontal{
+  flex-direction: row;
+  border-radius: calc( var(--radius-a) + var(--size-xs4));
+
+}
+
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > li:not(:where([class~=not-prose],[class~=not-prose] *)){
   display: flex;
   place-content: space-between;
   width: calc(100% - (var(--size-xs3) * 2));
-  margin-top: var(--size-xs3);
+  margin-block-start: var(--size-xs3);
   padding: var(--padding-4);
   border-radius: calc( var(--radius-b) - var(--size-xs3));
   position: relative;
   align-items: center;
 }
 
-.prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > :last-child:not(:where([class~=not-prose],[class~=not-prose] *)){
-  margin-bottom: var(--size-xs3);
+.prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)).menu-horizontal > li:not(:where([class~=not-prose],[class~=not-prose] *)){
+  height: var(--size-md1);
+  padding: var(--thin-padding);
+  margin-block-end: var(--size-xs4);
+  margin-inline-start:  var(--size-xs4) ;
+  border-radius: var(--radius-a) ;
 }
+
+.prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > :last-child:not(:where([class~=not-prose],[class~=not-prose] *)){
+  margin-block-end: var(--size-xs3);
+}
+
+.prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)).menu-horizontal > :last-child:not(:where([class~=not-prose],[class~=not-prose] *)){
+  margin-block-end: var(--size-xs4);
+  margin-inline-end:  var(--size-xs4) ;
+}
+
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > :only-child:not(:where([class~=not-prose],[class~=not-prose] *)){
   margin: 0;
   width: 100%;
+  border-radius: var(--radius-a);
+}
+
+.prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)).menu-horizontal > :only-child:not(:where([class~=not-prose],[class~=not-prose] *)){
+  margin: 0;
+  margin-inline-end: 0 ;
+  margin-inline-start: 0 ;
+  width: 100%;
+  border-radius: calc( var(--radius-a) + var(--size-xs4));
 }
 
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > li:not(:where([class~=not-prose],[class~=not-prose] *)):hover{

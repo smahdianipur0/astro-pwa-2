@@ -20,7 +20,7 @@ export function Emails(entry:ReadResultTypes["Emails"]): JSX.Element {
                     {entry.email ?? ''} </button>
             </div>
 
-            <div class="not-prose s-container">
+            <div class="s-container">
                 <Menu 
                     trigger={
                         <div class='text-as-button flex-center-childs' style="margin-right: calc(var(--size-sm0)* -1);" >
@@ -28,7 +28,7 @@ export function Emails(entry:ReadResultTypes["Emails"]): JSX.Element {
                         </div>
                     }
                     content={
-                        <menu class="glass" style="font-size:var(--font-sm1)">
+                        <menu class="glass menu-horizontal" >
                             <li>
                                 <DeleteMenu  content= {
                                     <button  data-action='delete' id={entry.id ?? ''}>Delete</button>  
