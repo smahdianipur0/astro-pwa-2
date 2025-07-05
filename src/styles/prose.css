@@ -115,7 +115,7 @@
   color: oklch(var(--gray-95) );
   height: var(--size-md1) ;
   text-align: end;
-  text-align-last: center;
+  text-align-last: end;
   position: relative;
   background: oklch( var(--gray-10) / 0.01 );
 }

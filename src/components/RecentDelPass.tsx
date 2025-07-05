@@ -34,7 +34,7 @@ export function List(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element {
             }
             content={
 
-                <menu class="glass menu-horizontal" >
+                <menu class="glass menu-horizontal" style="box-shadow: 0px 0px 80px 20px oklch(var(--gray-95) / 2%);">
                     
                     <li>
                       <DeleteMenu  content= {

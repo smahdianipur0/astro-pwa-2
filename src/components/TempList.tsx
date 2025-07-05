@@ -32,7 +32,7 @@ export function Templist(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element 
             }
             content={
 
-                <menu  id={`menu-${entry.id?.toString()}`}  class="glass menu-horizontal" >
+                <menu  id={`menu-${entry.id?.toString()}`}  class="glass menu-horizontal" style="  box-shadow: 0px 0px 80px 20px oklch(var(--gray-95) / 2%);" >
                     <li>
                       <DeleteMenu  content= {
                         <button  data-action='delete' id={entry.id ?? ''}>Delete</button>  
