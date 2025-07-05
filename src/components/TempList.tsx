@@ -1,6 +1,5 @@
 import type { JSX } from "solid-js";
 import type { ReadResultTypes } from "../utils/surrealdb-indexed";
-import { promptToUpdate, tempList } from "../logic/tempList.ts";
 import Menu from "./ui/Menu";
 import DeleteMenu from './ui/DeleteMenu'
 
@@ -35,14 +34,9 @@ export function Templist(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element 
 
                 <menu  id={`menu-${entry.id?.toString()}`}  class="glass" style="flex-direction:row; font-size:var(--font-sm1)">
                     <li style="margin-bottom: var(--size-xs3);">
-                      <DeleteMenu
-                        content={
-                          <button onClick={() => {
-                              tempList.deleteEntries(entry.id?.toString() ?? '');
-                              document.getElementById(`menu-${entry.id?.toString()}`)?.remove();
-                            }} >Delete</button> 
-                        }
-                      ></DeleteMenu>
+                      <DeleteMenu  content= {
+                        <button  data-action='delete' id={entry.id ?? ''}>Delete</button>  
+                      }></DeleteMenu> 
                     </li>
                     <li>
                         <button 
@@ -50,7 +44,8 @@ export function Templist(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element 
                             style="margin-inline: var(--size-xs3);
                             color: oklch(var(--gray-95));
                             height: var(--size-sm3);"
-                            onClick={() => promptToUpdate(entry.id?.toString() ?? '')}>
+                            data-action='update'
+                            id={entry.id ?? ''}>
                             Update
 
                             <svg style="width: var(--size-sm3); height: var(--size-sm3);" viewBox="0 0 24 24"fill="none">

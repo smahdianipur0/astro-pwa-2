@@ -35,14 +35,35 @@ export async function restore(id:string){
     });
 
 
-  // copy
   recentdellist.addEventListener("click", (e) => {
+    // copy
     const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
     if (copyButton) {
       (async () => {
         navigator.clipboard.writeText(copyButton.id);  
          showToast();
       })();
+    }
+
+    // delete
+    const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
+    if (deleteButton) {
+      (async () => {
+        await tempList.deleteRecentDelEntris(deleteButton.id);
+      })();
+    }
+
+    // restore
+    const restoreButton = (e!.target as HTMLInputElement).closest("[data-action='restore']");
+    if (restoreButton) {
+      (async() => {
+        (document.getElementById("RecentDelPass-restore") as HTMLDialogElement).showModal();
+        const entry = await getEntryById("RecentDelPass", restoreButton.id);  
+        if (entry) {
+            (document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement).textContent = "";
+            render(() => dialog(entry), document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement);
+        }
+      })();   
     }
   });
 

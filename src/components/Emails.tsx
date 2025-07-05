@@ -1,8 +1,7 @@
 import type { JSX } from "solid-js";
-import  type { ReadResultTypes } from "../utils/surrealdb-indexed"
+import type { ReadResultTypes } from "../utils/surrealdb-indexed"
 import Menu from "./ui/Menu";
 import DeleteMenu from './ui/DeleteMenu'
-import { email } from '../logic/email'
 
 
 export function Emails(entry:ReadResultTypes["Emails"]): JSX.Element {
@@ -29,16 +28,11 @@ export function Emails(entry:ReadResultTypes["Emails"]): JSX.Element {
                         </div>
                     }
                     content={
-                        <menu id={`menu-${entry.id?.toString()}`} class="glass" style="font-size:var(--font-sm1)">
+                        <menu class="glass" style="font-size:var(--font-sm1)">
                             <li>
-                                <DeleteMenu
-                                    content= {
-                                        <button onClick={() =>{ 
-                                        email.addDelete(entry.id?.toString() ?? '');
-                                        document.getElementById(`menu-${entry.id?.toString()}`)?.remove();
-                                    }} >Delete</button>  
-                                    }
-                                 ></DeleteMenu>                                
+                                <DeleteMenu  content= {
+                                    <button  data-action='delete' id={entry.id ?? ''}>Delete</button>  
+                                }></DeleteMenu>                                
                             </li>
                         </menu>
                     }

@@ -84,6 +84,12 @@ document.getElementById("Emails")!.addEventListener("click", (e) => {
             showToast();
         })();
     }
+      const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
+      if (deleteButton) {
+        (async () => {
+          email.addDelete(deleteButton.id);
+        })();
+      }
 });
 
 

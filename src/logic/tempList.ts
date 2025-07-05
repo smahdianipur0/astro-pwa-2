@@ -51,15 +51,3 @@ export const tempList = createStore({
 	    )
 	}
 });
-
-export async function promptToUpdate(id: string){
-	(document.getElementById("TempList-update") as HTMLDialogElement).showModal();
-    const entry = await getEntryById("PasswordEntry", id);
-    if (entry) {
-        const { title, password } = entry;
-        (document.getElementById("TempList-update-title") as HTMLInputElement).value = title;
-        (document.getElementById("TempList-update-pass") as HTMLInputElement).value = password;
-        (document.getElementById("TempList-update") as HTMLDialogElement).setAttribute("data-_", id);
-
-    }
-}

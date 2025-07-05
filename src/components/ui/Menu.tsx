@@ -17,14 +17,11 @@ const Menu: ParentComponent<MenuComponentProps> = (props) => {
         shift: true,
       }}
     >
-      <Popover.Trigger class='not-prose'> {props.trigger}
-
-      </Popover.Trigger>
-      <Popover.Portal>
-        <Popover.Content class='prose'>
-          {props.content}
-        </Popover.Content>
-      </Popover.Portal>
+    <Popover.Trigger class='not-prose'> {props.trigger}
+    </Popover.Trigger>
+      <Popover.Content class='prose'>
+        {props.content}
+      </Popover.Content>
     </Popover>
   )
 }
