@@ -16,7 +16,7 @@ export function Emails(entry:ReadResultTypes["Emails"]): JSX.Element {
                     data-action='copy' 
                     class="not-prose ellipsis" 
                     style='text-align: start; 
-                    width: var(--size-xl2); 
+                    width: var(--size-xl3); 
                     color: oklch(var(--gray-95))'>
                     {entry.email ?? ''} </button>
             </div>
