@@ -3,6 +3,8 @@
   position: relative;
   display: inline-block;
   min-width: var(--size-lg2);
+  vertical-align: middle;
+  height: var(--size-md1);
   transition: min-width 0.3s var(--appear-subtle);
 }
 
@@ -25,6 +27,7 @@
 .summary {
   display: flex;
   gap: var(--size-sm0);
+  height: var(--size-md1);
   align-items: center;
   position: relative;
   cursor: pointer;
