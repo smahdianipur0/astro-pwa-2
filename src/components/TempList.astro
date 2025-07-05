@@ -14,11 +14,9 @@ import Drawer from '../components/ui/Drawer.tsx';
 
         <fragment slot="title" style="font-weight: 500;">Saved for Later</fragment>
 
-        <fragment slot="content" class="prose">
-
-            <div data-corvu-no-drag class="prose drawer-content" >
-
-                <fieldset class="box-shadow" id="TempList-inputs">
+        <fragment data-corvu-no-drag slot="content" class="prose" style="display: grid; gap: var(--size-sm3);">
+ 
+                <fieldset class="box-shadow" id="TempList-inputs" >
                     <div 
                         style="display: flex; flex-direction: column;" 
                         class="prose"
@@ -71,7 +69,7 @@ import Drawer from '../components/ui/Drawer.tsx';
               
                 <RecentDelPass/>
 
-            </div>
+
 
             <dialog id="TempList-update" class="prose">
                 <form method="dialog">

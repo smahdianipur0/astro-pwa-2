@@ -1,6 +1,6 @@
-import '../../styles/corvu.css'
 import Drawer from "@corvu/drawer";
 import { type ParentComponent, type JSX } from "solid-js";
+import styles from './drawer.module.css'
 
 
 interface DrawerComponentProps {
@@ -16,14 +16,14 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
           <Drawer.Trigger class='not-prose-button'> {props.trigger}</Drawer.Trigger>
           
           <Drawer.Portal>
-            <Drawer.Overlay
+            <Drawer.Overlay class={styles.overlay}
               style={{
                 'background-color': `rgb(0 0 0 / ${
                   0.5 * drawerProps.openPercentage
                 })`,
               }}
             />
-            <Drawer.Content>
+            <Drawer.Content class={styles.content}>
               <div class='glass' style="position: absolute;
                   inset: 0;
                   z-index: var(--z-layer-middle);
@@ -41,7 +41,15 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
                 </div>
               </Drawer.Close>         
               </div>
-              {props.content}
+              <div style='height: var(--drawer-height);
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; 
+                overflow-y: scroll;
+                overflow-x: hidden;
+                padding-top: var(--size-lg2);'>
+                {props.content} 
+              </div>
               <Drawer.Description></Drawer.Description>
             </Drawer.Content>
           </Drawer.Portal>

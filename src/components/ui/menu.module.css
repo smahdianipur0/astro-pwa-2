@@ -1,0 +1,32 @@
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    scale: 0.8;
+  }
+}
+
+@keyframes exit {
+  to {
+    opacity: 0;
+    scale: 0.8;
+  }
+}
+
+.content[data-open] {
+  z-index: var(--z-layer-top);
+  animation-name: enter;
+  animation-duration: 250ms;
+  animation-timing-function: var( --appear);
+}
+
+.content[data-closed] {
+  animation-name: exit;
+  animation-duration: 250ms;
+  animation-timing-function: var( --appear);
+}
+
+
+.Trigger[data-open] {
+  opacity: 0.4;
+}

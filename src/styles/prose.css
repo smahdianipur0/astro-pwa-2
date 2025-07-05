@@ -831,7 +831,7 @@
   border-radius: var(--radius-a);
 }
 
-.prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)).menu-horizontal:has(:only-child){
+.prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)).menu-horizontal:has(> *:only-child){
   border-radius: var(--radius-a);
 }
 

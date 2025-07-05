@@ -20,23 +20,26 @@ import DrawerFromRight from './ui/DrawerFromRght';
             </menu>
         </fragment>
 
-        <fragment slot="content" class="prose">
-
-            <div 
-            data-corvu-no-drag 
-            class=" prose drawer-content" 
-            style="margin-left: var(--size-sm2);" >
+        <fragment 
+            slot="content" 
+            class="prose" 
+            data-corvu-no-drag  
+            style="display: grid;
+            width: 100%;
+            margin-left: var(--size-sm2);
+            justify-items: center;
+            margin-left: var(--size-sm2);" >
 
                 <fieldset 
                     class="box-shadow" 
-                    style="padding: 0; color: oklch(var(--gray-95)); margin-left: calc(var(--size-sm2) * -1);">
+                    style="padding: 0; color: oklch(var(--gray-95)); 
+                    margin-left: calc(var(--size-sm2) * -1);">
 
                     <menu id="RecentDelPass-list">
                         <small style="padding-block: var(--size-sm3);">No records found</small>
                     </menu>
 
                 </fieldset>
-            </div> 
 
             <dialog data-corvu-no-drag  id="RecentDelPass-restore">
                 <form method="dialog">           

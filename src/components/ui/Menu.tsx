@@ -1,6 +1,6 @@
-import '../../styles/corvu.css'
 import Popover from '@corvu/popover'
 import type { ParentComponent, JSX } from 'solid-js'
+import styles from './menu.module.css'
 
 interface MenuComponentProps {
   trigger?: JSX.Element;
@@ -17,9 +17,9 @@ const Menu: ParentComponent<MenuComponentProps> = (props) => {
         shift: true,
       }}
     >
-    <Popover.Trigger class='not-prose'> {props.trigger}
+    <Popover.Trigger class={[styles.trigger, "not-prose"].join(' ')} > {props.trigger}
     </Popover.Trigger>
-      <Popover.Content class='prose'>
+      <Popover.Content class={[styles.content, "prose"].join(' ')}>
         {props.content}
       </Popover.Content>
     </Popover>

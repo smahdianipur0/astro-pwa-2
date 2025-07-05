@@ -1,5 +1,5 @@
 import type { ParentComponent, JSX } from 'solid-js'
-import styles from './DeleteMenu.module.css'
+import styles from './deleteMenu.module.css'
 
 interface MenuComponentProps {
   content?: JSX.Element;

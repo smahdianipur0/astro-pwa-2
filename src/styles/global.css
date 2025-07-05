@@ -2,6 +2,10 @@ svg{
   fill: oklch(var(--gray-95))
 }
 
+:root{
+  --drawer-height: 90vh;
+}
+
 .glass {
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px)

@@ -1,6 +1,6 @@
-import '../../styles/corvu.css'
 import { type ParentComponent, type JSX } from "solid-js";
 import Drawer from "@corvu/drawer";
+import styles from './drawer.module.css'
 
 interface DrawerComponentProps { 
   trigger?: JSX.Element;
@@ -16,12 +16,12 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
           <Drawer.Trigger> {props.trigger}</Drawer.Trigger>
 
           <Drawer.Portal>
-            <Drawer.Overlay
+            <Drawer.Overlay class={styles.overlay}
               style={{
                 "background-color": `rgb(0 0 0 / ${0.5 * drawerProps.openPercentage})`,
               }}
             />
-            <Drawer.Content>
+            <Drawer.Content class={styles.content} >
               <div class='glass' style="position: absolute;
                 inset: 0;
                 z-index: var(--z-layer-middle);
@@ -43,8 +43,15 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
                   </svg>
                 </Drawer.Close>               
               </div>
+              <div style='height: var(--drawer-height);
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; 
+                overflow-y: scroll;
+                overflow-x: hidden;
+                padding-top: var(--size-lg2);'>
               {props.content} 
-              <Drawer.Description> </Drawer.Description>
+              </div>
             </Drawer.Content>
           </Drawer.Portal>
         </>
