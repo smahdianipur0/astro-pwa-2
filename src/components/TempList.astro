@@ -264,7 +264,7 @@ tempList.on(["isSearching", "searchArray"], pl => {
    }
   });
 
-  // bind input values to signals
+  // bind input values to state
   inputGroup.addEventListener("input", (e) => {
     if ((e!.target as HTMLInputElement).matches("#TempList-inputs-title")) {
       tempList.setTitle((e!.target as HTMLInputElement).value);
@@ -274,7 +274,7 @@ tempList.on(["isSearching", "searchArray"], pl => {
     }
   });
 
-  // bind signals to input values
+  // bind states to input values
   tempList.on(["title"], ({value}) => { titleInput.value = value})
 
   tempList.on(["password"], ({value}) => { 
