@@ -27,6 +27,6 @@
 }
 
 
-.Trigger[data-open] {
+.trigger[data-open] {
   opacity: 0.4;
 }

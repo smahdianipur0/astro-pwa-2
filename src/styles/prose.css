@@ -774,13 +774,13 @@
 }
 
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)){
-  background-color: oklch(var(--gray-15) / 75%);
+  background-color: oklch(var(--gray-25) / 55%);
   border-radius: var(--radius-a);
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: center;
-  height: fit-content;
+  height: fit-content; 
 }
 
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)).menu-horizontal{

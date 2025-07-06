@@ -10,12 +10,7 @@
 import { el } from "../utils/elementUtils";
 import { dbCreate, dbReadAll, dbUpdate, } from "../utils/surrealdb-indexed"
 
-import{
-    userName,   setUserName,
-    indexedUid, setIndexedUid,
-    authQueryChallenge,     regQueryChallenge,
-    validateAuthentication, validateRegistration} 
-    from "../logic/auth"
+import{ auth,authQueryChallenge,regQueryChallenge,validateAuthentication, validateRegistration} from "../logic/auth"
 
 // import {syncVaults} from "../utils/syncLayer"
 // (async () => { await syncVaults();})();
@@ -26,13 +21,13 @@ const user = await dbReadAll("Users");
 
 if (user && user?.length === 0) {
     dbCreate("Users:create", { registered: false });
-    setIndexedUid(false);
+    auth.setIndexedUid(false);
 }
 
 if (user && user?.length !== 0) {
     const userId = user[0].id;
     if (userId && user[0].registered === true) {
-        setIndexedUid(true);
+        auth.setIndexedUid(true);
     }
 } 
 
@@ -56,8 +51,7 @@ function updateSucceededAuth() {
 
 // initial ui based on states
 (async () => {
-    console.log(indexedUid())
-    if (indexedUid() === false) {
+    if (auth.get("indexedUid") === false) {
         credentialsDiv.textContent = '';
 
         const fragment = document.createDocumentFragment();
@@ -99,8 +93,8 @@ function updateSucceededAuth() {
 document.getElementById("Auth-target")!.addEventListener("input",(e)=>{
     if((e!.target as HTMLInputElement).matches("#user_name")){
        const value = (e!.target as HTMLInputElement).value;
-       setUserName(value.toString());
-       (document.getElementById("registration")! as HTMLInputElement).disabled  = (userName() === "");
+       auth.setUserName(value.toString());
+       (document.getElementById("registration")! as HTMLInputElement).disabled  = (auth.get("userName") === "");
     }
 });
 
@@ -111,7 +105,8 @@ document.getElementById("Auth-target")!.addEventListener("click", (e) => {
 
         (async () => {
             try {
-                const { registration, challenge } = await regQueryChallenge();
+
+                const { registration, challenge } = await regQueryChallenge();                
                 if (!registration){authResult.textContent = "Connection failed"}
                 if ( registration){authResult.textContent = "Connectoing to the server"}
 
@@ -127,7 +122,7 @@ document.getElementById("Auth-target")!.addEventListener("click", (e) => {
                 // handle Succeeded regestration 
                 updateSucceededAuth()                    
                 dbUpdate("Users:update", { id: userId, registered: true, UID: registration.id });
-                setIndexedUid(true);  
+                auth.setIndexedUid(true);  
 
             } catch (error) {
                 authResult.textContent = "Registration Failed"
@@ -158,7 +153,7 @@ document.getElementById("Auth-target")!.addEventListener("click", (e) => {
                 // handle Succeeded auth 
                 updateSucceededAuth();
                 dbUpdate("Users:update", { id: userId, registered: true, UID: authData.credentialId });
-                setIndexedUid(true);
+                auth.setIndexedUid(true);
 
             } catch (error) {
                 authResult.textContent = "Authentication Failed";

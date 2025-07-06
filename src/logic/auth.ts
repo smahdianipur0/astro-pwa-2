@@ -1,11 +1,16 @@
-import { createSignal } from 'solid-js';
 import { trpc } from "../utils/trpc";
 import queryHelper  from "../utils/query-helper"
 import {client} from '@passwordless-id/webauthn'
+import {createStore} from '../utils/state'
 
 
-export const [userName, setUserName] = createSignal("");
-export const [indexedUid, setIndexedUid] = createSignal(false);
+export const auth = createStore({
+    state: { userName: "16", indexedUid: false },
+    methods: {
+        setUserName(value: string) { this.set('userName', value); },
+        setIndexedUid(value: boolean) { this.set('indexedUid', value); },
+    }, 
+});
 
 
 export async function authQueryChallenge() {
@@ -29,7 +34,7 @@ export async function regQueryChallenge() {
 
     if (data?.message) {
         const registration: any = await client.register({
-            user: userName(),
+            user: auth.get("userName"),
             challenge: data.message,
         });
         return { registration, challenge: data.message };

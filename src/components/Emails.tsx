@@ -28,7 +28,7 @@ export function Emails(entry:ReadResultTypes["Emails"]): JSX.Element {
                         </div>
                     }
                     content={
-                        <menu class="glass menu-horizontal" style="  box-shadow: 0px 0px 80px 20px oklch(var(--gray-95) / 2%);">
+                        <menu class="glass subtle-shadow menu-horizontal">
                             <li>
                                 <DeleteMenu  content= {
                                     <button  data-action='delete' id={entry.id ?? ''}>Delete</button>  
