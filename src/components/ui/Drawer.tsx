@@ -22,19 +22,15 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
               }}
             />
             <Drawer.Content class={styles.content} >
-              <div class='glass' style="position: absolute;
-                inset: 0;
-                z-index: var(--z-layer-middle);
-                display: flex;
-                place-content: flex-end;
-                align-items: center;
-                container-type: size;
+              <div class='glass' style="display: grid;
+                grid-template-columns: 1fr auto 1fr;
+                z-index: var(--z-layer-middle);              
                 background: oklch(var(--gray-10) / 50%);
                 border-top-left-radius: var(--radius-a);
                 border-top-right-radius: var(--radius-a);
                 height: var(--size-lg1);">
-                <div class='absolute-center'>{props.title}</div>
-                <Drawer.Close>
+                <div style="grid-column: 2; align-self: center;">{props.title}</div>
+                <Drawer.Close style="justify-self: end;">
                   <svg style="opacity:20%;
                     width: auto;
                     height: var(--size-sm4);

@@ -96,14 +96,6 @@ svg{
   align-items: center;
 }
 
-.absolute-center{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
 .max-width{
   width: -moz-available;
   width: -webkit-fill-available;
