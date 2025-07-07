@@ -24,7 +24,7 @@ export function List(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element {
 
       </div>
 
-      <div class="s-container">
+      <div class="flex-with-gap" style="justify-content: flex-end;">
 
         <Menu 
             trigger={

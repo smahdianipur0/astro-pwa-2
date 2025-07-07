@@ -41,13 +41,7 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
                 </div>
               </Drawer.Close>         
               </div>
-              <div style='height: var(--drawer-height);
-                display: flex; 
-                flex-direction: column; 
-                align-items: center; 
-                overflow-y: scroll;
-                overflow-x: hidden;
-                padding-top: var(--size-lg2);'>
+              <div class={styles.main}>
                 {props.content} 
               </div>
               <Drawer.Description></Drawer.Description>

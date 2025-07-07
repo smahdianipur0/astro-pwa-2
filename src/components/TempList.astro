@@ -14,7 +14,7 @@ import Drawer from '../components/ui/Drawer.tsx';
 
         <fragment slot="title" style="font-weight: 500;">Saved for Later</fragment>
 
-        <fragment data-corvu-no-drag slot="content" class="prose" style="display: grid; gap: var(--size-sm3);">
+        <fragment data-corvu-no-drag slot="content" class="prose" >
  
                 <fieldset class="box-shadow" id="TempList-inputs" >
                     <div 
@@ -176,9 +176,11 @@ tempList.on(["isSearching", "searchArray"], pl => {
     .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())).
     forEach((entry) => {
       render(() => Templist(entry), entriesList);
+      render(() => Templist(entry), entriesList);
     });
   };  
 });
+
 
 
   entriesList.addEventListener("click", (e) => {

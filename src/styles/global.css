@@ -115,13 +115,6 @@ svg{
   text-overflow: ellipsis;
 }
 
-.s-container  {
-display: flex;
-justify-content: flex-end;
-align-items: center;
-gap: var(--size-sm0);
-}
-
 .no-select{
   -webkit-user-select: none;
   -moz-user-select: none;

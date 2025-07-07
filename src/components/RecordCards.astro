@@ -31,7 +31,7 @@ records.on(["cardsList"], ({value}) => { (async () => {
 		              textContent: entry.name || 'untitled' 
 		          	}),
 
-	            	el.c('div', {className: 's-container',append: [
+	            	el.c('div', {className: 'flex-with-gap', style: "justify-content: flex-end;", append: [
 
 			            el.c('details', { 
 			              name: 'delete-item', 

@@ -23,7 +23,7 @@ export function Templist(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element 
             </button>
           </div>
 
-          <div class="s-container">
+          <div class="flex-with-gap" style="justify-content: flex-end;">
           <Menu 
             trigger={
                 <div class='text-as-button flex-center-childs' style="margin-right: calc(var(--size-sm0)* -1);" >
