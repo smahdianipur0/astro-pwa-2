@@ -5,7 +5,7 @@ import {createStore} from '../utils/state'
 
 
 export const auth = createStore({
-    state: { userName: "16", indexedUid: false },
+    state: { userName: "", indexedUid: false },
     methods: {
         setUserName(value: string) { this.set('userName', value); },
         setIndexedUid(value: boolean) { this.set('indexedUid', value); },
