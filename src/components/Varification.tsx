@@ -42,7 +42,7 @@ export function Verification(): JSX.Element {
                         <div id="Varification-target-res" style={resStyle}> {pass.get("otpRes")}</div>
                     </div>
 
-                    <small id="Varification-hint" style="white-space: pre-line" >
+                    <small id="Varification-hint" style="white-space: pre-line; font-variant-numeric: tabular-nums; " >
                         This code is valid for the next {pass.get("countDown")} seconds. <br/> Tap to copy 
                     </small>
                 </>
