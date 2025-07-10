@@ -58,6 +58,14 @@ export const VaultsArraySchema = z.object({
     updatedAt: z.string().datetime(),
   });
 
+export const CardssArraySchema = z.object({
+    id: z.string().optional(),
+    name: z.string(),
+    status: z.enum(["deleted", "available"]).optional(),
+    updatedAt: z.string().datetime(),
+    data: z.array(z.string())
+  });
+
 export const syncVaultsSchema = z.object({
     challenge: z.string(),  
     authenticationData: z.object({
@@ -73,5 +81,6 @@ export const syncVaultsSchema = z.object({
           userHandle: z.string(),
         }),
     }),
-    vaults: z.array(VaultsArraySchema)    
+    vaults: z.array(VaultsArraySchema),
+    cards: z.array(CardssArraySchema)
 })

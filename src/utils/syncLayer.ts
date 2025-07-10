@@ -1,137 +1,131 @@
-import { dbReadAll,dbUpsert, dbReadRelation, type ReadAllResultTypes, dbDeleteAll } from "../utils/surrealdb-indexed"
-import queryHelper  from "../utils/query-helper"
+import { dbReadAll, dbUpsert, dbquery, dbUpserelate, type ReadAllResultTypes } from "../utils/surrealdb-indexed";
+import queryHelper from "../utils/query-helper";
 import { trpc } from "../utils/trpc";
-import { authQueryChallenge }from "../logic/auth"
+import { authQueryChallenge } from "../logic/auth";
 
+type prettify<T> = {[K in keyof T]: T[K];} & {};
 
-type VaultsSchema = (Omit<ReadAllResultTypes["Vaults"][number], "id"> & {id?: string;})[];
+type VaultRecord = ReadAllResultTypes["Vaults"][number];
+type VaultPayload = prettify<Omit<VaultRecord, "id"> & { id?: string }>;
 
-type CardDetail = ({
-  vault: string;
-  contains: ReadAllResultTypes["Cards"];
-})[];
+type CardRecord = ReadAllResultTypes["Cards"][number];
+type cardPayload = prettify<CardRecord & { vault: string }>;
 
-interface dbArrays {
-  [key: string]: any;
-  updatedAt: string; 
-  name: string
+interface SyncPair<T> {
+  localToCloud: T[];
+  cloudToLocal: T[];
 }
 
-interface dbObject {
-  message: dbArrays[];
-}
+function syncByKey<T extends Record<string, any>, K extends keyof T, D extends keyof T>(
+  local: T[],
+  cloud: T[],
+  key: K,
+  dateKey: D,
+): SyncPair<T> {
+  const makeMap = (arr: T[]) => new Map<string, T>(arr.map((item) => [String(item[key]), item]));
 
-interface dbError{
-  [key: string]: any;
-  message: string
-}
+  const localMap = makeMap(local);
+  const cloudMap = makeMap(cloud);
 
+  const localToCloud = local.filter((item) => {
+    const id = String(item[key]);
+    const other = cloudMap.get(id);
+    if (!other) return true;
+    return new Date(item[dateKey]) > new Date(other[dateKey]);
+  });
 
-function syncArrays<T extends dbArrays>(local: T[], cloud: T[], key: string): 
-{ localToCloud: T[]; cloudToLocal: T[] } {
-  
-  const localMap = new Map<string, T>(local.map(obj => [obj[key], obj]));
-  const cloudMap = new Map<string, T>(cloud.map(obj => [obj[key], obj]));
-
-  const localToCloud: T[] = [];
-  const cloudToLocal: T[] = [];
-
-  for (const localObj of local) {
-    const cloudObj = cloudMap.get(localObj[key]);
-    if (!cloudObj) {
-      localToCloud.push(localObj);
-    } else if (new Date(localObj.updatedAt) > new Date(cloudObj.updatedAt)) {
-      localToCloud.push(localObj);
-    }
-  }
-
-  for (const cloudObj of cloud) {
-    const localObj = localMap.get(cloudObj[key]);
-    if (!localObj) {
-      cloudToLocal.push(cloudObj);
-    } else if (new Date(cloudObj.updatedAt) > new Date(localObj.updatedAt)) {
-      cloudToLocal.push(cloudObj);
-    }
-  }
+  const cloudToLocal = cloud.filter((item) => {
+    const id = String(item[key]);
+    const other = localMap.get(id);
+    if (!other) return true;
+    return new Date(item[dateKey]) > new Date(other[dateKey]);
+  });
 
   return { localToCloud, cloudToLocal };
 }
 
-export async function syncVaults(){
+export async function syncVaults(): Promise<void> {
+  // 1. Load all vaults and cards
+  const [vaults, rawCards, users] = await Promise.all([
+    dbReadAll("Vaults") as Promise<VaultRecord[]>,
+    dbReadAll("Cards") as Promise<CardRecord[]>,
+    dbReadAll("Users") as Promise<ReadAllResultTypes["Users"]>,
+  ]);
 
-  const indexedVaults = await dbReadAll("Vaults")      as ReadAllResultTypes["Vaults"] ;
-  const credentials   = await dbReadAll("Users") as ReadAllResultTypes["Users"] ;
-  const UID = credentials[0].UID;
+  const UID = users[0]?.UID;
+  if (!UID) throw new Error("No user UID found");
 
-  let indexedCards:CardDetail = [];
+  // 2. Build cardPayloads via single-query approach
+  const cards: cardPayload[] = (
+    await Promise.all(
+      rawCards.map(async (card) => {
+        const id = card.id?.toString();
+        if (!id) return ;
+        const [[{ "<-Contain": contain }]] = await dbquery(
+            `SELECT <-Contain<-Vaults FROM (type::thing($card));`, 
+            { card: id }
+            );
+        const vaultId = contain["<-Vaults"]?.[0]?.id;
+        return vaultId ? { vault: vaultId, ...card } : null;
+      }),
+    )
+  ).filter((x): x is cardPayload => x !== null);
 
-  indexedVaults.forEach(async (entry) => {
-    const vaultId = entry.id;
-    if (!vaultId)return;
-    const cards = await dbReadRelation(vaultId, "Contain", "Cards");
-    if(!cards)return;
-    indexedCards.push({vault: vaultId, contains: cards});
-  });
-
-  const [data, error] = await queryHelper.direct("cloudVaults", async () => {
-    return await trpc.queryVaults.query({UID: UID}) as dbObject;
-  });
-
-  if (error){console.log(error); return}
-
-
-  if (!data?.message) return
-  const cloudVaults = data.message.map(item => item.out);
-  console.log("whats on indexed:",indexedVaults,"whats on cloud",cloudVaults)
-  const {localToCloud, cloudToLocal} = syncArrays<VaultsSchema[number]>(
-    indexedVaults as VaultsSchema, 
-    cloudVaults as VaultsSchema, 
-    "name"
+  // 3. Fetch cloud state (vaults + cards)
+  const [ message, fetchError] = await queryHelper.direct( "cloudVaults",() =>
+      trpc.queryVaults.query({ UID }) as Promise<{
+         vaults: VaultPayload[]; cards: cardPayload[] ;
+      }>,
   );
-  console.log("localToCloud", localToCloud,"cloudToLocal",cloudToLocal)
-  console.log(cloudToLocal.length)
-    if (cloudToLocal && cloudToLocal.length > 0) {
-      cloudToLocal.forEach(async (entry) => {
-        await dbUpsert( "Vaults:update", {
-          id: entry.name,
-          name: entry.name,
-          status: entry.status,
-          role: "owner",
-          updatedAt: entry.updatedAt,
-        });
-      });
-    console.log("added to local");
-  };
-  if  (localToCloud && localToCloud.length > 0) {
-    (async () => {
+  if (fetchError) {
+    console.error("Error fetching cloud state:", fetchError);
+    return;
+  }
 
-      const { authentication, challenge } = await authQueryChallenge() as any;
+  // 4. Compute diffs (must specify both key and dateKey)
+  const vaultDiff = syncByKey(vaults, message?.vaults ?? [], "name", "updatedAt");
+  const cardDiff = syncByKey(cards, message?.cards ?? [], "id", "updatedAt");
 
+  // 5. Update cloud→local for vaults & cards
+  await Promise.all([
+    ...vaultDiff.cloudToLocal.map((v) =>
+      dbUpsert("Vaults:update", {
+        id: v.name,
+        name: v.name,
+        status: v.status,
+        role: v.role,
+        updatedAt: v.updatedAt,
+      }),
+    ),
+    ...cardDiff.cloudToLocal.map((c) =>
+        dbUpserelate("Cards:upserelate", `Cards:${c.id?.split(":")[1] ?? ""}->Contain`, {
+            id: c.id?.split(":")[1] ?? "",
+            name: c.name,
+            data: c.data,
+            updatedAt: c.updatedAt,
+            status: c.status
+        }, {} )
+    ),
+  ]);
 
-      // Validate and ensure all required fields are present
-      const validVaults = localToCloud.filter(vault => 
-        vault.name !== undefined && 
-        vault.updatedAt !== undefined
-      );
+  // 6. Prepare local→cloud payloads
+  if (!vaultDiff.localToCloud.length && !cardDiff.localToCloud.length) return;
 
-      if (validVaults.length === 0) {
-        console.error("No valid vaults to sync - missing required fields");
-        return;
-      }
+  const { authentication, challenge } = (await authQueryChallenge()) as any;
+  if (!authentication || !challenge) {
+    throw new Error("Authentication failed or missing challenge");
+  }
 
-      if (!authentication && !challenge) throw new Error("Database not connected.");
+  // 7. Sync up to cloud (both vaults and cards)
+  const [syncResult, syncError] = await queryHelper.direct("auth", () =>
+    trpc.syncvaults.mutate({
+      challenge,
+      authenticationData: authentication,
+      vaults: vaultDiff.localToCloud,
+      cards: cardDiff.localToCloud,
+    }),
+  );
 
-      const [authData, authError] = await queryHelper.direct("auth", async () => {
-        return await trpc.syncvaults.mutate({
-            challenge,
-            authenticationData: authentication,
-            vaults: localToCloud 
-        });
-      });
-      console.log(authData, authError)
-    })();  
-  };
-
-
+  if (syncError) console.error("Error syncing to cloud:", syncError);
+  else console.log("Sync complete:", syncResult);
 }
-
