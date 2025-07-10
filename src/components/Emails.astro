@@ -113,6 +113,7 @@ email.on(["emailList"], ({ value }) => {
         .forEach((entry) => {
             render(() => Emails(entry), document.getElementById("Email-list") as HTMLElement);
         });
+    
 
     const swapy = createSwapy(container, {
       animation: 'dynamic'
@@ -128,8 +129,6 @@ email.on(["emailList"], ({ value }) => {
 });
 
 email.updateEmailList();
-
-
 
 </script>
 

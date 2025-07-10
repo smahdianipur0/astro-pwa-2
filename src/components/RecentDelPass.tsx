@@ -56,7 +56,7 @@ export function List(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element {
                     </li>
                 </menu>
             }
-            offset={-10}
+            offset={-5}
           >
           </Menu> 
 

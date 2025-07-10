@@ -30,8 +30,6 @@ import RecordCards from './RecordCards.astro'
 
 
 import { records } from "../logic/records"
-import { el } from "../utils/elementUtils";
-
 
 // bind valut select elment value
 document.getElementById("Records")!.addEventListener("change",(e)=>{
@@ -50,18 +48,16 @@ records.on(["vaultsList"], ({value}) => {
     vaultlist.textContent = "";
     vaultlist.disabled = false;
 
-    const fragment = document.createDocumentFragment();
+    const options = (value ?? [])
+        .filter(item => item.status === "available")
+        .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+        .map(entry => {
+            const opt = document.createElement("option");
+            opt.textContent = entry.name;
+            return opt
+        })
 
-    if (value.filter(item => item.status === "available").length !== 0){
-         (value ?? [])
-         .filter(item => item.status === "available")
-         .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-         .forEach((entry) => {
-
-            fragment.append( el.c("option", {textContent:entry.name }));
-        });
-    }
-    vaultlist.append(fragment);
+    vaultlist.replaceChildren(...options);
 
     const selectVault = document.getElementById("Records-vaults") as HTMLSelectElement;
     if (selectVault){ records.setSelectedVault(selectVault.options[0]?.value)}

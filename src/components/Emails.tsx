@@ -45,7 +45,7 @@ export function Emails(entry:ReadResultTypes["Emails"]): JSX.Element {
                                     </li>
                                 </menu>
                             }
-                            offset={-10}
+                            offset={-5}
                         >
                         </Menu>                  
                     </div>

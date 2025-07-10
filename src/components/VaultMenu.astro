@@ -88,7 +88,7 @@ import { el } from "../utils/elementUtils";
 import { dbCreate, dbUpdate} from "../utils/surrealdb-indexed"
 import { records } from "../logic/records"
 
-//menu
+//menu event listener
 (async () => {
 
     const vaultMenu = (await el.wait("#VaultMenu")) as HTMLElement;
@@ -156,24 +156,21 @@ import { records } from "../logic/records"
 
 })();
 
+// delete vaults list
+records.on(["editableVaultList"], ({value}) => {
 
-records.on(["vaultsList"], ({value}) => {
-
-    //delete vaults list
     const deleteVaultlist = document.getElementById("VaultMenu-delete-dialog-list") as HTMLSelectElement
-    deleteVaultlist.textContent = "";
 
-    const fragment = document.createDocumentFragment();
+    const options = (value ?? [])
+        .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+        .map(entry => {
+            const opt = document.createElement("option");
+            opt.textContent = entry.name;
+            opt.id = entry.id?? '';
+            return opt
+        })
 
-    if (records.get("editableVaultList").length !== 0){
-         (records.get("editableVaultList") ?? [])
-         .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-         .forEach((entry) => {
-            fragment.append( el.c("option", {textContent:entry.name, id:entry.id}));
-        });
-    }
-
-    deleteVaultlist.append(fragment);
+    deleteVaultlist.replaceChildren(...options);
 
 });
 

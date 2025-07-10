@@ -818,15 +818,8 @@
 }
 
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)).menu-horizontal > :only-child:not(:where([class~=not-prose],[class~=not-prose] *)){
-  margin: 0;
-  margin-inline-end: 0 ;
-  margin-inline-start: 0 ;
-  width: 100%;
-  border-radius: var(--radius-a);
-}
-
-.prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)).menu-horizontal:has(> *:only-child){
-  border-radius: var(--radius-a);
+  margin-block-start: var(--size-xs4);
+  border-radius: calc(var(--radius-b) - var(--size-xs3));
 }
 
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > li:not(:where([class~=not-prose],[class~=not-prose] *)):hover{
