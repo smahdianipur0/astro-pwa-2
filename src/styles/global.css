@@ -1,9 +1,20 @@
+:root{
+  --drawer-height: 90vh;
+  --box-shadow-opacity: 0.04;
+}
+
+input{
+  accent-color: oklch(var(--primary) );
+}
+
 svg{
   fill: oklch(var(--gray-95))
 }
 
-:root{
-  --drawer-height: 90vh;
+::backdrop {
+  background-color: rgb(0 0 0 / 25%);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px)
 }
 
 .glass {
@@ -11,9 +22,6 @@ svg{
   backdrop-filter: blur(20px)
 }
 
-:root{
-  --box-shadow-opacity: 0.04;
-}
 
 .box-shadow{
   box-shadow:
@@ -164,4 +172,13 @@ svg{
 .text-as-button:active,
 .text-as-button:hover {
   border: 1px solid oklch(var(--gray-25) / 1);
+}
+
+.swapy-handle{
+  cursor: grab;
+  background-image: url('data:image/svg+xml,<svg width="var(--size-sm3)" height="var(--size-sm3)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.75 13.25h18.5a.75.75 0 0 1 .102 1.493l-.102.007H2.75a.75.75 0 0 1-.102-1.493l.102-.007h18.5-18.5Zm0-4h18.5a.75.75 0 0 1 .102 1.493l-.102.007H2.75a.75.75 0 0 1-.102-1.493l.102-.007h18.5-18.5Z" fill="%23fff"/></svg>');
+  background-position: right;
+  width: var(--size-sm3);
+  height: var(--size-sm3);
+  opacity: 0.25;
 }

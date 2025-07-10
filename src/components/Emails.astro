@@ -38,13 +38,18 @@ const examples = ["name@gmail.com", "name@yahoo.com", "name@outlook.com"]
                 <div>
                     <button class="not-prose shiny-text" style="text-align:start;">{item} </button>
                 </div>
+                <div class="flex-spread-childs">
+                    <div class="not-prose flex-with-gap" style="justify-content: flex-end;">
+                        <button class="not-prose"> 
+                            <div class="text-as-button blink" style="margin-right:calc(var(--size-sm0)* -1);">
+                                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM18 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="oklch(var(--gray-95))"></path></svg>
+                            </div>
+                        </button>
+                    </div>
 
-                <div class="not-prose flex-with-gap" style="justify-content: flex-end;">
-                    <button class="not-prose"> 
-                        <div class="text-as-button blink" style="margin-right:calc(var(--size-sm0)* -1);">
-                            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM18 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="oklch(var(--gray-95))"></path></svg>
-                        </div>
-                    </button>
+                    <div style="width: var(--size-md2); display: flex; justify-content: flex-end;">
+                        <div class="swapy-handle" style=""></div>
+                    </div>
                 </div>
             </li>
 
@@ -58,6 +63,9 @@ import { showToast } from "../logic/misc.ts";
 import { Emails } from './Emails'
 import { render } from "solid-js/web"
 import { email } from '../logic/email'
+import { createSwapy } from 'swapy'
+import { dbUpdate } from "../utils/surrealdb-indexed";
+
 
 
 document.getElementById("Emails")!.addEventListener("input",(e)=>{
@@ -92,21 +100,36 @@ document.getElementById("Emails")!.addEventListener("click", (e) => {
       }
 });
 
+const container = document.getElementById("Email-list")  as HTMLElement
 
 email.on(["emailList"], ({ value }) => {
     email.setEmailInput("");
     (document.getElementById("Email-input") as HTMLInputElement).value = "";
     (document.getElementById("Email-add")   as HTMLInputElement).disabled = true;
-    (document.getElementById("Email-list")  as HTMLElement).textContent = "";
+    container.textContent = "";
 
     (value ?? [])
         .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
         .forEach((entry) => {
             render(() => Emails(entry), document.getElementById("Email-list") as HTMLElement);
         });
+
+    const swapy = createSwapy(container, {
+      animation: 'dynamic'
+    });
+
+    swapy.onSwapEnd((event) => {
+        event.slotItemMap.asArray.forEach((item) =>{(async () => {
+            await dbUpdate("Emails:update",{id:item.item, crreatedAt:item.slot})      
+            })();      
+        })
+    })
+
 });
 
 email.updateEmailList();
+
+
 
 </script>
 
