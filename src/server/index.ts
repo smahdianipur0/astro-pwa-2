@@ -129,7 +129,7 @@ export const appRouter = router({
             const reconciledRoles = await Promise.all(rolePromises);
 
             reconciledRoles.filter(entry => entry.role === "owner").map(async entry => {
-                const result = await dbUpserelate("Vaults:upserelate", `Vaults:${credentialObj.id}->Access`, {
+                const result = await dbUpserelate("Vaults:upserelate", `Users:${credentialObj.id}->Access`, {
                     id: entry.id?.split(":")[1] ?? "",
                     name: entry.name,
                     status: entry.status,
