@@ -4,6 +4,7 @@ import {
   genericCreate, 
   genericUpserelate,
   genericQuery,
+  genericReadAll,
   type PermittedTypes, 
   type TableName,
   type rTableName,
@@ -47,6 +48,20 @@ export async function dbCreate<T extends `${TableName}:create`>(action: T, data:
     return new Ok("Ok")
   } catch (err: unknown) {
     return new Err(new DBOperationError(`Failed to create entry in ${action}:`, { cause: err instanceof Error ? err.message : String(err)}));
+  } 
+}
+
+
+export async function dbReadAll<T extends TableName>(tableName: T): Promise<Result<ReadAllResultTypes[T] | undefined, DBConnectionError | DBOperationError>> {
+  
+  await ensureConnected();
+  if (!db) {return new Err(new DBConnectionError("Database not connected."));}
+
+  try { 
+    const result = await genericReadAll(db, tableName); 
+    return new Ok(result)
+  } catch (err: unknown) {
+    return new Err(new DBOperationError(`Failed to read  ${tableName}:`, { cause: err instanceof Error ? err.message : String(err)}));
   } 
 }
 

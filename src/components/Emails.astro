@@ -102,6 +102,10 @@ document.getElementById("Emails")!.addEventListener("click", (e) => {
 
 const container = document.getElementById("Email-list")  as HTMLElement
 
+const swapy = createSwapy(container, {
+  animation: 'dynamic'
+});
+
 email.on(["emailList"], ({ value }) => {
     email.setEmailInput("");
     (document.getElementById("Email-input") as HTMLInputElement).value = "";
@@ -114,19 +118,16 @@ email.on(["emailList"], ({ value }) => {
             render(() => Emails(entry), document.getElementById("Email-list") as HTMLElement);
         });
     
-
-    const swapy = createSwapy(container, {
-      animation: 'dynamic'
-    });
-
-    swapy.onSwapEnd((event) => {
-        event.slotItemMap.asArray.forEach((item) =>{(async () => {
-            await dbUpdate("Emails:update",{id:item.item, crreatedAt:item.slot})      
-            })();      
-        })
-    })
+    swapy.update()
 
 });
+
+swapy.onSwapEnd((event) => {
+    event.slotItemMap.asArray.forEach((item) =>{(async () => {
+        await dbUpdate("Emails:update",{id:item.item, crreatedAt:item.slot})      
+        })();      
+    })
+})
 
 email.updateEmailList();
 

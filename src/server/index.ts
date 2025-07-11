@@ -1,18 +1,13 @@
-import { initTRPC } from "@trpc/server";
-import { TRPCError } from '@trpc/server';
-import superjson from "superjson";
-import { type Result, Ok, Err, handleTRPCError, AuthenticationError,ValidationError } from "../utils/error"
-import type { Context } from "./context.ts";
-import {z} from "zod"
-import { 
-    dbquery,
-    dbQueryRole,
-    dbUpserelate,
-    type ReadAllResultTypes,
-    dbCreate} from "../utils/surrealdb-cloud";
 import { server } from '@passwordless-id/webauthn'
-import { registrationInputSchema, authenticationInputSchema, credentialSchema, UID, syncVaultsSchema } from './schemas';
+import { initTRPC, TRPCError } from "@trpc/server";
+import superjson from "superjson";
+import {z} from "zod"
 
+import { registrationInputSchema, authenticationInputSchema, credentialSchema, UID, syncVaultsSchema } from './schemas';
+import { dbquery,dbQueryRole, dbUpserelate, dbCreate, dbReadAll, type ReadAllResultTypes} from "../utils/surrealdb-cloud";
+import { type Result, Ok, Err, handleTRPCError, AuthenticationError,ValidationError } from "../utils/error"
+import { hasPermission } from './permissions.ts'
+import { type Context } from "./context.ts";
 
 
 const t = initTRPC.context<Context>().create({
@@ -23,7 +18,6 @@ const t = initTRPC.context<Context>().create({
 });
 
 export const router = t.router;
-
 
 
 export const appRouter = router({
@@ -70,11 +64,9 @@ export const appRouter = router({
         .mutation(async ({ input }) => {
 
             const result = await verifyAuthentication(input.authenticationData, input.challenge);
-
             if(result.err) {handleTRPCError(result.value)}
 
             const { authenticationParsed, credentialObj } = result.value;
-
             if(!authenticationParsed.userVerified) {
               throw new TRPCError({code: 'UNAUTHORIZED',message: "Authentication failed"});
             }
@@ -102,25 +94,49 @@ export const appRouter = router({
               );
             if (dbResult.err) {return handleTRPCError(dbResult.value)}
 
-            return dbResult.value
-            }),
+            const rawCards = await dbReadAll("Cards") ;
+            if (rawCards.err) {return handleTRPCError(rawCards.value)}
+
+            const cards = (
+                await Promise.all(
+                  (rawCards.value as ReadAllResultTypes["Cards"]).map(async (card) => {
+                    const id = card.id?.toString();
+                    if (!id) throw new TRPCError({code: 'BAD_REQUEST',message: "Card ID not found!"}); ;
+                    
+                    const dbRes = await dbquery(
+                        `SELECT <-Contain<-Vaults FROM (type::thing($card));`, 
+                        { card: id }
+                    );
+                    if (dbRes.err) { handleTRPCError(dbRes.value); }
+
+                    const [[{ "<-Contain": contain }]] = dbRes.value;
+                    const vaultId = contain["<-Vaults"]?.[0]?.id.toString() as string;
+                    return vaultId ? { vault: vaultId, ...card } : null;
+                  }),
+                )
+              )
+
+            return {
+                vaults: dbResult.value,
+                cards: cards
+            }
+        }),
 
     syncvaults : t.procedure
         .input(syncVaultsSchema)
         .mutation(async ({ input }) => {
-            
-            const result = await verifyAuthentication(input.authenticationData, input.challenge);
 
+            // Authenticate
+            const result = await verifyAuthentication(input.authenticationData, input.challenge);
             if(result.err){handleTRPCError(result.value)}
 
             const { authenticationParsed, credentialObj } = result.value;
-
             if(!authenticationParsed.userVerified) {
                   throw new TRPCError({code: 'UNAUTHORIZED',message: "Authentication failed"});
             }
 
+            // Manage permission
             const rolePromises = (input.vaults as ReadAllResultTypes["Vaults"]).map(async entry => {
-
                 const dbRole = await dbQueryRole(credentialObj.id, entry.id as string);
                 if(dbRole.err){handleTRPCError(result.value)}
                 return { ...entry, role: dbRole.value }
@@ -128,8 +144,23 @@ export const appRouter = router({
 
             const reconciledRoles = await Promise.all(rolePromises);
 
-            reconciledRoles.filter(entry => entry.role === "owner").map(async entry => {
-                const result = await dbUpserelate("Vaults:upserelate", `Users:${credentialObj.id}->Access`, {
+            const sanitizedVaults = reconciledRoles.filter((v) =>
+                hasPermission(v.role, "vault:create")
+            );
+
+            const permittedVaults = reconciledRoles.filter((v) =>
+                hasPermission(v.role, "card:add" )
+                ).map((v) => v.id);
+
+            const sanitizedCards = input.cards.filter((card) =>
+                permittedVaults.includes(card.vault)
+            );
+
+
+            // Dump
+            await Promise.all(sanitizedVaults.map(async (entry) => {
+
+                const dumpVaults = await dbUpserelate("Vaults:upserelate", `Users:${credentialObj.id}->Access`, {
                     id: entry.id?.split(":")[1] ?? "",
                     name: entry.name,
                     status: entry.status,
@@ -138,8 +169,24 @@ export const appRouter = router({
                     role: entry.role
                 });
 
-                if(result.err){handleTRPCError(result.value)}
-            });
+                if(dumpVaults.err){handleTRPCError(dumpVaults.value)}
+
+            }));
+
+            await Promise.all(sanitizedCards.map(async (entry) => {
+
+                const dumpCards = await dbUpserelate("Cards:upserelate", `Vaults:${entry.id?.split(":")[1]}->Contain`, {
+                    id: entry.id?.split(":")[1] ?? "",
+                    name: entry.name,
+                    status: entry.status,
+                    updatedAt: entry.updatedAt,
+                    data: entry.data
+                },{}
+                );
+
+                if(dumpCards.err){handleTRPCError(dumpCards.value)}
+
+            }));
 
             return {
               message: "Sync successful",

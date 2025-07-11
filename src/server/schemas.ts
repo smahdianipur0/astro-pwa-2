@@ -63,7 +63,8 @@ export const CardssArraySchema = z.object({
     name: z.string(),
     status: z.enum(["deleted", "available"]).optional(),
     updatedAt: z.string().datetime(),
-    data: z.array(z.string())
+    data: z.array(z.string()),
+    vault: z.string()
   });
 
 export const syncVaultsSchema = z.object({
