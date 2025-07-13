@@ -4,16 +4,16 @@ import {
   genericCreate, 
   genericUpserelate,
   genericQuery,
+  genericDelete,
   genericReadAll,
+  genericGetEntryById,
   type PermittedTypes, 
   type TableName,
   type rTableName,
   type rSchemas} from "./surrealdb"
 
-
 import { type ReadResultTypes,type ReadAllResultTypes,} from "./surrealdb"
 export { type ReadResultTypes, type ReadAllResultTypes };
-
 
 let db: Surreal | null = null;
 let connectPromise: Promise<void> | null = null;
@@ -38,44 +38,27 @@ async function ensureConnected() {
   return connectPromise;
 }
 
-export async function dbCreate<T extends `${TableName}:create`>(action: T, data: PermittedTypes[T]): Promise<Result< string, DBConnectionError | DBOperationError >> {
-  
+async function handle<T>(operation: (db: Surreal) => Promise<T>): Promise<Result<T, DBConnectionError | DBOperationError>> {
   await ensureConnected();
-  if (!db) {return new Err(new DBConnectionError("Database not connected."));}
+  if (!db) {
+    return new Err(new DBConnectionError("Database not connected."));
+  }
 
   try { 
-    await genericCreate(db, action, data); 
-    return new Ok("Ok")
+    const result = await operation(db);
+    return new Ok(result);
   } catch (err: unknown) {
-    return new Err(new DBOperationError(`Failed to create entry in ${action}:`, { cause: err instanceof Error ? err.message : String(err)}));
+    return new Err(new DBOperationError(`Operation failed:`, { cause: err instanceof Error ? err.message : String(err)}));
   } 
 }
 
-
-export async function dbReadAll<T extends TableName>(tableName: T): Promise<Result<ReadAllResultTypes[T] | undefined, DBConnectionError | DBOperationError>> {
-  
-  await ensureConnected();
-  if (!db) {return new Err(new DBConnectionError("Database not connected."));}
-
-  try { 
-    const result = await genericReadAll(db, tableName); 
-    return new Ok(result)
-  } catch (err: unknown) {
-    return new Err(new DBOperationError(`Failed to read  ${tableName}:`, { cause: err instanceof Error ? err.message : String(err)}));
-  } 
+export async function dbCreate<T extends `${TableName}:create`>(action: T, data: PermittedTypes[T]): Promise<Result<string, DBConnectionError | DBOperationError>> {
+  return await handle(async (db) => await genericCreate(db, action, data));
 }
 
-export async function dbquery( query: string, params: { [key: string]: any }): Promise<Result< any, DBConnectionError | DBOperationError >> {
 
-  await ensureConnected();
-  if (!db) {return new Err(new DBConnectionError("Database not connected."));}
-
-  try {
-    const res = await genericQuery(db,query, params) ;
-    return new Ok(res); 
-} catch (err: unknown) {
-    return new Err(new DBOperationError(`Failed to query in ${query}:`, { cause: err instanceof Error ? err.message : String(err)}));
-  } 
+export async function dbDelete(id: string): Promise<Result<string, DBConnectionError | DBOperationError>> {
+  return await handle(async (db) => await genericDelete(db, id));
 }
 
 export async function dbUpserelate<OutTable extends TableName, InTable extends TableName, RelTable extends rTableName>(
@@ -84,51 +67,20 @@ export async function dbUpserelate<OutTable extends TableName, InTable extends T
         ? RS extends `${InTable}:${string}->${RelTable}` 
             ? [relationString: RS, outRecordData: ORD, relationData: RD ] : never 
         : never 
-): Promise<Result< string, DBConnectionError | DBOperationError >> {
-
-  await ensureConnected();
-  if (!db) {return new Err(new DBConnectionError("Database not connected."));}
-
-  try{
-    await genericUpserelate(db,action, ...args)
-    return new Ok("Ok")
-    } catch (err: unknown) {
-      return new Err(new DBOperationError(`Failed to update or create record in ${action} for ${args[1]}:`, { cause: err instanceof Error ? err.message : String(err)}));
-    } 
+): Promise<Result<string, DBConnectionError | DBOperationError>> {
+  return await handle(async (db) => await genericUpserelate(db, action, ...args));
 }
 
-export async function dbCheckID(ID: string): Promise<object | undefined> {
+export async function dbReadAll<T extends TableName>(tableName: T): Promise<Result<ReadAllResultTypes[T] | undefined, DBConnectionError | DBOperationError>> {
+  return await handle(async (db) => await genericReadAll(db, tableName));
+}
 
-  await ensureConnected();
-  if (!db) throw new Error("Database not connected.");
+export async function getEntryById<T extends TableName>(tableName: T, recordId: string): Promise<Result<ReadResultTypes[T] | undefined, DBConnectionError | DBOperationError>> {
+  return await handle(async (db) => await genericGetEntryById(db, tableName, recordId));
+}
 
-  try {
-    const checkedID = await db.query(
-      'RETURN string::is::record($ID);',
-      { ID: ID }
-    );
-    
-    return checkedID;
-  } catch (err: unknown) {
-    throw new Error(`Error in checking ID: ${err}`);
-  }
-} 
-
-export async function checkExistance(ID: string): Promise<object | undefined> {
-
-  await ensureConnected();
-  if (!db) throw new Error("Database not connected.");
-
-  try {
-    const checkedID = await db.query(
-      'RETURN record::exists(type::thing({$ID}));',
-      { ID: ID }
-    );
-    
-    return checkedID;
-  } catch (err: unknown) {
-    throw new Error(`Error in checking ID: ${err}`);
-  }
+export async function dbquery(query: string, params: { [key: string]: any }): Promise<Result<any, DBConnectionError | DBOperationError>> {
+  return await handle(async (db) => await genericQuery(db, query, params));
 }
 
 
@@ -230,3 +182,6 @@ export async function dbRelateVault(userID: string,vaultName: string ): Promise<
     throw new Error(err instanceof Error ? err.message : String(err))
   }
 }
+
+// db.query('RETURN string::is::record($ID);',{ ID: ID })
+// db.query('RETURN record::exists(type::thing({$ID}));',{ ID: ID });

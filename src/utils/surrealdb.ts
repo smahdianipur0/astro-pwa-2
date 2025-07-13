@@ -47,8 +47,9 @@ export type PermittedTypes = {
 export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: string} & Schemas[K]>;};
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
-export async function genericCreate< T extends `${TableName}:create`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<void> {
+export async function genericCreate< T extends `${TableName}:create`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<string> {
     await db.create<PermittedTypes[T]>(action.split(":")[0], data); 
+    return "Ok";
 }
 
 export async function genericQuery(db: Surreal, query: string, params: { [key: string]: any }): Promise<any> {
@@ -56,17 +57,20 @@ export async function genericQuery(db: Surreal, query: string, params: { [key: s
     return res; 
 }
 
-export async function genericUpdate<T extends `${TableName}:update`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<void> {
+export async function genericUpdate<T extends `${TableName}:update`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<string> {
     const { id, ...dataWithoutId } = data;
     await db.merge(new RecordId(data.id.split(":")[0], data.id.split(":")[1]), dataWithoutId);
+    return "Ok";
 }
 
-export async function genericUpsert<T extends `${TableName}:update`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<void> {
+export async function genericUpsert<T extends `${TableName}:update`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<string> {
     await db.upsert<PermittedTypes[T]>(new RecordId(action.split(":")[0], data.id), data);
+    return "Ok";
 }
 
-export async function genericDelete(db: Surreal, id: string): Promise<void> {
+export async function genericDelete(db: Surreal, id: string): Promise<string> {
     await db.delete(new RecordId(id.split(":")[0], id.split(":")[1]));
+    return "Ok";
 }
 
 
@@ -77,7 +81,7 @@ export async function genericUpserelate< OutTable extends TableName, InTable ext
         ? RS extends `${InTable}:${string}->${RelTable}` 
             ? [relationString: RS, outRecordData: ORD, relationData: RD ]: never 
         : never 
-): Promise<void> {
+): Promise<string> {
 
     const [relationString, outRecordDataFromArgs, relationDataFromArgs] = args;
     const outRecordData = outRecordDataFromArgs as prettify<{ id: string } & Partial<Schemas[OutTable]>>;
@@ -111,6 +115,8 @@ export async function genericUpserelate< OutTable extends TableName, InTable ext
         rTableActualVar: rTableFromString, 
         relationDataVar: relationData,
     });
+    
+    return "Ok";
 }
 
 export async function genericReadAll<T extends TableName>(db: Surreal,tableName: T): Promise<ReadAllResultTypes[T] | undefined> {
@@ -135,6 +141,7 @@ export async function genericGetEntryById<T extends TableName>(db: Surreal, tabl
     return entry;
 }
 
-export async function genericDeleteAll<T extends TableName>(db: Surreal, tableName: T): Promise<void> {
+export async function genericDeleteAll<T extends TableName>(db: Surreal, tableName: T): Promise<string> {
     await db.delete(tableName);
+    return "Ok";
 }
