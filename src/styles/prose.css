@@ -188,7 +188,7 @@
   content: "";
   background: var(--border);
   border-radius: var(--radius-b);
-  z-index: var(--z-layer-neg-2);
+  z-index: var(--z-layer-neg-1);
   margin: -1px;
   position: absolute;
   inset: 0;
