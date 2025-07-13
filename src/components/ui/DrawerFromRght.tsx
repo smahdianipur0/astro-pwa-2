@@ -27,7 +27,7 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
             <Drawer.Content class={styles.content}>
               <div class='glass' style="display: grid;
                 grid-template-columns: 1fr auto 1fr;
-                z-index: var(--z-layer-middle);              
+                z-index: var(--z-layer-pos-2);              
                 background: oklch(var(--gray-10) / 50%);
                 border-top-left-radius: var(--radius-a);
                 border-top-right-radius: var(--radius-a);

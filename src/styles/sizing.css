@@ -1,67 +1,73 @@
 :root {
 
-  --x02: 1.27;
-  --x03: 1.62;
-  --x04: 2.06;
-  --x05: 2.62;
-  --x55: 2.95;
-  --x06: 3.33;
-  --x65: 3.76;
-  --x07: 4.24;
-  --x08: 5.40;
-  --x09: 6.87;
-  --x10: 8.75;
-  --x11: 11.13;
+  --x10:  1.27;
+  --x20:  1.62;
+  --x30:  2.06;
+  --x40:  2.62;
+  --x45:  2.95;
+  --x50:  3.33;
+  --x55:  3.76;
+  --x60:  4.24;
+  --x70:  5.40;
+  --x80:  6.87;
+  --x90:  8.73;
+  --x100: 11.11;
 
-  --font-sm2: calc(100% / var(--x03));
-  --font-sm1: calc(100% / var(--x02));
-  --font-lg1: calc(100% * var(--x02));
-  --font-lg2: calc(100% * var(--x03));
-  --font-lg3: calc(100% * var(--x04));
+
+  --font-sm1: calc(100% / var(--x40));
+  --font-sm2: calc(100% / var(--x30));
+  --font-sm3: calc(100% / var(--x20));
+  --font-sm4: calc(100% / var(--x10));
+  --font-lg1: calc(100% * var(--x10));
+  --font-lg2: calc(100% * var(--x20));
+  --font-lg3: calc(100% * var(--x30));
+  --font-lg4: calc(100% * var(--x40));
   
   
-
   --size-sm0: 0.665em;
-  --size-xs4: calc(var(--size-sm0) / var(--x05)); 
-  --size-xs3: calc(var(--size-sm0) / var(--x04)); 
-  --size-xs2: calc(var(--size-sm0) / var(--x03)); 
-  --size-xs1: calc(var(--size-sm0) / var(--x02)); 
-  --size-sm1: calc(var(--size-sm0) * var(--x02)); 
-  --size-sm2: calc(var(--size-sm0) * var(--x03)); 
-  --size-sm3: calc(var(--size-sm0) * var(--x04)); 
-  --size-sm4: calc(var(--size-sm0) * var(--x05)); 
-  --size-md1: calc(var(--size-sm0) * var(--x55)); 
-  --size-md2: calc(var(--size-sm0) * var(--x06)); 
-  --size-md3: calc(var(--size-sm0) * var(--x65)); 
-  --size-md4: calc(var(--size-sm0) * var(--x07)); 
-  --size-lg1: calc(var(--size-sm0) * var(--x08)); 
-  --size-lg2: calc(var(--size-sm0) * var(--x09)); 
-  --size-lg3: calc(var(--size-sm0) * var(--x10));
-  --size-lg4: calc(var(--size-sm0) * var(--x11)); 
-  --size-xl1: calc(var(--size-lg4) * var(--x02)); 
-  --size-xl2: calc(var(--size-lg4) * var(--x03)); 
-  --size-xl3: calc(var(--size-lg4) * var(--x04)); 
-  --size-xl4: calc(var(--size-lg4) * var(--x05)); 
-  --size-xl5: calc(var(--size-lg4) * var(--x06)); 
-  --size-xl6: calc(var(--size-lg4) * var(--x07)); 
-  --size-xl7: calc(var(--size-lg4) * var(--x08)); 
+  --size-xs1: calc( var(--size-sm0) / var(--x40) ); 
+  --size-xs2: calc( var(--size-sm0) / var(--x30) ); 
+  --size-xs3: calc( var(--size-sm0) / var(--x20) ); 
+  --size-xs4: calc( var(--size-sm0) / var(--x10) ); 
+  --size-sm1: calc( var(--size-sm0) * var(--x10) ); 
+  --size-sm2: calc( var(--size-sm0) * var(--x20) ); 
+  --size-sm3: calc( var(--size-sm0) * var(--x30) ); 
+  --size-sm4: calc( var(--size-sm0) * var(--x40) ); 
+  --size-md1: calc( var(--size-sm0) * var(--x45) ); 
+  --size-md2: calc( var(--size-sm0) * var(--x50) ); 
+  --size-md3: calc( var(--size-sm0) * var(--x55) ); 
+  --size-md4: calc( var(--size-sm0) * var(--x60) ); 
+  --size-lg1: calc( var(--size-sm0) * var(--x70) ); 
+  --size-lg2: calc( var(--size-sm0) * var(--x80) ); 
+  --size-lg3: calc( var(--size-sm0) * var(--x90) );
+  --size-lg4: calc( var(--size-sm0) * var(--x100)); 
+  --size-xl1: calc( var(--size-lg4) * var(--x10) ); 
+  --size-xl2: calc( var(--size-lg4) * var(--x20) ); 
+  --size-xl3: calc( var(--size-lg4) * var(--x30) ); 
+  --size-xl4: calc( var(--size-lg4) * var(--x40) ); 
+  --size-xl5: calc( var(--size-lg4) * var(--x50) ); 
+  --size-xl6: calc( var(--size-lg4) * var(--x60) ); 
+  --size-xl7: calc( var(--size-lg4) * var(--x70) ); 
+  --size-xl8: calc( var(--size-lg4) * var(--x80) ); 
 
 
-
+  --padding-0: 0.06em var(--size-sm0);
   --padding-1: calc( (var(--size-md1) - var(--size-sm4)) / 2)  var(--size-sm2);
   --padding-2: calc( (var(--size-md2) - var(--size-sm4)) / 2)  var(--size-sm2);
   --padding-3: calc( (var(--size-md3) - var(--size-sm4)) / 2)  var(--size-sm2);
   --padding-4: calc( (var(--size-md4) - var(--size-sm4)) / 2)  var(--size-sm2);
-  --thin-padding: 0.06em var(--size-sm0);
 
 
   --radius-a: calc(var(--size-md3) * 0.227);
   --radius-b: calc(var(--size-md3) * 0.365);
 
-  --z-layer-top: 4;
-  --z-layer-higher: 3;
-  --z-layer-middle: 2;
-  --z-layer-beneath: -1;
+
+  --z-layer-pos-5:  5;
+  --z-layer-pos-4:  4;
+  --z-layer-pos-3:  3;
+  --z-layer-pos-2:  2;
+  --z-layer-neg-2: -1;
+
 
   --appear:        cubic-bezier(0.6 , 1.45, 0.5, 1);
   --appear-subtle: cubic-bezier(0.6 , 1.25, 0.5, 1);

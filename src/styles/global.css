@@ -18,7 +18,7 @@ svg{
 }
 
 ::-webkit-scrollbar{
-  width: var(--size-xs4);
+  width: var(--size-xs1);
 }
 
 ::-webkit-scrollbar-thumb{
@@ -161,13 +161,13 @@ svg{
   height: calc((var(--size-md2)  - 3px) - 10px);
   margin-top: calc(((var(--size-md2)  - 3px) - ((var(--size-md2)  - 3px) - 10px)) / 2);
   right: calc( var(--size-lg1) - 0.25px );
-  z-index: var(--z-layer-middle);
+  z-index: var(--z-layer-pos-2);
 }
 
 .text-as-button{
   border: 1px solid transparent;
   border-radius: var(--radius-a);
-  padding: var(--thin-padding);
+  padding: var(--padding-0);
   color: oklch(var(--gray-95));
   opacity: 1;
   margin-left: calc( (var(--size-sm0) + 1px) * -1 );

@@ -14,7 +14,7 @@
 }
 
 .content[data-open] {
-  z-index: var(--z-layer-top);
+  z-index: var(--z-layer-pos-4);
   animation-name: enter;
   animation-duration: 250ms;
   animation-timing-function: var( --appear);

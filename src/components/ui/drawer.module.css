@@ -2,7 +2,7 @@
 .overlay {
   position: fixed;
   inset: 0px;
-  z-index: var(--z-layer-higher);
+  z-index: var(--z-layer-pos-3);
 }
 
 .overlay[data-transitioning] {
@@ -19,7 +19,7 @@
   left: 0px;
   right: 0px;
   bottom: 0px;
-  z-index: var(--z-layer-top);
+  z-index: var(--z-layer-pos-4);
   display: flex;
   height: 100%;
   max-height: var(--drawer-height);
