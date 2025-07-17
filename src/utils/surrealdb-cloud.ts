@@ -92,12 +92,12 @@ export async function dbQueryRole(userID: string,vaultName: string,)
   
     const vaultId = `vaults${vaultName}`;
   
-    const response = await db.query_raw(`
+    const response = await db.query_raw(` 
         BEGIN TRANSACTION;
   
-        LET $user = (SELECT id FROM users WHERE UID = $UID);
-        LET $vault = (SELECT id FROM vaults WHERE name = $vaultName);
-        LET $role = SELECT role FROM has_vault WHERE in = $user[0].id AND out = $vault[0].id ;
+        LET $user = (SELECT id FROM Users WHERE UID = $UID);
+        LET $vault = (SELECT id FROM Vaults WHERE name = $vaultName);
+        LET $role = SELECT role FROM Access WHERE in = $user[0].id AND out = $vault[0].id ;
   
   
         IF $role[0].role = 'owner' { RETURN 'owner' }
@@ -142,21 +142,21 @@ export async function dbRelateVault(userID: string,vaultName: string ): Promise<
   try {
     const response = await db.query_raw(`
       BEGIN TRANSACTION;
-      LET $user = (SELECT id FROM users WHERE UID = $UID);
-      LET $vault = (SELECT id FROM vaults WHERE name = $vaultName);
+      LET $user = (SELECT id FROM Users WHERE UID = $UID);
+      LET $vault = (SELECT id FROM Vaults WHERE name = $vaultName);
 
-      LET $relationExists = (SELECT * FROM has_vault WHERE in = $user[0].id AND out = $vault[0].id);
+      LET $relationExists = (SELECT * FROM Access WHERE in = $user[0].id AND out = $vault[0].id);
 
       IF count($relationExists) = 0 {
 
-        RETURN RELATION INTO has_vault {
+        RETURN RELATION INTO Access {
           in:  $user[0].id,
           out: $vault[0].id,
           role: "viewer"
         };
 
       }ELSE {
-        RETURN SELECT out FROM has_vault WHERE in = $user[0].id AND out = $vault[0].id
+        RETURN SELECT out FROM Access WHERE in = $user[0].id AND out = $vault[0].id
       };
 
       COMMIT TRANSACTION; `,

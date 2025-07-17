@@ -116,7 +116,7 @@ document.getElementById("Auth-target")!.addEventListener("click", (e) => {
                 if (registryError){authResult.textContent = "Registration Failed"; return}
                 if (!registryData){authResult.textContent = "Registration Failed"; return}
                 if (!user) return;
-                const userId = user[0]?.id;
+                const userId = user[0]?.id?.toString();
                 if (!userId) return;
 
                 // handle Succeeded regestration 
@@ -147,7 +147,7 @@ document.getElementById("Auth-target")!.addEventListener("click", (e) => {
                 if (!authData) {authResult.textContent = "Authentication Failed"; return;}
                 if (!authData.authenticated || !authData.credentialId) {authResult.textContent = "Authentication Failed"; return; }      
                 if (!user ) { return }
-                const userId = user[0]?.id;
+                const userId = user[0]?.id?.toString();
                 if (!userId) return;
 
                 // handle Succeeded auth 

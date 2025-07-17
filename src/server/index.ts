@@ -48,7 +48,11 @@ export const appRouter = router({
                 });
             }
 
-            const addToDb = await dbCreate("Users:create", {UID:registrationParsed.credential.id, credentials:registrationParsed.credential});
+            const addToDb = await dbCreate("Users:create", {
+                UID:registrationParsed.credential.id, 
+                credentials:registrationParsed.credential,
+                updatedAt: new Date().toISOString()
+            });
             
             if (addToDb.ok) {
                 return addToDb.value
@@ -215,7 +219,7 @@ async function verifyAuthentication(authenticationData: AuthenticationData,chall
  Promise<Result<{ authenticationParsed: Awaited<ReturnType<typeof server.verifyAuthentication>>; credentialObj: CredentialObj }, ValidationError | AuthenticationError>> {
 
     const dbResult = await dbquery(
-      'SELECT credentials FROM users WHERE UID = $UID ;',
+      'SELECT credentials FROM Users WHERE UID = $UID ;',
       { UID: authenticationData.id }
     );
     if (dbResult.err) {return dbResult}
