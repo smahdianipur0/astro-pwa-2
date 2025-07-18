@@ -66,15 +66,10 @@ export async function dbDelete(id: string): Promise<void> {
 	await handle(async (db) => {await genericDelete(db, id)});
 }
 
-export async function dbUpserelate<OutTable extends TableName, InTable extends TableName, RelTable extends rTableName>(
-    action: `${OutTable}:upserelate`, 
-    ...args: PermittedTypes[`${OutTable}:upserelate`] extends [infer RS, infer ORD, infer RD] 
-        ? RS extends `${InTable}:${string}->${RelTable}` 
-            ? [relationString: RS, outRecordData: ORD, relationData: RD ] : never 
-        : never 
-): Promise<void> {
+export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: T, ...args: PermittedTypes[T]): Promise<void> {
 	await handle(async (db) => {await genericUpserelate(db,action, ...args)})
 }
+
 
 export async function dbReadAll<T extends TableName>(tableName: T): Promise<ReadAllResultTypes[T] | undefined> {
 	return await handle(async (db) => { return await genericReadAll(db, tableName)})

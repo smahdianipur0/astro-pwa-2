@@ -139,6 +139,16 @@ export const appRouter = router({
                   throw new TRPCError({code: 'UNAUTHORIZED',message: "Authentication failed"});
             }
 
+            const rawUserID = await dbquery(`
+                SELECT id FROM Users WHERE UID = $UID`,
+                {UID:credentialObj.id}
+            )
+            if (rawUserID.err) { handleTRPCError(rawUserID.value);}
+
+            const userID = rawUserID.value[0][0].id?.toString().split(":")[1] as string
+            if (!userID){throw new TRPCError({code: 'UNAUTHORIZED',message: "User id not fount"});}
+
+
             // Manage permission
             const rolePromises = (input.vaults as ReadAllResultTypes["Vaults"]).map(async entry => {
                 const dbRole = await dbQueryRole(credentialObj.id, entry.id as string);
@@ -160,12 +170,12 @@ export const appRouter = router({
                 permittedVaults.includes(card.vault)
             );
 
-
+            
             // Dump
             await Promise.all(sanitizedVaults.map(async (entry) => {
 
-                const dumpVaults = await dbUpserelate("Vaults:upserelate", `Users:${credentialObj.id}->Access`, {
-                    id: entry.id?.split(":")[1] ?? "",
+                const dumpVaults = await dbUpserelate("Vaults:upserelate", `Users:${userID}->Access`, {
+                    id: entry.id?.toString().split(":")[1] ?? "",
                     name: entry.name,
                     status: entry.status,
                     updatedAt: entry.updatedAt,
@@ -173,14 +183,17 @@ export const appRouter = router({
                     role: entry.role
                 });
 
-                if(dumpVaults.err){handleTRPCError(dumpVaults.value)}
+                if(dumpVaults.err){
+                    console.log(dumpVaults.value)
+                    handleTRPCError(dumpVaults.value)
+                }
 
             }));
 
             await Promise.all(sanitizedCards.map(async (entry) => {
 
                 const dumpCards = await dbUpserelate("Cards:upserelate", `Vaults:${entry.id?.split(":")[1]}->Contain`, {
-                    id: entry.id?.split(":")[1] ?? "",
+                    id: entry.id?.toString().split(":")[1] ?? "",
                     name: entry.name,
                     status: entry.status,
                     updatedAt: entry.updatedAt,
@@ -188,7 +201,10 @@ export const appRouter = router({
                 },{}
                 );
 
-                if(dumpCards.err){handleTRPCError(dumpCards.value)}
+                if(dumpCards.err){
+                    console.log(dumpCards.value)
+                    handleTRPCError(dumpCards.value)
+                }
 
             }));
 

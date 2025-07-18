@@ -92,31 +92,41 @@ export async function genericUpserelate< OutTable extends TableName, InTable ext
     const fullOutRecordId = `${action.split(":")[0] as OutTable}:${outRecordId}`; 
 
     const [inRecordIdWithTable, rTableFromString] = relationString.split("->");
+    try {
+        const response = await db.query_raw(`
+            BEGIN TRANSACTION;
 
-    await db.query(`
-        BEGIN TRANSACTION;
+            LET $out_record_id = type::thing($fullOutRecordIdVar);
+            LET $in_record_id = type::thing($inRecordIdWithTableVar);
+            LET $rel_table_name = type::table($rTableActualVar);
 
-        LET $out_record_id = type::thing($fullOutRecordIdVar);
-        LET $in_record_id = type::thing($inRecordIdWithTableVar);
-        LET $rel_table_name = type::table($rTableActualVar);
+            IF record::exists($out_record_id) {
+                UPDATE $out_record_id MERGE $outRecordValuesVar;
+            } ELSE {
+                CREATE $out_record_id CONTENT $outRecordValuesVar;
+                RELATE $in_record_id->$rel_table_name->$out_record_id CONTENT $relationDataVar;
+            };
 
-        IF record::exists($out_record_id) {
-            UPDATE $out_record_id MERGE $outRecordValuesVar;
-        } ELSE {
-            CREATE $out_record_id CONTENT $outRecordValuesVar;
-            RELATE $in_record_id->$rel_table_name->$out_record_id CONTENT $relationDataVar;
-        };
+            COMMIT TRANSACTION;
+        `, {
+            fullOutRecordIdVar: fullOutRecordId,
+            outRecordValuesVar: outRecordValues,
+            inRecordIdWithTableVar: inRecordIdWithTable,
+            rTableActualVar: rTableFromString, 
+            relationDataVar: relationData,
+        });
 
-        COMMIT TRANSACTION;
-    `, {
-        fullOutRecordIdVar: fullOutRecordId,
-        outRecordValuesVar: outRecordValues,
-        inRecordIdWithTableVar: inRecordIdWithTable,
-        rTableActualVar: rTableFromString, 
-        relationDataVar: relationData,
-    });
-    
-    return "Ok";
+        if (response[response.length - 1].status === 'ERR') {
+            const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
+            if (errorObject) { throw new Error(String(errorObject.result))}
+            throw new Error("unknown error");
+        }
+        return "Ok"
+    } 
+        catch (err: unknown) {
+        console.log(err);
+        throw new Error(err instanceof Error ? err.message : String(err))
+    }
 }
 
 export async function genericReadAll<T extends TableName>(db: Surreal,tableName: T): Promise<ReadAllResultTypes[T] | undefined> {

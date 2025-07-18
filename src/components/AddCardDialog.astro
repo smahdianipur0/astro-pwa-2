@@ -249,7 +249,8 @@ window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => 
         id:id, 
         name:name, 
         status:"available", 
-        data: data.getAll('comments') as string[]
+        data: data.getAll('comments') as string[],
+        updatedAt: new Date().toISOString()
     },{});
 
     records.updateCardsList()

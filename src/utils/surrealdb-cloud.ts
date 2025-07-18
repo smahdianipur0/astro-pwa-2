@@ -8,9 +8,7 @@ import {
   genericReadAll,
   genericGetEntryById,
   type PermittedTypes, 
-  type TableName,
-  type rTableName,
-  type rSchemas} from "./surrealdb"
+  type TableName} from "./surrealdb"
 
 import { type ReadResultTypes,type ReadAllResultTypes,} from "./surrealdb"
 export { type ReadResultTypes, type ReadAllResultTypes };
@@ -61,13 +59,7 @@ export async function dbDelete(id: string): Promise<Result<string, DBConnectionE
   return await handle(async (db) => await genericDelete(db, id));
 }
 
-export async function dbUpserelate<OutTable extends TableName, InTable extends TableName, RelTable extends rTableName>(
-    action: `${OutTable}:upserelate`, 
-    ...args: PermittedTypes[`${OutTable}:upserelate`] extends [infer RS, infer ORD, infer RD] 
-        ? RS extends `${InTable}:${string}->${RelTable}` 
-            ? [relationString: RS, outRecordData: ORD, relationData: RD ] : never 
-        : never 
-): Promise<Result<string, DBConnectionError | DBOperationError>> {
+export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: T, ...args: PermittedTypes[T]): Promise<Result<string, DBConnectionError | DBOperationError>> {
   return await handle(async (db) => await genericUpserelate(db, action, ...args));
 }
 
@@ -92,7 +84,7 @@ export async function dbQueryRole(userID: string,vaultName: string,)
   
     const vaultId = `vaults${vaultName}`;
   
-    const response = await db.query_raw(` 
+    const response = await db.query_raw(`
         BEGIN TRANSACTION;
   
         LET $user = (SELECT id FROM Users WHERE UID = $UID);
@@ -162,7 +154,6 @@ export async function dbRelateVault(userID: string,vaultName: string ): Promise<
       COMMIT TRANSACTION; `,
     { UID: userID, vaultName: vaultName}
     );
-    console.log(response);
 
     if (response[response.length - 1].status === 'OK') {
       console.log()

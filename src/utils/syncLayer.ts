@@ -22,7 +22,13 @@ function syncByKey<T extends Record<string, any>, K extends keyof T, D extends k
   key: K,
   dateKey: D,
 ): SyncPair<T> {
-  const makeMap = (arr: T[]) => new Map<string, T>(arr.map((item) => [String(item[key]), item]));
+
+  const makeMap = (arr: T[]) =>
+    new Map<string, T>(
+      arr
+        .filter(item => item && item[key] !== undefined)
+        .map((item) => [String(item[key]), item])
+    );
 
   const localMap = makeMap(local);
   const cloudMap = makeMap(cloud);
@@ -69,7 +75,8 @@ export async function syncVaults(): Promise<void> {
         return vaultId ? { vault: vaultId, ...card } : null;
       }),
     )
-  ).filter((x): x is cardPayload => x !== null);
+  ).filter((x): x is cardPayload => !!x);
+
 
   // 3. Fetch cloud state (vaults + cards)
   const [ message, fetchError] = await queryHelper.direct( "cloudVaults",() =>
@@ -82,9 +89,20 @@ export async function syncVaults(): Promise<void> {
     return;
   }
 
+
   // 4. Compute diffs (must specify both key and dateKey)
-  const vaultDiff = syncByKey(vaults, message?.vaults ?? [], "name", "updatedAt");
-  const cardDiff = syncByKey(cards, message?.cards ?? [], "id", "updatedAt");
+  const vaultDiff = syncByKey(
+    vaults,
+    (message?.vaults ?? []).filter((v): v is VaultPayload => v && "name" in v),
+    "name",
+    "updatedAt"
+  );
+  const cardDiff = syncByKey(
+    cards,
+    (message?.cards ?? []).filter((c): c is cardPayload => c && "id" in c),
+    "id",
+    "updatedAt"
+  );
 
   // 5. Update cloud→local for vaults & cards
   await Promise.all([
@@ -121,11 +139,11 @@ export async function syncVaults(): Promise<void> {
     trpc.syncvaults.mutate({
       challenge,
       authenticationData: authentication,
-      vaults: vaultDiff.localToCloud,
+      vaults: vaultDiff.localToCloud, 
       cards: cardDiff.localToCloud,
     }),
   );
 
-  if (syncError) console.error("Error syncing to cloud:", syncError);
+  if (syncError) console.error("Error syncing to cloud:", syncError); 
   else console.log("Sync complete:", syncResult);
 }

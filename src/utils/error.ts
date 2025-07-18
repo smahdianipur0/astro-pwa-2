@@ -58,7 +58,7 @@ export function handleTRPCError(error: unknown): never {
     throw new TRPCError({
       code: 'NOT_FOUND',
       message: error.message,
-      cause: error,
+      cause: error.cause ?? error,
     });
   }
 
@@ -66,13 +66,33 @@ export function handleTRPCError(error: unknown): never {
     throw new TRPCError({
       code: 'UNAUTHORIZED',
       message: error.message,
-      cause: error,
+      cause: error.cause ?? error,
+    });
+  }
+
+  if (error instanceof ValidationError) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: error.message,
+      cause: error.cause ?? error,
+    });
+  }
+
+  if (
+    error instanceof DBConnectionError ||
+    error instanceof DBOperationError ||
+    error instanceof AppError
+  ) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: error.message,
+      cause: error.cause ?? error,
     });
   }
 
   throw new TRPCError({
     code: 'INTERNAL_SERVER_ERROR',
-    message: 'An unexpected error occurred.',
+    message: 'internal server error',
     cause: error,
   });
 }
