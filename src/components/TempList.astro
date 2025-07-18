@@ -176,7 +176,6 @@ tempList.on(["isSearching", "searchArray"], pl => {
     .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())).
     forEach((entry) => {
       render(() => Templist(entry), entriesList);
-      render(() => Templist(entry), entriesList);
     });
   };  
 });
