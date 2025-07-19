@@ -7,10 +7,10 @@
 
 <script>
 
-import { el } from "../utils/elementUtils";
 import { dbCreate, dbReadAll, dbUpdate, } from "../utils/surrealdb-indexed"
-
-import{ auth,authQueryChallenge,regQueryChallenge,validateAuthentication, validateRegistration} from "../logic/auth"
+import { auth,authQueryChallenge,regQueryChallenge,validateAuthentication, validateRegistration} from "../logic/auth"
+import { initialAuthUi } from './Auth'
+import { render } from "solid-js/web"
 
 // import {syncVaults} from "../utils/syncLayer"
 // (async () => { await syncVaults();})();
@@ -36,15 +36,13 @@ const authResult = document.getElementById("Auth-result") as HTMLElement;
 const credentialsDiv = document.getElementById("Auth-target") as HTMLElement;
 
 function updateSucceededAuth() {
-    credentialsDiv.textContent = '';
+    credentialsDiv.replaceChildren(
+        Object.assign(document.createElement('small'), {
+            style:'margin-top: 0', 
+            textContent: "device registered." 
+        })
+    );
 
-    const fragment = document.createDocumentFragment();
-
-    fragment.append( el.c('small', { style: 'margin-top: 0;',append: [
-        el.c('span', { textContent: "device registered." })
-    ]}));
-
-    credentialsDiv.append(fragment);
     authResult.textContent = "";
 }
 
@@ -53,36 +51,8 @@ function updateSucceededAuth() {
 (async () => {
     if (auth.get("indexedUid") === false) {
         credentialsDiv.textContent = '';
+        render(() => initialAuthUi(), credentialsDiv);
 
-        const fragment = document.createDocumentFragment();
-        
-        fragment.append(
-            el.c('div', {className: 'prose',
-                style: 'display: flex; gap: var(--size-sm0); justify-content: space-between;',
-                append: [
-                    el.c('input', {id: 'user_name',
-                        type: 'text', placeholder: 'Name',autocomplete: 'off',
-                        style: 'margin-bottom: var(--size-sm0); width: 100%;'}),
-
-                    el.c('button', {id: 'registration',
-                        style: 'margin-bottom: var(--size-sm0); width: fit-content; white-space: nowrap;',
-                        textContent: 'Sign Up',
-                        disabled: true})
-                ]
-            }),
-
-            el.c('small', { style: 'margin-top: 0;', append: [
-
-                el.c('span', { textContent: 'Allready Signed Up ? ' }),
-                el.c('button', {
-                    className: 'not-prose',
-                    id: 'authentication',
-                    style: 'font-weight: 600; text-decoration: underline; color:oklch(var(--gray-95))',
-                    textContent: 'Sign In'})
-            ]})
-        );
-        
-        credentialsDiv.append(fragment);
     } else {
         updateSucceededAuth()
     }

@@ -164,7 +164,7 @@ export const appRouter = router({
 
             const permittedVaults = reconciledRoles.filter((v) =>
                 hasPermission(v.role, "card:add" )
-                ).map((v) => v.id);
+                ).map((v) => v.id?.toString().split(":")[1]);
 
             const sanitizedCards = input.cards.filter((card) =>
                 permittedVaults.includes(card.vault)
@@ -183,10 +183,7 @@ export const appRouter = router({
                     role: entry.role
                 });
 
-                if(dumpVaults.err){
-                    console.log(dumpVaults.value)
-                    handleTRPCError(dumpVaults.value)
-                }
+                if(dumpVaults.err){ handleTRPCError(dumpVaults.value)}
 
             }));
 
@@ -201,10 +198,7 @@ export const appRouter = router({
                 },{}
                 );
 
-                if(dumpCards.err){
-                    console.log(dumpCards.value)
-                    handleTRPCError(dumpCards.value)
-                }
+                if(dumpCards.err){handleTRPCError(dumpCards.value)}
 
             }));
 
