@@ -103,7 +103,8 @@ document.getElementById("Emails")!.addEventListener("click", (e) => {
 const container = document.getElementById("Email-list")  as HTMLElement
 
 const swapy = createSwapy(container, {
-  animation: 'dynamic'
+  animation: 'dynamic',
+  autoScrollOnDrag: true,
 });
 
 email.on(["emailList"], ({ value }) => {
