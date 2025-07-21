@@ -117,9 +117,10 @@ document.getElementById("AddCardDialog-div")!.addEventListener("click",(e)=>{
 dialog!.addEventListener("click",(e)=>{
     if((e!.target as HTMLInputElement).matches("#AddCardDialog-add-comment")){
         e.preventDefault();
-        const fragment = document.createDocumentFragment();
-        fragment.append(el.c('textarea', {name:"comments"}) );
-        document.getElementById("AddCardDialog-comments")!.append(fragment)
+        document.getElementById("AddCardDialog-comments")!.replaceChildren(
+            Object.assign(document.createElement("textarea"), {
+                name:"comments"
+            }))
         return false
     };
 });
@@ -148,20 +149,17 @@ records.on(["selectedVault"], ({value}) => { (async () => {
 })()});
 
 //update vault options and Sselected Ccard
-records.on(["vaultsList"], ({value}) => {
+records.on(["editableVaultList"], ({value}) => {
     const cardVaultlist = document.getElementById("AddCardDialog-vault") as HTMLSelectElement
     cardVaultlist.textContent = "";
 
-    const fragment = document.createDocumentFragment();
-
-    if (records.get("editableVaultList").length !== 0){
-         (records.get("editableVaultList"))
+    const options = (value ?? [])
          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-         .forEach((entry) => {
-            fragment.append( el.c("option", {textContent:entry.name, id:entry.id}));
-        });
-    }
-    cardVaultlist.append(fragment);
+         .map(entry => { return Object.assign(document.createElement("option"),
+            {textContent:entry.name, id:entry.id}
+            );
+        })
+    cardVaultlist.replaceChildren(...options);
 
     const selectCard = document.getElementById("AddCardDialog-card-select") as HTMLSelectElement;
     if (selectCard){ records.setSelectedCard(selectCard.options[0]?.value)}
@@ -179,23 +177,20 @@ records.on(["editableVaultList", "cardsList"], pl => {
         selectCardList.disabled = (records.get("editableVaultList").length === 0);
 
         if (records.get("editableVaultList").length !== 0) {
-            const fragment = document.createDocumentFragment();
 
-            const availableCards = (records.get("cardsList") ?? []).filter(item => item.status === "available");
-            if (availableCards.length === 0) {
-                fragment.append(el.c("option", { textContent: "New Card" }));
-            } else {
-                fragment.append(el.c("option", { textContent: "New Card" }));
+            const availableCards = (records.get("cardsList") ?? []).filter(item => item.status === "available")
+            
+            const options = (availableCards.length !== 0) ? 
                 availableCards
                     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-                    .forEach((entry) => {
-                        fragment.append(
-                            el.c("option", { textContent: entry.name, id: entry.id })
-                        );
-                    });
-            }
-
-            selectCardList.append(fragment);
+                    .map(entry => { return Object.assign(document.createElement("option"),{
+                        textContent: entry.name, id: entry.id
+                    })})
+                : [];
+            const newCard =  (Object.assign(document.createElement("option"), { textContent: "New Card" }))
+            
+            selectCardList.replaceChildren(newCard, ...options)
+                          
         }
     })();
 });
@@ -205,19 +200,18 @@ records.on(["selectedCard"], ({value}) => {
     const cardInput = document.getElementById("AddCardDialog-card-input") as HTMLInputElement;
     if (cardInput) {cardInput.remove()}
 
-    const fragment = document.createDocumentFragment();
+    if (value === "" || value === "New Card"){
+        document.getElementById("AddCardDialog-card-field")!.replaceChildren(
+            Object.assign(document.createElement("input"),{
+                style: "margin-top:var(--size-sm1)",
+                type: "text", 
+                placeholder:"Card Name",
+                id:"AddCardDialog-card-input",
+                name: "new card"  
+            })
+        )
+    }
 
-    if (value === "" || value === "New Card") {
-        fragment.append(el.c("input", {
-            style: "margin-top:var(--size-sm1)",
-            type: "text", 
-            placeholder:"Card Name",
-            id:"AddCardDialog-card-input",
-            name: "new card"
-        }));
-
-        document.getElementById("AddCardDialog-card-field")!.append(fragment)
-    } 
 });
 
 // ok button disabled
