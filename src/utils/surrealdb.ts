@@ -7,8 +7,8 @@ export type Schemas = {
     RecentDelPass: {  title: string; password: string; crreatedAt: string };
     Vaults: {name: string; updatedAt: string, status:"available" | "deleted", role:"owner" | "viewer"};
     Cards: {name: string, data:string[]; updatedAt: string, status:"available" | "deleted"}
-    Access : {in: string, out: string, role: "owner" | "viewer"},
-    Contain : {in: string, out: string },   
+    Access : {in: string | RecordId<string>, out: string | RecordId<string>, role: "owner" | "viewer", updatedAt: string},
+    Contain : {in: string | RecordId<string>, out: string | RecordId<string>, updatedAt: string },   
 };
 
 
@@ -16,7 +16,6 @@ export type rSchemas = {
     Access : {role: "owner" | "viewer"},
     Contain : { },
 };
-
 
 type prettify<T> = {[K in keyof T]: T[K];} & {};
 
@@ -30,24 +29,49 @@ export type PermittedTypes = {
 
     [K in keyof Schemas as `${K & string}:update`]: prettify<{ id: string } & Partial<Schemas[K]>>;} & {
 
-    [K in keyof Schemas as `${K & string}:delete`]: { id: string };} & {
-
-    [K_OutTable in keyof Schemas as `${K_OutTable & string}:upserelate`]:
-        {
-            [K_InTable in TableName]: {
-                [K_RelTable in rTableName]: [
-                    relationString: `${K_InTable & string}:${string}->${K_RelTable & string}`,
-                    outRecordData: prettify<{ id: string } & Partial<Schemas[K_OutTable]>>,
-                    relationData: prettify<rSchemas[K_RelTable]>
-                ];
-            }[rTableName];
-        }[TableName];
+    [K in keyof Schemas as `${K & string}:delete`]: { id: string };
 };
 
 
-
-export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: string} & Schemas[K]>;};
+export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: string | RecordId<string> } & Schemas[K]>;};
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
+
+export function toRecordId (id:string) { 
+    return new RecordId( id.split(":")[0]
+        , id.split(":")[1])
+}
+
+export function mapRelation<T extends { id?: unknown; in?: unknown; out?: unknown }>(arr: T[]) {
+  return arr.map(({ id, in: inProp, out, ...rest }) => ({
+    id: toRecordId(id?.toString() ?? ""),
+    in: toRecordId(inProp?.toString() ?? ""),
+    out: toRecordId(out?.toString() ?? ""),
+    ...rest,
+  }));
+}
+
+ export function mapTable<T extends { id?: unknown }>(arr: T[]) {
+  return arr.map(({ id, ...rest }) => ({
+    id: toRecordId(id?.toString() ?? ""),
+    ...rest,
+  }));
+}
+
+export function relationIdStringify<T extends { id?: unknown; in?: unknown; out?: unknown }>(arr: T[]) {
+  return arr.map(({ id, in: inProp, out, ...rest }) => ({
+    id: id?.toString() ?? "",
+    in: inProp?.toString() ?? "",
+    out: out?.toString() ?? "",
+    ...rest,
+  }));
+}
+
+export function tableIdStringify<T extends { id?: unknown }>(arr: T[]) {
+  return arr.map(({ id, ...rest }) => ({
+    id: id?.toString() ?? "",
+    ...rest,
+  }));
+}
 
 export async function genericCreate< T extends `${TableName}:create`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<string> {
     await db.create<PermittedTypes[T]>(action.split(":")[0], data); 
@@ -62,7 +86,7 @@ export async function genericQuery(db: Surreal, query: string, params: { [key: s
             (item) => item.result !== "The query was not executed due to a failed transaction",
         );
         if (errorObject) {
-            throw new Error(String(errorObject?.result));
+            throw new Error("database query failed",{cause: String(errorObject?.result)});
         }
     }
     if (response[response.length - 1]?.status === "OK") {
@@ -84,62 +108,6 @@ export async function genericUpsert<T extends `${TableName}:update`>(db: Surreal
 export async function genericDelete(db: Surreal, id: string): Promise<string> {
     await db.delete(new RecordId(id.split(":")[0], id.split(":")[1]));
     return "Ok";
-}
-
-
-export async function genericUpserelate< OutTable extends TableName, InTable extends TableName,RelTable extends rTableName>(
-    db: Surreal,
-    action: `${OutTable}:upserelate`, 
-    ...args: PermittedTypes[`${OutTable}:upserelate`] extends [infer RS, infer ORD, infer RD] 
-        ? RS extends `${InTable}:${string}->${RelTable}` 
-            ? [relationString: RS, outRecordData: ORD, relationData: RD ]: never 
-        : never 
-): Promise<string> {
-
-    const [relationString, outRecordDataFromArgs, relationDataFromArgs] = args;
-    const outRecordData = outRecordDataFromArgs as prettify<{ id: string } & Partial<Schemas[OutTable]>>;
-    const relationData = relationDataFromArgs as Partial<rSchemas[RelTable]>;
-
-
-    const { id: outRecordId, ...outRecordValues } = outRecordData;
-    const fullOutRecordId = `${action.split(":")[0] as OutTable}:${outRecordId}`; 
-
-    const [inRecordIdWithTable, rTableFromString] = relationString.split("->");
-    try {
-        const response = await db.query_raw(`
-            BEGIN TRANSACTION;
-
-            LET $out_record_id = type::thing($fullOutRecordIdVar);
-            LET $in_record_id = type::thing($inRecordIdWithTableVar);
-            LET $rel_table_name = type::table($rTableActualVar);
-
-            IF record::exists($out_record_id) {
-                UPDATE $out_record_id MERGE $outRecordValuesVar;
-            } ELSE {
-                CREATE $out_record_id CONTENT $outRecordValuesVar;
-                RELATE $in_record_id->$rel_table_name->$out_record_id CONTENT $relationDataVar;
-            };
-
-            COMMIT TRANSACTION;
-        `, {
-            fullOutRecordIdVar: fullOutRecordId,
-            outRecordValuesVar: outRecordValues,
-            inRecordIdWithTableVar: inRecordIdWithTable,
-            rTableActualVar: rTableFromString, 
-            relationDataVar: relationData,
-        });
-
-        if (response[response.length - 1].status === 'ERR') {
-            const errorObject = response.find(item =>item.result !== 'The query was not executed due to a failed transaction');
-            if (errorObject) { throw new Error(String(errorObject.result))}
-            throw new Error("unknown error");
-        }
-        return "Ok"
-    } 
-        catch (err: unknown) {
-        console.log(err);
-        throw new Error(err instanceof Error ? err.message : String(err))
-    }
 }
 
 export async function genericReadAll<T extends TableName>(db: Surreal,tableName: T): Promise<ReadAllResultTypes[T] | undefined> {

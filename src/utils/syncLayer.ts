@@ -1,15 +1,9 @@
-import { dbReadAll, dbUpsert, dbquery, dbUpserelate, type ReadAllResultTypes } from "../utils/surrealdb-indexed";
+import { dbReadAll, dbquery, type ReadAllResultTypes, relationIdStringify, tableIdStringify, mapTable, mapRelation } from "../utils/surrealdb-indexed";
 import queryHelper from "../utils/query-helper";
 import { trpc } from "../utils/trpc";
 import { authQueryChallenge } from "../logic/auth";
+import { dbDelete } from "./surrealdb-cloud";
 
-type prettify<T> = {[K in keyof T]: T[K];} & {};
-
-type VaultRecord = ReadAllResultTypes["Vaults"][number];
-type VaultPayload = prettify<Omit<VaultRecord, "id"> & { id?: string }>;
-
-type CardRecord = ReadAllResultTypes["Cards"][number];
-type cardPayload = prettify<CardRecord & { vault: string }>;
 
 interface SyncPair<T> {
   localToCloud: T[];
@@ -50,100 +44,69 @@ function syncByKey<T extends Record<string, any>, K extends keyof T, D extends k
   return { localToCloud, cloudToLocal };
 }
 
+await dbDelete("Cards:by50dyjqmA7y9CD9Xo49");
+
 export async function syncVaults(): Promise<void> {
-  // 1. Load all vaults and cards
-  const [vaults, rawCards, users, contain] = await Promise.all([
-    dbReadAll("Vaults") as Promise<VaultRecord[]>,
-    dbReadAll("Cards") as Promise<CardRecord[]>,
+  // 1. Load local state 
+  const [users, vaults, contain, cards ] = await Promise.all([
     dbReadAll("Users") as Promise<ReadAllResultTypes["Users"]>,
-    dbReadAll("Contain") as Promise<ReadAllResultTypes["Contain"]>
+    dbReadAll("Vaults") as Promise<ReadAllResultTypes["Vaults"]>,
+    dbReadAll("Contain") as Promise<ReadAllResultTypes["Contain"]>,
+    dbReadAll("Cards") as Promise<ReadAllResultTypes["Cards"]>,
   ]);
 
-
   const UID = users[0]?.UID;
-  if (!UID) throw new Error("No user UID found");
-
-  // 2. Build cardPayloads via single-query approach
-  const cards: cardPayload[] = (
-    await Promise.all(
-      rawCards.map(async (card) => {
-        const id = card.id?.toString();
-        if (!id) return ;
-        const [[{ "<-Contain": contain }]] = await dbquery(
-            `SELECT <-Contain<-Vaults FROM (type::thing($card));`, 
-            { card: id }
-            );
-        const vaultId = contain["<-Vaults"]?.[0]?.id;
-        return vaultId ? { vault: vaultId, ...card } : null;
-      }),
-    )
-  ).filter((x): x is cardPayload => !!x);
+  if (!UID) {console.error("No user UID found"); return};
 
 
-  // 3. Fetch cloud state (vaults + cards)
+  // 3. Load cloud state 
   const [ message, fetchError] = await queryHelper.direct( "cloudVaults",() =>
-      trpc.queryVaults.query({ UID }) as Promise<{
-         vaults: VaultPayload[]; cards: cardPayload[] ;
-      }>,
+      trpc.queryVaults.query({ UID }) 
   );
-  if (fetchError) {
-    console.error("Error fetching cloud state:", fetchError);
-    return;
-  }
+  if (fetchError) {console.error("Error fetching cloud state:", fetchError);return;};
 
 
   // 4. Compute diffs (must specify both key and dateKey)
-  const vaultDiff = syncByKey(
-    vaults,
-    (message?.vaults ?? []).filter((v): v is VaultPayload => v && "name" in v),
-    "name",
-    "updatedAt"
-  );
-  const cardDiff = syncByKey(
-    cards,
-    (message?.cards ?? []).filter((c): c is cardPayload => c && "id" in c),
-    "id",
-    "updatedAt"
-  );
+  const vaultDiff = syncByKey( vaults,(message?.vaults ?? []),"name","updatedAt");
+  const containDiff = syncByKey( contain,(message?.contain ?? []),"id","updatedAt");
+  const cardDiff = syncByKey( cards,(message?.cards ?? []),"id","updatedAt");
 
   // 5. Update cloud→local for vaults & cards
-  await Promise.all([
-    ...vaultDiff.cloudToLocal.map((v) =>
-      dbUpsert("Vaults:update", {
-        id: v.name,
-        name: v.name,
-        status: v.status,
-        role: v.role,
-        updatedAt: v.updatedAt,
-      }),
-    ),
-    ...cardDiff.cloudToLocal.map((c) =>
-        dbUpserelate("Cards:upserelate", `Cards:${c.id?.split(":")[1] ?? ""}->Contain`, {
-            id: c.id?.split(":")[1] ?? "",
-            name: c.name,
-            data: c.data,
-            updatedAt: c.updatedAt,
-            status: c.status
-        }, {} )
-    ),
-  ]);
+  await dbquery(`
+    BEGIN TRANSACTION;
 
-  // 6. Prepare local→cloud payloads
-  if (!vaultDiff.localToCloud.length && !cardDiff.localToCloud.length) return;
+    FOR $vault   IN $vaultsArray   { UPSERT $vault.id CONTENT $vault};
+    FOR $card    IN $cardsArray    { UPSERT $card.id  CONTENT $card };
+    FOR $contain IN $containsArray { INSERT RELATION  INTO Contain $contain };
+    
+    COMMIT TRANSACTION;
+  `,{
+    vaultsArray:   mapTable(vaultDiff.cloudToLocal),
+    containsArray: mapRelation (containDiff.cloudToLocal),
+    cardsArray:    mapTable(cardDiff.cloudToLocal)
+  });
+
+
+  // 6. Prepare local → cloud payloads
+  if (
+    vaultDiff.localToCloud.length    === 0 && 
+    containDiff.cloudToLocal.length  === 0 &&
+    cardDiff.localToCloud.length     === 0 ) return;
 
   const { authentication, challenge } = (await authQueryChallenge()) as any;
   if (!authentication || !challenge) {
-    throw new Error("Authentication failed or missing challenge");
+    console.error("Authentication failed or missing challenge")
+    return;
   }
 
-  // 7. Sync up to cloud (both vaults and cards)
+  // 7. Sync up to cloud 
   const [syncResult, syncError] = await queryHelper.direct("auth", () =>
     trpc.syncvaults.mutate({
       challenge,
       authenticationData: authentication,
-      vaults: vaultDiff.localToCloud,
-      contain:contain, 
-      cards: cardDiff.localToCloud,
+      vaults: tableIdStringify(vaultDiff.localToCloud),
+      contain: relationIdStringify(containDiff.localToCloud),
+      cards: tableIdStringify(cardDiff.localToCloud),
     }),
   );
 

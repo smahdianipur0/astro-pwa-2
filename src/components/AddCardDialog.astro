@@ -89,7 +89,7 @@
 
 <script>
 
-import { dbUpserelate, getEntryById } from "../utils/surrealdb-indexed"
+import { dbquery, toRecordId, getEntryById } from "../utils/surrealdb-indexed"
 import { records } from "../logic/records"       
 import { customAlphabet } from 'nanoid'
 
@@ -223,32 +223,53 @@ records.on(["selectedCard", "cardName"], pl => {
 });
 
 
+
+
 // handle form
-window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => {
+window.handleCardForm = (form: HTMLFormElement, event: SubmitEvent): boolean => {(async () => {
+    
     const action = (event.submitter as HTMLButtonElement)?.value;
-  
     if (action === 'cancel') { return true;}
   
     const data = new FormData(form);
-
     const selectElement = document.getElementById("AddCardDialog-card-select") as HTMLSelectElement;
     const selectedOptionId = selectElement.options[selectElement.selectedIndex].id;
 
-    const id    = ( data.get("select card") === "New Card") ? nanoid() : selectedOptionId;
+    const id    = ( data.get("select card") === "New Card") ? `Cards:${nanoid()}` : selectedOptionId;
     const name  = ( data.get("select card") === "New Card") ? data.get("new card") as string : data.get("select card") as string ; 
-    const vault = (data.get("select vault") as string);
+    const vault = `Vaults:${(data.get("select vault"))}`;
 
-    dbUpserelate("Cards:upserelate", `Vaults:${vault}->Contain`, {
-        id:id, 
-        name:name, 
-        status:"available", 
-        data: data.getAll('comments') as string[],
-        updatedAt: new Date().toISOString()
-    },{});
+    await dbquery(`
+        BEGIN TRANSACTION;
+
+        LET $contentid = $content.id;
+        LET $time = {updatedAt : $content.updatedAt};
+        
+        IF !record::exists($contentid) {
+            RELATE $vault -> Contain -> $contentid CONTENT $time;
+        };
+
+        UPSERT $content.id CONTENT $content;
+
+        COMMIT TRANSACTION;
+    `,{
+        
+        vault: toRecordId(vault),
+        content: {
+            id: toRecordId(id),
+            status: "available",
+            name: name,            
+            data: data.getAll('comments') as string[],
+            updatedAt: new Date().toISOString(),
+        }
+    })
 
     records.updateCardsList()
+    })();
+
     return true;
 };
+
 
 // reset the form on close
 dialog.addEventListener('close', () => {

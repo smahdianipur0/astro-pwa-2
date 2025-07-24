@@ -64,13 +64,13 @@ export const CardsArraySchema = z.object({
     status: z.enum(["deleted", "available"]).optional(),
     updatedAt: z.string().datetime(),
     data: z.array(z.string()),
-    vault: z.string()
   }); 
 
 export const containArraySchema = z.object({
     id: z.string().optional(),
     in: z.string(),
-    out: z.string()
+    out: z.string(),
+    updatedAt: z.string().datetime(),
   });
 
 export const syncVaultsSchema = z.object({

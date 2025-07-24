@@ -4,7 +4,8 @@ import superjson from "superjson";
 import {z} from "zod"
 
 import { registrationInputSchema, authenticationInputSchema, credentialSchema, UID, syncVaultsSchema } from './schemas';
-import { dbquery,dbQueryRole, dbUpserelate, dbCreate, dbReadAll, type ReadAllResultTypes} from "../utils/surrealdb-cloud";
+import { dbquery, dbCreate, toRecordId,mapRelation, mapTable, type ReadAllResultTypes} from "../utils/surrealdb-cloud";
+import { RecordId } from "surrealdb";
 import { type Result, Ok, Err, handleTRPCError, AuthenticationError,ValidationError } from "../utils/error"
 import { hasPermission } from './permissions.ts'
 import { type Context } from "./context.ts";
@@ -95,38 +96,31 @@ export const appRouter = router({
     queryVaults : t.procedure
         .input(UID)
         .query(async({ input }) => { 
-            const dbResult = await dbquery(`
-                LET $user = (SELECT id FROM users WHERE UID = $UID);
-                SELECT out.* FROM has_vault WHERE in = $user[0].id ;`,
-                { UID: input.UID }
-              );
-            if (dbResult.err) {return handleTRPCError(dbResult.value)}
 
-            const rawCards = await dbReadAll("Cards") ;
-            if (rawCards.err) {return handleTRPCError(rawCards.value)}
+            const rawUserID = await dbquery(`
+                SELECT id FROM Users WHERE UID = $UID`,
+                {UID:input.UID}
+            )
+            if (rawUserID.err) { handleTRPCError(rawUserID.value);}
+            const userID = rawUserID.value[0][0].id?.toString() as string;
 
-            const cards = (
-                await Promise.all(
-                  (rawCards.value as ReadAllResultTypes["Cards"]).map(async (card) => {
-                    const id = card.id?.toString();
-                    if (!id) throw new TRPCError({code: 'BAD_REQUEST',message: "Card ID not found!"}); ;
-                    
-                    const dbRes = await dbquery(
-                        `SELECT <-Contain<-Vaults FROM (type::thing($card));`, 
-                        { card: id }
-                    );
-                    if (dbRes.err) { handleTRPCError(dbRes.value); }
+             const query = await dbquery(`
+                BEGIN TRANSACTION;
 
-                    const [[{ "<-Contain": contain }]] = dbRes.value;
-                    const vaultId = contain["<-Vaults"]?.[0]?.id.toString() as string;
-                    return vaultId ? { vault: vaultId, ...card } : null;
-                  }),
-                )
-              )
+                SELECT * FROM $userID -> Access -> Vaults;
+                SELECT * FROM $userID -> Access -> Vaults -> Contain;
+                SELECT * FROM $userID -> Access -> Vaults -> Contain -> Cards;
+
+                COMMIT TRANSACTION;
+            `,{userID: toRecordId(userID) }
+            );
+
+            if (query.err) { handleTRPCError(query.value) };
 
             return {
-                vaults: dbResult.value,
-                cards: cards
+                vaults:  query.value[0],
+                contain: query.value[1],
+                cards:   query.value[2]
             }
         }),
 
@@ -148,21 +142,19 @@ export const appRouter = router({
                 {UID:credentialObj.id}
             )
             if (rawUserID.err) { handleTRPCError(rawUserID.value);}
-            const userID = rawUserID.value[0][0].id?.toString() as string;
-            console.log("auth completed");
+            const userID = toRecordId(rawUserID.value[0][0].id?.toString()) ;
+
           
-
-
             // Manage permission
             const query = await dbquery(`
                 BEGIN TRANSACTION;
 
-                SELECT * FROM $userID -> Access -> Vaults;
-                SELECT * FROM Access WHERE out IN $vaults;
+                SELECT * FROM $userID -> Access ;
+                SELECT * FROM Access WHERE out IN $vaults ;
                 SELECT * FROM $userID -> Access -> Vaults -> Contain;
 
                 COMMIT TRANSACTION;
-            `,{userID: userID,vaults: input.vaults}
+            `,{userID: userID,vaults: input.vaults.map( ({id, ...out}) => toRecordId(id ?? "") )}
             );
 
             if (query.err) { handleTRPCError(query.value) };
@@ -171,20 +163,19 @@ export const appRouter = router({
             const accessVault = query.value[1] as ReadAllResultTypes["Access"];
             const oldContain = query.value[2] as ReadAllResultTypes["Contain"] 
 
-
-            const viewers = accessVault
+            const viewers = mapRelation(accessVault
               .filter(av => !userAccess.some(ua => ua.out === av.out))
-              .map(av => ({id:av.id ,in: userID, out: av.out, role: 'viewer'})) as ReadAllResultTypes["Access"];
+              .map(av => ({id:av.id ,in: userID, out: av.out, role: 'viewer'}))) as ReadAllResultTypes["Access"];
 
          
-            const owners = input.vaults
+            const owners = mapRelation(input.vaults
               .filter(v => !accessVault.some(av => av.out === v.id))
-              .map(v => ({id: `Access:${nanoid()}`, in: userID, out: v.id, role: 'owner',})) as ReadAllResultTypes["Access"];
+              .map(v => ({id: `Access:${nanoid()}`, in: userID, out: v.id, role: 'owner',}))) as ReadAllResultTypes["Access"];
 
 
             const sanitizedAccess = [...owners,...viewers,];
-            const allAccess = [...userAccess,...viewers,...owners];
-            const allContain = [...oldContain, ...input.contain]
+            const allAccess       = [...userAccess,...viewers,...owners];
+            const allContain      = [...oldContain, ...input.contain]
 
             const sanitizedVaults = input.vaults.filter(vault => {
                 const access = allAccess.find(a => a.out === vault.id);
@@ -193,55 +184,33 @@ export const appRouter = router({
             });
 
 
-            const sanitizedCards  = input.cards.filter(card => {
-              const link = allContain.find(c => c.out === card.id);
-              if (!link) return false;         
-            
-              const access = allAccess.find(a => a.out === link.in);
-              if (!access) return false;        
-
+            const sanitizedCards  = mapTable(input.cards).filter(card => {
+              const link = allContain.find(c => (c.out as RecordId<string>)?.id === mapTable(input.cards)[0].id?.id);
+              if (!link) return false;
+                   
+              const access = allAccess.find(a => (a.out as RecordId<string>)?.id === (link?.in as RecordId<string>)?.id);
+              if (!access) return false;
+     
               return hasPermission(access.role, "card:add");
             });
-            
+
+           
             // Dump
             const dump = await dbquery(`
                 BEGIN TRANSACTION;
 
-                FOR $access IN $accessArray { INSERT RELATION INTO Access {
-                    id: type::thing($access.id),
-                    in : type::thing($access.in),
-                    out : type::thing($access.out),
-                    role : $access.role,
-                }};
-
-                FOR $vault IN $vaultsArray {UPSERT type::thing($vault.id) CONTENT {
-                    name: $vault.name,
-                    status: $vault.status,
-                    updatedAt: $vault.updatedAt,
-                }};
-
-                FOR $contain IN $containsArray { INSERT RELATION INTO Contain {
-                    id : type::thing($contain.id),
-                    in: type::thing($contain.in),
-                    out: type::thing($contain.out),
-                } };
-
-                FOR $card IN $cardsArray { UPSERT type::thing($card.id) CONTENT {
-                    name: $card.name,
-                    status: $card.status,
-                    data: $card.data,
-                    updatedAt: $card.updatedAt,
-                } };
+                FOR $access  IN $accessArray   { INSERT RELATION  INTO Access $access };
+                FOR $vault   IN $vaultsArray   { UPSERT $vault.id CONTENT $vault };
+                FOR $contain IN $containsArray { INSERT RELATION  INTO Contain $contain };
+                FOR $card    IN $cardsArray    { UPSERT $card.id  CONTENT $card };
 
                 COMMIT TRANSACTION;
             `,{
-                accessArray: sanitizedAccess,
-                vaultsArray: sanitizedVaults,
-                containsArray: input.contain,
-                cardsArray: sanitizedCards
+                accessArray:   mapRelation(sanitizedAccess),
+                vaultsArray:   mapTable(sanitizedVaults),
+                containsArray: mapRelation(input.contain),
+                cardsArray:    mapTable(sanitizedCards)
             });
-
-            console.log(dump.value);
 
             if (dump.err){handleTRPCError(dump.value)};
 
@@ -251,18 +220,10 @@ export const appRouter = router({
             };
         }),   
 
-    dbquery: t.procedure
-        .mutation(async () =>{
-            let shit
-            try { shit = await dbQueryRole("xs0cyUIiz_QEZ0FdExMMlvdSpWM", "test2")} catch {}
-            console.log(shit);;
-            const data = "hi";
-            console.log(data)
-        })
-
 });
 
 export type AppRouter = typeof appRouter;
+
 
 
 type AuthenticationData = z.infer<typeof authenticationInputSchema>['authenticationData'];

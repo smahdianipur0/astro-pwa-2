@@ -1,8 +1,7 @@
 import { Surreal, RecordId, StringRecordId } from "surrealdb";
 import { surrealdbWasmEngines } from "@surrealdb/wasm";
 import { 
-	genericCreate, 
-	genericUpserelate,
+	genericCreate,
 	genericQuery,
 	genericUpdate,
 	genericUpsert,
@@ -16,8 +15,8 @@ import {
 	type rTableName} from "./surrealdb"
 
 
-import { type ReadResultTypes,type ReadAllResultTypes,} from "./surrealdb"
-export { type ReadResultTypes, type ReadAllResultTypes };
+import { type ReadResultTypes,type ReadAllResultTypes, toRecordId,mapRelation, mapTable , relationIdStringify, tableIdStringify} from "./surrealdb"
+export { type ReadResultTypes, type ReadAllResultTypes, toRecordId, mapRelation, mapTable, relationIdStringify, tableIdStringify };
 
 
 async function getDb() {
@@ -65,11 +64,6 @@ export async function dbUpsert<T extends `${TableName}:update`>(action: T, data:
 export async function dbDelete(id: string): Promise<void> {
 	await handle(async (db) => {await genericDelete(db, id)});
 }
-
-export async function dbUpserelate<T extends `${TableName}:upserelate`>(action: T, ...args: PermittedTypes[T]): Promise<void> {
-	await handle(async (db) => {await genericUpserelate(db,action, ...args)})
-}
-
 
 export async function dbReadAll<T extends TableName>(tableName: T): Promise<ReadAllResultTypes[T] | undefined> {
 	return await handle(async (db) => { return await genericReadAll(db, tableName)})
