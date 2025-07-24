@@ -2,7 +2,6 @@ import { dbReadAll, dbquery, type ReadAllResultTypes, relationIdStringify, table
 import queryHelper from "../utils/query-helper";
 import { trpc } from "../utils/trpc";
 import { authQueryChallenge } from "../logic/auth";
-import { dbDelete } from "./surrealdb-cloud";
 
 
 interface SyncPair<T> {

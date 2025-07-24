@@ -166,7 +166,7 @@ records.on(["editableVaultList"], ({value}) => {
         .map(entry => {
             const opt = document.createElement("option");
             opt.textContent = entry.name;
-            opt.id = entry.id?? '';
+            opt.id = entry.id?.toString() ?? '';
             return opt
         })
 

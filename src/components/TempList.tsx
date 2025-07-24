@@ -35,7 +35,7 @@ export function Templist(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element 
                 <menu  id={`menu-${entry.id?.toString()}`}  class="glass subtle-shadow menu-horizontal" >
                     <li>
                       <DeleteMenu  content= {
-                        <button  data-action='delete' id={entry.id ?? ''}>Delete</button>  
+                        <button  data-action='delete' id={entry.id?.toString() ?? ''}>Delete</button>  
                       }></DeleteMenu> 
                     </li>
                     <li>
@@ -43,7 +43,7 @@ export function Templist(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element 
                             class="not-prose flex-with-gap" 
                             style="color: oklch(var(--gray-95));"
                             data-action='update'
-                            id={entry.id ?? ''}>
+                            id={entry.id?.toString() ?? ''}>
                             Update
 
                             <svg style="width: var(--size-sm3); height: var(--size-sm3);" viewBox="0 0 24 24"fill="none">

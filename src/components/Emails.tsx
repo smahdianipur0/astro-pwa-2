@@ -40,7 +40,7 @@ export function Emails(entry:ReadResultTypes["Emails"]): JSX.Element {
                                 <menu class="glass subtle-shadow menu-horizontal">
                                     <li>
                                         <DeleteMenu  content= {
-                                            <button  data-action='delete' id={entry.id ?? ''}>Delete</button>  
+                                            <button  data-action='delete' id={entry.id?.toString() ?? ''}>Delete</button>  
                                         }></DeleteMenu>                                
                                     </li>
                                 </menu>
