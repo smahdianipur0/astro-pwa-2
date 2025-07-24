@@ -44,7 +44,6 @@ function syncByKey<T extends Record<string, any>, K extends keyof T, D extends k
   return { localToCloud, cloudToLocal };
 }
 
-await dbDelete("Cards:by50dyjqmA7y9CD9Xo49");
 
 export async function syncVaults(): Promise<void> {
   // 1. Load local state 
