@@ -7,6 +7,8 @@ export type Schemas = {
     RecentDelPass: {  title: string; password: string; crreatedAt: string };
     Vaults: {name: string; updatedAt: string, status:"available" | "deleted", role:"owner" | "viewer"};
     Cards: {name: string, data:string[]; updatedAt: string, status:"available" | "deleted"}
+    Access : {in: string, out: string, role: "owner" | "viewer"},
+    Contain : {in: string, out: string },   
 };
 
 
@@ -53,8 +55,19 @@ export async function genericCreate< T extends `${TableName}:create`>(db: Surrea
 }
 
 export async function genericQuery(db: Surreal, query: string, params: { [key: string]: any }): Promise<any> {
-    const res = await db.query(query, params) ;
-    return res; 
+    const response = await db.queryRaw(query, params);
+
+    if (response[response.length - 1].status === "ERR") {
+        const errorObject = response.find(
+            (item) => item.result !== "The query was not executed due to a failed transaction",
+        );
+        if (errorObject) {
+            throw new Error(String(errorObject?.result));
+        }
+    }
+    if (response[response.length - 1]?.status === "OK") {
+        return response.map((item) => item.result);     
+    }
 }
 
 export async function genericUpdate<T extends `${TableName}:update`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<string> {

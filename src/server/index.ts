@@ -8,6 +8,10 @@ import { dbquery,dbQueryRole, dbUpserelate, dbCreate, dbReadAll, type ReadAllRes
 import { type Result, Ok, Err, handleTRPCError, AuthenticationError,ValidationError } from "../utils/error"
 import { hasPermission } from './permissions.ts'
 import { type Context } from "./context.ts";
+import { customAlphabet } from 'nanoid'
+
+const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 20)
+
 
 
 const t = initTRPC.context<Context>().create({
@@ -144,63 +148,102 @@ export const appRouter = router({
                 {UID:credentialObj.id}
             )
             if (rawUserID.err) { handleTRPCError(rawUserID.value);}
-
-            const userID = rawUserID.value[0][0].id?.toString().split(":")[1] as string
-            if (!userID){throw new TRPCError({code: 'UNAUTHORIZED',message: "User id not fount"});}
+            const userID = rawUserID.value[0][0].id?.toString() as string;
+            console.log("auth completed");
+          
 
 
             // Manage permission
-            const rolePromises = (input.vaults as ReadAllResultTypes["Vaults"]).map(async entry => {
-                const dbRole = await dbQueryRole(credentialObj.id, entry.id as string);
-                if(dbRole.err){handleTRPCError(result.value)}
-                return { ...entry, role: dbRole.value }
+            const query = await dbquery(`
+                BEGIN TRANSACTION;
+
+                SELECT * FROM $userID -> Access -> Vaults;
+                SELECT * FROM Access WHERE out IN $vaults;
+                SELECT * FROM $userID -> Access -> Vaults -> Contain;
+
+                COMMIT TRANSACTION;
+            `,{userID: userID,vaults: input.vaults}
+            );
+
+            if (query.err) { handleTRPCError(query.value) };
+
+            const userAccess = query.value[0] as ReadAllResultTypes["Access"];
+            const accessVault = query.value[1] as ReadAllResultTypes["Access"];
+            const oldContain = query.value[2] as ReadAllResultTypes["Contain"] 
+
+
+            const viewers = accessVault
+              .filter(av => !userAccess.some(ua => ua.out === av.out))
+              .map(av => ({id:av.id ,in: userID, out: av.out, role: 'viewer'})) as ReadAllResultTypes["Access"];
+
+         
+            const owners = input.vaults
+              .filter(v => !accessVault.some(av => av.out === v.id))
+              .map(v => ({id: `Access:${nanoid()}`, in: userID, out: v.id, role: 'owner',})) as ReadAllResultTypes["Access"];
+
+
+            const sanitizedAccess = [...owners,...viewers,];
+            const allAccess = [...userAccess,...viewers,...owners];
+            const allContain = [...oldContain, ...input.contain]
+
+            const sanitizedVaults = input.vaults.filter(vault => {
+                const access = allAccess.find(a => a.out === vault.id);
+                if (!access) return false;
+                return hasPermission(access.role, "vault:create");
             });
 
-            const reconciledRoles = await Promise.all(rolePromises);
 
-            const sanitizedVaults = reconciledRoles.filter((v) =>
-                hasPermission(v.role, "vault:create")
-            );
+            const sanitizedCards  = input.cards.filter(card => {
+              const link = allContain.find(c => c.out === card.id);
+              if (!link) return false;         
+            
+              const access = allAccess.find(a => a.out === link.in);
+              if (!access) return false;        
 
-            const permittedVaults = reconciledRoles.filter((v) =>
-                hasPermission(v.role, "card:add" )
-                ).map((v) => v.id?.toString().split(":")[1]);
-
-            const sanitizedCards = input.cards.filter((card) =>
-                permittedVaults.includes(card.vault)
-            );
-
+              return hasPermission(access.role, "card:add");
+            });
             
             // Dump
-            await Promise.all(sanitizedVaults.map(async (entry) => {
+            const dump = await dbquery(`
+                BEGIN TRANSACTION;
 
-                const dumpVaults = await dbUpserelate("Vaults:upserelate", `Users:${userID}->Access`, {
-                    id: entry.id?.toString().split(":")[1] ?? "",
-                    name: entry.name,
-                    status: entry.status,
-                    updatedAt: entry.updatedAt,
-                },{
-                    role: entry.role
-                });
+                FOR $access IN $accessArray { INSERT RELATION INTO Access {
+                    id: type::thing($access.id),
+                    in : type::thing($access.in),
+                    out : type::thing($access.out),
+                    role : $access.role,
+                }};
 
-                if(dumpVaults.err){ handleTRPCError(dumpVaults.value)}
+                FOR $vault IN $vaultsArray {UPSERT type::thing($vault.id) CONTENT {
+                    name: $vault.name,
+                    status: $vault.status,
+                    updatedAt: $vault.updatedAt,
+                }};
 
-            }));
+                FOR $contain IN $containsArray { INSERT RELATION INTO Contain {
+                    id : type::thing($contain.id),
+                    in: type::thing($contain.in),
+                    out: type::thing($contain.out),
+                } };
 
-            await Promise.all(sanitizedCards.map(async (entry) => {
+                FOR $card IN $cardsArray { UPSERT type::thing($card.id) CONTENT {
+                    name: $card.name,
+                    status: $card.status,
+                    data: $card.data,
+                    updatedAt: $card.updatedAt,
+                } };
 
-                const dumpCards = await dbUpserelate("Cards:upserelate", `Vaults:${entry.id?.split(":")[1]}->Contain`, {
-                    id: entry.id?.toString().split(":")[1] ?? "",
-                    name: entry.name,
-                    status: entry.status,
-                    updatedAt: entry.updatedAt,
-                    data: entry.data
-                },{}
-                );
+                COMMIT TRANSACTION;
+            `,{
+                accessArray: sanitizedAccess,
+                vaultsArray: sanitizedVaults,
+                containsArray: input.contain,
+                cardsArray: sanitizedCards
+            });
 
-                if(dumpCards.err){handleTRPCError(dumpCards.value)}
+            console.log(dump.value);
 
-            }));
+            if (dump.err){handleTRPCError(dump.value)};
 
             return {
               message: "Sync successful",

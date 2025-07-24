@@ -58,13 +58,19 @@ export const VaultsArraySchema = z.object({
     updatedAt: z.string().datetime(),
   });
 
-export const CardssArraySchema = z.object({
+export const CardsArraySchema = z.object({
     id: z.string().optional(),
     name: z.string(),
     status: z.enum(["deleted", "available"]).optional(),
     updatedAt: z.string().datetime(),
     data: z.array(z.string()),
     vault: z.string()
+  }); 
+
+export const containArraySchema = z.object({
+    id: z.string().optional(),
+    in: z.string(),
+    out: z.string()
   });
 
 export const syncVaultsSchema = z.object({
@@ -83,5 +89,6 @@ export const syncVaultsSchema = z.object({
         }),
     }),
     vaults: z.array(VaultsArraySchema),
-    cards: z.array(CardssArraySchema)
+    contain: z.array(containArraySchema),
+    cards: z.array(CardsArraySchema),
 })

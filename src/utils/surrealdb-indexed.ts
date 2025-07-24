@@ -93,22 +93,3 @@ export async function dbDeleteAll<T extends TableName>(tableName: T): Promise<vo
 export async function dbquery( query: string, params: { [key: string]: any }): Promise<any> {
 		return await handle(async (db) => { return await genericQuery(db,query, params)}) ;
 }
-
-
-// const indexedArray = await dbReadAll("Cards") as ReadAllResultTypes["Cards"] ;
-
-// let cardDetail:object[] = [];
-
-// indexedArray.forEach(async (entry) => {
-// 	const CardId = entry.id?.toString();
-// 	if (!CardId)return
-// 	const cards = await dbquery(
-// 		`SELECT <-Contain<-Vaults FROM (type::thing($card));`,
-// 		{card: CardId}
-// 	);
-
-// 	cardDetail.push({vault:cards[0][0]["<-Contain"]["<-Vaults"][0].id, ...entry})
-// });
-
-// console.log(cardDetail);
-// console.log(await dbReadAll("Contain") )

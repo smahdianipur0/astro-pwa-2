@@ -52,11 +52,13 @@ function syncByKey<T extends Record<string, any>, K extends keyof T, D extends k
 
 export async function syncVaults(): Promise<void> {
   // 1. Load all vaults and cards
-  const [vaults, rawCards, users] = await Promise.all([
+  const [vaults, rawCards, users, contain] = await Promise.all([
     dbReadAll("Vaults") as Promise<VaultRecord[]>,
     dbReadAll("Cards") as Promise<CardRecord[]>,
     dbReadAll("Users") as Promise<ReadAllResultTypes["Users"]>,
+    dbReadAll("Contain") as Promise<ReadAllResultTypes["Contain"]>
   ]);
+
 
   const UID = users[0]?.UID;
   if (!UID) throw new Error("No user UID found");
@@ -139,11 +141,12 @@ export async function syncVaults(): Promise<void> {
     trpc.syncvaults.mutate({
       challenge,
       authenticationData: authentication,
-      vaults: vaultDiff.localToCloud, 
+      vaults: vaultDiff.localToCloud,
+      contain:contain, 
       cards: cardDiff.localToCloud,
     }),
   );
 
-  if (syncError) console.error("Error syncing to cloud:", syncError); 
+  if (syncError) console.error("Error syncing to cloud:", syncError.message, syncError.cause ); 
   else console.log("Sync complete:", syncResult);
 }
