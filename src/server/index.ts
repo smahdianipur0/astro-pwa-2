@@ -185,7 +185,7 @@ export const appRouter = router({
 
 
             const sanitizedCards  = mapTable(input.cards).filter(card => {
-              const link = allContain.find(c => (c.out as RecordId<string>)?.id === mapTable(input.cards).id?.id);
+              const link = allContain.find(c => (c.out as RecordId<string>)?.id === card.id?.id);
               if (!link) return false;
                    
               const access = allAccess.find(a => (a.out as RecordId<string>)?.id === (link?.in as RecordId<string>)?.id);
