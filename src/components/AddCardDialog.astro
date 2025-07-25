@@ -113,7 +113,7 @@ document.getElementById("AddCardDialog-div")!.addEventListener("click",(e)=>{
 dialog!.addEventListener("click",(e)=>{
     if((e!.target as HTMLInputElement).matches("#AddCardDialog-add-comment")){
         e.preventDefault();
-        document.getElementById("AddCardDialog-comments")!.replaceChildren(
+        document.getElementById("AddCardDialog-comments")!.append(
             Object.assign(document.createElement("textarea"), {
                 name:"comments"
             }))
