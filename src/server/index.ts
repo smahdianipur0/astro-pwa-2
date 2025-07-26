@@ -176,7 +176,7 @@ export const appRouter = router({
             const owners = mapRelation(input.vaults)
               .filter(v => !accessVault.some(av => av.out.id === v.id?.id))
               .map(v => ({
-                id: toRecordId(`Access:${nanoid()}`), 
+                id: new RecordId("Access", nanoid()),
                 in: userID, 
                 out: v.id, 
                 role: 'owner', 
