@@ -165,20 +165,31 @@ export const appRouter = router({
 
             const viewers = mapRelation(accessVault
               .filter(av => !userAccess.some(ua => ua.out === av.out))
-              .map(av => ({id:av.id ,in: userID, out: av.out, role: 'viewer'}))) as ReadAllResultTypes["Access"];
+              .map(av => ({
+                id:av.id ,
+                in: userID, 
+                out: av.out, 
+                role: 'viewer'
+            }))) as ReadAllResultTypes["Access"];
 
          
-            const owners = mapRelation(input.vaults
-              .filter(v => !accessVault.some(av => av.out === v.id))
-              .map(v => ({id: `Access:${nanoid()}`, in: userID, out: v.id, role: 'owner',}))) as ReadAllResultTypes["Access"];
+            const owners = mapRelation(input.vaults)
+              .filter(v => !accessVault.some(av => av.out.id === v.id?.id))
+              .map(v => ({
+                id: toRecordId(`Access:${nanoid()}`), 
+                in: userID, 
+                out: v.id, 
+                role: 'owner', 
+                updatedAt: new Date().toISOString()
+            })) as ReadAllResultTypes["Access"];
 
 
             const sanitizedAccess = [...owners,...viewers,];
             const allAccess       = [...userAccess,...viewers,...owners];
-            const allContain      = [...oldContain, ...input.contain]
+            const allContain      = [...oldContain, ...mapRelation(input.contain)]
 
-            const sanitizedVaults = input.vaults.filter(vault => {
-                const access = allAccess.find(a => a.out === vault.id);
+            const sanitizedVaults = mapRelation(input.vaults).filter(vault => {
+                const access = allAccess.find(a => a.out.id === vault.id.id);
                 if (!access) return false;
                 return hasPermission(access.role, "vault:create");
             });
@@ -188,7 +199,7 @@ export const appRouter = router({
               const link = allContain.find(c => (c.out as RecordId<string>)?.id === card.id?.id);
               if (!link) return false;
                    
-              const access = allAccess.find(a => (a.out as RecordId<string>)?.id === (link?.in as RecordId<string>)?.id);
+              const access = allAccess.find(a => (a.out as RecordId<string>)?.id === link?.in?.id);
               if (!access) return false;
      
               return hasPermission(access.role, "card:add");

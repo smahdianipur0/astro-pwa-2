@@ -127,10 +127,11 @@ import Drawer from '../components/ui/Drawer.tsx';
 import { el } from "../utils/elementUtils";
 import { pass } from '../logic/pass';
 import { showToast } from "../logic/misc.ts";
-import { dbCreate,dbUpdate, getEntryById } from "../utils/surrealdb-indexed";
+import { dbCreate,dbUpdate, getEntryById, toRecordId } from "../utils/surrealdb-indexed";
 import { tempList } from "../logic/tempList.ts" 
 import { Templist } from './TempList'
 import { render } from "solid-js/web"
+import type { RecordId } from "surrealdb";
 
 
 
@@ -187,7 +188,7 @@ tempList.on(["isSearching", "searchArray"], pl => {
   //delelte
   const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
   if (deleteButton) {
-    (async () => { tempList.deleteEntries(deleteButton.id) })();
+    (async () => { tempList.deleteEntries( toRecordId(deleteButton.id)) })();
   }
 
   //update
@@ -195,7 +196,7 @@ tempList.on(["isSearching", "searchArray"], pl => {
   if (updateButton) {
     (async () => {
       (document.getElementById("TempList-update") as HTMLDialogElement).showModal();
-        const entry = await getEntryById("PasswordEntry", updateButton.id);
+        const entry = await getEntryById(toRecordId(updateButton.id) as RecordId<"PasswordEntry">);
         if (entry) {
           const { title, password } = entry;
           (document.getElementById("TempList-update-title") as HTMLInputElement).value = title;
@@ -210,7 +211,7 @@ tempList.on(["isSearching", "searchArray"], pl => {
     if((e!.target as HTMLInputElement).matches("#TempList-update-ok")) {
       (async () => {
       dbUpdate("PasswordEntry:update", {
-        id: (document.getElementById("TempList-update") as HTMLDialogElement).dataset._!, 
+        id: toRecordId((document.getElementById("TempList-update") as HTMLDialogElement).dataset._!), 
         title:(document.getElementById("TempList-update-title") as HTMLInputElement).value, 
         password:(document.getElementById("TempList-update-pass") as HTMLInputElement).value});
       tempList.updateEntries();

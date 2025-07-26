@@ -87,6 +87,7 @@ import Menu from './ui/Menu.tsx';
 import { el } from "../utils/elementUtils";
 import { dbCreate, dbUpdate} from "../utils/surrealdb-indexed"
 import { records } from "../logic/records"
+import { RecordId } from "surrealdb";
 
 //menu event listener
 (async () => {
@@ -121,7 +122,7 @@ import { records } from "../logic/records"
 
             (async () => {
                 await dbCreate("Vaults:create", {
-                    id:records.get("vaultName"),
+                    id: new RecordId("Vaults", records.get("vaultName")) ,
                     name:records.get("vaultName"), 
                     updatedAt: new Date().toISOString(),
                     status: "available",
@@ -135,15 +136,11 @@ import { records } from "../logic/records"
     document.getElementById("VaultMenu-delete-dialog")!.addEventListener("click",(e)=>{
         if((e!.target as HTMLInputElement).matches("#VaultMenu-delete-dialog-ok")){
             const id = selectDeleteVaults.options[selectDeleteVaults.selectedIndex]?.id;
-            console.log(id);
-            const value = selectDeleteVaults.options[selectDeleteVaults.selectedIndex]?.value;
             (async () => {
                 await dbUpdate("Vaults:update", {
-                    id:id, 
-                    name: value,
+                    id: new RecordId("Vaults", id), 
                     updatedAt: new Date().toISOString(),
                     status:"deleted",
-                    role: "owner"
                 });
 
                 records.updateVaultsList();

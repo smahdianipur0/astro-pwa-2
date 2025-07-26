@@ -1,4 +1,4 @@
-import { Surreal, RecordId, StringRecordId } from "surrealdb";
+import { Surreal, RecordId } from "surrealdb";
 import { surrealdbWasmEngines } from "@surrealdb/wasm";
 import { 
 	genericCreate,
@@ -7,12 +7,10 @@ import {
 	genericUpsert,
 	genericDelete,
 	genericReadAll,
-	genericReadRelation,
 	genericGetEntryById,
 	genericDeleteAll,
 	type PermittedTypes, 
-	type TableName,
-	type rTableName} from "./surrealdb"
+	type TableName} from "./surrealdb"
 
 
 import { type ReadResultTypes,type ReadAllResultTypes, toRecordId,mapRelation, mapTable , relationIdStringify, tableIdStringify} from "./surrealdb"
@@ -57,11 +55,11 @@ export async function dbUpdate<T extends `${TableName}:update`>(action: T, data:
 	await handle(async (db) => {await genericUpdate(db, action, data)})
 }
 
-export async function dbUpsert<T extends `${TableName}:update`>(action: T, data: PermittedTypes[T]): Promise<void> {
-	await handle(async (db) => { await genericUpsert(db, action, data)})
+export async function dbUpsert<T extends `${TableName}:update`>( data: PermittedTypes[T]): Promise<void> {
+	await handle(async (db) => { await genericUpsert(db, data)})
 }
 
-export async function dbDelete(id: string): Promise<void> {
+export async function dbDelete(id: RecordId<string>): Promise<void> {
 	await handle(async (db) => {await genericDelete(db, id)});
 }
 
@@ -69,16 +67,9 @@ export async function dbReadAll<T extends TableName>(tableName: T): Promise<Read
 	return await handle(async (db) => { return await genericReadAll(db, tableName)})
 }
 
-export async function dbReadRelation<T extends TableName>(
-	inId: string, rTable:rTableName, outTable: T
-	): Promise<ReadAllResultTypes[T] | undefined> {
-	return await handle(async (db) => { return await genericReadRelation(db, inId, rTable, outTable)})
+export async function getEntryById<T extends TableName>(recordId: RecordId<T>): Promise<ReadResultTypes[T] | undefined> {
+	return await handle(async (db) => { return await genericGetEntryById(db, recordId)})
 }
-
-export async function getEntryById<T extends TableName>(tableName: T, recordId: string,): Promise<ReadResultTypes[T] | undefined> {
-	return await handle(async (db) => { return await genericGetEntryById(db, tableName, recordId)})
-}
-
 
 export async function dbDeleteAll<T extends TableName>(tableName: T): Promise<void> {
 	await handle(async (db) => {await genericDeleteAll(db,tableName)})

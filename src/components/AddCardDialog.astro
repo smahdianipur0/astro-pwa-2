@@ -89,6 +89,7 @@
 import { dbquery, toRecordId, getEntryById } from "../utils/surrealdb-indexed"
 import { records } from "../logic/records"       
 import { customAlphabet } from 'nanoid'
+import { RecordId } from "surrealdb";
 
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 20)
 
@@ -137,7 +138,7 @@ dialog!.addEventListener("input",(e)=>{
 // mirror selectedVault
 records.on(["selectedVault"], ({value}) => { (async () => {
     if(value !== undefined) {
-        const selected = await getEntryById("Vaults", `Vaults:${value}`);
+        const selected = await getEntryById(new RecordId("Vaults",value));
             if (selected?.role === "owner") {
               (document.getElementById("AddCardDialog-vault") as HTMLSelectElement).value = selected.name;  
             }

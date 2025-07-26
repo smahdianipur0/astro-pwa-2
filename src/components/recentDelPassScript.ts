@@ -1,4 +1,5 @@
-import { dbCreate, dbDelete, dbReadAll, getEntryById } from "../utils/surrealdb-indexed";
+import { dbCreate, dbDelete, getEntryById, toRecordId } from "../utils/surrealdb-indexed";
+import { RecordId } from "surrealdb";
 import { el } from "../utils/elementUtils";
 import { showToast } from "../logic/misc";
 import { tempList } from "../logic/tempList.ts" 
@@ -6,9 +7,9 @@ import { render } from "solid-js/web"
 import { List, dialog} from './RecentDelPass'
 
 
-export async function restore(id:string){
+export async function restore(id:RecordId<string>){
     (document.getElementById("RecentDelPass-restore") as HTMLDialogElement).showModal();
-    const entry = await getEntryById("RecentDelPass", id);  
+    const entry = await getEntryById(id as RecordId<"PasswordEntry">);  
     if (entry) {
         (document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement).textContent = "";
         render(() => dialog(entry), document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement);
@@ -58,7 +59,7 @@ export async function restore(id:string){
     if (restoreButton) {
       (async() => {
         (document.getElementById("RecentDelPass-restore") as HTMLDialogElement).showModal();
-        const entry = await getEntryById("RecentDelPass", restoreButton.id);  
+        const entry = await getEntryById(toRecordId(restoreButton.id) as RecordId<"PasswordEntry">);  
         if (entry) {
             (document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement).textContent = "";
             render(() => dialog(entry), document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement);
@@ -73,9 +74,9 @@ export async function restore(id:string){
       (async () => {
 
       const title = document.getElementById("RecentDelPass-restore-item")?.children[0].textContent;
-      const crreatedAt = document.getElementById("RecentDelPass-restore-item")?.children[0].id as string;
+      const crreatedAt = document.getElementById("RecentDelPass-restore-item")?.children[0].id ;
 
-      const id = document.getElementById("RecentDelPass-restore-item")?.children[1].id as string;
+      const id = document.getElementById("RecentDelPass-restore-item")?.children[1].id ;
       const password = document.getElementById("RecentDelPass-restore-item")?.children[1].textContent;
 
 
@@ -83,7 +84,7 @@ export async function restore(id:string){
           await dbCreate("PasswordEntry:create", {title:title, password:password, crreatedAt: crreatedAt });
           tempList.updateEntries();
 
-          await dbDelete(id);
+          await dbDelete(toRecordId(id ?? ''));
           tempList.updateRecentDelEntries();
         }
       })();

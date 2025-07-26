@@ -1,4 +1,4 @@
-import { Surreal } from 'surrealdb';
+import { Surreal, RecordId } from 'surrealdb';
 import { type Result, Ok, Err, DBConnectionError, DBOperationError } from "./error"
 import { 
   genericCreate,
@@ -54,7 +54,7 @@ export async function dbCreate<T extends `${TableName}:create`>(action: T, data:
 }
 
 
-export async function dbDelete(id: string): Promise<Result<string, DBConnectionError | DBOperationError>> {
+export async function dbDelete(id: RecordId<string>): Promise<Result<string, DBConnectionError | DBOperationError>> {
   return await handle(async (db) => await genericDelete(db, id));
 }
 
@@ -63,8 +63,8 @@ export async function dbReadAll<T extends TableName>(tableName: T): Promise<Resu
   return await handle(async (db) => await genericReadAll(db, tableName));
 }
 
-export async function getEntryById<T extends TableName>(tableName: T, recordId: string): Promise<Result<ReadResultTypes[T] | undefined, DBConnectionError | DBOperationError>> {
-  return await handle(async (db) => await genericGetEntryById(db, tableName, recordId));
+export async function getEntryById<T extends TableName>(recordId: RecordId<T>): Promise<Result<ReadResultTypes[T] | undefined, DBConnectionError | DBOperationError>> {
+  return await handle(async (db) => await genericGetEntryById(db, recordId));
 }
 
 export async function dbquery(query: string, params: { [key: string]: any }): Promise<Result<any, DBConnectionError | DBOperationError>> {

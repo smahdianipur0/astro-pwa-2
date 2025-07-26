@@ -64,7 +64,7 @@ import { Emails } from './Emails'
 import { render } from "solid-js/web"
 import { email } from '../logic/email'
 import { createSwapy } from 'swapy'
-import { dbUpdate } from "../utils/surrealdb-indexed";
+import { dbUpdate, toRecordId } from "../utils/surrealdb-indexed";
 
 
 
@@ -95,7 +95,7 @@ document.getElementById("Emails")!.addEventListener("click", (e) => {
       const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
       if (deleteButton) {
         (async () => {
-          email.addDelete(deleteButton.id);
+          email.deleteEmail( toRecordId(deleteButton.id));
         })();
       }
 });
@@ -125,7 +125,7 @@ email.on(["emailList"], ({ value }) => {
 
 swapy.onSwapEnd((event) => {
     event.slotItemMap.asArray.forEach((item) =>{(async () => {
-        await dbUpdate("Emails:update",{id:item.item, crreatedAt:item.slot})      
+        await dbUpdate("Emails:update",{id:toRecordId(item.item), crreatedAt:item.slot})      
         })();      
     })
 })

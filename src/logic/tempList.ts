@@ -1,6 +1,7 @@
 import { createStore, derive } from '../utils/state';
 import Fuse from 'fuse.js'
 import { dbReadAll, getEntryById, dbCreate, dbDelete, type ReadAllResultTypes } from "../utils/surrealdb-indexed";
+import type { RecordId } from 'surrealdb';
 
 
 export const tempList = createStore({
@@ -23,8 +24,8 @@ export const tempList = createStore({
     	async updateEntries          () { this.set('entries', await dbReadAll("PasswordEntry") ?? []!) },
     	async updateRecentDelEntries () { this.set('recentDelEntries',  await dbReadAll("RecentDelPass") ?? []!);},
 
-    	async deleteEntries(id) {
-    		const entry = await getEntryById("PasswordEntry", id);
+    	async deleteEntries(id : RecordId<string>) {
+    		const entry = await getEntryById(id as RecordId<"PasswordEntry">);
     		if (entry) {
 	            const { title, password, crreatedAt  } = entry;
 	            await dbCreate("RecentDelPass:create", {title: title, password: password, crreatedAt: crreatedAt });

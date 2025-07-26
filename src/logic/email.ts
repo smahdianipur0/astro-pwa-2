@@ -1,5 +1,6 @@
 import { dbCreate, dbReadAll, dbDelete, type ReadAllResultTypes} from "../utils/surrealdb-indexed";
 import { createStore } from "../utils/state";
+import type { RecordId } from "surrealdb";
 
 export const email = createStore({
     state: { 
@@ -18,7 +19,7 @@ export const email = createStore({
             this.set('emailList',await dbReadAll("Emails") ?? [])
         },
 
-        async addDelete(id: string) {
+        async deleteEmail(id: RecordId<string>) {
             await dbDelete(id);
             this.set('emailList',await dbReadAll("Emails") ?? [])
         }
