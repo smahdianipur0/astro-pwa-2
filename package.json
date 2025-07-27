@@ -30,7 +30,8 @@
     "surrealdb": "^1.2.1",
     "swapy": "^1.0.5",
     "totp-generator": "^1.0.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@types/qrcode": "^1.5.5",

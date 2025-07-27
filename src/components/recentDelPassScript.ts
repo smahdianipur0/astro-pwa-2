@@ -7,15 +7,6 @@ import { render } from "solid-js/web"
 import { List, dialog} from './RecentDelPass'
 
 
-export async function restore(id:RecordId<string>){
-    (document.getElementById("RecentDelPass-restore") as HTMLDialogElement).showModal();
-    const entry = await getEntryById(id as RecordId<"PasswordEntry">);  
-    if (entry) {
-        (document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement).textContent = "";
-        render(() => dialog(entry), document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement);
-    }
-}
-
 (async () => {
     const recentdellist  = (await el.wait("#RecentDelPass-list"))  as HTMLElement;
 
@@ -59,7 +50,8 @@ export async function restore(id:RecordId<string>){
     if (restoreButton) {
       (async() => {
         (document.getElementById("RecentDelPass-restore") as HTMLDialogElement).showModal();
-        const entry = await getEntryById(toRecordId(restoreButton.id) as RecordId<"PasswordEntry">);  
+        const buttonId = toRecordId((restoreButton.id) as `PasswordEntry:${string}`);
+        const entry = await getEntryById(buttonId);  
         if (entry) {
             (document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement).textContent = "";
             render(() => dialog(entry), document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement);
@@ -76,7 +68,7 @@ export async function restore(id:RecordId<string>){
       const title = document.getElementById("RecentDelPass-restore-item")?.children[0].textContent;
       const crreatedAt = document.getElementById("RecentDelPass-restore-item")?.children[0].id ;
 
-      const id = document.getElementById("RecentDelPass-restore-item")?.children[1].id ;
+      const id = document.getElementById("RecentDelPass-restore-item")?.children[1].id;
       const password = document.getElementById("RecentDelPass-restore-item")?.children[1].textContent;
 
 
@@ -84,7 +76,10 @@ export async function restore(id:RecordId<string>){
           await dbCreate("PasswordEntry:create", {title:title, password:password, crreatedAt: crreatedAt });
           tempList.updateEntries();
 
-          await dbDelete(toRecordId(id ?? ''));
+          const rid = toRecordId(id ?? '');
+          if (!rid) return;
+          
+          await dbDelete(rid);
           tempList.updateRecentDelEntries();
         }
       })();

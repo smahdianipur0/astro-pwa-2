@@ -1,4 +1,6 @@
 import { Surreal, RecordId} from "surrealdb";
+import * as z from "zod";
+
 
 export type Schemas = {
     Users: { registered:boolean; UID: string; credentials: object; updatedAt: string};
@@ -11,10 +13,13 @@ export type Schemas = {
     Contain : {in: RecordId<string>, out: RecordId<string>, updatedAt: string },   
 };
 
-
-
 type prettify<T> = {[K in keyof T]: T[K];} & {};
-export type TableName = prettify<keyof Schemas> 
+
+const TableName =  z.enum(["Users", "PasswordEntry", "Emails","RecentDelPass", "Vaults", "Cards", "Access", "Contain"])
+const recordid = z.templateLiteral([TableName, ":", z.string()]);
+
+export type TableName = z.infer<typeof TableName>;
+export type StringRecordIds = z.infer<typeof recordid>;
 
 
 // Generate CRUD types for all tables
@@ -30,10 +35,23 @@ export type PermittedTypes = {
 export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: RecordId<string> } & Schemas[K]>;};
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
-export function toRecordId (id:string) { 
-    return new RecordId( id.split(":")[0]
-        , id.split(":")[1])
+
+export function toRecordId<T extends StringRecordIds>(input: T):
+    T extends `${infer P}:${string}` ? P extends TableName ? RecordId<P> : never : never;
+
+export function toRecordId(input: string): RecordId<TableName> | undefined;
+
+export function toRecordId(input: string) {
+  const parsed = recordid.safeParse(input);
+  if (!parsed.success) {
+    console.error(parsed.error);
+    return ;
+  }
+
+  const [table, id] = input.split(":") as [TableName, string];
+  return new RecordId(table, id);
 }
+
 
 export function mapRelation<T extends { id?: unknown; in?: unknown; out?: unknown }>(arr: T[]) {
   return arr.map(({ id, in: inProp, out, ...rest }) => ({
@@ -91,6 +109,7 @@ export async function genericQuery(db: Surreal, query: string, params: { [key: s
 
 export async function genericUpdate<T extends `${TableName}:update`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<string> {
     const { id, ...dataWithoutId } = data;
+    if (id === undefined)
     await db.merge(data.id, dataWithoutId);
     return "Ok";
 }
@@ -105,12 +124,15 @@ export async function genericDelete(db: Surreal, id: RecordId<string>): Promise<
     return "Ok";
 }
 
-export async function genericReadAll<T extends TableName>(db: Surreal,tableName: T): Promise<ReadAllResultTypes[T] | undefined> {
-    const entries = (await db.select(tableName)) as unknown as ReadAllResultTypes[T];
+export async function genericReadAll<T extends TableName>(db: Surreal,tableName: T): Promise<ReadAllResultTypes[T]> {
+    const entries = (await db.select(tableName)) as ReadAllResultTypes[T];
     return entries;
 }
 
-export async function genericGetEntryById<T extends TableName>(db: Surreal, recordId: RecordId<T>,): Promise<ReadResultTypes[T] | undefined> {
+export async function genericGetEntryById<T extends TableName>(db: Surreal, recordId: RecordId<T> | undefined): Promise<ReadResultTypes[T] | undefined> {
+    if (recordId === undefined) {
+        throw new Error("id is undefined")
+    }
     const entry = (await db.select(recordId)) as ReadResultTypes[T];
     return entry;
 }

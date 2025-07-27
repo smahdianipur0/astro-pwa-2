@@ -188,7 +188,8 @@ tempList.on(["isSearching", "searchArray"], pl => {
   //delelte
   const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
   if (deleteButton) {
-    (async () => { tempList.deleteEntries( toRecordId(deleteButton.id)) })();
+    const buttonId = toRecordId(deleteButton.id as `PasswordEntry:${string}`);
+    (async () => { tempList.deleteEntries(buttonId) })();
   }
 
   //update
@@ -196,7 +197,8 @@ tempList.on(["isSearching", "searchArray"], pl => {
   if (updateButton) {
     (async () => {
       (document.getElementById("TempList-update") as HTMLDialogElement).showModal();
-        const entry = await getEntryById(toRecordId(updateButton.id) as RecordId<"PasswordEntry">);
+        const buttonId = toRecordId((updateButton.id) as `PasswordEntry:${string}`);
+        const entry = await getEntryById(buttonId);
         if (entry) {
           const { title, password } = entry;
           (document.getElementById("TempList-update-title") as HTMLInputElement).value = title;
@@ -210,8 +212,11 @@ tempList.on(["isSearching", "searchArray"], pl => {
   document.getElementById("TempList-update")!.addEventListener("click", (e) => {
     if((e!.target as HTMLInputElement).matches("#TempList-update-ok")) {
       (async () => {
+        const itemId = toRecordId((document.getElementById("TempList-update") as HTMLDialogElement).dataset._?? "");
+        if (!itemId) return
+        
       dbUpdate("PasswordEntry:update", {
-        id: toRecordId((document.getElementById("TempList-update") as HTMLDialogElement).dataset._!), 
+        id: itemId, 
         title:(document.getElementById("TempList-update-title") as HTMLInputElement).value, 
         password:(document.getElementById("TempList-update-pass") as HTMLInputElement).value});
       tempList.updateEntries();

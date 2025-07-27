@@ -24,8 +24,8 @@ export const tempList = createStore({
     	async updateEntries          () { this.set('entries', await dbReadAll("PasswordEntry") ?? []!) },
     	async updateRecentDelEntries () { this.set('recentDelEntries',  await dbReadAll("RecentDelPass") ?? []!);},
 
-    	async deleteEntries(id : RecordId<string>) {
-    		const entry = await getEntryById(id as RecordId<"PasswordEntry">);
+    	async deleteEntries(id : RecordId<"PasswordEntry">) {
+    		const entry = await getEntryById(id);
     		if (entry) {
 	            const { title, password, crreatedAt  } = entry;
 	            await dbCreate("RecentDelPass:create", {title: title, password: password, crreatedAt: crreatedAt });
