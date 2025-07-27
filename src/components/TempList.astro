@@ -131,7 +131,6 @@ import { dbCreate,dbUpdate, getEntryById, toRecordId } from "../utils/surrealdb-
 import { tempList } from "../logic/tempList.ts" 
 import { Templist } from './TempList'
 import { render } from "solid-js/web"
-import type { RecordId } from "surrealdb";
 
 
 
@@ -182,7 +181,6 @@ tempList.on(["isSearching", "searchArray"], pl => {
 });
 
 
-
   entriesList.addEventListener("click", (e) => {
 
   //delelte
@@ -213,13 +211,12 @@ tempList.on(["isSearching", "searchArray"], pl => {
     if((e!.target as HTMLInputElement).matches("#TempList-update-ok")) {
       (async () => {
         const itemId = toRecordId((document.getElementById("TempList-update") as HTMLDialogElement).dataset._?? "");
-        if (!itemId) return
-        
-      dbUpdate("PasswordEntry:update", {
-        id: itemId, 
-        title:(document.getElementById("TempList-update-title") as HTMLInputElement).value, 
-        password:(document.getElementById("TempList-update-pass") as HTMLInputElement).value});
-      tempList.updateEntries();
+         
+        itemId && dbUpdate("PasswordEntry:update", {
+          id: itemId, 
+          title:(document.getElementById("TempList-update-title") as HTMLInputElement).value, 
+          password:(document.getElementById("TempList-update-pass") as HTMLInputElement).value});
+        tempList.updateEntries();
       })();
     }
   });

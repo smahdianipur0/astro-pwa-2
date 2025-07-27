@@ -2,6 +2,7 @@ import { dbReadAll, dbquery, type ReadAllResultTypes, relationIdStringify, table
 import queryHelper from "../utils/query-helper";
 import { trpc } from "../utils/trpc";
 import { authQueryChallenge } from "../logic/auth";
+import { AppError } from "./error";
 
 
 interface SyncPair<T> {
@@ -58,16 +59,21 @@ export async function syncVaults(): Promise<void> {
 
 
   // 3. Load cloud state 
-  const [ message, fetchError] = await queryHelper.direct( "cloudVaults",() =>
+  const  cloudData = await queryHelper.noCacheQuery( "cloudVaults",() =>
       trpc.queryVaults.query({ UID }) 
   );
-  if (fetchError) {console.error("Error fetching cloud state:", fetchError);return;};
+  if (cloudData.value instanceof AppError) {
+    console.error("Error fetching cloud state:", cloudData.value);
+    return;
+  };
+
+  if (cloudData.value instanceof SuppressedError) {return};
 
 
   // 4. Compute diffs (must specify both key and dateKey)
-  const vaultDiff = syncByKey( vaults,(message?.vaults ?? []),"name","updatedAt");
-  const containDiff = syncByKey( contain,(message?.contain ?? []),"id","updatedAt");
-  const cardDiff = syncByKey( cards,(message?.cards ?? []),"id","updatedAt");
+  const vaultDiff = syncByKey( vaults,(cloudData.value.vaults ?? []),"name","updatedAt");
+  const containDiff = syncByKey( contain,(cloudData.value.contain ?? []),"id","updatedAt");
+  const cardDiff = syncByKey( cards,(cloudData.value.cards ?? []),"id","updatedAt");
 
   // 5. Update cloud→local for vaults & cards
   await dbquery(`
@@ -98,7 +104,7 @@ export async function syncVaults(): Promise<void> {
   }
 
   // 7. Sync up to cloud 
-  const [syncResult, syncError] = await queryHelper.direct("auth", () =>
+  const sync  = await queryHelper.mutate("sync", () =>
     trpc.syncvaults.mutate({
       challenge,
       authenticationData: authentication,
@@ -108,6 +114,9 @@ export async function syncVaults(): Promise<void> {
     }),
   );
 
-  if (syncError) console.error("Error syncing to cloud:", syncError.message, syncError.cause ); 
-  else console.log("Sync complete:", syncResult);
+  if (sync.value instanceof AppError) {
+    console.error("Error syncing to cloud:", sync.value.message, sync.value.cause)
+  }
+  if (sync.ok) {console.log("Sync complete:", sync.value)}
+
 }

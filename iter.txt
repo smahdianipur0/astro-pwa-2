@@ -61,9 +61,18 @@ const checkboxElementTwo: HTMLInputElement = document.getElementById(
 
 
 
+// import queryHelper  from "../utils/query-helper"
+// import { trpc } from "../utils/trpc";
 
-
-
+// type serverRespone = {message:string; [key:string]: unknown}  | undefined
+// document.getElementById("About-ki")!.addEventListener("click", (e) => {
+//   if ((e!.target as HTMLInputElement).matches("#test")) {
+//     (async () => {
+//     const [data, error] = await queryHelper.direct("db", () => trpc.dbquery.mutate()) as [serverRespone, serverRespone];
+//     console.log(data?.message ?? error?.message ?? "");
+//     })();
+//   }
+// });
 
 
 

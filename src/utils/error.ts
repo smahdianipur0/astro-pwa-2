@@ -50,6 +50,7 @@ export class DBOperationError extends AppError {}
 export class ValidationError extends AppError {}
 export class AuthenticationError extends AppError {}
 export class NotFoundError extends AppError {}
+export class SupersededError extends AppError {}
 
 
 

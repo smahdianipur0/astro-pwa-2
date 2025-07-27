@@ -95,8 +95,7 @@ document.getElementById("Emails")!.addEventListener("click", (e) => {
       const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
       if (deleteButton) {
         const deletebuttonId = toRecordId(deleteButton.id);
-        if (!deletebuttonId) return
-        (async () => {
+        deletebuttonId && (async () => {
           email.deleteEmail( deletebuttonId);
         })();
       }
@@ -129,8 +128,7 @@ email.on(["emailList"], ({ value }) => {
 swapy.onSwapEnd((event) => {
     event.slotItemMap.asArray.forEach((item) =>{(async () => {
         const emailId = toRecordId(item.item);
-        if (!emailId) return
-        await dbUpdate("Emails:update",{id:emailId, crreatedAt:item.slot})      
+        emailId && await dbUpdate("Emails:update",{id:emailId, crreatedAt:item.slot})      
         })();      
     })
 })

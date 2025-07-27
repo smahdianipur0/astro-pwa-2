@@ -77,9 +77,7 @@ import { List, dialog} from './RecentDelPass'
           tempList.updateEntries();
 
           const rid = toRecordId(id ?? '');
-          if (!rid) return;
-          
-          await dbDelete(rid);
+          rid && await dbDelete(rid);
           tempList.updateRecentDelEntries();
         }
       })();
