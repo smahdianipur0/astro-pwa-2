@@ -8,9 +8,12 @@
 <script>
 
 import { dbCreate, dbReadAll, dbUpdate, } from "../utils/surrealdb-indexed"
-import { auth,authQueryChallenge,regQueryChallenge,validateAuthentication, validateRegistration} from "../logic/auth"
+import { auth,authQueryChallenge,regQueryChallenge} from "../logic/auth"
 import { initialAuthUi } from './Auth'
 import { render } from "solid-js/web"
+import { SupersededError } from "../utils/error";
+import { trpc } from "../utils/trpc";
+import queryHelper  from "../utils/query-helper"
 
 // import {syncVaults} from "../utils/syncLayer"
 // (async () => { await syncVaults();})();
@@ -74,30 +77,30 @@ document.getElementById("Auth-target")!.addEventListener("click", (e) => {
     if ((e!.target as HTMLInputElement).matches("#registration")) {
 
         (async () => {
-            try {
+            
+            const query = await regQueryChallenge(); 
+            if (!query) return;               
+            if (!(query.registration)){authResult.textContent = "Connection failed"}
+            if ( query.registration){authResult.textContent = "Connectoing to the server"}
+            
 
-                const { registration, challenge } = await regQueryChallenge();                
-                if (!registration){authResult.textContent = "Connection failed"}
-                if ( registration){authResult.textContent = "Connectoing to the server"}
+            const reg = await queryHelper.mutate("reg", async () => {
+                return await trpc.registry.mutate({
+                    challenge :query.challenge,
+                    registry: query.registration,
+                });
+            });
 
-                const {registryData,registryError} = await validateRegistration(challenge, registration)
+            // handle Failed regestration 
+            if (reg.err && !(reg.value instanceof SupersededError)){authResult.textContent = "Registration Failed"; return}
+            const userId = user?.[0]?.id;
+            if (!userId) return;
 
-                // handle Failed regestration 
-                if (registryError){authResult.textContent = "Registration Failed"; return}
-                if (!registryData){authResult.textContent = "Registration Failed"; return}
-                if (!user) return;
-                const userId = user[0]?.id;
-                if (!userId) return;
 
-                // handle Succeeded regestration 
-                updateSucceededAuth()                    
-                dbUpdate("Users:update", { id: userId, registered: true, UID: registration.id });
-                auth.setIndexedUid(true);  
-
-            } catch (error) {
-                authResult.textContent = "Registration Failed"
-            }
-
+            // handle Succeeded regestration 
+            updateSucceededAuth()                    
+            dbUpdate("Users:update", { id: userId, registered: true, UID: query.registration.id });
+            auth.setIndexedUid(true);  
         })();
     }
 
@@ -106,23 +109,30 @@ document.getElementById("Auth-target")!.addEventListener("click", (e) => {
         (async () => {
          
             try {
-                const { authentication, challenge } = await authQueryChallenge();
-                if (!authentication) { authResult.textContent = "Failed to start authentication"; return; }
+                const query = await authQueryChallenge();
+                if (!query) return;
+                if (!(query.authentication)) { authResult.textContent = "Failed to start authentication"; return; }
                 authResult.textContent = "Connecting to the server...";
                 
-                const { authData, authError } = await validateAuthentication(challenge, authentication);
-              
+                // const authData = await validateAuthentication(query.challenge, query.authentication);
+                const authData = await queryHelper.mutate("auth", async () => {
+                    return await trpc.authenticate.mutate({
+                        challenge: query.challenge,
+                        authenticationData: query.authentication as any,
+                    });
+                });
+                authData.value
+
                 // handle Faild auth
-                if (authError) {authResult.textContent = "Authentication Failed"; return;}
-                if (!authData) {authResult.textContent = "Authentication Failed"; return;}
-                if (!authData.authenticated || !authData.credentialId) {authResult.textContent = "Authentication Failed"; return; }      
-                if (!user ) { return }
-                const userId = user[0]?.id;
+                if(!(authData.value instanceof SupersededError)){return}
+                if (authData.err) {authResult.textContent = "Authentication Failed"; return;}
+                if (!authData.value.authenticated || !authData.value.credentialId) {authResult.textContent = "Authentication Failed"; return; }      
+                const userId = user?.[0]?.id;
                 if (!userId) return;
 
                 // handle Succeeded auth 
                 updateSucceededAuth();
-                dbUpdate("Users:update", { id: userId, registered: true, UID: authData.credentialId });
+                dbUpdate("Users:update", { id: userId, registered: true, UID: authData.value.credentialId });
                 auth.setIndexedUid(true);
 
             } catch (error) {

@@ -50,12 +50,12 @@ import { List, dialog} from './RecentDelPass'
     if (restoreButton) {
       (async() => {
         (document.getElementById("RecentDelPass-restore") as HTMLDialogElement).showModal();
-        const buttonId = toRecordId((restoreButton.id) as `PasswordEntry:${string}`);
-        const entry = await getEntryById(buttonId);  
-        if (entry) {
-            (document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement).textContent = "";
-            render(() => dialog(entry), document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement);
-        }
+        const buttonId = toRecordId((restoreButton.id), "PasswordEntry");
+        const entry = buttonId ? await getEntryById(buttonId): undefined;  
+
+        (document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement).textContent = "";
+        render(() => dialog(entry), document.getElementById("RecentDelPass-restore-item") as HTMLDialogElement);
+
       })();   
     }
   });

@@ -16,10 +16,8 @@ export type Schemas = {
 type prettify<T> = {[K in keyof T]: T[K];} & {};
 
 const TableName =  z.enum(["Users", "PasswordEntry", "Emails","RecentDelPass", "Vaults", "Cards", "Access", "Contain"])
-const recordid = z.templateLiteral([TableName, ":", z.string()]);
-
 export type TableName = z.infer<typeof TableName>;
-export type StringRecordIds = z.infer<typeof recordid>;
+
 
 
 // Generate CRUD types for all tables
@@ -36,20 +34,32 @@ export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: RecordId<str
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
 
-export function toRecordId<T extends StringRecordIds>(input: T):
-    T extends `${infer P}:${string}` ? P extends TableName ? RecordId<P> : never : never;
+function makeRecordIdSchema<P extends TableName = TableName>(table?: P) {
+    if (table !== undefined) {
+        return z.templateLiteral([z.literal(table), ":", z.string()]).transform((s: string) => {
+            const [, id] = s.split(":", 2) as [P, string];
+            return { table, id } as const;
+        });
+    }
 
-export function toRecordId(input: string): RecordId<TableName> | undefined;
+    return z.templateLiteral([TableName, ":", z.string()]).transform((s) => {
+        const [tbl, id] = s.split(":", 2) as [TableName, string];
+        return { table: tbl, id } as const;
+    });
+}
 
-export function toRecordId(input: string) {
-  const parsed = recordid.safeParse(input);
-  if (!parsed.success) {
-    console.error(parsed.error);
-    return ;
-  }
+export function toRecordId<P extends TableName>(input: `${P}:${string}`): RecordId<P>;
+export function toRecordId<P extends TableName>(input: string, table?: P ): RecordId<P> | undefined;
 
-  const [table, id] = input.split(":") as [TableName, string];
-  return new RecordId(table, id);
+export function toRecordId(input: string, table?: TableName) {
+
+    const parsed = makeRecordIdSchema(table).safeParse(input);
+    if (!parsed.success) {
+        console.error(parsed.error);
+        return;
+    }
+
+    return new RecordId(parsed.data.table, parsed.data.id);
 }
 
 
