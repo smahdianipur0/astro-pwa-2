@@ -19,6 +19,7 @@ svg{
 
 ::-webkit-scrollbar{
   width: var(--size-xs1);
+  height: var(--size-xs1);;
 }
 
 ::-webkit-scrollbar-thumb{
@@ -130,7 +131,7 @@ svg{
   user-select: none;
 }
 
-.tertiary-btn{
+.secondary-btn{
   display: flex;
   flex-wrap: wrap;
   place-content: center;
@@ -140,11 +141,11 @@ svg{
   text-align: center;
   align-items: center;
   position: relative;
-  width: var(--size-lg2);
   height: var(--size-md1) ;
+  padding: var(--padding-1);
 }
 
-.tertiary-btn:disabled::after{
+.secondary-btn:disabled::after{
   content: "";
   border-radius: inherit;
   position: absolute;

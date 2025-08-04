@@ -17,6 +17,7 @@
   background: oklch(var(--primary) / 15%);
   border-width: 0;
   position: relative;
+  overflow: clip;
   transition: 0.2s;
 }
 
@@ -73,15 +74,17 @@
 
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *))::after, .prose-btn::after {
     content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;		
-    background-color: oklch(var(--gray-10) / 65%);
-    scale: 0.65;
-    scale: 0.8 0.6;
-    border-radius: 100px;
+    z-index: -1;
+    background-color: oklch(var(--primary) / 35%);
     filter: blur(15px);
-    mix-blend-mode: soft-light;
+    mix-blend-mode: screen;
+    border-radius: 100px;
+    position: absolute;
+    top: 0%;
+    bottom: 25%;
+    left: 0;
+    right: 0;
+    scale: .8 .8;
 }
 
 
