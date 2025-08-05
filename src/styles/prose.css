@@ -772,7 +772,7 @@
 
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)){
   background-color: oklch(var(--gray-25) / 55%);
-  border-radius: var(--radius-a);
+  border-radius: var(--radius-b);
   display: flex;
   flex-direction: column;
   width: 100%;
