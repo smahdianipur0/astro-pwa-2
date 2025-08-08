@@ -119,7 +119,7 @@ export async function genericQuery(db: Surreal, query: string, params: { [key: s
 
 export async function genericUpdate<T extends `${TableName}:update`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<string> {
     const { id, ...dataWithoutId } = data;
-    if (id === undefined)
+    if (id === undefined) {throw new Error("id is undefined")}
     await db.merge(data.id, dataWithoutId);
     return "Ok";
 }

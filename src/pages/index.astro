@@ -14,9 +14,17 @@ import Records from '../components/Records.astro';
 
 	<div  class="tab-content one" > 
 	  <div class="prose grid-layout">
-	     	
+
+	     	<Emails/>
 			<GeneratePass/>
 			<Varification/> 
+			<details class="prose grid-layout">
+				<summary>More Tools</summary>
+				
+				<Encdec/>
+				<QRCode/> 
+			</details>
+			
 		
 	  </div> 
 	</div>
@@ -27,6 +35,7 @@ import Records from '../components/Records.astro';
 
 			<Records>
 
+
 		</div>
 	</div>
 
@@ -34,9 +43,7 @@ import Records from '../components/Records.astro';
 	<div class="tab-content three"> 
 		<div class="prose grid-layout" > 
 		
-			<Encdec/>
- 			<Emails/>
-			<QRCode/> 
+			
 
 		</div>
 	</div>

@@ -4,7 +4,7 @@ import Menu from "./ui/Menu";
 import DeleteMenu from './ui/DeleteMenu'
 
 
-export function Emails(entry:ReadResultTypes["Emails"]): JSX.Element {
+export function Emails(entry:ReadResultTypes["Emails"], isEditing:boolean): JSX.Element {
 
     return(<>
 
@@ -21,13 +21,16 @@ export function Emails(entry:ReadResultTypes["Emails"]): JSX.Element {
                         id = {entry.email ?? ''}
                         data-action='copy' 
                         class="not-prose ellipsis" 
-                        style='text-align: start; 
-                        width: var(--size-xl3); 
-                        color: oklch(var(--gray-95))'>
+                        style={`text-align: start; 
+                        width: ${isEditing ? "var(--size-xl3)" : "100%"};
+                        height: var(--size-md1);
+                        color: oklch(var(--gray-95));
+                        padding: var(--padding-0);
+                        padding-inline: 0;`}>
                         {entry.email ?? ''} </button>
                 </div>
 
-                <div class="flex-spread-childs">
+                {isEditing && <div class="flex-spread-childs">
 
                     <div class="flex-with-gap" style="justify-content: flex-end;">
                         <Menu 
@@ -54,7 +57,7 @@ export function Emails(entry:ReadResultTypes["Emails"]): JSX.Element {
                         <div class="swapy-handle"></div> 
                     </div>
 
-                </div>
+                </div> }
             </div>
         </li> 
     </>);

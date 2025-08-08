@@ -5,11 +5,28 @@ const examples = ["name@gmail.com", "name@yahoo.com", "name@outlook.com"]
 <fieldset class="box-shadow " id="Emails" >
     <legend>Frequently Used Emails</legend>
 
-    <div
+    <div style="display: flex;
+        justify-content: end;
+        height: var(--size-md1);
+        margin-block-end: var(--size-sm0);">
+
+        <label 
+            for="Email-edit" 
+            id="Email-edit-label" 
+            class="secondary-btn"></label>
+
+        <input type="checkbox" id="Email-edit" class="hide-checkbox" >
+        
+
+    </div>
+
+    <div 
+        id="Email-input-div"
         class="prose"
-        style="display: flex; 
+        style="display: none; 
         gap: var(--size-sm0); 
-        justify-content: space-between;">
+        justify-content: space-between;
+        padding-block: var(--size-sm3);">
 
         <input
             autocomplete="off"
@@ -28,9 +45,10 @@ const examples = ["name@gmail.com", "name@yahoo.com", "name@outlook.com"]
 
     <menu id="Email-list" 
         style="background: transparent; 
-        padding-top: var(--size-sm3); 
-        height: 100%; 
-        margin-bottom: var(--size-md2);">
+        max-height: var(--size-xl1); 
+        margin-bottom: var(--size-md2);
+        overflow-y: scroll;
+        overflow-x: hidden;">
 
         {examples.map((item) => (
 
@@ -101,14 +119,22 @@ document.getElementById("Emails")!.addEventListener("click", (e) => {
       }
 });
 
+document.getElementById("Emails")!.addEventListener("change",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#Email-edit")){
+        email.setIsEditing((e!.target as HTMLInputElement).checked)
+    };
+});
+
 const container = document.getElementById("Email-list")  as HTMLElement
 
 const swapy = createSwapy(container, {
-  animation: 'dynamic',
-  autoScrollOnDrag: true,
+    animation: 'dynamic',
+    autoScrollOnDrag: true,
 });
 
-email.on(["emailList"], ({ value }) => {
+swapy.enable(false);
+
+email.on(["emailList"], ({value}) => {
     email.setEmailInput("");
     (document.getElementById("Email-input") as HTMLInputElement).value = "";
     (document.getElementById("Email-add")   as HTMLInputElement).disabled = true;
@@ -117,7 +143,7 @@ email.on(["emailList"], ({ value }) => {
     (value ?? [])
         .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
         .forEach((entry) => {
-            render(() => Emails(entry), document.getElementById("Email-list") as HTMLElement);
+            render(() => Emails(entry, email.get("isEditing")), document.getElementById("Email-list") as HTMLElement);
         });
     
     swapy.update()
@@ -125,12 +151,33 @@ email.on(["emailList"], ({ value }) => {
 });
 
 
+
+email.on(["isEditing"], ({value}) =>{ 
+
+    (document.getElementById("Email-input-div") as HTMLElement).style.display = value ? "flex" : "none";
+    (document.getElementById("Email-list") as HTMLElement).style.maxHeight = value ? "unset" : "var(--size-xl1)"
+    swapy.enable(value);
+
+    container.textContent = "";
+
+    (email.get("emailList")?? [])
+    .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
+    .forEach((entry) => {
+        render(() => Emails(entry, value), document.getElementById("Email-list") as HTMLElement);
+    });
+
+    swapy.update()
+})
+
+
 swapy.onSwapEnd((event) => {
     event.slotItemMap.asArray.forEach((item) =>{(async () => {
         const emailId = toRecordId(item.item);
-        emailId && await dbUpdate("Emails:update",{id:emailId, crreatedAt:item.slot})      
+        if (!emailId) {return}
+            await dbUpdate("Emails:update",{id:emailId, crreatedAt:item.slot}); 
         })();      
     })
+    email.updateEmailList();
 })
 
 email.updateEmailList();
@@ -139,13 +186,31 @@ email.updateEmailList();
 
 <style is:global>
 
-#Email-list > :last-child::after {
+
+#Email-list:has(> li)  #Email-list::after {
   content: 'tap on email to copy';
   position: absolute;
   bottom: 0;
   transform: translateY(var(--size-md2));
   font-size: var(--font-sm4);
   color: oklch(var(--gray-50) / 1);
+}
+
+#Email-edit-label::after{
+    content: "Edit";
+}
+
+:root:has(#Email-edit:checked) #Email-edit-label::after{
+  content: "Done";
+}
+
+#Email-edit-label::before{
+    content: '';
+    margin-inline-end: var(--size-xs2);
+    background-image: url('data:image/svg+xml,<svg width="var(--size-sm3)" height="var(--size-sm3)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21.03 2.97a3.578 3.578 0 0 1 0 5.06L9.062 20a2.25 2.25 0 0 1-.999.58l-5.116 1.395a.75.75 0 0 1-.92-.921l1.395-5.116a2.25 2.25 0 0 1 .58-.999L15.97 2.97a3.578 3.578 0 0 1 5.06 0ZM15 6.06 5.062 16a.75.75 0 0 0-.193.333l-1.05 3.85 3.85-1.05A.75.75 0 0 0 8 18.938L17.94 9 15 6.06Zm2.03-2.03-.97.97L19 7.94l.97-.97a2.079 2.079 0 0 0-2.94-2.94Z" fill="%23fff"/></svg>');
+    background-position: right;
+    width: var(--size-sm3);
+    height: var(--size-sm3);
 }
 
 </style>

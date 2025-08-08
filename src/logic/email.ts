@@ -6,9 +6,10 @@ export const email = createStore({
     state: { 
         emailInput: "" ,
         emailList: ([]) as ReadAllResultTypes["Emails"] | [],
+        isEditing: false
     },
     methods: {
-        setEmailInput(value: string) { this.set('emailInput', value); },
+        setEmailInput(value: string) { this.set('emailInput', value) },
 
         async updateEmailList(){
             this.set('emailList',await dbReadAll("Emails") ?? []) 
@@ -22,6 +23,8 @@ export const email = createStore({
         async deleteEmail(id: RecordId<string>) {
             await dbDelete(id);
             this.set('emailList',await dbReadAll("Emails") ?? [])
-        }
+        },
+
+        setIsEditing(isEditing: boolean) { this.set('isEditing', isEditing) }
     }, 
 });
