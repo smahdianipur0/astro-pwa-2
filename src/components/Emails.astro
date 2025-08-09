@@ -3,22 +3,19 @@ const examples = ["name@gmail.com", "name@yahoo.com", "name@outlook.com"]
 ---
 
 <fieldset class="box-shadow " id="Emails" >
-    <legend>Frequently Used Emails</legend>
-
-    <div style="display: flex;
-        justify-content: end;
-        height: var(--size-md1);
-        margin-block-end: var(--size-sm0);">
+    <legend class="flex-spread-childs max-width">Emails / Aliases
 
         <label 
             for="Email-edit" 
             id="Email-edit-label" 
+            style="font-size: var(--font-sm4);
+            width: fit-content;"
             class="secondary-btn"></label>
 
         <input type="checkbox" id="Email-edit" class="hide-checkbox" >
         
+    </legend>
 
-    </div>
 
     <div 
         id="Email-input-div"
@@ -48,7 +45,8 @@ const examples = ["name@gmail.com", "name@yahoo.com", "name@outlook.com"]
         max-height: var(--size-xl1); 
         margin-bottom: var(--size-md2);
         overflow-y: scroll;
-        overflow-x: hidden;">
+        overflow-x: hidden;
+        touch-action: manipulation;">
 
         {examples.map((item) => (
 
@@ -187,11 +185,11 @@ email.updateEmailList();
 <style is:global>
 
 
-#Email-list:has(> li)  #Email-list::after {
+#Email-list:has(> li)::after {
   content: 'tap on email to copy';
   position: absolute;
-  bottom: 0;
-  transform: translateY(var(--size-md2));
+  bottom: var(--size-md2);
+  left: var(--size-sm4);
   font-size: var(--font-sm4);
   color: oklch(var(--gray-50) / 1);
 }
