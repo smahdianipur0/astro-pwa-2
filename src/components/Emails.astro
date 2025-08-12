@@ -3,47 +3,37 @@ const examples = ["name@gmail.com", "name@yahoo.com", "name@outlook.com"]
 ---
 
 <fieldset class="box-shadow " id="Emails" >
-    <legend class="flex-spread-childs" style="width: 100%; align-items: baseline;">Emails / Aliases
+    <legend >Emails / Aliases</legend>
+
+    <div class="flex-with-gap" style="justify-content: flex-end; margin-block-end: var(--size-sm0);">
+
+        <button class="not-prose secondary-btn" id="Email-dialog-trigger"> 
+
+            <svg width="24" height="24" fill="none" style="pointer-events: none; padding: 1px; width: var(--size-sm3);    margin-inline-end: var(--size-xs2);" viewBox="0 0 24 24">
+                <path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z"></path> 
+            </svg> 
+
+            <p style="padding-right: var(--size-xs2); pointer-events: none;"> Add </p> 
+        </button>
 
         <label 
             for="Email-edit" 
             id="Email-edit-label" 
-            style="font-size: var(--font-sm4);
-            width: fit-content;"
+            style="width: fit-content;"
             class="secondary-btn"></label>
 
         <input type="checkbox" id="Email-edit" class="hide-checkbox" >
-        
-    </legend>
 
-
-    <div 
-        id="Email-input-div"
-        class="prose"
-        style="display: none; 
-        gap: var(--size-sm0); 
-        justify-content: space-between;
-        padding-block: var(--size-sm3);">
-
-        <input
-            autocomplete="off"
-            id="Email-input"
-            type="text"
-            style="width: 100%;"
-            placeholder="Email" />
-
-        <button 
-            id="Email-add" 
-            style="width: fit-content; 
-            white-space: nowrap;" disabled > 
-            Add</button>
     </div>
+
 
 
     <menu id="Email-list" 
         style="background: transparent; 
+        border-radius: 0;
         max-height: var(--size-xl1); 
-        margin-bottom: var(--size-md2);
+        transition: max-height .3s var(--appear-subtle);
+        margin-bottom: var(--size-sm4);
         overflow-y: scroll;
         overflow-x: hidden;
         touch-action: manipulation;">
@@ -52,20 +42,13 @@ const examples = ["name@gmail.com", "name@yahoo.com", "name@outlook.com"]
 
             <li style="width:100%;background-color:transparent;padding-inline:0;">
                 <div>
-                    <button class="not-prose shiny-text" style="text-align:start;">{item} </button>
-                </div>
-                <div class="flex-spread-childs">
-                    <div class="not-prose flex-with-gap" style="justify-content: flex-end;">
-                        <button class="not-prose"> 
-                            <div class="text-as-button blink" style="margin-right:calc(var(--size-sm0)* -1);">
-                                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM18 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="oklch(var(--gray-95))"></path></svg>
-                            </div>
-                        </button>
-                    </div>
-
-                    <div style="width: var(--size-md2); display: flex; justify-content: flex-end;">
-                        <div class="swapy-handle" style=""></div>
-                    </div>
+                    <button 
+                    class="not-prose shiny-text" 
+                    style="text-align:start;
+                    font-size: var(--font-lg1);
+                    font-weight: 300;">
+                    {item} </button>
+                    
                 </div>
             </li>
 
@@ -73,6 +56,30 @@ const examples = ["name@gmail.com", "name@yahoo.com", "name@outlook.com"]
     </menu>
 
 </fieldset>
+
+<dialog id="Email-dialog">
+    <form method="dialog">
+
+        <h3 style="margin-top: 0;">Add Emails / Aliases</h3>
+
+        <input
+            autocomplete="off"
+            id="Email-input"
+            type="text"
+            style="width: 100%;"
+            placeholder="Email" />
+
+
+        <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">
+            <button class="not-prose max-width" >Cancel</button>
+            <button class="max-width" id="Email-add" disabled > Add</button>
+        </div>
+
+    </form>
+</dialog>
+
+
+
 
 <script>
 import { showToast } from "../logic/misc.ts";
@@ -84,7 +91,7 @@ import { dbUpdate, toRecordId } from "../utils/surrealdb-indexed";
 
 
 
-document.getElementById("Emails")!.addEventListener("input",(e)=>{
+document.getElementById("Email-dialog")!.addEventListener("input",(e)=>{
     if((e!.target as HTMLInputElement).matches("#Email-input")){
        const value = (e!.target as HTMLInputElement).value;
        email.setEmailInput(value.toString());
@@ -96,9 +103,15 @@ document.getElementById("Emails")!.addEventListener("input",(e)=>{
     }
 });
 
-document.getElementById("Emails")!.addEventListener("click", (e) => {
+document.getElementById("Email-dialog")!.addEventListener("click",(e)=>{
     if ((e!.target as HTMLInputElement).matches("#Email-add")) { 
         email.addEmail(email.get("emailInput"))
+    }
+});
+
+document.getElementById("Emails")!.addEventListener("click", (e) => {
+    if ((e!.target as HTMLButtonElement).matches("#Email-dialog-trigger")) { 
+        (document.getElementById("Email-dialog") as HTMLDialogElement).showModal();
     }
 
     const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
@@ -152,8 +165,7 @@ email.on(["emailList"], ({value}) => {
 
 email.on(["isEditing"], ({value}) =>{ 
 
-    (document.getElementById("Email-input-div") as HTMLElement).style.display = value ? "flex" : "none";
-    (document.getElementById("Email-list") as HTMLElement).style.maxHeight = value ? "unset" : "var(--size-xl1)"
+    (document.getElementById("Email-list") as HTMLElement).style.maxHeight = value ? "var(--size-xl5)" : "var(--size-xl1)"
     swapy.enable(value);
 
     container.textContent = "";
@@ -188,7 +200,7 @@ email.updateEmailList();
 #Email-list:has(> li)::after {
   content: 'tap on email to copy';
   position: absolute;
-  bottom: var(--size-md2);
+  bottom: var(--size-sm4);
   left: var(--size-sm4);
   font-size: var(--font-sm4);
   color: oklch(var(--gray-50) / 1);
