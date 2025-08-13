@@ -22,7 +22,7 @@ export function Emails(entry:ReadResultTypes["Emails"], isEditing:boolean): JSX.
                         data-action='copy' 
                         class="not-prose ellipsis" 
                         style={`text-align: start; 
-                        width: ${isEditing ? "var(--size-xl2)" : "var(--size-xl3)"};
+                        width: ${isEditing ? " calc(var(--size-xl2) - var(--size-sm2))" : "var(--size-xl3)"};
                         font-size: var(--font-lg1);
                         font-weight: 300;
                         color: oklch(var(--gray-95));
@@ -31,7 +31,7 @@ export function Emails(entry:ReadResultTypes["Emails"], isEditing:boolean): JSX.
                         {entry.email ?? ''} </button>
                 </div>
 
-                {isEditing && <div class="flex-spread-childs">
+                {isEditing && <div class="flex-spread-childs slide-in-right">
 
                     <div class="flex-with-gap" style="justify-content: flex-end;">
                         <Menu 

@@ -186,8 +186,10 @@ svg{
 
 .swapy-handle{
   cursor: grab;
-  background-image: url('data:image/svg+xml,<svg width="var(--size-sm3)" height="var(--size-sm3)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.75 13.25h18.5a.75.75 0 0 1 .102 1.493l-.102.007H2.75a.75.75 0 0 1-.102-1.493l.102-.007h18.5-18.5Zm0-4h18.5a.75.75 0 0 1 .102 1.493l-.102.007H2.75a.75.75 0 0 1-.102-1.493l.102-.007h18.5-18.5Z" fill="%23fff"/></svg>');
   background-position: right;
+  mask: url('data:image/svg+xml,<svg width="var(--size-sm3)" height="var(--size-sm3)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.75 13.25h18.5a.75.75 0 0 1 .102 1.493l-.102.007H2.75a.75.75 0 0 1-.102-1.493l.102-.007h18.5-18.5Zm0-4h18.5a.75.75 0 0 1 .102 1.493l-.102.007H2.75a.75.75 0 0 1-.102-1.493l.102-.007h18.5-18.5Z" fill="%23fff"/></svg>') no-repeat center;
+  -webkit-mask: url('data:image/svg+xml,<svg width="var(--size-sm3)" height="var(--size-sm3)" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.75 13.25h18.5a.75.75 0 0 1 .102 1.493l-.102.007H2.75a.75.75 0 0 1-.102-1.493l.102-.007h18.5-18.5Zm0-4h18.5a.75.75 0 0 1 .102 1.493l-.102.007H2.75a.75.75 0 0 1-.102-1.493l.102-.007h18.5-18.5Z" fill="%23fff"/></svg>') no-repeat center;
+  background-color: oklch(var(--gray-95) ); 
   width: var(--size-sm3);
   height: var(--size-sm3);
   opacity: 0.25;

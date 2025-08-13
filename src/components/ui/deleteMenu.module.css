@@ -25,16 +25,16 @@
 } 
 
 .summary {
-  display: flex;
-  gap: var(--size-sm0);
-  height: var(--size-md1);
-  align-items: center;
-  position: relative;
-  cursor: pointer;
-  user-select: none;
-  min-width: max-content;
-  align-items: center;
-  flex-direction: row-reverse;  
+gap: var(--size-xs2);
+    height: var(--size-md1);
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    flex-direction: row;
+    align-items: center;
+    min-width: max-content;
+    display: flex;
+    position: relative; 
 }
 
 .details[open] > summary {

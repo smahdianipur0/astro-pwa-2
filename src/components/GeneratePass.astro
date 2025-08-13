@@ -14,8 +14,13 @@ import Menu from '../components/ui/Menu';
 
             <div class="flex-spread-childs not-prose " style=" position: relative; margin-top: var(--size-md1); height: var(--size-md2);">
 
-                <div id="GeneratePass-r-password" style="font-size: var(--font-lg1); font-weight: 300;">
-                    
+                <div 
+                id="GeneratePass-r-password" 
+                class="text-as-button"
+                style="font-size: var(--font-lg1); 
+                font-weight: 300;
+                height: unset;
+                cursor: pointer;">                    
                     <div class="skeleton" style="width:var(--size-xl1)"> </div>
                 </div>
 
@@ -35,7 +40,6 @@ import Menu from '../components/ui/Menu';
 
 
             <CharactersCount />
-            <div style="border-bottom: 1px solid oklch(var(--gray-25) / 1);" ></div>
             <CharactersPattern />
 
         </fragment>
@@ -67,21 +71,19 @@ import Menu from '../components/ui/Menu';
 
         <Menu client:load>
             <fragment slot="trigger">
-                <div id="GeneratePass-led-div" class="flex-with-gap text-as-button blink" style="overflow: hidden; gap: var(--size-xs2);">
-                    <div style="min-width: var(--size-sm3);">                        
-                        <div 
-                            id="GeneratePass-led" 
-                            style="--led-color: oklch(var(--warning));
-                            max-width: 5px;
-                            border-radius: 100px;
-                            border: 2.5px solid var(--led-color);
-                            box-shadow: 0px 0px 7px 1px var(--led-color);
-                            margin-inline: auto;"></div>
-                    </div>
 
-                        <div>Strength</div>
-
+                <div id="GeneratePass-led-div" class="flex-with-gap  blink" >
+                    <svg 
+                    id="GeneratePass-led" 
+                    style="--led-color: oklch(var(--warning));
+                    filter: drop-shadow(0px 0px 7px var(--led-color));
+                    width: var(--size-sm3);
+                    fill: var(--led-color); " 
+                    width="24" height="24"  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 1.999c5.524 0 10.002 4.478 10.002 10.002 0 5.523-4.478 10.001-10.002 10.001-5.524 0-10.002-4.478-10.002-10.001C1.998 6.477 6.476 1.999 12 1.999Zm0 1.5a8.502 8.502 0 1 0 0 17.003A8.502 8.502 0 0 0 12 3.5Zm-.004 7a.75.75 0 0 1 .744.648l.007.102.003 5.502a.75.75 0 0 1-1.493.102l-.007-.101-.003-5.502a.75.75 0 0 1 .75-.75ZM12 7.003a.999.999 0 1 1 0 1.997.999.999 0 0 1 0-1.997Z" />
+                    </svg>
                 </div>
+
             </fragment>
 
             <fragment slot="content" > 
@@ -101,26 +103,35 @@ import Menu from '../components/ui/Menu';
         </Menu>
 
         <button id="GeneratePass-copy-hint"  
-        class="not-prose text-as-button flex-with-gap blink"
-        style="gap:0;">
-            <svg style='width: var(--size-sm3); pointer-events: none; overflow: unset;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5.503 4.627 5.5 6.75v10.504a3.25 3.25 0 0 0 3.25 3.25h8.616a2.251 2.251 0 0 1-2.122 1.5H8.75A4.75 4.75 0 0 1 4 17.254V6.75c0-.98.627-1.815 1.503-2.123ZM17.75 2A2.25 2.25 0 0 1 20 4.25v13a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-13A2.25 2.25 0 0 1 8.75 2h9Zm0 1.5h-9a.75.75 0 0 0-.75.75v13c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75v-13a.75.75 0 0 0-.75-.75Z" fill="oklch (var(--gray-95))"/></svg>
-                <path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm0 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17ZM12 7a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 12 7Z" fill="oklch (var(--gray-95))"/>
-            </svg>
-            <div style="overflow: hidden; pointer-events: none; margin-inline-start: var(--size-xs2);" >Copy</div>
+            class="not-prose text-as-button flex-with-gap blink"
+            style="gap:0;">
+                <svg style='width: var(--size-sm3); pointer-events: none; overflow: unset;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5.503 4.627 5.5 6.75v10.504a3.25 3.25 0 0 0 3.25 3.25h8.616a2.251 2.251 0 0 1-2.122 1.5H8.75A4.75 4.75 0 0 1 4 17.254V6.75c0-.98.627-1.815 1.503-2.123ZM17.75 2A2.25 2.25 0 0 1 20 4.25v13a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-13A2.25 2.25 0 0 1 8.75 2h9Zm0 1.5h-9a.75.75 0 0 0-.75.75v13c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75v-13a.75.75 0 0 0-.75-.75Z" fill="oklch (var(--gray-95))"/></svg>
+                    <path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm0 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17ZM12 7a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 12 7Z" fill="oklch (var(--gray-95))"/>
+                </svg>
+                <div style="overflow: hidden; pointer-events: none; margin-inline-start: var(--size-xs2);" >Copy</div>
         </button>
+
+        <div class="not-prose">
+            <TempList />  
+        </div>
 
         <Menu client:load>
 
-            <fragment id="GeneratePass-encrypted-icon" slot="trigger" class="text-as-button flex-with-gap blink " style="gap:var(--size-xs2)"> 
-                <svg style="overflow: unset; width: var(--size-sm3);" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.25 7a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0Z" fill="#fff"/><path d="M15.5 2.05A6.554 6.554 0 0 0 8.95 8.6c0 .387.05.76.11 1.104a.275.275 0 0 1-.07.244l-6.235 6.236a2.75 2.75 0 0 0-.806 1.944V20.3c0 .966.784 1.75 1.75 1.75h2.5a1.75 1.75 0 0 0 1.75-1.75v-1.25H9.7c.69 0 1.25-.56 1.25-1.25v-1.75h1.75a1.25 1.25 0 0 0 1.25-1.204c.496.128 1.02.204 1.55.204a6.554 6.554 0 0 0 6.55-6.55c0-3.631-2.953-6.45-6.55-6.45ZM10.45 8.6a5.054 5.054 0 0 1 5.05-5.05c2.802 0 5.05 2.181 5.05 4.95a5.054 5.054 0 0 1-5.05 5.05c-.68 0-1.38-.171-2.005-.44a.75.75 0 0 0-1.046.69v.75H10.7c-.69 0-1.25.56-1.25 1.25v1.75H7.7c-.69 0-1.25.56-1.25 1.25v1.5a.25.25 0 0 1-.25.25H3.7a.25.25 0 0 1-.25-.25v-2.172c0-.331.132-.65.366-.884l6.236-6.235a1.774 1.774 0 0 0 .486-1.564 4.917 4.917 0 0 1-.088-.845Z" fill="oklch (var(--gray-95))"/></svg>
-                <div style="overflow: hidden;">Encrypt</div>
+            <fragment id="GeneratePass-encrypted-icon" slot="trigger" class="flex-center-childs text-as-button blink"> 
+              
+                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM18 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="oklch(var(--gray-95))"></path>
+                    </svg> 
+
             </fragment>
 
             <fragment slot="content" > 
                 <menu  class="glass subtle-shadow" style="width: var(--size-xl3);" id="GeneratePass-encrypted" >
 
                     <div class="max-width" style="padding :var(--padding-3);padding-block-end: 0;" >Encrypted password :</div>
-                    <div id="GeneratePass-encrypted-pass" class="ellipsis max-width" style="padding :var(--padding-3);"></div>
+                    <div id="GeneratePass-encrypted-pass" class="ellipsis max-width" style="padding :var(--padding-3); padding-block-start: 0;">
+                        <div style="width: unset;" class="skeleton"></div>
+                    </div>
                     
                     <li >
                         <button id="GeneratePass-encrypted-pass-copy" class="not-prose max-width flex-with-gap no-select">
@@ -135,9 +146,7 @@ import Menu from '../components/ui/Menu';
             </fragment>
         </Menu>
 
-        <div class="not-prose">
-            <TempList />  
-        </div>
+
     
 
     </div>
@@ -172,7 +181,7 @@ pass.on(["rPassword"], ({value}) => { document.getElementById("GeneratePass-r-pa
     document.getElementById(id)?.classList.remove('blink'));
 
 document.getElementById("GeneratePass")!.addEventListener("click",(e)=>{
-   if((e!.target as HTMLInputElement).matches("#GeneratePass-copy-hint")){
+   if((e!.target as HTMLInputElement).matches("#GeneratePass-copy-hint , #GeneratePass-r-password")){
       navigator.clipboard.writeText(pass.get("Password"));  
       showToast(); 
    }
