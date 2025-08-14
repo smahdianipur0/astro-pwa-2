@@ -7,7 +7,6 @@ import QRCode from '../components/QRCode.astro';
 import About from '../components/About.astro';
 import Emails from '../components/Emails.astro';
 import Records from '../components/Records.astro';
-
 ---
 
 <Layout title="Generate and encrypt Passwords">
@@ -17,15 +16,10 @@ import Records from '../components/Records.astro';
 
 	     	<Emails/>
 			<GeneratePass/>
-			<Varification/> 
-			<details class="prose grid-layout">
-				<summary>More Tools</summary>
-				
-				<Encdec/>
-				<QRCode/> 
-			</details>
-			
-		
+			<Varification/> 	
+			<Encdec/>
+			<QRCode/> 
+
 	  </div> 
 	</div>
 
@@ -35,7 +29,6 @@ import Records from '../components/Records.astro';
 
 			<Records>
 
-
 		</div>
 	</div>
 
@@ -43,19 +36,11 @@ import Records from '../components/Records.astro';
 	<div class="tab-content three"> 
 		<div class="prose grid-layout" > 
 		
-			
+			<About/>
 
 		</div>
 	</div>
 
-
-	<div id="testAbout" class="tab-content four"> 
-		<div class="grid-layout prose">
-
-	   		<About/>
-	   		
-		</div>
-	</div>
     
 </Layout>
 
