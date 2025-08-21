@@ -5,7 +5,7 @@
   min-width: var(--size-lg2);
   vertical-align: middle;
   height: var(--size-md1);
-  transition: min-width 0.3s var(--appear-subtle);
+  transition: min-width 0.3s var(--appear);
 }
 
 .details > summary::-webkit-details-marker {

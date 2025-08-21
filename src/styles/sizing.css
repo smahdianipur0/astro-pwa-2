@@ -69,8 +69,7 @@
   --z-layer-neg-1: -1;
 
 
-  --appear:        cubic-bezier(0.6 , 1.45, 0.5, 1);
-  --appear-subtle: cubic-bezier(0.6 , 1.25, 0.5, 1);
-  --move:          cubic-bezier(0.32, 0.72, 0  , 1);
+  --appear: cubic-bezier(0.6 , 1.45, 0.5, 1);
+  --move:   cubic-bezier(0.32, 0.72, 0  , 1);
 
 }
