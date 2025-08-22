@@ -166,13 +166,10 @@ allTabRadios.forEach((radio) => {
     justify-content: center;
 }
 
-.bottom-nav-one::before, .bottom-nav-two::before{
+.bottom-nav-one::after,  .bottom-nav-two::after{
   content: "";
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   border-radius: 100px;
   border: 0.5px solid transparent;
   -webkit-mask: linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
