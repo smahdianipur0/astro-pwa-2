@@ -49,6 +49,10 @@ export const credentialSchema = z.object({
 
 export const UID = z.object({UID:z.string()});
 
+export const createVault = z.object({
+    UID:z.string(),
+    vaultName:z.string(),
+});
 
 export const VaultsArraySchema = z.object({
     id: z.string().optional(),

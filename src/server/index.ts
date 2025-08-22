@@ -3,16 +3,12 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import {z} from "zod"
 
-import { registrationInputSchema, authenticationInputSchema, credentialSchema, UID, syncVaultsSchema } from './schemas';
+import { registrationInputSchema, authenticationInputSchema,createVault, credentialSchema, UID, syncVaultsSchema } from './schemas';
 import { dbquery, dbCreate, toRecordId,mapRelation, mapTable, type ReadAllResultTypes} from "../utils/surrealdb-cloud";
 import { RecordId } from "surrealdb";
 import { type Result, Ok, Err, handleTRPCError, AuthenticationError,ValidationError } from "../utils/error"
 import { hasPermission } from './permissions.ts'
 import { type Context } from "./context.ts";
-import { customAlphabet } from 'nanoid'
-
-const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 20)
-
 
 
 const t = initTRPC.context<Context>().create({
@@ -124,6 +120,88 @@ export const appRouter = router({
             }
         }),
 
+    createVaults : t.procedure
+        .input(createVault)
+        .mutation(async ({ input }) => {
+
+            const isValid = await dbquery(
+                'RETURN string::is::record($N);',
+                { N: input.vaultName }
+            );
+
+            if (isValid.err)    {handleTRPCError(isValid.value)};
+            if (!isValid.value) {
+                throw new TRPCError({code: "BAD_REQUEST", message: "Vault Name is not isValid"})
+            }
+
+            const exists = await dbquery(
+                'RETURN record::exists(type::thing({$N}));',
+                { N: input.vaultName }
+            );
+
+            if (exists.err)    {handleTRPCError(exists.value)}
+            if (!exists.value) {
+                throw new TRPCError({code: "BAD_REQUEST", message: "Vault Name Allready exist"})
+            }
+
+            const userID = getUserByUID(input.UID);
+
+            const create = await dbquery(`
+                BEGIN TRANSACTION;
+
+                LET $contentid = $content.id;
+                LET $time = {updatedAt : $content.updatedAt};
+                
+                UPSERT $content.id CONTENT $content;
+                RELATE $user -> Access -> $contentid CONTENT $time;
+
+
+                COMMIT TRANSACTION;
+            `,{                
+                user: userID,
+                content: {
+                    id: new RecordId("Vaults", input.vaultName),
+                    name: input.vaultName,
+                    status: "available",
+                    updatedAt: new Date().toISOString(),
+                }
+            });
+
+            if(create.err){handleTRPCError(create.value)}
+            return {message: "vault created successfully"}
+
+        }),
+
+    relateVaults : t.procedure
+        .input(createVault)
+        .mutation(async ({ input }) => {
+
+            const exists = await dbquery(
+                'RETURN record::exists(type::thing({$N}));',
+                { N: input.vaultName }
+            );
+
+            if (exists.err)    {handleTRPCError(exists.value)}
+            if (!exists.value) {
+                throw new TRPCError({code: "BAD_REQUEST", message: "Vault Name Allready exist"})
+            }
+
+            const userID = getUserByUID(input.UID);
+
+            const relate = await dbquery(
+                `RELATE $user -> Access -> $vault CONTENT $relation;`,{                
+                user: userID,
+                vault: new RecordId("Vaults", input.vaultName),
+                relation: {
+                    role: 'owner',
+                    updatedAt: new Date().toISOString(),
+                }
+            });
+
+            if(relate.err){handleTRPCError(relate.value)}
+            return {message: "vault created successfully"}
+        }),
+
     syncvaults : t.procedure
         .input(syncVaultsSchema)
         .mutation(async ({ input }) => {
@@ -137,13 +215,7 @@ export const appRouter = router({
                   throw new TRPCError({code: 'UNAUTHORIZED',message: "Authentication failed"});
             }
 
-            const rawUserID = await dbquery(`
-                SELECT id FROM Users WHERE UID = $UID`,
-                {UID:credentialObj.id}
-            )
-            if (rawUserID.err) { handleTRPCError(rawUserID.value);}
-            const userID = toRecordId(rawUserID.value[0][0].id?.toString()) ;
-
+            const userID = getUserByUID(credentialObj.id);
           
             // Manage permission
             const query = await dbquery(`
@@ -160,38 +232,13 @@ export const appRouter = router({
             if (query.err) { handleTRPCError(query.value) };
 
             const userAccess = query.value[0] as ReadAllResultTypes["Access"];
-            const accessVault = query.value[1] as ReadAllResultTypes["Access"];
             const oldContain = query.value[2] as ReadAllResultTypes["Contain"];
-            const contain = mapRelation(input.contain) as ReadAllResultTypes["Contain"];
+            const contain    = mapRelation(input.contain) as ReadAllResultTypes["Contain"];
+            const allContain = [...oldContain, ...contain] ;
 
-
-            const viewers = mapRelation(accessVault
-              .filter(av => !userAccess.some(ua => ua.out === av.out))
-              .map(av => ({
-                id:av.id ,
-                in: userID, 
-                out: av.out, 
-                role: 'viewer'
-            }))) as ReadAllResultTypes["Access"];
-
-         
-            const owners = mapTable(input.vaults)
-              .filter(v => !accessVault.some(av => av.out.id === v.id?.id))
-              .map(v => ({
-                id: new RecordId("Access", nanoid()),
-                in: userID, 
-                out: v.id, 
-                role: 'owner', 
-                updatedAt: new Date().toISOString()
-            })) as ReadAllResultTypes["Access"];
-
-
-            const sanitizedAccess = [...owners,...viewers,];
-            const allAccess       = [...userAccess,...viewers,...owners];
-            const allContain      = [...oldContain, ...contain] ;
 
             const sanitizedVaults = mapRelation(input.vaults).filter(vault => {
-                const access = allAccess.find(a => a.out.id === vault.id?.id);
+                const access = userAccess.find(a => a.out.id === vault.id?.id);
                 if (!access) return false;
                 return hasPermission(access.role, "vault:create");
             });
@@ -201,25 +248,22 @@ export const appRouter = router({
               const link = allContain.find(c => (c.out )?.id === card.id?.id);
               if (!link) return false;
                    
-              const access = allAccess.find(a => (a.out )?.id === link?.in?.id);
+              const access = userAccess.find(a => (a.out )?.id === link?.in?.id);
               if (!access) return false;
      
               return hasPermission(access.role, "card:add");
             });
 
-           
             // Dump
             const dump = await dbquery(`
                 BEGIN TRANSACTION;
 
-                FOR $access  IN $accessArray   { INSERT RELATION  INTO Access $access };
                 FOR $vault   IN $vaultsArray   { UPSERT $vault.id CONTENT $vault };
                 FOR $contain IN $containsArray { INSERT RELATION  INTO Contain $contain };
                 FOR $card    IN $cardsArray    { UPSERT $card.id  CONTENT $card };
 
                 COMMIT TRANSACTION;
             `,{
-                accessArray:   mapRelation(sanitizedAccess),
                 vaultsArray:   mapTable(sanitizedVaults),
                 containsArray: mapRelation(input.contain),
                 cardsArray:    mapTable(sanitizedCards)
@@ -237,6 +281,15 @@ export const appRouter = router({
 
 export type AppRouter = typeof appRouter;
 
+
+async function getUserByUID(UID:string) {
+    const rawUserID = await dbquery(`
+        SELECT id FROM Users WHERE UID = $UID`,
+        {UID: UID}
+    )
+    if (rawUserID.err) { handleTRPCError(rawUserID.value) }
+    return toRecordId(rawUserID.value[0][0].id?.toString()) ;
+}
 
 
 type AuthenticationData = z.infer<typeof authenticationInputSchema>['authenticationData'];
