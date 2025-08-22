@@ -14,7 +14,7 @@ export function Emails(entry:ReadResultTypes["Emails"], isEditing:boolean): JSX.
             background-color:transparent; 
             padding-inline: 0;'>  
 
-            <div data-swapy-item={entry.id} class="flex-spread-childs max-width">
+            <div data-swapy-item={entry.id} class="flex-spread-childs max-width" style="height: var(--size-sm4);">
 
                 <div>
                     <button 
@@ -23,8 +23,7 @@ export function Emails(entry:ReadResultTypes["Emails"], isEditing:boolean): JSX.
                         class="not-prose ellipsis" 
                         style={`text-align: start; 
                         width: ${isEditing ? " calc(var(--size-xl2) - var(--size-sm2))" : "var(--size-xl3)"};
-                        font-size: var(--font-lg1);
-                        font-weight: 300;
+                        font-weight: 600;
                         color: oklch(var(--gray-95));
                         padding: var(--padding-0);
                         padding-inline: 0;`}>

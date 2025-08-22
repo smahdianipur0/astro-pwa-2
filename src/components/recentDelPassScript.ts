@@ -1,5 +1,4 @@
 import { dbCreate, dbDelete, getEntryById, toRecordId } from "../utils/surrealdb-indexed";
-import { RecordId } from "surrealdb";
 import { el } from "../utils/elementUtils";
 import { showToast } from "../logic/misc";
 import { tempList } from "../logic/tempList.ts" 

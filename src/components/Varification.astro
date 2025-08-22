@@ -2,7 +2,9 @@
     <legend>Varification Code</legend>
 
     <div class="flex-spread-childs">
-        <label for="Varification-ops">Varification key Format</label>
+        <label 
+            style="color: oklch(var(--gray-95))" 
+            for="Varification-ops">Varification key Format</label>
 
         <select id="Varification-ops" name="detect mode">
             <option selected>Auto</option>
@@ -12,8 +14,8 @@
     </div>
 
     <textarea 
+        class="shiny-text"
         id="Varification-input" 
-        class=" dent-shadow" 
         style=" margin-top: var(--size-sm1);" 
         rows="2" 
         placeholder="Varification Key"></textarea>
@@ -25,12 +27,8 @@
             display: flex;
             position: relative;
             justify-content: space-between;
-            align-items: center;">
+            align-items: center;"></div>
 
-                <div class="skeleton" style="width:var(--size-lg4)"></div>
-                <div class="skeleton" style="width:var(--size-lg1);"></div>
-                       
-        </div>
     </div>
 </fieldset>
 
@@ -41,6 +39,7 @@ import { showToast } from '../logic/misc'
 import { render } from "solid-js/web"
 import { Verification } from './Varification'
 
+document.getElementById("Varification-input")?.classList.remove('shiny-text');
 
 document.getElementById("Varification")!.addEventListener("input",(e)=>{
    if((e!.target as HTMLInputElement).matches("#Varification-input")){

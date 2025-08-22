@@ -1,0 +1,31 @@
+<form autocomplete="off" id="KeyIv" >
+    <section style="position: relative;">
+
+        <input
+            id="KeyIv-k-input"
+            type="text"
+            name="Key"
+            placeholder="Key"/>
+
+        <span id="KeyIv-k-chars" style="top :calc( (var(--size-md3) - var(--size-sm4)) / 2);"></span> 
+
+        <input
+            id="KeyIv-i-input"
+            type="text"
+            name="IV"
+            placeholder="IV"/>
+
+        <span id="KeyIv-i-chars" style="bottom: calc( (var(--size-md3) - var(--size-sm4)) / 2);" ></span>
+
+    </section>
+</form>
+
+<style>
+
+#KeyIv-k-chars, #KeyIv-i-chars {
+  position: absolute;
+  right: var(--size-sm2);
+  pointer-events: none;
+}
+
+</style>

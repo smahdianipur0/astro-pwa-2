@@ -63,7 +63,7 @@ svg{
    animation: blink 1s ease-in-out infinite;
 }
 
-.shiny-text {
+.shiny-text, .shiny-text::placeholder {
     color: #b5b5b5a4;
     background: linear-gradient(120deg,#fff0 40%,#fffc,#fff0 60%);
     background-size:200% 100%;
@@ -72,6 +72,7 @@ svg{
     display: inline-block;
     animation: shine 2s linear infinite;
 }
+
 @keyframes shine {
   0% { background-position: 100%; }
   100% { background-position: -100%; }

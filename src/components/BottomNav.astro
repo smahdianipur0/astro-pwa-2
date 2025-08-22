@@ -1,6 +1,6 @@
 ---
 import Menu from '../components/ui/Menu';
-import KeyIv from '../components/KeyIv';
+import KeyIv from '../components/KeyIv.astro';
 ---
 
 <div class="bottom-nav-parent">
@@ -10,7 +10,7 @@ import KeyIv from '../components/KeyIv';
         <input 
             type="radio" 
             name="tab" 
-            class="sub-route hide-checkbox" 
+            class="hide-checkbox" 
             id="one" 
             tabindex="1" checked />
 
@@ -26,7 +26,7 @@ import KeyIv from '../components/KeyIv';
         <input 
             type="radio" 
             name="tab" 
-            class="sub-route hide-checkbox" 
+            class="hide-checkbox" 
             id="two" />
 
         <label class="nav-div" for="two" id="l_two">
@@ -42,7 +42,7 @@ import KeyIv from '../components/KeyIv';
         <input 
             type="radio" 
             name="tab" 
-            class="sub-route hide-checkbox" 
+            class="hide-checkbox" 
             id="three" />
 
         <label class="nav-div" for="three" id="l_three">
@@ -71,12 +71,14 @@ import KeyIv from '../components/KeyIv';
 
             <fragment slot="content" > 
                 <div
-                class="glass subtle-shadow" 
-                style="   width: var(--size-xl4);
-                border-radius: var(--radius-b);
-                background-color: oklch(var(--gray-25) / 55%);
-                padding: var(--size-sm3);">
-                <KeyIv client:only/> </div>
+                    class="glass subtle-shadow" 
+                    style="   width: var(--size-xl4);
+                    border-radius: var(--radius-b);
+                    background-color: oklch(var(--gray-25) / 55%);
+                    padding: var(--size-sm3);">
+
+                    <KeyIv/> 
+                </div>
             </fragment>
         </Menu>
 
@@ -122,6 +124,7 @@ allTabRadios.forEach((radio) => {
 });
 
 </script>
+<script src="../components/keyIv.ts"></script>
 
 <style is:global>
 
@@ -264,7 +267,7 @@ allTabRadios.forEach((radio) => {
 
 .gradient-blur > div:nth-of-type(2) {
   z-index: 3;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(3px);
   mask: linear-gradient(to bottom,#00000000 50%,#000000 75%,#000000 100%,#00000000 62.5%);
 }
 
@@ -272,7 +275,7 @@ allTabRadios.forEach((radio) => {
 .gradient-blur::after {
   content: "";
   z-index: 4;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(5px);
   mask: linear-gradient(to bottom,#00000000 87.5%,#000000 100%);
 }
 

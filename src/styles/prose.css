@@ -109,7 +109,7 @@
   padding-left:var(--size-xs3); 
   padding-right:var(--size-xs3);
   border-radius: var(--radius-a);
-  color: oklch(var(--gray-95) );
+  color: oklch(var(--gray-75));
   height: var(--size-md1) ;
   text-align: end;
   text-align-last: end;
