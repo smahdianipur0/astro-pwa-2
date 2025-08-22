@@ -70,6 +70,3 @@ export async function getEntryById<T extends TableName>(recordId: RecordId<T>): 
 export async function dbquery(query: string, params: { [key: string]: any }): Promise<Result<any, DBConnectionError | DBOperationError>> {
   return await handle(async (db) => await genericQuery(db, query, params));
 }
-
-// db.query('RETURN string::is::record($ID);',{ ID: ID })
-// db.query('RETURN record::exists(type::thing({$ID}));',{ ID: ID });
