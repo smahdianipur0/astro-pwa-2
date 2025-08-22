@@ -4,11 +4,13 @@ import superjson from "superjson";
 import {z} from "zod"
 
 import { registrationInputSchema, authenticationInputSchema,createVault, credentialSchema, UID, syncVaultsSchema } from './schemas';
-import { dbquery, dbCreate, toRecordId,mapRelation, mapTable, type ReadAllResultTypes} from "../utils/surrealdb-cloud";
+import { dbquery, dbCreate, toRecordId,mapRelation, mapTable, getEntryById} from "../utils/surrealdb-cloud";
+import type { ReadResultTypes, ReadAllResultTypes} from "../utils/surrealdb-cloud";
 import { RecordId } from "surrealdb";
 import { type Result, Ok, Err, handleTRPCError, AuthenticationError,ValidationError } from "../utils/error"
 import { hasPermission } from './permissions.ts'
 import { type Context } from "./context.ts";
+
 
 
 const t = initTRPC.context<Context>().create({
@@ -94,20 +96,18 @@ export const appRouter = router({
         .query(async({ input }) => { 
 
             const rawUserID = await dbquery(`
-                SELECT id FROM Users WHERE UID = $UID`,
+                SELECT id FROM Users WHERE UID = $UID;`,
                 {UID:input.UID}
             )
             if (rawUserID.err) { handleTRPCError(rawUserID.value);}
             const userID = rawUserID.value[0][0].id?.toString() as string;
 
              const query = await dbquery(`
-                BEGIN TRANSACTION;
 
                 SELECT * FROM $userID -> Access -> Vaults;
                 SELECT * FROM $userID -> Access -> Vaults -> Contain;
                 SELECT * FROM $userID -> Access -> Vaults -> Contain -> Cards;
 
-                COMMIT TRANSACTION;
             `,{userID: toRecordId(userID) }
             );
 
@@ -129,7 +129,7 @@ export const appRouter = router({
                 { N: input.vaultName }
             );
 
-            if (isValid.err)    {handleTRPCError(isValid.value)};
+            if (isValid.err)    { handleTRPCError(isValid.value)};
             if (!isValid.value) {
                 throw new TRPCError({code: "BAD_REQUEST", message: "Vault Name is not isValid"})
             }
@@ -139,7 +139,7 @@ export const appRouter = router({
                 { N: input.vaultName }
             );
 
-            if (exists.err)    {handleTRPCError(exists.value)}
+            if (exists.err)    { handleTRPCError(exists.value)}
             if (!exists.value) {
                 throw new TRPCError({code: "BAD_REQUEST", message: "Vault Name Allready exist"})
             }
@@ -147,7 +147,6 @@ export const appRouter = router({
             const userID = getUserByUID(input.UID);
 
             const create = await dbquery(`
-                BEGIN TRANSACTION;
 
                 LET $contentid = $content.id;
                 LET $time = {updatedAt : $content.updatedAt};
@@ -155,8 +154,6 @@ export const appRouter = router({
                 UPSERT $content.id CONTENT $content;
                 RELATE $user -> Access -> $contentid CONTENT $time;
 
-
-                COMMIT TRANSACTION;
             `,{                
                 user: userID,
                 content: {
@@ -164,7 +161,8 @@ export const appRouter = router({
                     name: input.vaultName,
                     status: "available",
                     updatedAt: new Date().toISOString(),
-                }
+                    role: 'owner'
+                } satisfies ReadResultTypes["Vaults"]
             });
 
             if(create.err){handleTRPCError(create.value)}
@@ -193,13 +191,16 @@ export const appRouter = router({
                 user: userID,
                 vault: new RecordId("Vaults", input.vaultName),
                 relation: {
-                    role: 'owner',
-                    updatedAt: new Date().toISOString(),
-                }
+                    role: 'viewer',
+                    updatedAt: new Date().toISOString()
+                } satisfies ReadResultTypes["Access"]
             });
 
+            const query = await getEntryById( new RecordId("Vaults", input.vaultName));
+            if (query.err) {handleTRPCError(query.value)}
+
             if(relate.err){handleTRPCError(relate.value)}
-            return {message: "vault created successfully"}
+            return {message: query.value}
         }),
 
     syncvaults : t.procedure
@@ -219,26 +220,23 @@ export const appRouter = router({
           
             // Manage permission
             const query = await dbquery(`
-                BEGIN TRANSACTION;
 
                 SELECT * FROM $userID -> Access ;
-                SELECT * FROM Access WHERE out IN $vaults ;
                 SELECT * FROM $userID -> Access -> Vaults -> Contain;
 
-                COMMIT TRANSACTION;
             `,{userID: userID,vaults: input.vaults.map( ({id, ...out}) => toRecordId(id ?? "") )}
             );
 
             if (query.err) { handleTRPCError(query.value) };
 
             const userAccess = query.value[0] as ReadAllResultTypes["Access"];
-            const oldContain = query.value[2] as ReadAllResultTypes["Contain"];
+            const oldContain = query.value[1] as ReadAllResultTypes["Contain"];
             const contain    = mapRelation(input.contain) as ReadAllResultTypes["Contain"];
             const allContain = [...oldContain, ...contain] ;
 
 
             const sanitizedVaults = mapRelation(input.vaults).filter(vault => {
-                const access = userAccess.find(a => a.out.id === vault.id?.id);
+                const access = userAccess.find(a => a.out?.id === vault.id?.id);
                 if (!access) return false;
                 return hasPermission(access.role, "vault:create");
             });
@@ -256,13 +254,11 @@ export const appRouter = router({
 
             // Dump
             const dump = await dbquery(`
-                BEGIN TRANSACTION;
 
                 FOR $vault   IN $vaultsArray   { UPSERT $vault.id CONTENT $vault };
                 FOR $contain IN $containsArray { INSERT RELATION  INTO Contain $contain };
                 FOR $card    IN $cardsArray    { UPSERT $card.id  CONTENT $card };
 
-                COMMIT TRANSACTION;
             `,{
                 vaultsArray:   mapTable(sanitizedVaults),
                 containsArray: mapRelation(input.contain),
@@ -284,7 +280,7 @@ export type AppRouter = typeof appRouter;
 
 async function getUserByUID(UID:string) {
     const rawUserID = await dbquery(`
-        SELECT id FROM Users WHERE UID = $UID`,
+        SELECT id FROM Users WHERE UID = $UID;`,
         {UID: UID}
     )
     if (rawUserID.err) { handleTRPCError(rawUserID.value) }

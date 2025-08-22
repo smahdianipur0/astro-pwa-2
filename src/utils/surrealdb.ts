@@ -9,8 +9,8 @@ export type Schemas = {
     RecentDelPass: {  title: string; password: string; crreatedAt: string };
     Vaults: {name: string; updatedAt: string, status:"available" | "deleted", role:"owner" | "viewer"};
     Cards: {name: string, data:string[]; updatedAt: string, status:"available" | "deleted"}
-    Access : {in: RecordId<string>, out: RecordId<string>, role: "owner" | "viewer", updatedAt: string},
-    Contain : {in: RecordId<string>, out: RecordId<string>, updatedAt: string },   
+    Access : {in?: RecordId<string>, out?: RecordId<string>, role: "owner" | "viewer", updatedAt: string},
+    Contain : {in?: RecordId<string>, out?: RecordId<string>, updatedAt: string },   
 };
 
 type prettify<T> = {[K in keyof T]: T[K];} & {};
@@ -102,7 +102,11 @@ export async function genericCreate< T extends `${TableName}:create`>(db: Surrea
 }
 
 export async function genericQuery(db: Surreal, query: string, params: { [key: string]: any }): Promise<any> {
-    const response = await db.queryRaw(query, params);
+    const response = await db.queryRaw(`
+        BEGIN TRANSACTION;
+        ${query}
+        COMMIT TRANSACTION;
+      `, params);
 
     if (response[response.length - 1].status === "ERR") {
         const errorObject = response.find(

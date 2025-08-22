@@ -77,13 +77,11 @@ export async function syncVaults(): Promise<void> {
 
   // 5. Update cloud→local for vaults & cards
   await dbquery(`
-    BEGIN TRANSACTION;
 
     FOR $vault   IN $vaultsArray   { UPSERT $vault.id CONTENT $vault};
     FOR $card    IN $cardsArray    { UPSERT $card.id  CONTENT $card };
     FOR $contain IN $containsArray { INSERT RELATION  INTO Contain $contain };
     
-    COMMIT TRANSACTION;
   `,{
     vaultsArray:   mapTable(vaultDiff.cloudToLocal),
     containsArray: mapRelation (containDiff.cloudToLocal),

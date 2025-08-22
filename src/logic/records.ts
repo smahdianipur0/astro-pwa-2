@@ -28,7 +28,7 @@ export const records = createStore({
 		async updateCardsList() {
 			if (this.get("selectedVault") !== "") {
 				const result = await dbquery(
-					`SELECT * FROM $vault -> Contain -> Cards`,
+					`SELECT * FROM $vault -> Contain -> Cards;`,
 					{ vault: new RecordId("Vaults", this.get("selectedVault").toString()) },
 				);
 
