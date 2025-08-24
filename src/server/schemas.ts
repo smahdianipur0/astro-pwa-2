@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { schemas } from "../utils/surrealdb"
 
 export const registrationInputSchema = z.object({ 
     challenge: z.string(),
@@ -54,29 +55,6 @@ export const createVault = z.object({
     vaultName:z.string(),
 });
 
-export const VaultsArraySchema = z.object({
-    id: z.string().optional(),
-    name: z.string(),
-    role: z.enum(["owner", "viewer"]).optional(),
-    status: z.enum(["deleted", "available"]).optional(),
-    updatedAt: z.string().datetime(),
-  });
-
-export const CardsArraySchema = z.object({
-    id: z.string().optional(),
-    name: z.string(),
-    status: z.enum(["deleted", "available"]).optional(),
-    updatedAt: z.string().datetime(),
-    data: z.array(z.string()),
-  }); 
-
-export const containArraySchema = z.object({
-    id: z.string().optional(),
-    in: z.string(),
-    out: z.string(),
-    updatedAt: z.string().datetime(),
-  });
-
 export const syncVaultsSchema = z.object({
     challenge: z.string(),  
     authenticationData: z.object({
@@ -92,7 +70,7 @@ export const syncVaultsSchema = z.object({
           userHandle: z.string(),
         }),
     }),
-    vaults: z.array(VaultsArraySchema),
-    contain: z.array(containArraySchema),
-    cards: z.array(CardsArraySchema),
+    vaults: z.array(schemas.Vaults),
+    contain: z.array(schemas.Contain),
+    cards: z.array(schemas.Cards),
 })

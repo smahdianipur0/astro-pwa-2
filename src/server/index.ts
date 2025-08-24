@@ -1,13 +1,13 @@
 import { server } from '@passwordless-id/webauthn'
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
-import {z} from "zod"
 
-import { registrationInputSchema, authenticationInputSchema,createVault, credentialSchema, UID, syncVaultsSchema } from './schemas';
+import { registrationInputSchema, authenticationInputSchema,createVault, UID, syncVaultsSchema } from './schemas';
 import { dbquery, dbCreate, toRecordId,mapRelation, mapTable, getEntryById} from "../utils/surrealdb-cloud";
 import type { ReadResultTypes, ReadAllResultTypes} from "../utils/surrealdb-cloud";
 import { RecordId } from "surrealdb";
-import { type Result, Ok, Err, handleTRPCError, AuthenticationError,ValidationError } from "../utils/error"
+import { handleTRPCError } from "../utils/error"
+import { verifyAuthentication } from '../logic/auth.ts'
 import { hasPermission } from './permissions.ts'
 import type { Context } from "./context.ts";
 
@@ -275,50 +275,4 @@ async function getUserByUID(UID:string) {
     )
     if (rawUserID.err) { handleTRPCError(rawUserID.value) }
     return toRecordId(rawUserID.value[0][0].id?.toString()) ;
-}
-
-
-type AuthenticationData = z.infer<typeof authenticationInputSchema>['authenticationData'];
-type CredentialObj = z.infer<typeof credentialSchema>;
-
-async function verifyAuthentication(authenticationData: AuthenticationData,challenge: string): 
- Promise<Result<{ authenticationParsed: Awaited<ReturnType<typeof server.verifyAuthentication>>; credentialObj: CredentialObj }, ValidationError | AuthenticationError>> {
-
-    const dbResult = await dbquery(
-        'SELECT credentials FROM Users WHERE UID = $UID ;',
-        { UID: authenticationData.id }
-    );
-    if (dbResult.err) {return dbResult}
-
-    if (
-        !Array.isArray(dbResult.value) || dbResult.value.length === 0 || 
-        !Array.isArray(dbResult.value[0]) || dbResult.value[0].length === 0 || 
-        !dbResult.value[0][0]?.credentials
-    ) { return new Err(new AuthenticationError("Invalid credential format" ))}
-
-    const dbcredentialObj = dbResult.value[0][0].credentials;
-    const parsedCredential = credentialSchema.safeParse(dbcredentialObj);
-
-    if (!parsedCredential.success) {
-    return new Err(new ValidationError("Credential does not match expected schema", {cause: parsedCredential.error } ))
-    }
-
-  const credentialObj = parsedCredential.data;
-
-    let authenticationParsed;
-    try {
-        authenticationParsed = await server.verifyAuthentication(authenticationData, credentialObj, {
-            challenge,
-            origin: "http://localhost:4321",
-            userVerified: true,
-        });
-
-        if (!authenticationParsed.userVerified) {
-            throw new Error("Authentication failed");
-        }
-    } catch (verifyError) {
-        return new Err(new AuthenticationError("Invalid credential format", {cause:`${verifyError}`} ))
-    }
-
-    return new Ok({ authenticationParsed, credentialObj });
 }

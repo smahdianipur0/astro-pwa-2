@@ -1,36 +1,77 @@
-import { Surreal, RecordId} from "surrealdb";
+import { Surreal, RecordId } from "surrealdb";
 import * as z from "zod";
 
+export const nodeSchemas = {
+    Users: z.object({
+        id: z.string().optional(),registered: z.boolean(),UID: z.string(), credentials: z.any(),updatedAt: z.string(),
+    }),
 
-export type Schemas = {
-    Users: { registered:boolean; UID: string; credentials: object; updatedAt: string};
-    PasswordEntry: { title: string; password: string; crreatedAt: string };
-    Emails: { email: string; crreatedAt: string };
-    RecentDelPass: {  title: string; password: string; crreatedAt: string };
-    Vaults: {name: string; updatedAt: string, status:"available" | "deleted", role:"owner" | "viewer"};
-    Cards: {name: string, data:string[]; updatedAt: string, status:"available" | "deleted"}
-    Access : {in?: RecordId<string>, out?: RecordId<string>, role: "owner" | "viewer", updatedAt: string},
-    Contain : {in?: RecordId<string>, out?: RecordId<string>, updatedAt: string },   
+    PasswordEntry: z.object({
+        id: z.string().optional(),title: z.string(),password: z.string(),crreatedAt: z.string(),
+    }),
+
+    Emails: z.object({
+        id: z.string().optional(),email: z.string(), crreatedAt: z.string(),
+    }),
+
+    RecentDelPass: z.object({
+        id: z.string().optional(),title: z.string(),password: z.string(),crreatedAt: z.string(),
+    }),
+
+    Vaults: z.object({
+        id: z.string().optional(),name: z.string(),updatedAt: z.string(), status: z.enum(["available", "deleted"]), role: z.enum(["owner", "viewer"]),
+    }),
+
+    Cards: z.object({
+        id: z.string().optional(), name: z.string(), data: z.array(z.string()),updatedAt: z.string(),status: z.enum(["available", "deleted"]),
+    }),
+} ;
+
+export const edgeSchemas = {
+    Access: z.object({
+        id: z.string().optional(), in: z.string().optional(),out: z.string().optional(),role: z.enum(["owner", "viewer"]), updatedAt: z.string(),
+    }),
+    
+    Contain: z.object({
+        id: z.string().optional(), in: z.string().optional(), out: z.string().optional(), updatedAt: z.string(),
+    }),
+} as const;
+
+type prettify<T> = { [K in keyof T]: T[K] } & {};
+
+export const schemas = { ...nodeSchemas, ...edgeSchemas } as const;
+
+type nodeTables = {
+    [K in keyof typeof nodeSchemas]: Omit<z.infer<(typeof nodeSchemas)[K]>, "id"> & {
+        id?: RecordId<string>;
+    };
 };
 
-type prettify<T> = {[K in keyof T]: T[K];} & {};
+type edgelTables = {
+    [K in keyof typeof edgeSchemas]: Omit<z.infer<(typeof edgeSchemas)[K]>, "id" | "in" | "out"> & {
+        id?: RecordId<string>;
+        in?: RecordId<string>;
+        out?: RecordId<string>;
+    };
+};
 
-const TableName =  z.enum(["Users", "PasswordEntry", "Emails","RecentDelPass", "Vaults", "Cards", "Access", "Contain"])
+export type Schemas = prettify<nodeTables & edgelTables>;
+
+const tableNames = Object.keys(schemas) as [keyof typeof schemas, ...(keyof typeof schemas)[]];
+const TableName = z.enum(tableNames);
 export type TableName = z.infer<typeof TableName>;
-
 
 
 // Generate CRUD types for all tables
 export type PermittedTypes = {
-    [K in keyof Schemas as `${K & string}:create`]: prettify<{ id?: RecordId<string> } & Partial<Schemas[K]>>;} & {
-
-    [K in keyof Schemas as `${K & string}:update`]: prettify<{ id: RecordId<string> } & Partial<Schemas[K]>>;} & {
-
+    [K in keyof Schemas as `${K & string}:create`]: prettify<{ id?: RecordId<string> } & Partial<Schemas[K]>>;
+} & {
+    [K in keyof Schemas as `${K & string}:update`]: prettify<{ id: RecordId<string> } & Partial<Schemas[K]>>;
+} & {
     [K in keyof Schemas as `${K & string}:delete`]: { id: RecordId<string> };
 };
 
-
-export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: RecordId<string> } & Schemas[K]>;};
+export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: RecordId<string> } & Schemas[K]>};
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
 

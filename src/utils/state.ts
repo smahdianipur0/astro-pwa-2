@@ -3,14 +3,11 @@ type StateEvent<K extends string, V> = { type: 'state'; name: K; value: V };
 type DerivedEvent<K extends string, V> = { type: 'derived'; name: K; value: V };
 type MethodEvent<K extends string, A extends unknown[]> = { type: 'method'; name: K; args: A };
 
-type getContext<T extends readonly string[]> = {
-  get<K extends T[number]>(key: K): any;
-};
-
-export function derive<T extends readonly string[], R>(deps: T,fn: (ctx: getContext<T>) => R): { 
-  deps: T; 
-  fn: (ctx: getContext<T>) => R } {
-  return { deps, fn };
+export function derive<const T extends readonly string[], R>(
+  deps: T,
+  fn: (ctx: { get<K extends T[number]>(key: K): any }) => R,
+) {
+  return { deps, fn } as const;
 }
 
 type DerivedDef<S, D extends DerivedDef<S, D> = any> = Record< string, {
