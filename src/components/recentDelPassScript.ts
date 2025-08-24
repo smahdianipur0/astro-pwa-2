@@ -18,7 +18,7 @@ import { List, dialog} from './RecentDelPass'
             render(() => List(), recentdellist);
         } else {
             (value ?? [])
-            .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
+            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
             .forEach((entry) => {
                 render(() => List(entry), recentdellist);
             });
@@ -65,14 +65,14 @@ import { List, dialog} from './RecentDelPass'
       (async () => {
 
       const title = document.getElementById("RecentDelPass-restore-item")?.children[0].textContent;
-      const crreatedAt = document.getElementById("RecentDelPass-restore-item")?.children[0].id ;
+      const createdAt = document.getElementById("RecentDelPass-restore-item")?.children[0].id ;
 
       const id = document.getElementById("RecentDelPass-restore-item")?.children[1].id;
       const password = document.getElementById("RecentDelPass-restore-item")?.children[1].textContent;
 
 
         if (title && password) {
-          await dbCreate("PasswordEntry:create", {title:title, password:password, crreatedAt: crreatedAt });
+          await dbCreate("PasswordEntry:create", {title:title, password:password, createdAt: createdAt });
           tempList.updateEntries();
 
           const rid = toRecordId(id ?? '');

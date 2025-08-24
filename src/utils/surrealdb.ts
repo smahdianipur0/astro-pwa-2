@@ -1,21 +1,23 @@
 import { Surreal, RecordId } from "surrealdb";
 import * as z from "zod";
 
+type prettify<T> = { [K in keyof T]: T[K] } & {};
+
 export const nodeSchemas = {
     Users: z.object({
-        id: z.string().optional(),registered: z.boolean(),UID: z.string(), credentials: z.any(),updatedAt: z.string(),
+        id: z.string().optional(),registered: z.boolean(),UID: z.string(), credentials: z.unknown(),updatedAt: z.string(),
     }),
 
     PasswordEntry: z.object({
-        id: z.string().optional(),title: z.string(),password: z.string(),crreatedAt: z.string(),
+        id: z.string().optional(),title: z.string(),password: z.string(),createdAt: z.string(),
     }),
 
     Emails: z.object({
-        id: z.string().optional(),email: z.string(), crreatedAt: z.string(),
+        id: z.string().optional(),email: z.string(), createdAt: z.string(),
     }),
 
     RecentDelPass: z.object({
-        id: z.string().optional(),title: z.string(),password: z.string(),crreatedAt: z.string(),
+        id: z.string().optional(),title: z.string(),password: z.string(),createdAt: z.string(),
     }),
 
     Vaults: z.object({
@@ -35,31 +37,42 @@ export const edgeSchemas = {
     Contain: z.object({
         id: z.string().optional(), in: z.string().optional(), out: z.string().optional(), updatedAt: z.string(),
     }),
-} as const;
+} ;
 
-type prettify<T> = { [K in keyof T]: T[K] } & {};
+const edgeEndpoints = {
+  Access:  { in: ["Users"] as const,  out: ["Vaults"] as const },
+  Contain: { in: ["Vaults"] as const, out: ["Cards"]  as const },
+} as const satisfies Record<EdgeName, { in: readonly NodeName[]; out: readonly NodeName[] }>;
+
+type NodeName = keyof typeof nodeSchemas;
+type EdgeName = keyof typeof edgeSchemas;
 
 export const schemas = { ...nodeSchemas, ...edgeSchemas } as const;
+export type TableName = keyof typeof schemas;
+
+type RecordIdMap = { [K in TableName]: RecordId<K>};
 
 type nodeTables = {
-    [K in keyof typeof nodeSchemas]: Omit<z.infer<(typeof nodeSchemas)[K]>, "id"> & {
-        id?: RecordId<string>;
-    };
+  [K in keyof typeof nodeSchemas]: prettify<Omit<z.infer<(typeof nodeSchemas)[K]>, "id"> & {
+    id?: RecordIdMap[K];
+  }>;
 };
 
-type edgelTables = {
-    [K in keyof typeof edgeSchemas]: Omit<z.infer<(typeof edgeSchemas)[K]>, "id" | "in" | "out"> & {
-        id?: RecordId<string>;
-        in?: RecordId<string>;
-        out?: RecordId<string>;
-    };
+type EdgeIn<E extends EdgeName> = typeof edgeEndpoints[E]["in"][number];
+type EdgeOut<E extends EdgeName> = typeof edgeEndpoints[E]["out"][number];
+
+type edgeTables = {
+  [E in EdgeName]: prettify<Omit<z.infer<(typeof edgeSchemas)[E]>, "id" | "in" | "out"> & {
+    id?: RecordId<E & string>;
+    in?: RecordId<EdgeIn<E> & string>;
+    out?: RecordId<EdgeOut<E> & string>;
+  }>;
 };
 
-export type Schemas = prettify<nodeTables & edgelTables>;
+export type Schemas = prettify<nodeTables & edgeTables>;
 
 const tableNames = Object.keys(schemas) as [keyof typeof schemas, ...(keyof typeof schemas)[]];
 const TableName = z.enum(tableNames);
-export type TableName = z.infer<typeof TableName>;
 
 
 // Generate CRUD types for all tables
@@ -88,6 +101,7 @@ function makeRecordIdSchema<P extends TableName = TableName>(table?: P) {
         return { table: tbl, id } as const;
     });
 }
+
 
 export function toRecordId<P extends TableName>(input: `${P}:${string}`): RecordId<P>;
 export function toRecordId<P extends TableName>(input: string, table?: P ): RecordId<P> | undefined;

@@ -81,7 +81,7 @@ export function dialog(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element {
 
     return (<>
 
-        <small id={entry?.crreatedAt ?? ''} style="margin:0" > {entry?.title || 'untitled'}</small>      
+        <small id={entry?.createdAt ?? ''} style="margin:0" > {entry?.title || 'untitled'}</small>      
         <div id={entry?.id?.toString() ?? ''} class="ellipsis" >{entry?.password ?? ''}</div>
 
     </>);

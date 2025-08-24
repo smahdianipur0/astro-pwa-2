@@ -150,7 +150,7 @@ email.on(["emailList"], ({value}) => {
     container.textContent = "";
 
     (value ?? [])
-        .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
         .forEach((entry) => {
             render(() => Emails(entry, email.get("isEditing")), document.getElementById("Email-list") as HTMLElement);
         });
@@ -169,7 +169,7 @@ email.on(["isEditing"], ({value}) =>{
     container.textContent = "";
 
     (email.get("emailList")?? [])
-    .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .forEach((entry) => {
         render(() => Emails(entry, value), document.getElementById("Email-list") as HTMLElement);
     });
@@ -182,7 +182,7 @@ swapy.onSwapEnd((event) => {
     event.slotItemMap.asArray.forEach((item) =>{(async () => {
         const emailId = toRecordId(item.item);
         if (!emailId) {return}
-            await dbUpdate("Emails:update",{id:emailId, crreatedAt:item.slot}); 
+            await dbUpdate("Emails:update",{id:emailId, createdAt:item.slot}); 
         })();      
     })
     email.updateEmailList();

@@ -16,7 +16,7 @@ export const email = createStore({
         },
 
         async addEmail(newEmail: string) {
-            await dbCreate("Emails:create", {email:newEmail, crreatedAt: new Date().toISOString()});
+            await dbCreate("Emails:create", {email:newEmail, createdAt: new Date().toISOString()});
             this.set('emailList',await dbReadAll("Emails") ?? [])
         },
 

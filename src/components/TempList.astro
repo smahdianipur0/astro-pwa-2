@@ -176,7 +176,7 @@ tempList.on(["isSearching", "searchArray"], pl => {
   } else {
 
     (tempList.get("isSearching") ? tempList.get("searchArray")  : (tempList.get("entries") ?? [])
-    .sort((a, b) => new Date(b.crreatedAt).getTime() - new Date(a.crreatedAt).getTime())).
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())).
     forEach((entry) => {
       render(() => Templist(entry), entriesList);
     });
@@ -244,7 +244,7 @@ tempList.on(["isSearching", "searchArray"], pl => {
         await dbCreate("PasswordEntry:create", {
           title:tempList.get("title"),
           password: tempList.get("password"),
-          crreatedAt: new Date().toISOString()
+          createdAt: new Date().toISOString()
         });
         tempList.setTitle("")
         if ((document.getElementById("TempList-inputs-auto-pass") as HTMLInputElement).checked){

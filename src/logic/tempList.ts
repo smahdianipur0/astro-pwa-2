@@ -12,7 +12,7 @@ export const tempList = createStore({
     	isSearching:  false,
 
     	entries:         ([]) as ReadAllResultTypes["PasswordEntry"] | [],
-    	recentDelEntries:([]) as ReadAllResultTypes["PasswordEntry"] | [],
+    	recentDelEntries:([]) as ReadAllResultTypes["RecentDelPass"] | [],
 	},
 
     methods: {
@@ -27,8 +27,8 @@ export const tempList = createStore({
     	async deleteEntries(id : RecordId<"PasswordEntry">) {
     		const entry = await getEntryById(id);
     		if (entry) {
-	            const { title, password, crreatedAt  } = entry;
-	            await dbCreate("RecentDelPass:create", {title: title, password: password, crreatedAt: crreatedAt });
+	            const { title, password, createdAt  } = entry;
+	            await dbCreate("RecentDelPass:create", {title: title, password: password, createdAt: createdAt });
 	        }
 	        dbDelete(id)
 	        this.set('entries', await dbReadAll("PasswordEntry") ?? []!);

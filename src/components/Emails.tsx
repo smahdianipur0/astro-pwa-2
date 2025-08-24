@@ -9,7 +9,7 @@ export function Emails(entry:ReadResultTypes["Emails"], isEditing:boolean): JSX.
     return(<>
 
         <li  
-            data-swapy-slot={entry.crreatedAt}
+            data-swapy-slot={entry.createdAt}
             style='width: 100%; 
             background-color:transparent; 
             padding-inline: 0;'>  
