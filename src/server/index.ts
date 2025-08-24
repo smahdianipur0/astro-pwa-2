@@ -89,7 +89,7 @@ export const appRouter = router({
             {UID:input.UID}
         )
         if (rawUserID.err) { handleTRPCError(rawUserID.value);}
-        const userID = rawUserID.value[0][0].id?.toString() as string;
+        const userID: string = rawUserID.value[0][0].id?.toString();
 
          const query = await dbquery(`
 
@@ -221,15 +221,16 @@ export const appRouter = router({
 
         const userAccess = query.value[0] as ReadAllResultTypes["Access"];
         const oldContain = query.value[1] as ReadAllResultTypes["Contain"];
-        const contain    = mapRelation(input.contain) as ReadAllResultTypes["Contain"];
+        const contain    = mapRelation(input.contain, "Contain") ;
         const allContain = [...oldContain, ...contain] ;
 
 
-        const sanitizedVaults = mapRelation(input.vaults).filter(vault => {
+        const sanitizedVaults = mapTable(input.vaults, "Vaults").filter(vault => {
             const access = userAccess.find(a => a.out?.id === vault.id?.id);
             if (!access) return false;
             return hasPermission(access.role, "vault:create");
         });
+
 
         const sanitizedCards  = mapTable(input.cards, "Cards").filter(card => {
             const link = allContain.find(c => (c.out )?.id === card.id?.id);
@@ -248,9 +249,9 @@ export const appRouter = router({
             FOR $contain IN $containsArray { INSERT RELATION  INTO Contain $contain };
             FOR $card    IN $cardsArray    { UPSERT $card.id  CONTENT $card };
             `,{
-            vaultsArray:   mapTable(sanitizedVaults, "Vaults"),
-            containsArray: mapRelation(input.contain),
-            cardsArray:    mapTable(sanitizedCards, "Cards")
+            vaultsArray:   sanitizedVaults,
+            containsArray: contain,
+            cardsArray:    sanitizedCards, 
             }
         );
 

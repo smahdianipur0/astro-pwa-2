@@ -13,8 +13,8 @@ import {
 	type TableName} from "./surrealdb"
 
 
-import { type ReadResultTypes,type ReadAllResultTypes, toRecordId,mapRelation, mapTable , relationIdStringify, tableIdStringify} from "./surrealdb"
-export { type ReadResultTypes, type ReadAllResultTypes, toRecordId, mapRelation, mapTable, relationIdStringify, tableIdStringify };
+import { type ReadResultTypes,type ReadAllResultTypes, toRecordId,mapRelation, mapTable, relationIdStringify, tableIdStringify} from "./surrealdb"
+export { type ReadResultTypes,type ReadAllResultTypes, toRecordId, mapRelation,mapTable, relationIdStringify, tableIdStringify};
 
 
 async function getDb() {

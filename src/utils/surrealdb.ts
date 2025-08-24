@@ -5,49 +5,84 @@ type prettify<T> = { [K in keyof T]: T[K] } & {};
 
 export const nodeSchemas = {
     Users: z.object({
-        id: z.string().optional(),registered: z.boolean().optional() ,UID: z.string(), credentials: z.unknown(),updatedAt: z.string(),
+        id: z.string().optional(),
+        registered: z.boolean().optional(),
+        UID: z.string(), 
+        credentials: z.unknown(),
+        updatedAt: z.string(),
     }),
 
     PasswordEntry: z.object({
-        id: z.string().optional(),title: z.string(),password: z.string(),createdAt: z.string(),
+        id: z.string().optional(),
+        title: z.string(),
+        password: z.string(),
+        createdAt: z.string(),
     }),
 
     Emails: z.object({
-        id: z.string().optional(),email: z.string(), createdAt: z.string(),
+        id: z.string().optional(),
+        email: z.string(), 
+        createdAt: z.string(),
     }),
 
     RecentDelPass: z.object({
-        id: z.string().optional(),title: z.string(),password: z.string(),createdAt: z.string(),
+        id: z.string().optional(),
+        title: z.string(),
+        password: z.string(),
+        createdAt: z.string(),
     }),
 
     Vaults: z.object({
-        id: z.string().optional(),name: z.string(),updatedAt: z.string(), status: z.enum(["available", "deleted"]), role: z.enum(["owner", "viewer"]),
+        id: z.string().optional(),
+        name: z.string(),
+        updatedAt: z.string(), 
+        status: z.enum(["available", "deleted"]), 
+        role: z.enum(["owner", "viewer"]),
     }),
 
     Cards: z.object({
-        id: z.string().optional(), name: z.string(), data: z.array(z.string()),updatedAt: z.string(),status: z.enum(["available", "deleted"]),
+        id: z.string().optional(), 
+        name: z.string(), 
+        data: z.array(z.string()),
+        updatedAt: z.string(),
+        status: z.enum(["available", "deleted"]),
     }),
 } ;
 
 export const edgeSchemas = {
     Access: z.object({
-        id: z.string().optional(), in: z.string().optional(),out: z.string().optional(),role: z.enum(["owner", "viewer"]), updatedAt: z.string(),
+        id: z.string().optional(), 
+        in: z.string().optional(),
+        out: z.string().optional(),
+        role: z.enum(["owner", "viewer"]), 
+        updatedAt: z.string(),
     }),
     
     Contain: z.object({
-        id: z.string().optional(), in: z.string().optional(), out: z.string().optional(), updatedAt: z.string(),
+        id: z.string().optional(), 
+        in: z.string().optional(), 
+        out: z.string().optional(), 
+        updatedAt: z.string(),
     }),
 } ;
 
 const edgeEndpoints = {
-  Access:  { in: ["Users"] as const,  out: ["Vaults"] as const },
-  Contain: { in: ["Vaults"] as const, out: ["Cards"]  as const },
-} as const satisfies Record<EdgeName, { in: readonly NodeName[]; out: readonly NodeName[] }>;
+    Access:  { 
+        in: ["Users"]  as const,  
+        out:["Vaults"] as const 
+    },
 
-type NodeName = keyof typeof nodeSchemas;
-type EdgeName = keyof typeof edgeSchemas;
+    Contain: { 
+        in: ["Vaults"] as const, 
+        out:["Cards"]  as const 
+    },
+} as const satisfies Record<EdgeName, { in: NodeName[]; out: NodeName[] }>;
 
+// derived types
 export const schemas = { ...nodeSchemas, ...edgeSchemas } as const;
+
+type NodeName =  keyof typeof nodeSchemas;
+type EdgeName =  keyof typeof edgeSchemas;
 export type TableName = keyof typeof schemas;
 
 type RecordIdMap = { [K in TableName]: RecordId<K>};
@@ -58,7 +93,7 @@ type nodeTables = {
   }>;
 };
 
-type EdgeIn<E extends EdgeName> = typeof edgeEndpoints[E]["in"][number];
+type EdgeIn <E extends EdgeName> = typeof edgeEndpoints[E]["in"] [number];
 type EdgeOut<E extends EdgeName> = typeof edgeEndpoints[E]["out"][number];
 
 type edgeTables = {
@@ -75,7 +110,6 @@ const tableNames = Object.keys(schemas) as [keyof typeof schemas, ...(keyof type
 const TableName = z.enum(tableNames);
 
 
-// Generate CRUD types for all tables
 export type PermittedTypes = {
     [K in keyof Schemas as `${K & string}:create`]: Schemas[K];
 } & {
@@ -87,7 +121,7 @@ export type PermittedTypes = {
 export type ReadResultTypes = {[K in keyof Schemas]: Schemas[K]};
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
-
+// conversion functions
 function makeRecordIdSchema<P extends TableName = TableName>(table?: P) {
     if (table !== undefined) {
         return z.templateLiteral([z.literal(table), ":", z.string()]).transform((s: string) => {
@@ -113,28 +147,28 @@ export function toRecordId(input: string, table?: TableName) {
         console.error(parsed.error);
         return;
     }
-
     return new RecordId(parsed.data.table, parsed.data.id);
 }
 
-
-export function mapRelation<T extends { id?: unknown; in?: unknown; out?: unknown }>(arr: T[]) {
-  return arr.map(({ id, in: inProp, out, ...rest }) => ({
-    id: toRecordId(id?.toString() ?? ""),
-    in: toRecordId(inProp?.toString() ?? ""),
-    out: toRecordId(out?.toString() ?? ""),
+export function mapTable<T extends NodeName, U extends { id?: string }>(
+  arr: U[],
+  tableName: T
+): (prettify<Omit<U, "id"> & { id?: RecordId<T> }>)[] {
+  return arr.map(({ id, ...rest }) => ({
+    ...(id ? { id: toRecordId(id, tableName) } : {}),
     ...rest,
   }));
 }
 
-export function mapTable<T extends NodeName>(
-  arr: ReadonlyArray<z.infer<(typeof nodeSchemas)[T]>>,
-  tableName: T
-): ReadAllResultTypes[T] {
-  return arr.map(({ id, ...rest }) => ({
-    ...(id ? { id: toRecordId(id.toString(), tableName) } : {}),
+export function mapRelation<E extends EdgeName, U extends { id?: string; in?: string; out?: string }>(
+  arr: U[],edge: E
+  ): ( prettify<Omit<U, "id" | "in" | "out"> & { id?: RecordId<E>;in?: RecordId<EdgeIn<E>>;out?: RecordId<EdgeOut<E>>;}>)[] {
+  return arr.map(({ id, in: inProp, out, ...rest }) => ({
+    ...(id ?     { id:  toRecordId(id, edge) } : {}),
+    ...(inProp ? { in:  toRecordId(inProp, edgeEndpoints[edge].in[0]) } : {}),
+    ...(out ?    { out: toRecordId(out, edgeEndpoints[edge].out[0]) } : {}),
     ...rest,
-  })) as unknown as ReadAllResultTypes[T];
+  }));
 }
 
 export function tableIdStringify<T extends { id?: unknown }>(arr: T[]) {
@@ -153,6 +187,8 @@ export function relationIdStringify<T extends { id?: unknown; in?: unknown; out?
   }));
 }
 
+
+// db functions
 export async function genericCreate< T extends `${TableName}:create`>(db: Surreal, action: T, data: PermittedTypes[T]): Promise<string> {
     await db.create<PermittedTypes[T]>(action.split(":")[0], data); 
     return "Ok";
