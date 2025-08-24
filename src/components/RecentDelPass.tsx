@@ -4,7 +4,7 @@ import Menu from "./ui/Menu";
 import DeleteMenu from './ui/DeleteMenu'
 
 
-export function List(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element {
+export function List(entry?: ReadResultTypes["RecentDelPass"]): JSX.Element {
   if (entry) {
     return (<>
 

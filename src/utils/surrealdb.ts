@@ -5,7 +5,7 @@ type prettify<T> = { [K in keyof T]: T[K] } & {};
 
 export const nodeSchemas = {
     Users: z.object({
-        id: z.string().optional(),registered: z.boolean(),UID: z.string(), credentials: z.unknown(),updatedAt: z.string(),
+        id: z.string().optional(),registered: z.boolean().optional() ,UID: z.string(), credentials: z.unknown(),updatedAt: z.string(),
     }),
 
     PasswordEntry: z.object({
@@ -77,14 +77,14 @@ const TableName = z.enum(tableNames);
 
 // Generate CRUD types for all tables
 export type PermittedTypes = {
-    [K in keyof Schemas as `${K & string}:create`]: prettify<{ id?: RecordId<string> } & Partial<Schemas[K]>>;
+    [K in keyof Schemas as `${K & string}:create`]: Schemas[K];
 } & {
-    [K in keyof Schemas as `${K & string}:update`]: prettify<{ id: RecordId<string> } & Partial<Schemas[K]>>;
+    [K in keyof Schemas as `${K & string}:update`]: prettify<Required<Pick<Schemas[K], "id">> & Partial<Omit<Schemas[K], "id">>>;
 } & {
-    [K in keyof Schemas as `${K & string}:delete`]: { id: RecordId<string> };
+    [K in keyof Schemas as `${K & string}:delete`]: { id: RecordIdMap[K] };
 };
 
-export type ReadResultTypes = {[K in keyof Schemas]: prettify<{id?: RecordId<string> } & Schemas[K]>};
+export type ReadResultTypes = {[K in keyof Schemas]: Schemas[K]};
 export type ReadAllResultTypes = { [K in keyof ReadResultTypes]: ReadResultTypes[K][] };
 
 
@@ -127,13 +127,15 @@ export function mapRelation<T extends { id?: unknown; in?: unknown; out?: unknow
   }));
 }
 
- export function mapTable<T extends { id?: unknown }>(arr: T[]) {
+export function mapTable<T extends NodeName>(
+  arr: ReadonlyArray<z.infer<(typeof nodeSchemas)[T]>>,
+  tableName: T
+): ReadAllResultTypes[T] {
   return arr.map(({ id, ...rest }) => ({
-    id: toRecordId(id?.toString() ?? ""),
+    ...(id ? { id: toRecordId(id.toString(), tableName) } : {}),
     ...rest,
-  }));
+  })) as unknown as ReadAllResultTypes[T];
 }
-
 
 export function tableIdStringify<T extends { id?: unknown }>(arr: T[]) {
   return arr.map(({ id, ...rest }) => ({

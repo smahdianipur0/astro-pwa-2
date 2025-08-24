@@ -231,8 +231,7 @@ export const appRouter = router({
             return hasPermission(access.role, "vault:create");
         });
 
-
-        const sanitizedCards  = mapTable(input.cards).filter(card => {
+        const sanitizedCards  = mapTable(input.cards, "Cards").filter(card => {
             const link = allContain.find(c => (c.out )?.id === card.id?.id);
             if (!link) return false;
                  
@@ -249,9 +248,9 @@ export const appRouter = router({
             FOR $contain IN $containsArray { INSERT RELATION  INTO Contain $contain };
             FOR $card    IN $cardsArray    { UPSERT $card.id  CONTENT $card };
             `,{
-            vaultsArray:   mapTable(sanitizedVaults),
+            vaultsArray:   mapTable(sanitizedVaults, "Vaults"),
             containsArray: mapRelation(input.contain),
-            cardsArray:    mapTable(sanitizedCards)
+            cardsArray:    mapTable(sanitizedCards, "Cards")
             }
         );
 
