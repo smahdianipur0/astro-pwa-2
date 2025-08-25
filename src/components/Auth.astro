@@ -23,7 +23,12 @@ import queryHelper  from "../utils/query-helper"
 const user = await dbReadAll("Users");
 
 if (user && user?.length === 0) {
-    dbCreate("Users:create", { registered: false });
+    dbCreate("Users:create", { 
+        registered: false, 
+        UID:"NOT_REGISTERED", 
+        credentials:{}, 
+        updatedAt:new Date().toISOString() 
+    });
     auth.setIndexedUid(false);
 }
 
@@ -99,7 +104,7 @@ document.getElementById("Auth-target")!.addEventListener("click", (e) => {
 
             // handle Succeeded regestration 
             updateSucceededAuth()                    
-            dbUpdate("Users:update", { id: userId, registered: true, UID: query.registration.id });
+            dbUpdate("Users:update", { id: userId, registered: true, UID: query.registration.id, updatedAt:new Date().toISOString() });
             auth.setIndexedUid(true);  
         })();
     }

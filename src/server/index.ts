@@ -1,10 +1,11 @@
 import { server } from '@passwordless-id/webauthn'
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
-
+import { z } from "zod";
 import { registrationInputSchema, authenticationInputSchema,createVault, UID, syncVaultsSchema } from './schemas';
 import { dbquery, dbCreate, toRecordId,mapRelation, mapTable, getEntryById} from "../utils/surrealdb-cloud";
-import type { ReadResultTypes, ReadAllResultTypes} from "../utils/surrealdb-cloud";
+import type {ReadResultTypes} from "../utils/surrealdb-cloud";
+import { schemas } from '../utils/surrealdb.ts';
 import { RecordId } from "surrealdb";
 import { handleTRPCError } from "../utils/error"
 import { verifyAuthentication } from '../logic/auth.ts'
@@ -219,8 +220,26 @@ export const appRouter = router({
 
         if (query.err) { handleTRPCError(query.value) };
 
-        const userAccess = query.value[0] as ReadAllResultTypes["Access"];
-        const oldContain = query.value[1] as ReadAllResultTypes["Contain"];
+        const parseUserAccess = z.array(schemas.Access).safeParse(query.value[0]);
+        if (!parseUserAccess.success) {
+            throw new TRPCError({
+                code: 'INTERNAL_SERVER_ERROR',
+                message: "error pasing Access table",
+                cause: parseUserAccess.error,
+            });
+        }
+        const userAccess = mapRelation(parseUserAccess.data, "Access")
+
+        const parseOldContain = z.array(schemas.Contain).safeParse(query.value[0]);
+        if (!parseOldContain.success) {
+            throw new TRPCError({
+                code: 'INTERNAL_SERVER_ERROR',
+                message: "error pasing ontain table",
+                cause: parseOldContain.error,
+            });
+        }
+        const oldContain = mapRelation(parseOldContain.data, "Access")
+
         const contain    = mapRelation(input.contain, "Contain") ;
         const allContain = [...oldContain, ...contain] ;
 

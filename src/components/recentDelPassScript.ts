@@ -72,7 +72,7 @@ import { List, dialog} from './RecentDelPass'
 
 
         if (title && password) {
-          await dbCreate("PasswordEntry:create", {title:title, password:password, createdAt: createdAt });
+          await dbCreate("PasswordEntry:create", {title:title, password:password, createdAt: createdAt ?? ""  });
           tempList.updateEntries();
 
           const rid = toRecordId(id ?? '');

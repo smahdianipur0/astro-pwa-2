@@ -216,7 +216,9 @@ tempList.on(["isSearching", "searchArray"], pl => {
   document.getElementById("TempList-update")!.addEventListener("click", (e) => {
     if((e!.target as HTMLInputElement).matches("#TempList-update-ok")) {
       (async () => {
-        const itemId = toRecordId((document.getElementById("TempList-update") as HTMLDialogElement).dataset._?? "");
+        const itemId = toRecordId(
+          ((document.getElementById("TempList-update") as HTMLDialogElement).dataset._?? "")
+          ,"PasswordEntry");
          
         itemId && dbUpdate("PasswordEntry:update", {
           id: itemId, 

@@ -1,4 +1,4 @@
-import { dbReadAll, dbquery, type ReadAllResultTypes, relationIdStringify, tableIdStringify, mapTable, mapRelation } from "../utils/surrealdb-indexed";
+import { dbReadAll, dbquery, relationIdStringify, tableIdStringify } from "../utils/surrealdb-indexed";
 import queryHelper from "../utils/query-helper";
 import { trpc } from "../utils/trpc";
 import { authQueryChallenge } from "../logic/auth";
@@ -48,15 +48,15 @@ function syncByKey<T extends Record<string, any>, K extends keyof T, D extends k
 export async function syncVaults(): Promise<void> {
   // 1. Load local state 
   const [users, vaults, contain, cards ] = await Promise.all([
-    dbReadAll("Users") as Promise<ReadAllResultTypes["Users"]>,
-    dbReadAll("Vaults") as Promise<ReadAllResultTypes["Vaults"]>,
-    dbReadAll("Contain") as Promise<ReadAllResultTypes["Contain"]>,
-    dbReadAll("Cards") as Promise<ReadAllResultTypes["Cards"]>,
+    dbReadAll("Users"),
+    dbReadAll("Vaults"),
+    dbReadAll("Contain"),
+    dbReadAll("Cards"),
   ]);
 
-  const UID = users[0]?.UID;
-  if (!UID) {console.error("No user UID found"); return};
+  if (!users || !vaults || !contain || !cards) {return}
 
+  const UID = users[0].UID;
 
   // 3. Load cloud state 
   const  cloudData = await queryHelper.noCacheQuery( "cloudVaults",() =>
@@ -83,9 +83,9 @@ export async function syncVaults(): Promise<void> {
     FOR $contain IN $containsArray { INSERT RELATION  INTO Contain $contain };
     
   `,{
-    vaultsArray:   mapTable(vaultDiff.cloudToLocal),
-    containsArray: mapRelation (containDiff.cloudToLocal),
-    cardsArray:    mapTable(cardDiff.cloudToLocal)
+    vaultsArray:   vaultDiff.cloudToLocal,
+    containsArray: containDiff.cloudToLocal,
+    cardsArray:    cardDiff.cloudToLocal
   });
 
 

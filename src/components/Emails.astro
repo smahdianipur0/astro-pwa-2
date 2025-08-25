@@ -180,7 +180,7 @@ email.on(["isEditing"], ({value}) =>{
 
 swapy.onSwapEnd((event) => {
     event.slotItemMap.asArray.forEach((item) =>{(async () => {
-        const emailId = toRecordId(item.item);
+        const emailId = toRecordId(item.item, "Emails");
         if (!emailId) {return}
             await dbUpdate("Emails:update",{id:emailId, createdAt:item.slot}); 
         })();      
