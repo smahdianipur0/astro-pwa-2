@@ -22,8 +22,8 @@ export function Emails(entry:ReadResultTypes["Emails"], isEditing:boolean): JSX.
                         data-action='copy' 
                         class="not-prose ellipsis" 
                         style={`text-align: start; 
-                        width: ${isEditing ? " calc(var(--size-xl2) - var(--size-sm2))" : "var(--size-xl3)"};
-                        font-weight: 600;
+                        width: ${isEditing ? " calc(var(--size-xl3) - var(--size-sm2));" : "calc(var(--size-xl4) - var(--size-sm2));"};
+                        font-weight: 700;
                         color: oklch(var(--gray-95));
                         padding: var(--padding-0);
                         padding-inline: 0;`}>
