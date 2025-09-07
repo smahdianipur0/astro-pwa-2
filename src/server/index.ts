@@ -1,17 +1,31 @@
-import { server } from '@passwordless-id/webauthn'
+import { server } from "@passwordless-id/webauthn";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { z } from "zod";
-import { registrationInputSchema, authenticationInputSchema,createVault, UID, syncVaultsSchema } from './schemas';
-import { dbquery, dbCreate, toRecordId,mapRelation, mapTable, getEntryById} from "../utils/surrealdb-cloud";
-import type {ReadResultTypes} from "../utils/surrealdb-cloud";
-import { schemas } from '../utils/surrealdb.ts';
 import { RecordId } from "surrealdb";
-import { handleTRPCError } from "../utils/error"
-import { verifyAuthentication } from '../logic/auth.ts'
-import { hasPermission } from './permissions.ts'
-import type { Context } from "./context.ts";
 
+import type { Context } from "./context.ts";
+import type { ReadResultTypes } from "../utils/surrealdb-cloud";
+
+import {
+  dbquery,
+  dbCreate,
+  toRecordId,
+  mapRelation,
+  mapTable,
+  getEntryById,
+} from "../utils/surrealdb-cloud";
+import {
+  registrationInputSchema,
+  authenticationInputSchema,
+  createVault,
+  UID,
+  syncVaultsSchema,
+} from "./schemas";
+import { schemas } from "../utils/surrealdb.ts";
+import { handleTRPCError } from "../utils/error";
+import { verifyAuthentication } from "../logic/auth.ts";
+import { hasPermission } from "./permissions.ts";
 
 
 const t = initTRPC.context<Context>().create({
@@ -22,7 +36,6 @@ const t = initTRPC.context<Context>().create({
 });
 
 export const router = t.router;
-
 
 export const appRouter = router({
 
@@ -230,7 +243,7 @@ export const appRouter = router({
         }
         const userAccess = mapRelation(parseUserAccess.data, "Access")
 
-        const parseOldContain = z.array(schemas.Contain).safeParse(query.value[0]);
+        const parseOldContain = z.array(schemas.Contain).safeParse(query.value[1]);
         if (!parseOldContain.success) {
             throw new TRPCError({
                 code: 'INTERNAL_SERVER_ERROR',
