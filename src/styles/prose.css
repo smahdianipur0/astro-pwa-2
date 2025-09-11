@@ -789,8 +789,8 @@
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > li:not(:where([class~=not-prose],[class~=not-prose] *)){
   display: flex;
   place-content: space-between;
-  width: calc(100% - (var(--size-xs2) * 2));
-  margin-block-start: var(--size-xs2);
+  width: calc(100% - (var(--size-xs3) * 2));
+  margin-block-start: var(--size-xs3);
   padding: var(--padding-4);
   border-radius: calc( var(--radius-b) - var(--size-xs2));
   position: relative;
@@ -800,13 +800,14 @@
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)).menu-horizontal > li:not(:where([class~=not-prose],[class~=not-prose] *)){
   height: var(--size-md1);
   padding: var(--padding-0);
+  margin-block-start: var(--size-xs1);
   margin-block-end: var(--size-xs1);
   margin-inline-start:  var(--size-xs1) ;
   border-radius: var(--radius-a) ;
 }
 
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > :last-child:not(:where([class~=not-prose],[class~=not-prose] *)){
-  margin-block-end: var(--size-xs2);
+  margin-block-end: var(--size-xs3);
 }
 
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)).menu-horizontal > :last-child:not(:where([class~=not-prose],[class~=not-prose] *)){

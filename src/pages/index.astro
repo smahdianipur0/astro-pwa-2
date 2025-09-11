@@ -46,11 +46,12 @@ import Records from '../components/Records.astro';
 
 <script src="../components/recentDelPassScript.ts"></script>
 
-<style>
+<style is:global >
 	
 .grid-layout {
 	display: grid;
 	gap:var(--size-sm3);
+	margin-block-start: var(--size-sm0);
 	grid-template-columns: repeat(auto-fit, clamp(200px, 350px, 100% ) )  ;
 	justify-content: center;
  	padding-bottom: calc(var(--size-lg3) + var(--size-sm3));
