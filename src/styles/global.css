@@ -162,7 +162,6 @@ svg{
   border: 0.25px solid oklch(var(--gray-95) / 0.1);
   height: calc((var(--size-md2)  - 3px) - 10px);
   margin-top: calc(((var(--size-md2)  - 3px) - ((var(--size-md2)  - 3px) - 10px)) / 2);
-  right: calc( var(--size-lg1) - 0.25px );
   z-index: var(--z-layer-pos-2);
 }
 

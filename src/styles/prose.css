@@ -792,7 +792,7 @@
   width: calc(100% - (var(--size-xs3) * 2));
   margin-block-start: var(--size-xs3);
   padding: var(--padding-4);
-  border-radius: calc( var(--radius-b) - var(--size-xs2));
+  border-radius: calc( var(--radius-b) - var(--size-xs3));
   position: relative;
   align-items: center;
 }
