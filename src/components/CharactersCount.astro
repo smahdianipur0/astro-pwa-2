@@ -1,9 +1,7 @@
 <div id="CharactersCount" style="display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	margin-block-start: var(--size-sm4);
 	margin-block-end: var(--size-xs4);">
-
-	<label for="CharactersCount-input">Characters</label>
 
   	<div class="prose" style=" display: flex; gap: 0; margin-top: auto; margin-bottom: auto;">
 
@@ -13,7 +11,7 @@
 	    	aria-label="Increase Word Count" 
 	    	id="CharactersCount-minus" 
 	    	class="not-prose secondary-btn"
-	    	style="width: var(--size-lg1); margin-right:0; border-top-right-radius:0; border-bottom-right-radius:0 ">
+	    	style="width: var(--size-lg2); margin-right:0; border-top-right-radius:0; border-bottom-right-radius:0 ">
 
 	      		<svg style="padding:3px; pointer-events: none;" width="24" height="24" fill="none" viewBox="0 0 24 24">
 	       			<path d="M3.997 13H20a1 1 0 1 0 0-2H3.997a1 1 0 1 0 0 2Z" fill="oklch(var(--gray-95) / 1);" />
@@ -21,12 +19,12 @@
 
 	    	</button>
 
-	    	<div class="divider" style="right: calc(var(--size-lg1) - 0.25px);"></div>
+	    	<div class="divider" style="right: calc(var(--size-lg2) - 0.25px);"></div>
 
 	    	<select id="CharactersCount-input" 
 				class="number-input" 
 				name="Characters count" 
-				style="width:var(--size-lg1) ; 
+				style="width:var(--size-lg2) ; 
 				background-color: oklch(var(--gray-25));
 				color: oklch(var(--gray-95));
 				text-align-last: center;
@@ -45,13 +43,13 @@
 
 				</select>
 
-				<div class="divider" style="right: calc((var(--size-lg1) * 2) - 0.25px);"></div>
+				<div class="divider" style="right: calc((var(--size-lg2) * 2) - 0.25px);"></div>
 
 	    	<button 
 	    	aria-label="Decrease Word Count" 
 	    	id="CharactersCount-plus" 
 	    	class="not-prose secondary-btn"
-	    	style="width: var(--size-lg1); margin-left:0; border-top-left-radius: 0; border-bottom-left-radius: 0;" >
+	    	style="width: var(--size-lg2); margin-left:0; border-top-left-radius: 0; border-bottom-left-radius: 0;" >
 
       			<svg style="padding:3px; pointer-events: none;" width="24" height="24" fill="none" viewBox="0 0 24 24">
        				<path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="oklch(var(--gray-95) / 1);" />
