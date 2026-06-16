@@ -7,7 +7,67 @@ import Menu from '../components/ui/Menu';
 ---
 
 <fieldset class="box-shadow" style="color: oklch(var(--gray-95));" id="GeneratePass">
-    <legend>Generate Password</legend>
+    <legend class="flex-spread-childs" style="width: 100%;">
+
+        Password
+
+        <menu class="menu-horizontal" style="font-size: var(--font-sm4); width: initial;">
+
+            <li>
+                <button id="GeneratePass-copy-hint"  
+                    class="not-prose flex-with-gap blink" style="gap:0;">
+                        <svg style='width: var(--size-sm3); pointer-events: none; overflow: unset;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5.503 4.627 5.5 6.75v10.504a3.25 3.25 0 0 0 3.25 3.25h8.616a2.251 2.251 0 0 1-2.122 1.5H8.75A4.75 4.75 0 0 1 4 17.254V6.75c0-.98.627-1.815 1.503-2.123ZM17.75 2A2.25 2.25 0 0 1 20 4.25v13a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-13A2.25 2.25 0 0 1 8.75 2h9Zm0 1.5h-9a.75.75 0 0 0-.75.75v13c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75v-13a.75.75 0 0 0-.75-.75Z" fill="oklch (var(--gray-95))"/></svg>
+                            <path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm0 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17ZM12 7a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 12 7Z" fill="oklch (var(--gray-95))"/>
+                        </svg>
+                </button>
+            </li>
+
+            <li>
+                <div class="not-prose">
+                    <TempList />  
+                </div>
+            </li>
+
+
+            <li>
+                <Menu client:load>
+
+                    <fragment id="GeneratePass-encrypted-icon" slot="trigger" class="flex-center-childs blink"> 
+                      
+                            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM18 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="oklch(var(--gray-95))"></path>
+                            </svg> 
+
+                    </fragment>
+
+                    <fragment slot="content"> 
+                        <menu class="glass subtle-shadow " 
+                        style="width: var(--size-xl3);
+                        font-size: var(--size-sm1);
+                        line-height: var(--size-sm4);" id="GeneratePass-encrypted" >
+
+                            <div class="max-width" style="padding :var(--padding-3);padding-block-end: 0;" >Encrypted password :</div>
+                            <div id="GeneratePass-encrypted-pass" class="ellipsis max-width" style="padding :var(--padding-3); padding-block-start: 0;">
+                                <div style="width: unset;" class="skeleton"></div>
+                            </div>
+                            
+                            <li >
+                                <button id="GeneratePass-encrypted-pass-copy" class="not-prose max-width flex-with-gap no-select">
+                                    <svg style='width: var(--size-sm3); pointer-events: none;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.503 4.627 5.5 6.75v10.504a3.25 3.25 0 0 0 3.25 3.25h8.616a2.251 2.251 0 0 1-2.122 1.5H8.75A4.75 4.75 0 0 1 4 17.254V6.75c0-.98.627-1.815 1.503-2.123ZM17.75 2A2.25 2.25 0 0 1 20 4.25v13a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-13A2.25 2.25 0 0 1 8.75 2h9Zm0 1.5h-9a.75.75 0 0 0-.75.75v13c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75v-13a.75.75 0 0 0-.75-.75Z" fill="oklch (var(--gray-95))"/>
+                                    </svg>
+                                    <div style="pointer-events: none;" > Copy </div> 
+                                </button>
+                            </li>
+                            
+                        </menu>
+                    </fragment>
+                </Menu>
+
+            </li>
+
+        </menu>
+    </legend>
     <Tabs name="pass" tab1Label="Random" tab2Label="Manual" >
 
         <fragment slot="tab1">
@@ -66,7 +126,9 @@ import Menu from '../components/ui/Menu';
     column-gap: var(--size-sm2);
     flex-wrap: wrap;">
 
-        <Menu client:load>
+
+
+                            <Menu client:load>
             <fragment slot="trigger">
 
                 <div id="GeneratePass-led-div" class="flex-with-gap  blink" >
@@ -99,49 +161,7 @@ import Menu from '../components/ui/Menu';
             </fragment>
         </Menu>
 
-        <button id="GeneratePass-copy-hint"  
-            class="not-prose text-as-button flex-with-gap blink"
-            style="gap:0;">
-                <svg style='width: var(--size-sm3); pointer-events: none; overflow: unset;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5.503 4.627 5.5 6.75v10.504a3.25 3.25 0 0 0 3.25 3.25h8.616a2.251 2.251 0 0 1-2.122 1.5H8.75A4.75 4.75 0 0 1 4 17.254V6.75c0-.98.627-1.815 1.503-2.123ZM17.75 2A2.25 2.25 0 0 1 20 4.25v13a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-13A2.25 2.25 0 0 1 8.75 2h9Zm0 1.5h-9a.75.75 0 0 0-.75.75v13c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75v-13a.75.75 0 0 0-.75-.75Z" fill="oklch (var(--gray-95))"/></svg>
-                    <path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm0 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17ZM12 7a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 12 7Z" fill="oklch (var(--gray-95))"/>
-                </svg>
-                <div style="overflow: hidden; pointer-events: none; margin-inline-start: var(--size-xs2);" >Copy</div>
-        </button>
 
-        <div class="not-prose">
-            <TempList />  
-        </div>
-
-        <Menu client:load>
-
-            <fragment id="GeneratePass-encrypted-icon" slot="trigger" class="flex-center-childs text-as-button blink"> 
-              
-                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM18 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="oklch(var(--gray-95))"></path>
-                    </svg> 
-
-            </fragment>
-
-            <fragment slot="content" > 
-                <menu  class="glass subtle-shadow" style="width: var(--size-xl3);" id="GeneratePass-encrypted" >
-
-                    <div class="max-width" style="padding :var(--padding-3);padding-block-end: 0;" >Encrypted password :</div>
-                    <div id="GeneratePass-encrypted-pass" class="ellipsis max-width" style="padding :var(--padding-3); padding-block-start: 0;">
-                        <div style="width: unset;" class="skeleton"></div>
-                    </div>
-                    
-                    <li >
-                        <button id="GeneratePass-encrypted-pass-copy" class="not-prose max-width flex-with-gap no-select">
-                            <svg style='width: var(--size-sm3); pointer-events: none;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5.503 4.627 5.5 6.75v10.504a3.25 3.25 0 0 0 3.25 3.25h8.616a2.251 2.251 0 0 1-2.122 1.5H8.75A4.75 4.75 0 0 1 4 17.254V6.75c0-.98.627-1.815 1.503-2.123ZM17.75 2A2.25 2.25 0 0 1 20 4.25v13a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-13A2.25 2.25 0 0 1 8.75 2h9Zm0 1.5h-9a.75.75 0 0 0-.75.75v13c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75v-13a.75.75 0 0 0-.75-.75Z" fill="oklch (var(--gray-95))"/>
-                            </svg>
-                            <div style="pointer-events: none;" > Copy </div> 
-                        </button>
-                    </li>
-                    
-                </menu>
-            </fragment>
-        </Menu>
 
 
     
