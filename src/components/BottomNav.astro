@@ -69,7 +69,7 @@ import Popover from '../components/ui/Popover.astro'
                 </div>
             </fragment>
 
-            <div class="glass subtle-shadow" 
+            <div class="glass subtle-shadow keyIv-popover" 
                 style="   width: var(--size-xl4);
                 border-radius: var(--radius-b);
                 background-color: oklch(var(--gray-25) / 55%);
@@ -144,7 +144,6 @@ allTabRadios.forEach((radio) => {
 });
 
 </script>
-<!-- <script src="../components/keyIv.ts"></script> -->
 
 <style is:global>
 
@@ -254,6 +253,11 @@ allTabRadios.forEach((radio) => {
     outline: -webkit-focus-ring-color auto 1px;
 }
 
+.popover-panel:has(>.keyIv-popover){
+  position-area: top;  
+}
+
+
 .gradient-blur{
     position: fixed;
     z-index: var( --z-layer-pos-3);
@@ -323,9 +327,14 @@ allTabRadios.forEach((radio) => {
     padding-inline: var(--size-sm0);
   }
 
+  .popover-panel:has(>.keyIv-popover){
+    position-area: bottom;  
+  }
+
   .toast {
     margin-bottom: 0;
   }
+
   .gradient-blur{
     inset: -1px 0 auto 0;
     transform: scaleY(-1);
