@@ -2,6 +2,11 @@
   color: oklch(var(--gray-75) );
 }
 
+[popover]::backdrop{
+
+
+}
+
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *)), .prose-btn {
   padding: var(--padding-3);
   padding-block: 0;

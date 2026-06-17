@@ -1,9 +1,9 @@
 ---
 import Tabs from '../components/ui/Tabs.astro';
+import Popover from '../components/ui/Popover.astro'
 import CharactersCount from '../components/CharactersCount.astro';
 import CharactersPattern from '../components/CharactersPattern.astro'; 
 import TempList from '../components/TempList.astro';
-import Menu from '../components/ui/Menu';
 ---
 
 <fieldset class="box-shadow" style="color: oklch(var(--gray-95));" id="GeneratePass">
@@ -28,44 +28,43 @@ import Menu from '../components/ui/Menu';
                 </div>
             </li>
 
-
             <li>
-                <Menu client:load>
 
-                    <fragment id="GeneratePass-encrypted-icon" slot="trigger" class="flex-center-childs blink"> 
-                      
-                            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM18 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="oklch(var(--gray-95))"></path>
-                            </svg> 
+                <Popover>
+                    <fragment slot="trigger"> 
+                     
+                    <div id="GeneratePass-encrypted-icon" class="flex-center-childs blink" >
+                        
+                    
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM18 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="oklch(var(--gray-95))"></path>
+                        </svg> 
+
+                    </div> 
 
                     </fragment>
 
-                    <fragment slot="content"> 
-                        <menu class="glass subtle-shadow " 
+                    <menu class="glass" 
                         style="width: var(--size-xl3);
                         font-size: var(--size-sm1);
                         line-height: var(--size-sm4);" id="GeneratePass-encrypted" >
 
-                            <div class="max-width" style="padding :var(--padding-3);padding-block-end: 0;" >Encrypted password :</div>
-                            <div id="GeneratePass-encrypted-pass" class="ellipsis max-width" style="padding :var(--padding-3); padding-block-start: 0;">
-                                <div style="width: unset;" class="skeleton"></div>
-                            </div>
-                            
-                            <li >
-                                <button id="GeneratePass-encrypted-pass-copy" class="not-prose max-width flex-with-gap no-select">
-                                    <svg style='width: var(--size-sm3); pointer-events: none;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M5.503 4.627 5.5 6.75v10.504a3.25 3.25 0 0 0 3.25 3.25h8.616a2.251 2.251 0 0 1-2.122 1.5H8.75A4.75 4.75 0 0 1 4 17.254V6.75c0-.98.627-1.815 1.503-2.123ZM17.75 2A2.25 2.25 0 0 1 20 4.25v13a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-13A2.25 2.25 0 0 1 8.75 2h9Zm0 1.5h-9a.75.75 0 0 0-.75.75v13c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75v-13a.75.75 0 0 0-.75-.75Z" fill="oklch (var(--gray-95))"/>
-                                    </svg>
-                                    <div style="pointer-events: none;" > Copy </div> 
-                                </button>
-                            </li>
-                            
-                        </menu>
-                    </fragment>
-                </Menu>
-
+                        <div class="max-width" style="padding :var(--padding-3);padding-block-end: 0;" >Encrypted password :</div>
+                        <div id="GeneratePass-encrypted-pass" class="ellipsis max-width" style="padding :var(--padding-3); padding-block-start: 0;">
+                            <div style="width: unset;" class="skeleton"></div>
+                        </div>
+                        
+                        <li >
+                            <button id="GeneratePass-encrypted-pass-copy" class="not-prose max-width flex-with-gap no-select">
+                                <svg style='width: var(--size-sm3); pointer-events: none;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.503 4.627 5.5 6.75v10.504a3.25 3.25 0 0 0 3.25 3.25h8.616a2.251 2.251 0 0 1-2.122 1.5H8.75A4.75 4.75 0 0 1 4 17.254V6.75c0-.98.627-1.815 1.503-2.123ZM17.75 2A2.25 2.25 0 0 1 20 4.25v13a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-13A2.25 2.25 0 0 1 8.75 2h9Zm0 1.5h-9a.75.75 0 0 0-.75.75v13c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75v-13a.75.75 0 0 0-.75-.75Z" fill="oklch (var(--gray-95))"/>
+                                </svg>
+                                <div style="pointer-events: none;" > Copy </div> 
+                            </button>
+                        </li>   
+                    </menu>
+                </Popover>
             </li>
-
         </menu>
     </legend>
     <Tabs name="pass" tab1Label="Random" tab2Label="Manual" >
@@ -156,7 +155,6 @@ import Menu from '../components/ui/Menu';
   
 import { pass } from '../logic/pass';
 import { showToast } from '../logic/misc'
-import { el } from '../utils/elementUtils'
 
 document.getElementById("GeneratePass")!.addEventListener("change",(e)=>{
   if ((e!.target as HTMLInputElement).matches("#first-tab-id-pass")) {
@@ -211,8 +209,6 @@ pass.on(['strength'], ({value}) =>{
 })
 
 pass.on(['strength'], ({ value }) => {
-  (async () => {
-
     const strength = document.getElementById("GeneratePass-strength")  as HTMLElement;
 
     strength.textContent = '';
@@ -235,14 +231,12 @@ pass.on(['strength'], ({ value }) => {
     } else {
       strength.textContent = value;
     }
-  })();
 });
 
 pass.on(["encryptedPass", "keyIvIsValid"], pl => {
-    (async () => {
+        const encryptedPass = document.getElementById("GeneratePass-encrypted-pass")  as HTMLButtonElement;
+        const encryptedPassCopy = document.getElementById("GeneratePass-encrypted-pass-copy")  as HTMLButtonElement;
 
-        const encryptedPass = (await el.wait("#GeneratePass-encrypted-pass")) as HTMLButtonElement;
-        const encryptedPassCopy = (await el.wait("#GeneratePass-encrypted-pass-copy")) as HTMLButtonElement;
     
         encryptedPass.textContent = pass.get("encryptedPass");
 
@@ -253,14 +247,12 @@ pass.on(["encryptedPass", "keyIvIsValid"], pl => {
             encryptedPass.disabled  = true;
             encryptedPassCopy.disabled  = true;
         }
-    })();
 });
 
 
 //copy Encrypted Pasword
 (async () => {
-
-    const encryptedPass = (await el.wait("#GeneratePass-encrypted")) as HTMLElement;
+    const encryptedPass = document.getElementById("GeneratePass-encrypted")  as HTMLElement;
 
     encryptedPass.addEventListener("click",(e)=>{
         if((e!.target as HTMLInputElement).matches("#GeneratePass-encrypted-pass-copy, #GeneratePass-encrypted-pass-copy-li")){
