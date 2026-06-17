@@ -2,10 +2,6 @@
   color: oklch(var(--gray-75) );
 }
 
-[popover]::backdrop{
-
-
-}
 
 .prose :where(button):not(:where([class~=not-prose],[class~=not-prose] *)), .prose-btn {
   padding: var(--padding-3);
@@ -348,6 +344,38 @@
   border-radius: var(--radius-b);
   place-content:center;
   background: oklch(var(--gray-15) / 0.85);
+}
+
+.prose :where([popover]):not(:where([class~=not-prose],[class~=not-prose] *)) {
+  background: none;
+  border-radius: var(--radius-b);
+  padding: 0;
+  position: fixed;
+  position-area: bottom;
+  position-try-fallbacks:
+    flip-block,
+    flip-inline,
+    flip-block flip-inline;
+  min-width: anchor-size(width);
+  opacity: 0;
+  scale: 0.8;
+  transform-origin: top center;
+  transition:
+    opacity 250ms var( --appear),
+    scale   250ms var( --appear),
+    overlay 250ms allow-discrete;
+}
+
+.prose :where([popover]:popover-open):not(:where([class~=not-prose],[class~=not-prose] *)) {
+  opacity: 1;
+  scale: 1;
+}
+
+@starting-style {
+  .prose :where([popover]:popover-open):not(:where([class~=not-prose],[class~=not-prose] *)) {
+    opacity: 0;
+    scale: 0.8;
+  }
 }
 
 .prose :where(section):not(:where([class~=not-prose],[class~=not-prose] *)) >  input:first-of-type{

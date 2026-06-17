@@ -1,6 +1,6 @@
 ---
-import Menu from '../components/ui/Menu';
 import KeyIv from '../components/KeyIv.astro';
+import Popover from '../components/ui/Popover.astro'
 ---
 
 <div class="bottom-nav-parent">
@@ -55,9 +55,9 @@ import KeyIv from '../components/KeyIv.astro';
         
     </div>
 
-    <div class="bottom-nav bottom-nav-two glass box-shadow">
+    <div class="bottom-nav bottom-nav-two glass box-shadow prose">
 
-        <Menu client:load>
+        <Popover>
             <fragment slot="trigger">
                 <div class="nav-div" id="l_four">
 
@@ -69,18 +69,18 @@ import KeyIv from '../components/KeyIv.astro';
                 </div>
             </fragment>
 
-            <fragment slot="content" > 
-                <div
-                    class="glass subtle-shadow" 
-                    style="   width: var(--size-xl4);
-                    border-radius: var(--radius-b);
-                    background-color: oklch(var(--gray-25) / 55%);
-                    padding: var(--size-sm3);">
+            <div class="glass subtle-shadow" 
+                style="   width: var(--size-xl4);
+                border-radius: var(--radius-b);
+                background-color: oklch(var(--gray-25) / 55%);
+                padding: var(--size-sm3);">
 
-                    <KeyIv/> 
-                </div>
-            </fragment>
-        </Menu>
+                <KeyIv/> 
+
+            </div>
+            
+        </Popover>
+
 
     </div>
 
@@ -88,7 +88,27 @@ import KeyIv from '../components/KeyIv.astro';
 <div class="gradient-blur"> <div></div> <div></div> </div>
 
 <script>
+import { count_characters } from "../pkg/rust_lib";
+import { pass } from '../logic/pass';
+
+
+const keyIv = document.getElementById("KeyIv")  as HTMLElement;
+
+
+keyIv.addEventListener("input",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#KeyIv-k-input")){
+        const value = (e!.target as HTMLInputElement).value;
+        pass.setKey(value.toString())
+        document.getElementById("KeyIv-k-chars")!.textContent = count_characters(pass.get("key"));
+    }
+    if((e!.target as HTMLInputElement).matches("#KeyIv-i-input")){
+        const value = (e!.target as HTMLInputElement).value;
+        pass.setIV(value.toString())
+        document.getElementById("KeyIv-i-chars")!.textContent = count_characters(pass.get("iv"));
+    }
+});
   
+// params
 const params: URLSearchParams = new URLSearchParams(window.location.search);
 
 
@@ -124,7 +144,7 @@ allTabRadios.forEach((radio) => {
 });
 
 </script>
-<script src="../components/keyIv.ts"></script>
+<!-- <script src="../components/keyIv.ts"></script> -->
 
 <style is:global>
 

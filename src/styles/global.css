@@ -23,9 +23,6 @@ svg{
   backdrop-filter: none
 }
 
-[popover]{
-  background: none;
-}
 
 ::-webkit-scrollbar{
   width: var(--size-xs1);
