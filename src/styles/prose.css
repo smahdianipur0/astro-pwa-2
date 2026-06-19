@@ -348,9 +348,7 @@
 
 .prose :where([popover]):not(:where([class~=not-prose],[class~=not-prose] *)) {
   background: none;
-  border-radius: var(--radius-b);
   padding: 0;
-  opacity: 0;
   scale: 0.8;
   position: fixed;
   position-area: bottom;
@@ -361,22 +359,23 @@
   min-width: anchor-size(width);
   transform-origin: top center;
   transition:
-    opacity 250ms var( --appear),
     scale   250ms var( --appear),
     overlay 250ms allow-discrete,
     display 250ms allow-discrete;
 }
 
 .prose :where([popover]:popover-open):not(:where([class~=not-prose],[class~=not-prose] *)) {
-  opacity: 1;
   scale: 1;
 }
 
 @starting-style {
   .prose :where([popover]:popover-open):not(:where([class~=not-prose],[class~=not-prose] *)) {
-    opacity: 0;
     scale: 0.8;
   }
+}
+
+.prose :where([popover]):not(:where([class~=not-prose],[class~=not-prose] *)):has(> menu:not(.menu-horizontal)){
+  border-radius: var(--radius-b); 
 }
 
 .prose :where(section):not(:where([class~=not-prose],[class~=not-prose] *)) >  input:first-of-type{
@@ -857,7 +856,6 @@
 
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)).menu-horizontal > :only-child:not(:where([class~=not-prose],[class~=not-prose] *)){
   margin-block-start: var(--size-xs1);
-  border-radius: calc(var(--radius-b) - var(--size-xs2));
 }
 
 .prose :where(menu):not(:where([class~=not-prose],[class~=not-prose] *)) > li:not(:where([class~=not-prose],[class~=not-prose] *)):hover{

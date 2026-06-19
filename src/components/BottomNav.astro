@@ -131,7 +131,7 @@ allTabRadios.forEach((radio) => {
 .svg-icon{
     width: var(--size-md2);
     height: var(--size-md2);
-    padding: 2px;
+    margin-block-start: var(--size-xs2);
 }
 
 .bottom-nav-parent{
@@ -165,7 +165,7 @@ allTabRadios.forEach((radio) => {
     justify-content: center;
 }
 
-/* .bottom-nav-one::after,  .bottom-nav-two::after{
+.bottom-nav-one::after,  .bottom-nav-two::after{
   content: "";
   position: absolute;
   inset: 0;
@@ -176,17 +176,15 @@ allTabRadios.forEach((radio) => {
   mask-composite: exclude;
   pointer-events: none;
   background: linear-gradient(to bottom, oklch(100% 0 0 / 10%) 0%, oklch(100% 0 0 / 0%) 180%) border-box;
-} */
+}
 
 .nav-div{
     width: var(--size-lg3);
-    height: var(--size-lg1) ;
     display: flex; 
     flex-direction: column;
     justify-content: space-around; 
     justify-content: center;
     align-items: center;
-    margin-block-end: var(--size-xs1);
 }
 
 .nav-text{
@@ -194,7 +192,7 @@ allTabRadios.forEach((radio) => {
     font-size: var(--font-sm3); 
     text-align: center;
     color: oklch(var(--gray-95) / 0.5);
-    padding-top: 2px;
+    padding-block-end: var(--size-sm0);
 }
 
 .p_one, .p_two, .l_three, .l_four {
@@ -282,6 +280,10 @@ allTabRadios.forEach((radio) => {
 
 
 @media only screen and (min-width: 450px) {
+  .svg-icon{
+    margin-block-start: 0;
+  }
+
   .bottom-nav-parent{
     bottom: auto;
     top: var(--size-sm0);
@@ -305,11 +307,9 @@ allTabRadios.forEach((radio) => {
     margin-bottom: auto;
     text-align: start;
     padding-inline: var(--size-sm0);
+    padding-block-end: 0;
   }
 
-  .popover-panel:has(>.keyIv-popover){
-    position-area: bottom;  
-  }
 
   .toast {
     margin-bottom: 0;
