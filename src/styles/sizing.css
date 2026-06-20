@@ -54,8 +54,10 @@
   --padding-4: calc( (var(--size-md4) - var(--size-sm4)) / 2)  var(--size-sm2);
 
 
-  --radius-a: var(--size-sm0) ;
-  --radius-b: calc(var(--size-sm0) * 2 );
+
+  --radius-a: calc(var(--size-md1) - var(--size-sm3)) ;
+  --radius-b: calc(var(--size-md1) );
+/*  line-height + padding-4 + xs3 padding / 2 */
 
 
   --z-layer-pos-5:  5;

@@ -131,6 +131,7 @@ allTabRadios.forEach((radio) => {
 .svg-icon{
     width: var(--size-md2);
     height: var(--size-md2);
+    padding-block-start: var(--size-xs1);
     margin-block-start: var(--size-xs2);
 }
 
@@ -138,9 +139,9 @@ allTabRadios.forEach((radio) => {
     z-index: var(--z-layer-pos-4);
     width: calc(100% - (var(--size-sm1) * 2));
     top: auto;
-    bottom: var(--size-sm1);
-    left: var(--size-sm1);
-    right: var(--size-sm1);
+    bottom: var(--size-sm2);
+    left: var(--size-sm2);
+    right: var(--size-sm2);
     display: flex;
     position: fixed;
     gap: 2%;
@@ -151,8 +152,9 @@ allTabRadios.forEach((radio) => {
     width: inherit;
     height: inherit;
     display: inherit;
-    background-color: oklch(var(--gray-10) / 0.4);
+    background-color: oklch(var(--gray-15) / 0.4);
     border-radius: 100px; 
+    overflow: clip;
 }
 
 .bottom-nav-one{
@@ -165,17 +167,32 @@ allTabRadios.forEach((radio) => {
     justify-content: center;
 }
 
-.bottom-nav-one::after,  .bottom-nav-two::after{
+.bottom-nav-one::before,  .bottom-nav-two::before{
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 100px;
-  border: 0.5px solid transparent;
+  border: 1.5px solid transparent;
   -webkit-mask: linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
   pointer-events: none;
   background: linear-gradient(to bottom, oklch(100% 0 0 / 10%) 0%, oklch(100% 0 0 / 0%) 180%) border-box;
+}
+
+.bottom-nav-one::after,  .bottom-nav-two::after {
+    content: "";
+    z-index: -1;
+    background-color: oklch(100% 0 0 / 8%);
+    filter: blur(15px);
+    mix-blend-mode: screen;
+    border-radius: 100px;
+    position: absolute;
+    top: 0%;
+    bottom: 25%;
+    left: 0;
+    right: 0;
+    scale: .8 .8;
 }
 
 .nav-div{
@@ -192,7 +209,7 @@ allTabRadios.forEach((radio) => {
     font-size: var(--font-sm3); 
     text-align: center;
     color: oklch(var(--gray-95) / 0.5);
-    padding-block-end: var(--size-sm0);
+    padding-block-end: var(--size-sm1);
 }
 
 .p_one, .p_two, .l_three, .l_four {
@@ -240,14 +257,16 @@ allTabRadios.forEach((radio) => {
     position: fixed;
     z-index: var( --z-layer-pos-3);
     inset: auto 0 -1px 0;
-    height: var(--size-md4);
+    height: var(--size-lg1);
     pointer-events: none;
+    background: linear-gradient(to bottom, transparent, oklch(var(--gray-10) / 70%));
 }
 
 .gradient-blur > div,
 .gradient-blur::before,
 .gradient-blur::after{
     position: absolute;
+
     inset: 0;
 }
 
@@ -259,14 +278,15 @@ allTabRadios.forEach((radio) => {
 }
 
 .gradient-blur > div:nth-of-type(1) {
+
   z-index: 2;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(1px);
   mask: linear-gradient(to bottom, #00000000 25%, #000000 50%,#000000 75%,#00000000 50%);
 }
 
 .gradient-blur > div:nth-of-type(2) {
   z-index: 3;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(2px);
   mask: linear-gradient(to bottom,#00000000 50%,#000000 75%,#000000 100%,#00000000 62.5%);
 }
 
@@ -274,7 +294,7 @@ allTabRadios.forEach((radio) => {
 .gradient-blur::after {
   content: "";
   z-index: 4;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(4px);
   mask: linear-gradient(to bottom,#00000000 87.5%,#000000 100%);
 }
 
@@ -282,6 +302,7 @@ allTabRadios.forEach((radio) => {
 @media only screen and (min-width: 450px) {
   .svg-icon{
     margin-block-start: 0;
+    padding-block-start: 0;
   }
 
   .bottom-nav-parent{

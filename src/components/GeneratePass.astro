@@ -251,18 +251,18 @@ pass.on(["encryptedPass", "keyIvIsValid"], pl => {
 
 
 //copy Encrypted Pasword
-(async () => {
-    const encryptedPass = document.getElementById("GeneratePass-encrypted")  as HTMLElement;
 
-    encryptedPass.addEventListener("click",(e)=>{
-        if((e!.target as HTMLInputElement).matches("#GeneratePass-encrypted-pass-copy, #GeneratePass-encrypted-pass-copy-li")){
-            if(pass.get("encryptedPass") !== "" && pass.get("keyIvIsValid") === true) {
-                navigator.clipboard.writeText(pass.get("encryptedPass"));  
-                showToast(); 
-            } 
-        };
-    });
-})();
+const encryptedPass = document.getElementById("GeneratePass-encrypted")  as HTMLElement;
+
+encryptedPass.addEventListener("click",(e)=>{
+    if((e!.target as HTMLInputElement).matches("#GeneratePass-encrypted-pass-copy, #GeneratePass-encrypted-pass-copy-li")){
+        if(pass.get("encryptedPass") !== "" && pass.get("keyIvIsValid") === true) {
+            navigator.clipboard.writeText(pass.get("encryptedPass"));  
+            showToast(); 
+        } 
+    };
+});
+
 
 
 pass.updateRPassword();
