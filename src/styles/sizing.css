@@ -55,9 +55,9 @@
 
 
 
-  --radius-a: calc(var(--size-md1) - var(--size-sm3)) ;
-  --radius-b: calc(var(--size-md1) );
-/*  line-height + padding-4 + xs3 padding / 2 */
+  --radius-s: var(--size-sm0);
+  --radius-m: var(--size-sm2);
+  --radius-l: calc( var(--radius-m) + var(--size-xs3));
 
 
   --z-layer-pos-5:  5;

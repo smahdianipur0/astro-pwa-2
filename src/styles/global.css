@@ -143,7 +143,7 @@ svg{
   display: flex;
   flex-wrap: wrap;
   place-content: center;
-  border-radius: var(--radius-a);
+  border-radius: var(--radius-s);
   color: oklch(var(--gray-95) / 1);
   background-color: oklch(var(--gray-25));
   text-align: center;
@@ -174,7 +174,7 @@ svg{
 
 .text-as-button{
   border: 1px solid transparent;
-  border-radius: var(--radius-a);
+  border-radius: var(--radius-s);
   padding: var(--padding-0);
   color: oklch(var(--gray-95));
   opacity: 1;

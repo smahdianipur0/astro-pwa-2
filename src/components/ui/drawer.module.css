@@ -24,8 +24,8 @@
   height: 100%;
   max-height: var(--drawer-height);
   flex-direction: column;
-  border-top-left-radius: var(--radius-b);
-  border-top-right-radius:var(--radius-b);
+  border-top-left-radius: var(--radius-l);
+  border-top-right-radius:var(--radius-l);
   background-color: oklch(var(--gray-10) / 1);
 }
 

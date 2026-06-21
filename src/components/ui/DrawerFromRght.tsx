@@ -29,8 +29,8 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
                 grid-template-columns: 1fr auto 1fr;
                 z-index: var(--z-layer-pos-2);              
                 background: oklch(var(--gray-10) / 50%);
-                border-top-left-radius: var(--radius-a);
-                border-top-right-radius: var(--radius-a);
+                border-top-left-radius: var(--radius-s);
+                border-top-right-radius: var(--radius-s);
                 height: var(--size-lg1);">
               <Drawer.Close> 
                 

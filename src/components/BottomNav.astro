@@ -71,7 +71,7 @@ import Popover from '../components/ui/Popover';
 
             <div class="glass subtle-shadow keyIv-popover" 
                 style="   width: var(--size-xl4);
-                border-radius: var(--radius-b);
+                border-radius: var(--radius-l);
                 background-color: oklch(var(--gray-25) / 55%);
                 padding: var(--size-sm3);">
 
@@ -152,7 +152,7 @@ allTabRadios.forEach((radio) => {
     width: inherit;
     height: inherit;
     display: inherit;
-    background-color: oklch(var(--gray-15) / 0.4);
+    background-color: oklch(var(--gray-15) / 50%);
     border-radius: 100px; 
     overflow: clip;
 }
@@ -183,7 +183,7 @@ allTabRadios.forEach((radio) => {
 .bottom-nav-one::after,  .bottom-nav-two::after {
     content: "";
     z-index: -1;
-    background-color: oklch(100% 0 0 / 8%);
+    background-color: oklch(100% 0 0 / 10%);
     filter: blur(15px);
     mix-blend-mode: screen;
     border-radius: 100px;
@@ -259,7 +259,7 @@ allTabRadios.forEach((radio) => {
     inset: auto 0 -1px 0;
     height: var(--size-lg1);
     pointer-events: none;
-    background: linear-gradient(to bottom, transparent, oklch(var(--gray-10) / 70%));
+    background: linear-gradient(to bottom, transparent, oklch(var(--gray-10) / 90%));
 }
 
 .gradient-blur > div,
