@@ -13,8 +13,8 @@ interface ComponentProps {
     tab2Label:  string,
     tab1Value?: string,
     tab2Value?: string,
-    tab2:  JSX.Element;
-    tab1:  JSX.Element;
+    tab2?:  JSX.Element;
+    tab1?:  JSX.Element;
 }
 
 
