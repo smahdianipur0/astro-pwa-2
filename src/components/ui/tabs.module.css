@@ -1,0 +1,41 @@
+
+.parent{
+    display: flex;
+}
+
+.label{
+    color: oklch(var(--gray-95) / .5);
+}
+
+.panel {
+    width: 100%;
+    display: none; 
+}
+
+.parent:has(.radio1:checked) .label1,
+.parent:has(.radio2:checked) .label2 {
+    color: oklch(var(--gray-95, 95%) / 1);
+}
+
+.parent:has(.radio1:checked) .panel1,
+.parent:has(.radio2:checked) .panel2 {
+    display: block;
+}
+
+.parent:has(.radio1:focus-visible) .label1,
+.parent:has(.radio2:focus-visible) .label1  {
+    outline: Highlight auto 1px;
+    outline: -webkit-focus-ring-color auto 1px;
+}
+
+.indicator{
+    display: inline-block;
+}
+
+.parent:has(.radio1:checked) .indicator {
+    transform: translate3d(calc(var(--size-lg3) / -2 ), 0, 0);
+}
+
+.parent:has(.radio2:checked) .indicator {
+    transform: translate3d(calc(var(--size-lg3) / 2 ), 0, 0);
+}

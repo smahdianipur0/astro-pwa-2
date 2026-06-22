@@ -1,5 +1,5 @@
 ---
-import Tabs from '../components/ui/Tabs.astro';
+import Tabs from '../components/ui/Tabs';
 import Popover from '../components/ui/Popover'
 import CharactersCount from '../components/CharactersCount.astro';
 import CharactersPattern from '../components/CharactersPattern.astro'; 
@@ -67,7 +67,7 @@ import TempList from '../components/TempList.astro';
             </li>
         </menu>
     </legend>
-    <Tabs name="pass" tab1Label="Random" tab2Label="Manual" >
+    <Tabs tab1Label="Random" tab1Value="rPassword" tab2Label="Manual" tab2Value="mPassword" >
 
         <fragment slot="tab1">
 
@@ -156,19 +156,16 @@ import TempList from '../components/TempList.astro';
 import { pass } from '../logic/pass';
 import { showToast } from '../logic/misc'
 
-document.getElementById("GeneratePass")!.addEventListener("change",(e)=>{
-  if ((e!.target as HTMLInputElement).matches("#first-tab-id-pass")) {
-    if ((e.target as HTMLInputElement).checked) {
-      pass.setPassword(pass.get("rPassword"))
-    }
-  }
-  if ((e!.target as HTMLInputElement).matches("#second-tab-id-pass")) {
-    if ((e.target as HTMLInputElement).checked) {
-      pass.setPassword(pass.get("mPassword"))
-    }
-  }
-});
 
+document.getElementById("GeneratePass")!.addEventListener("change",(e)=>{
+    const { checked, dataset:{value}} = e.target as HTMLInputElement
+
+    if ( !checked || !value) return
+    if (value !== "mPassword" && value !== "rPassword") return;
+
+    pass.setPassword(pass.get(value));
+
+});
 
 
 pass.on(["rPassword"], ({value}) => { document.getElementById("GeneratePass-r-password")!.textContent = value;});
