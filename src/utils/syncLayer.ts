@@ -5,6 +5,7 @@ import { authQueryChallenge } from "../logic/auth";
 import { AppError } from "./error";
 
 
+
 interface SyncPair<T> {
   localToCloud: T[];
   cloudToLocal: T[];
