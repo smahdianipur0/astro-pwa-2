@@ -12,14 +12,14 @@ interface DrawerComponentProps {
 const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
   return (<>
 
-    <button   class="not-prose" attr:popovertarget={props.id}>
+    <button   class="not-prose" popovertarget={props.id}>
       {props.trigger}
     </button>
 
     <div
       id={props.id}
       class={styles.drawer}
-      attr:popover="auto"
+      popover="auto"
       data-dir-rtl={props.direction === 'right' ? '' : undefined}
     >
       <div data-drawer-track class={styles.track}>
@@ -27,8 +27,8 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
         <div data-dismiss-snap class={styles.dismissSnap}>
           <button
             class={`not-prose ${styles.dismissZone}`}
-            attr:popovertarget={props.id}
-            attr:popovertargetaction="hide"
+            popovertarget={props.id}
+            popovertargetaction="hide"
             tabIndex={-1}
             aria-hidden="true"
           />
@@ -37,8 +37,8 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
         <section class={styles.openSnap}>
           <button
             class={`not-prose ${styles.openDismissZone}`}
-            attr:popovertarget={props.id}
-            attr:popovertargetaction="hide"
+            popovertarget={props.id}
+            popovertargetaction="hide"
             tabIndex={-1}
             aria-hidden="true"
           />
@@ -49,8 +49,8 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
               <button
                 style="justify-self: end;"
                 class={`not-prose ${styles.closeButton}`}
-                attr:popovertarget={props.id}
-                attr:popovertargetaction="hide"
+                popovertarget={props.id}
+                popovertargetaction="hide"
               >
                 <svg style="opacity:20%;
                     width: auto;
