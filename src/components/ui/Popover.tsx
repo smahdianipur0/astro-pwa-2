@@ -1,4 +1,5 @@
 import type { ParentComponent, JSX } from 'solid-js'
+import styles from './popover.module.css'
 import { customAlphabet } from 'nanoid';
 
 
@@ -27,7 +28,7 @@ const Popover: ParentComponent<ComponentProps> = (props) => {
         </button>
 
 
-        <div class=" prose popover-panel subtle-shadow" 
+        <div class={`prose subtle-shadow ${styles.popover}`} 
             id={id} popover="auto" 
             style={`position-anchor: ${anchorName}`}>
             {props.children}

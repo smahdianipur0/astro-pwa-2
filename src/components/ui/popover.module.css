@@ -1,0 +1,36 @@
+.popover {
+  overscroll-behavior: contain;
+  background: none;
+  padding: 0;
+  opacity: 0;
+  scale: 0.8;
+  position: fixed;
+  position-area: bottom;
+  position-try-fallbacks:
+    flip-block,
+    flip-inline,
+    flip-block flip-inline;
+  min-width: anchor-size(width);
+  transform-origin: top center;
+  transition:
+    opacity 250ms var(--appear),
+    scale   250ms var( --appear),
+    overlay 250ms allow-discrete,
+    display 250ms allow-discrete;
+}
+
+.popover:popover-open {
+  opacity: 1;
+  scale: 1;
+}
+
+@starting-style {
+  .popover:popover-open{
+    opacity: 0;
+    scale: 0.8;
+  }
+}
+
+/* .popover:has(> menu:not(.menu-horizontal)){
+  border-radius: var(--radius-l); 
+} */

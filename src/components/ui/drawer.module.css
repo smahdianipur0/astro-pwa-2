@@ -1,67 +1,160 @@
-
-.overlay {
-  position: fixed;
-  inset: 0px;
-  z-index: var(--z-layer-pos-3);
+.drawer {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  inset: 0;
+  background: transparent;
+  overflow: hidden;
+/*   transition:
+    opacity 1150ms ease,
+    overlay 1150ms allow-discrete,
+    display 1150ms allow-discrete; */
 }
 
-.overlay[data-transitioning] {
-  transition-property: background-color;
-  transition-timing-function: var(--move);
-  transition-duration: 500ms;
+/* .drawer:not(:popover-open) { opacity: 0; } */
+
+.track {
+  height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar { display: none; }
+
+.dismissSnap {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dismissZone {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+
+.openSnap {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.openDismissZone {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+
+.sheet {
+  width: 100%;
+  height: min(90dvh, 700px);
+  background: oklch(var(--gray-10));
+  border-top-left-radius: var(--radius-l);
+  border-top-right-radius:var(--radius-l);
+  display: flex;
+  flex-direction: column;
+  animation: sheetEnter 500ms var(--move) both;
+}
+
+/* .drawer:not(:popover-open) .sheet { animation: none; } */
+
+@keyframes sheetEnter {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  z-index: var(--z-layer-pos-2);
+  background: oklch(var(--gray-10) / 50%);
+  border-top-left-radius: var(--radius-l);
+  border-top-right-radius: var(--radius-l);
+  height: var(--size-lg1);
+}
+
+.closeButton {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
 }
 
 .content {
-  box-sizing: border-box;
-  border-width: 0;
-  border-style: solid;
-  position: fixed;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  z-index: var(--z-layer-pos-4);
-  display: flex;
-  height: 100%;
-  max-height: var(--drawer-height);
-  flex-direction: column;
-  border-top-left-radius: var(--radius-l);
-  border-top-right-radius:var(--radius-l);
-  background-color: oklch(var(--gray-10) / 1);
-}
-
-.content::after {
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  top: 100%;
-  height: 50%;
-  background-color: inherit;
-  content: '';
-}
-
-.content[data-transitioning] {
-  transition-property: transform;
-  transition-timing-function: var(--move);
-  transition-duration: 500ms;
-}
-
-@media (min-width: 768px) {
-  .content {
-    -webkit-user-select: none;
-    user-select: none;
-  }
-}
-
-.main > :first-child > fragment{
-  position: absolute;
-  inset: 0;
-  height: var(--drawer-height);
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
+  align-items: center;
   gap: var(--size-sm3);
-  overflow-y: scroll;
-  overflow-x: hidden;
   padding-top: var(--size-lg2);
   padding-inline: var(--size-sm1);
+  flex-direction: column;
+  display: flex;
+  position: absolute;
+  inset: 0;
+  overflow: hidden scroll;;
+}
+
+
+.drawer[data-dir-rtl] .track {
+  overflow-y: hidden;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-y: auto;
+  overscroll-behavior-x: contain;
+  display: flex;
+}
+
+.drawer[data-dir-rtl] .dismissSnap {
+  width: 100dvw;
+  height: 100%;
+  flex-shrink: 0;
+  flex-direction: row;
+}
+
+.drawer[data-dir-rtl] .dismissZone {
+  height: 100%;
+}
+
+.drawer[data-dir-rtl] .openSnap {
+  min-width: 100dvw;
+  min-height: unset;
+  height: 100%;
+  flex-shrink: 0;
+  flex-direction: row;
+}
+
+.drawer[data-dir-rtl] .openDismissZone {
+  height: 100%;
+}
+
+.drawer[data-dir-rtl] .sheet {
+  height: 100%;
+  width: 100dvw;
+  box-shadow:
+    -20px 0 60px rgb(0 0 0 / 0.5),
+    -2px  0 12px rgb(0 0 0 / 0.2);
+  animation-name: sheetEnterRtl;
+}
+
+.drawer[data-dir-rtl] .handle {
+  width: 5px;
+  height: 44px;
+  margin: auto 12px;
+}
+
+@keyframes sheetEnterRtl {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
 }
