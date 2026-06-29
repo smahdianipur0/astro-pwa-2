@@ -10,17 +10,17 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/node": "^9.2.1",
+    "@astrojs/check": "^0.9.2",
+    "@astrojs/node": "^11.0.0",
     "@astrojs/solid-js": "^5.0.10",
-    "@astrojs/vercel": "^8.1.4",
+    "@astrojs/vercel": "^8.0.4",
     "@corvu/drawer": "^0.2.3",
     "@corvu/popover": "^0.2.0",
     "@passwordless-id/webauthn": "^2.1.2",
     "@surrealdb/wasm": "^1.2.0",
     "@trpc/client": "^10.45.2",
     "@trpc/server": "^10.45.2",
-    "astro": "^5.7.13",
+    "astro": "^7.0.3",
     "flat-cache": "^6.1.6",
     "fuse.js": "^7.1.0",
     "nanoid": "^5.1.5",
@@ -34,9 +34,10 @@
     "zod": "^4.0.0"
   },
   "devDependencies": {
+    "@swc/core": "~1.6.0",
     "@types/qrcode": "^1.5.5",
     "lightningcss": "^1.29.1",
-    "vite-plugin-top-level-await": "^1.5.0",
+    "vite-plugin-top-level-await": "^1.2.2",
     "vite-plugin-wasm": "^3.4.1"
   }
 }
