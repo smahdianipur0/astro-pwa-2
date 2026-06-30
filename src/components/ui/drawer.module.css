@@ -85,6 +85,7 @@
   border-top-left-radius: var(--radius-l);
   border-top-right-radius: var(--radius-l);
   height: var(--size-lg1);
+  margin-top: calc(var(--size-xs1) * -1);
 }
 
 .closeButton {

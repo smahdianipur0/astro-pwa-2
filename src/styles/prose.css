@@ -65,9 +65,7 @@
   background: linear-gradient(to bottom, oklch(var(--primary) / 96%) 0%, oklch(100% 0 0 / 0) 180%) border-box;
 }
 
-.prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *))::before, .prose-btn:disabled::before,
-.prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *))::before:hover, .prose-btn:disabled::before:hover,
-.prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *))::before:active, .prose-btn:disabled::before:active {
+.prose :where(button:disabled):not(:where([class~=not-prose],[class~=not-prose] *))::before, .prose-btn:disabled::before {
   content: "";
   background: linear-gradient(to bottom, oklch(45% 0 0 / 20%) 0%, oklch(100% 0 0 / 0) 180%) ;
 }
