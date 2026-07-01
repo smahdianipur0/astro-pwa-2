@@ -1,6 +1,6 @@
 :root{
-  --drawer-height: 90vh;
   --box-shadow-opacity: 0.04;
+  --subtle-shadow-opacity:  0.25;
 }
 
 input{
@@ -50,7 +50,7 @@ svg{
 }
 
 .subtle-shadow{
-  box-shadow: 0px 0px 80px 20px oklch(var(--gray-10) / 25%);
+  box-shadow: 0px 0px 80px 20px oklch(var(--gray-10) / var(--subtle-shadow-opacity));
 }
 
 .hide-checkbox{
@@ -101,6 +101,17 @@ svg{
 .skeleton-parrent{
   line-height: var(--size-sm4); 
   overflow: hidden;
+}
+
+.gradient-blur{
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 1) 65%);
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 1) 65%);
+  height: var(--size-lg4);
+  background: linear-gradient(to top, transparent, oklch(var(--gray-10) / 70%));
+  position: fixed;
+  inset: -1px 0 auto;
 }
 
 .flex-center-childs{

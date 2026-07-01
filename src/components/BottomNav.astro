@@ -85,7 +85,7 @@ import Popover from '../components/ui/Popover';
     </div>
 
 </div>
-<div class="gradient-blur"> <div></div> <div></div> </div>
+<div class="gradient-blur" id="nav-gradient-blur"></div>
 
 <script>
 
@@ -252,49 +252,16 @@ allTabRadios.forEach((radio) => {
   position-area: top;  
 }
 
-
-.gradient-blur{
-    position: fixed;
-    z-index: var( --z-layer-pos-3);
+#nav-gradient-blur{
     inset: auto 0 -1px 0;
-    height: var(--size-lg1);
-    pointer-events: none;
-    background: linear-gradient(to bottom, transparent, oklch(var(--gray-10) / 90%));
+    z-index: var(--z-layer-pos-3);
+
 }
 
-.gradient-blur > div,
-.gradient-blur::before,
-.gradient-blur::after{
-    position: absolute;
-    inset: 0;
-}
-
-.gradient-blur::before {
-  content: "";
-  z-index: 1;
-  backdrop-filter: blur(0.5px);
-  mask: linear-gradient(to bottom, #00000000 0%, #000000 25%, #000000 50%,#00000000 37.5%);
-}
-
-.gradient-blur > div:nth-of-type(1) {
-
-  z-index: 2;
-  backdrop-filter: blur(1px);
-  mask: linear-gradient(to bottom, #00000000 25%, #000000 50%,#000000 75%,#00000000 50%);
-}
-
-.gradient-blur > div:nth-of-type(2) {
-  z-index: 3;
-  backdrop-filter: blur(2px);
-  mask: linear-gradient(to bottom,#00000000 50%,#000000 75%,#000000 100%,#00000000 62.5%);
-}
-
-
-.gradient-blur::after {
-  content: "";
-  z-index: 4;
-  backdrop-filter: blur(4px);
-  mask: linear-gradient(to bottom,#00000000 87.5%,#000000 100%);
+@media only screen and (max-width: 450px) {
+    #nav-gradient-blur{
+        transform: scaleY(-1);
+    }
 }
 
 
@@ -335,9 +302,9 @@ allTabRadios.forEach((radio) => {
     margin-bottom: 0;
   }
 
-  .gradient-blur{
+  #nav-gradient-blur{
     inset: -1px 0 auto 0;
-    transform: scaleY(-1);
+    
   }
 }
 
