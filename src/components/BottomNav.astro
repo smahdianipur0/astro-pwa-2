@@ -3,7 +3,7 @@ import KeyIv from '../components/KeyIv.astro';
 import Popover from '../components/ui/Popover';
 ---
 
-<div class="bottom-nav-parent">
+<div class="top-center bottom-nav-parent " id="bottom-nav-parent">
     
     <div class="bottom-nav bottom-nav-one glass box-shadow ">
 
@@ -85,7 +85,7 @@ import Popover from '../components/ui/Popover';
     </div>
 
 </div>
-<div class="gradient-blur" id="nav-gradient-blur"></div>
+
 
 <script>
 
@@ -138,10 +138,7 @@ allTabRadios.forEach((radio) => {
 .bottom-nav-parent{
     z-index: var(--z-layer-pos-4);
     width: calc(100% - (var(--size-sm1) * 2));
-    top: auto;
-    bottom: var(--size-sm2);
-    left: var(--size-sm2);
-    right: var(--size-sm2);
+    padding-block: var(--size-sm2);
     display: flex;
     position: fixed;
     gap: 2%;
@@ -229,6 +226,7 @@ allTabRadios.forEach((radio) => {
 } 
 
 .tab-content {
+    height: inherit;
     display: none;
     width: 100%;
 }
@@ -252,18 +250,12 @@ allTabRadios.forEach((radio) => {
   position-area: top;  
 }
 
-#nav-gradient-blur{
-    inset: auto 0 -1px 0;
-    z-index: var(--z-layer-pos-3);
-
-}
 
 @media only screen and (max-width: 450px) {
-    #nav-gradient-blur{
-        transform: scaleY(-1);
+    #bottom-nav-parent{
+      place-self: end center;
     }
 }
-
 
 @media only screen and (min-width: 450px) {
   .svg-icon{
@@ -272,8 +264,7 @@ allTabRadios.forEach((radio) => {
   }
 
   .bottom-nav-parent{
-    bottom: auto;
-    top: var(--size-sm0);
+    /* place-self: end center; */
     height: var(--size-lg1);
   }
 
@@ -297,15 +288,6 @@ allTabRadios.forEach((radio) => {
     padding-block-end: 0;
   }
 
-
-  .toast {
-    margin-bottom: 0;
-  }
-
-  #nav-gradient-blur{
-    inset: -1px 0 auto 0;
-    
-  }
 }
 
 </style>

@@ -72,7 +72,7 @@ export function List(entry?: ReadResultTypes["RecentDelPass"]): JSX.Element {
   }
 }
 
-export function dialog(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element {
+export function dialog(entry?: ReadResultTypes["RecentDelPass"]): JSX.Element {
 
     return (<>
 

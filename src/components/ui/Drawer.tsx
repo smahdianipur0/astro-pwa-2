@@ -43,8 +43,12 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
             aria-hidden="true"
           />
 
-          <div data-drawer-sheet class={`subtle-shadow ${styles.sheet}`}>
-            <div class={`gradient-blur ${styles.header}`}>
+          <div data-drawer-sheet class={`ZStack subtle-shadow ${styles.sheet}`}>
+            <div class={styles.content}>
+              {props.content}
+            </div>
+            
+            <div class={`top-center gradient-blur ${styles.header}`}>
               <div style="grid-column: 2; ">{props.title}</div>
               <button
                 style="justify-self: end; align-self: self-start; padding-top: var(--size-sm0);"
@@ -61,9 +65,7 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
               </button>
             </div>
 
-            <div class={styles.content}>
-              {props.content}
-            </div>
+
           </div>
         </section>
 

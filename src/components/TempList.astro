@@ -126,7 +126,6 @@ import Drawer from '../components/ui/Drawer.tsx';
 
 <script>
 
-import { el } from "../utils/elementUtils";
 import { pass } from '../logic/pass';
 import { showToast } from "../logic/misc.ts";
 import { dbCreate,dbUpdate, getEntryById, toRecordId } from "../utils/surrealdb-indexed";
@@ -135,172 +134,169 @@ import { Templist } from './TempList'
 import { render } from "solid-js/web"
 import { initDrawer } from "./ui/drawer"
 
+
 initDrawer("drawer");
+document.getElementById("TempList")!.classList.remove('blink');
+
+
+const inputGroup     = document.getElementById("input-group")   as HTMLElement;
+const entriesList    = document.getElementById("TempList-list") as HTMLElement;
+const passwordInput  = document.getElementById("TempList-inputs-password") as HTMLInputElement;
+const titleInput     = document.getElementById("TempList-inputs-title")    as HTMLInputElement;
+const addEntryButton = document.getElementById("TempList-inputs-add")      as HTMLButtonElement;
+const searchInputEl  = document.getElementById("TempList-search-input")    as HTMLInputElement;
 
 
 
-(async () => {
-  document.getElementById("TempList")!.classList.remove('blink');
+document.getElementById("TempList-search")!.addEventListener("input",(e)=>{
+  if((e!.target as HTMLInputElement).matches("#TempList-search-input")){
+     tempList.setSearchInput((e!.target as HTMLInputElement).value)
+  }
+});
 
-  const inputGroup     = (await el.wait("#input-group"))      as HTMLElement;
-  const entriesList    = (await el.wait("#TempList-list"))     as HTMLElement;
-  const passwordInput  = (await el.wait("#TempList-inputs-password"))   as HTMLInputElement;
-  const titleInput     = (await el.wait("#TempList-inputs-title"))      as HTMLInputElement;
-  const addEntryButton = (await el.wait("#TempList-inputs-add")) as HTMLButtonElement;
-  const searchInputEl  = (await el.wait("#TempList-search-input"))     as HTMLInputElement;
+document.getElementById("TempList-search")!.addEventListener("click",(e)=>{
+  if((e!.target as HTMLInputElement).matches("#TempList-search-cancel")){
+    searchInputEl.value = '';
+    tempList.setSearchInput('');
+    tempList.setIsSearching(false)
+  }
+});
 
-  
-  document.getElementById("TempList-search")!.addEventListener("input",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#TempList-search-input")){
-       tempList.setSearchInput((e!.target as HTMLInputElement).value)
-    }
-  });
-
-  document.getElementById("TempList-search")!.addEventListener("click",(e)=>{
-    if((e!.target as HTMLInputElement).matches("#TempList-search-cancel")){
-      searchInputEl.value = '';
-      tempList.setSearchInput('');
-      tempList.setIsSearching(false)
-    }
-  });
-
-  searchInputEl.addEventListener("focus", (e) => {tempList.setIsSearching(true);});
-  searchInputEl.addEventListener("blur", (e) => {tempList.setIsSearching(tempList.get("searchInput").trim() !== "")});
+searchInputEl.addEventListener("focus", (e) => {tempList.setIsSearching(true);});
+searchInputEl.addEventListener("blur", (e) => {tempList.setIsSearching(tempList.get("searchInput").trim() !== "")});
 
 
 // render entries
 tempList.on(["isSearching", "searchArray"], pl => {
 
-  entriesList.textContent = '';
+entriesList.textContent = '';
 
-  if (tempList.get("isSearching") ? tempList.get("searchArray").length === 0 : tempList.get("entries").length === 0) { 
-    render(() => Templist(), entriesList);
-  } else {
+if (tempList.get("isSearching") ? tempList.get("searchArray").length === 0 : tempList.get("entries").length === 0) { 
+  render(() => Templist(), entriesList);
+} else {
 
-    (tempList.get("isSearching") ? tempList.get("searchArray")  : (tempList.get("entries") ?? [])
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())).
-    forEach((entry) => {
-      render(() => Templist(entry), entriesList);
-    });
-  };  
+  (tempList.get("isSearching") ? tempList.get("searchArray")  : (tempList.get("entries") ?? [])
+  .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())).
+  forEach((entry) => {
+    render(() => Templist(entry), entriesList);
+  });
+};  
 });
 
 
-  entriesList.addEventListener("click", (e) => {
+entriesList.addEventListener("click", (e) => {
 
-  //delelte
-  const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
-  if (deleteButton) {
-    const buttonId = toRecordId(deleteButton.id,`PasswordEntry`);
-    (async () => { buttonId && tempList.deleteEntries(buttonId) })();
-  }
+//delelte
+const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
+if (deleteButton) {
+  const buttonId = toRecordId(deleteButton.id,`PasswordEntry`);
+  (async () => { buttonId && tempList.deleteEntries(buttonId) })();
+}
 
-  //update
-  const updateButton = (e!.target as HTMLInputElement).closest("[data-action='update']");
-  if (updateButton) {
+//update
+const updateButton = (e!.target as HTMLInputElement).closest("[data-action='update']");
+if (updateButton) {
+  (async () => {
+    (document.getElementById("TempList-update") as HTMLDialogElement).showModal();
+
+      const buttonId = toRecordId((updateButton.id),`PasswordEntry`);
+      if (!buttonId){return};
+
+      const entry =await getEntryById(buttonId) ;
+      if (!entry){return};
+
+      (document.getElementById("TempList-update-title") as HTMLInputElement).value = entry.title;
+      (document.getElementById("TempList-update-pass") as HTMLInputElement).value = entry.password;
+      (document.getElementById("TempList-update") as HTMLDialogElement).setAttribute("data-_", updateButton.id);
+      
+  })();
+};
+
+// update dialog confirm
+document.getElementById("TempList-update")!.addEventListener("click", (e) => {
+  if((e!.target as HTMLInputElement).matches("#TempList-update-ok")) {
     (async () => {
-      (document.getElementById("TempList-update") as HTMLDialogElement).showModal();
-
-        const buttonId = toRecordId((updateButton.id),`PasswordEntry`);
-        if (!buttonId){return};
-
-        const entry =await getEntryById(buttonId) ;
-        if (!entry){return};
-
-        (document.getElementById("TempList-update-title") as HTMLInputElement).value = entry.title;
-        (document.getElementById("TempList-update-pass") as HTMLInputElement).value = entry.password;
-        (document.getElementById("TempList-update") as HTMLDialogElement).setAttribute("data-_", updateButton.id);
-        
-    })();
-  };
-
-  // update dialog confirm
-  document.getElementById("TempList-update")!.addEventListener("click", (e) => {
-    if((e!.target as HTMLInputElement).matches("#TempList-update-ok")) {
-      (async () => {
-        const itemId = toRecordId(
-          ((document.getElementById("TempList-update") as HTMLDialogElement).dataset._?? "")
-          ,"PasswordEntry");
-         
-        itemId && dbUpdate("PasswordEntry:update", {
-          id: itemId, 
-          title:(document.getElementById("TempList-update-title") as HTMLInputElement).value, 
-          password:(document.getElementById("TempList-update-pass") as HTMLInputElement).value});
-        tempList.updateEntries();
-      })();
-    }
-  });
-
-  // copy password
-  const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
-  if (copyButton) {
-    (async () => {
-      navigator.clipboard.writeText(copyButton.id);  
-       showToast();
+      const itemId = toRecordId(
+        ((document.getElementById("TempList-update") as HTMLDialogElement).dataset._?? "")
+        ,"PasswordEntry");
+       
+      itemId && dbUpdate("PasswordEntry:update", {
+        id: itemId, 
+        title:(document.getElementById("TempList-update-title") as HTMLInputElement).value, 
+        password:(document.getElementById("TempList-update-pass") as HTMLInputElement).value});
+      tempList.updateEntries();
     })();
   }
-  });
+});
 
-  // add entry
-    inputGroup.addEventListener("click", (e) => {
-    if ((e!.target as HTMLInputElement).matches("#TempList-inputs-add")) {
-      (async () => {
-        await dbCreate("PasswordEntry:create", {
-          title:tempList.get("title"),
-          password: tempList.get("password"),
-          createdAt: new Date().toISOString()
-        });
-        tempList.setTitle("")
-        if ((document.getElementById("TempList-inputs-auto-pass") as HTMLInputElement).checked){
-          tempList.setPassword("");
-        }
-        tempList.updateEntries();
+// copy password
+const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
+if (copyButton) {
+  (async () => {
+    navigator.clipboard.writeText(copyButton.id);  
+     showToast();
+  })();
+}
+});
 
-        addEntryButton.style.setProperty("--primary", "65% 0.12 174"); 
-        addEntryButton.textContent= "Added";
-        setTimeout(() => {
-          addEntryButton.style.removeProperty("--primary");
-          addEntryButton.textContent= "Add";
-        }, 1000);
-
-      })();
-    }
-
-    // auto-pass entry
-    if ((e!.target as HTMLInputElement).matches("#TempList-inputs-auto-pass")) {
-      if ((e.target as HTMLInputElement).checked) {
-    passwordInput.readOnly = false;
-    tempList.setPassword("")
-      } else {
-        passwordInput.readOnly = true;
-        tempList.setPassword(pass.get("Password"))
+// add entry
+  inputGroup.addEventListener("click", (e) => {
+  if ((e!.target as HTMLInputElement).matches("#TempList-inputs-add")) {
+    (async () => {
+      await dbCreate("PasswordEntry:create", {
+        title:tempList.get("title"),
+        password: tempList.get("password"),
+        createdAt: new Date().toISOString()
+      });
+      tempList.setTitle("")
+      if ((document.getElementById("TempList-inputs-auto-pass") as HTMLInputElement).checked){
+        tempList.setPassword("");
       }
-   }
-  });
+      tempList.updateEntries();
 
-  // bind input values to state
-  inputGroup.addEventListener("input", (e) => {
-    if ((e!.target as HTMLInputElement).matches("#TempList-inputs-title")) {
-      tempList.setTitle((e!.target as HTMLInputElement).value);
+      addEntryButton.style.setProperty("--primary", "65% 0.12 174"); 
+      addEntryButton.textContent= "Added";
+      setTimeout(() => {
+        addEntryButton.style.removeProperty("--primary");
+        addEntryButton.textContent= "Add";
+      }, 1000);
+
+    })();
+  }
+
+  // auto-pass entry
+  if ((e!.target as HTMLInputElement).matches("#TempList-inputs-auto-pass")) {
+    if ((e.target as HTMLInputElement).checked) {
+  passwordInput.readOnly = false;
+  tempList.setPassword("")
+    } else {
+      passwordInput.readOnly = true;
+      tempList.setPassword(pass.get("Password"))
     }
-    if ((e!.target as HTMLInputElement).matches("#TempList-inputs-password")) {
-      tempList.setPassword((e!.target as HTMLInputElement).value);
-    }
-  });
+ }
+});
 
-  // bind states to input values
-  tempList.on(["title"], ({value}) => { titleInput.value = value})
+// bind input values to state
+inputGroup.addEventListener("input", (e) => {
+  if ((e!.target as HTMLInputElement).matches("#TempList-inputs-title")) {
+    tempList.setTitle((e!.target as HTMLInputElement).value);
+  }
+  if ((e!.target as HTMLInputElement).matches("#TempList-inputs-password")) {
+    tempList.setPassword((e!.target as HTMLInputElement).value);
+  }
+});
 
-  tempList.on(["password"], ({value}) => { 
-    passwordInput.value = value;
-    addEntryButton.disabled = (!value)
-  });
+// bind states to input values
+tempList.on(["title"], ({value}) => { titleInput.value = value})
 
-  // initilize 
-  tempList.updateEntries();
-  tempList.setPassword(pass.get("Password"));
-  pass.on(["Password"], ({value}) => { tempList.setPassword(value)});
+tempList.on(["password"], ({value}) => { 
+  passwordInput.value = value;
+  addEntryButton.disabled = (!value)
+});
 
-})();
+// initilize 
+tempList.updateEntries();
+tempList.setPassword(pass.get("Password"));
+pass.on(["Password"], ({value}) => { tempList.setPassword(value)});
 
 </script>

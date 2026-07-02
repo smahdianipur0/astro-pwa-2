@@ -35,7 +35,7 @@ export const tempList = createStore({
     		this.set('recentDelEntries',  await dbReadAll("RecentDelPass") ?? []!);
     	},
 
-    	async deleteRecentDelEntris (id) {
+    	async deleteRecentDelEntris (id : RecordId<"RecentDelPass">) {
     		await dbDelete(id);
     		this.set('recentDelEntries',  await dbReadAll("RecentDelPass") ?? []!)
     	}

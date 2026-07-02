@@ -34,6 +34,26 @@ svg{
   border-radius: 100px;
 }
 
+.ZStack{
+  display: grid;
+  place-items: center;
+  grid-template-areas: "stack";
+
+  > * {
+    grid-area: stack;
+  }
+
+  > .top-left{place-self: start start;}
+  > .top-center{place-self: start center;}
+  > .top-right{place-self: start end;}
+  > .center-left{place-self: center start;}
+  > .center{place-self: center center;}
+  > .center-right{place-self: center end;}
+  > .bottom-left{place-self: end start;}
+  > .bottom-center{place-self: end center;}
+  > .bottom-right{place-self: end end;}
+}
+
 .glass {
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px)
@@ -104,14 +124,13 @@ svg{
 }
 
 .gradient-blur{
+  width: 100cqw;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 1) 65%);
   mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 1) 65%);
   height: var(--size-lg4);
   background: linear-gradient(to top, transparent, oklch(var(--gray-10) / 70%));
-  position: fixed;
-  inset: -1px 0 auto;
 }
 
 .flex-center-childs{
