@@ -59,7 +59,6 @@ svg{
   backdrop-filter: blur(20px)
 }
 
-
 .box-shadow{
   box-shadow:
     oklch(28% 0.02 268 / var(--box-shadow-opacity)) 0px 1px 1px -0.5px, 

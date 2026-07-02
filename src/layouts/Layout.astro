@@ -73,13 +73,14 @@ const { title } = Astro.props;
 	</head>
   
   <body class="ZStack" 
-  style="background: oklch(var(--gray-10));
+  style="width: 100cqw; height: 100cqw;
+  background: oklch(var(--gray-10));
   min-height: 100vh;
   transition: color .2s ease-out">
 
     <slot/>
 
-    <div class="top-center gradient-blur" style="position: fixed;" id="nav-gradient-blur"></div>
+    <div class="bottom-center gradient-blur" style="position: fixed;" id="nav-gradient-blur"></div>
 
     <BottomNav/>
 
@@ -96,10 +97,14 @@ const { title } = Astro.props;
 
 
 
-@media only screen and (max-width: 450px) {
+#nav-gradient-blur{
+  transform: scaleY(-1);
+}
+
+@media only screen and (min-width: 450px) {
   #nav-gradient-blur{
-    place-self: end center;
-    transform: scaleY(-1);
+    place-self: start center;
+    transform: initial;
   }
 }
 

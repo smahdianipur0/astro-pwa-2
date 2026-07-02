@@ -3,7 +3,7 @@ import KeyIv from '../components/KeyIv.astro';
 import Popover from '../components/ui/Popover';
 ---
 
-<div class="top-center bottom-nav-parent " id="bottom-nav-parent">
+<div class="bottom-center bottom-nav-parent " id="bottom-nav-parent">
     
     <div class="bottom-nav bottom-nav-one glass box-shadow ">
 
@@ -226,7 +226,7 @@ allTabRadios.forEach((radio) => {
 } 
 
 .tab-content {
-    height: inherit;
+    height: 100cqh;
     display: none;
     width: 100%;
 }
@@ -252,21 +252,19 @@ allTabRadios.forEach((radio) => {
 
 
 @media only screen and (max-width: 450px) {
-    #bottom-nav-parent{
-      place-self: end center;
-    }
+
 }
 
 @media only screen and (min-width: 450px) {
-  .svg-icon{
-    margin-block-start: 0;
-    padding-block-start: 0;
-  }
+    .svg-icon{
+        margin-block-start: 0;
+        padding-block-start: 0;
+    }
 
-  .bottom-nav-parent{
-    /* place-self: end center; */
-    height: var(--size-lg1);
-  }
+    #bottom-nav-parent{
+      place-self: start center;
+      height: var(--size-lg1);
+    }
 
   .tab-content .grid-layout{
     margin-top: var(--size-lg3);
