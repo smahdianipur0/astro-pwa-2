@@ -4,7 +4,6 @@ import Popover from "./ui/Popover";
 
 <div style="display: flex; align-items: center; padding-inline-start: var(--size-sm2);">
 
-
         <Popover>
             <fragment slot="trigger">
 
@@ -61,9 +60,9 @@ import Popover from "./ui/Popover";
 
         <input type="text" name="vault-name" id="VaultMenu-create-dialog-input">
 
-        <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">
-            <button class="not-prose max-width" >Cancel</button>
-            <button class="max-width" id="VaultMenu-create-dialog-ok" disabled>Create</button>
+        <div class="HStack" style="margin-top:var(--size-sm3);">
+            <button style="width: var(--stretch);" class="not-prose" >Cancel</button>
+            <button style="width: var(--stretch);" id="VaultMenu-create-dialog-ok" disabled>Create</button>
         </div>
     </form>
 </dialog>
@@ -76,9 +75,9 @@ import Popover from "./ui/Popover";
 
         <select name="delete vaults" class="max-width prose" id="VaultMenu-delete-dialog-list" > </select>
 
-        <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);"> 
-            <button class="not-prose max-width" >Cancel</button>
-            <button class="max-width" id="VaultMenu-delete-dialog-ok" style="--primary:62.31% 0.246 27" disabled>Delete</button>
+        <div class="HStack" style="margin-top:var(--size-sm3);"> 
+            <button style="width: var(--stretch);"class="not-prose" >Cancel</button>
+            <button style="width: var(--stretch);" id="VaultMenu-delete-dialog-ok" style="--primary:62.31% 0.246 27" disabled>Delete</button>
         </div>
 
     </form>
@@ -90,6 +89,9 @@ import Popover from "./ui/Popover";
 import { dbCreate, dbUpdate} from "../utils/surrealdb-indexed"
 import { records } from "../logic/records"
 import { RecordId } from "surrealdb";
+
+
+console.log("hi");
 
 //menu event listener
 const vaultMenu = document.getElementById("VaultMenu")  as HTMLElement;

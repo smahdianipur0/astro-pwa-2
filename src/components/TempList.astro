@@ -3,7 +3,7 @@ import RecentDelPass from "../components/RecentDelPass.astro"
 import Drawer from '../components/ui/Drawer.tsx';
 ---
 
-<div id="TempList" class="blink flex-center-childs">
+<div id="TempList" class="blink ZStack">
   
     <Drawer id="drawer" >
         <fragment slot="trigger" class="prose">
@@ -94,9 +94,9 @@ import Drawer from '../components/ui/Drawer.tsx';
                             
                     </section>
 
-                    <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">           
-                      <button class="not-prose max-width" >Cancel</button>
-                      <button class="max-width" id="TempList-update-ok">Update</button>  
+                    <div class="HStack" style="margin-top:var(--size-sm3);">       
+                      <button style="width: var(--stretch);" class="not-prose" >Cancel</button>
+                      <button style="width: var(--stretch);" id="TempList-update-ok">Update</button>  
                     </div>
                 </form>
             </dialog>

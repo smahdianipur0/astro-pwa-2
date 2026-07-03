@@ -34,6 +34,27 @@ svg{
   border-radius: 100px;
 }
 
+.HStack{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--gap);
+
+  &.top{ align-items: flex-start; }
+  &.bottom{ align-items: flex-end;}
+}
+
+.VStack{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap);
+
+  &.leading{ align-items: flex-start; }
+  &.trailing{ align-items: flex-end;}
+}
+
+
 .ZStack{
   display: grid;
   place-items: center;
@@ -43,16 +64,16 @@ svg{
     grid-area: stack;
   }
 
-  > .top-left{place-self: start start;}
-  > .top-center{place-self: start center;}
-  > .top-right{place-self: start end;}
-  > .center-left{place-self: center start;}
-  > .center{place-self: center center;}
-  > .center-right{place-self: center end;}
-  > .bottom-left{place-self: end start;}
-  > .bottom-center{place-self: end center;}
-  > .bottom-right{place-self: end end;}
+  > .top-leading{place-self: start start;}
+  > .top{place-self: start center;}
+  > .top-trailing{place-self: start end;}
+  > .leading{place-self: center start;}
+  > .trailing{place-self: center end;}
+  > .bottom-leading{place-self: end start;}
+  > .bottom{place-self: end center;}
+  > .bottom-trailing{place-self: end end;}
 }
+
 
 .glass {
   -webkit-backdrop-filter: blur(20px);
@@ -132,12 +153,6 @@ svg{
   background: linear-gradient(to top, transparent, oklch(var(--gray-10) / 70%));
 }
 
-.flex-center-childs{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
 
 .flex-spread-childs{
   display: flex;

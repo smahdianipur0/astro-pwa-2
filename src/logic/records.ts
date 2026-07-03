@@ -10,7 +10,7 @@ export const records = createStore({
 		vaultsList: [] as ReadAllResultTypes["Vaults"] | [],
 		cardsList: [] as ReadAllResultTypes["Cards"] | [],
 
-		selectedVault: "",
+		selectedVault: "" ,
 		selectedCard: "",
 	},
 
@@ -26,10 +26,11 @@ export const records = createStore({
 			this.set("vaultsList", (await dbReadAll("Vaults")) ?? []);
 		},
 		async updateCardsList() {
-			if (this.get("selectedVault") !== "") {
+			const selectedVault = this.get("selectedVault") 
+			if (typeof selectedVault === 'string' && selectedVault !== '') {
 				const result = await dbquery(
 					`SELECT * FROM $vault -> Contain -> Cards;`,
-					{ vault: new RecordId("Vaults", this.get("selectedVault").toString()) },
+					{ vault: new RecordId("Vaults", selectedVault.toString()) }, 
 				);
 
 				this.set("cardsList", result[0] ?? []);

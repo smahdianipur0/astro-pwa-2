@@ -53,7 +53,7 @@
   --padding-3: calc( (var(--size-md3) - var(--size-sm4)) / 2)  var(--size-sm2);
   --padding-4: calc( (var(--size-md4) - var(--size-sm4)) / 2)  var(--size-sm2);
 
-
+  --gap: var(--size-sm0);
 
   --radius-s: var(--size-sm0);
   --radius-m: var(--size-sm2);
@@ -71,3 +71,7 @@
   --move:   cubic-bezier(0.32, 0.72, 0  , 1);
 
 }
+
+@supports (width: -moz-available)         { :root {--stretch: -moz-available;} }
+@supports (width: -webkit-fill-available) { :root {--stretch: -webkit-fill-available;} }
+@supports (width: stretch)                { :root {--stretch: stretch;} }

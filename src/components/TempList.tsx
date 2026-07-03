@@ -26,7 +26,7 @@ export function Templist(entry?: ReadResultTypes["PasswordEntry"]): JSX.Element 
           <div class="flex-with-gap" style="justify-content: flex-end;">
           <Popover 
             trigger={
-                <div class='text-as-button flex-center-childs' style="margin-right: calc(var(--size-sm0)* -1);" >
+                <div class='text-as-button ZStack' style="margin-right: calc(var(--size-sm0)* -1);" >
                     <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM18 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="oklch(var(--gray-95))"/></svg>
                 </div>
               }

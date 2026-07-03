@@ -22,7 +22,7 @@ const examples = ["name@gmail.com", "name@yahoo.com", "name@outlook.com"]
                 for="Email-edit" 
                 id="Email-edit-label" 
                 style="width: fit-content;"
-                class="flex-center-childs not-prose"></label>
+                class="ZStack not-prose"></label>
 
                 <input type="checkbox" id="Email-edit" class="hide-checkbox" >
             </li>
@@ -72,9 +72,9 @@ const examples = ["name@gmail.com", "name@yahoo.com", "name@outlook.com"]
             placeholder="Email" />
 
 
-        <div class="flex-center-childs" style="gap:var(--size-sm0);margin-top:var(--size-sm3);">
-            <button class="not-prose max-width" >Cancel</button>
-            <button class="max-width" id="Email-add" disabled > Add</button>
+        <div class="HStack" style="margin-top:var(--size-sm3);">
+            <button style="width: var(--stretch);" class="not-prose" >Cancel</button>
+            <button style="width: var(--stretch);" id="Email-add" disabled > Add</button>
         </div>
 
     </form>

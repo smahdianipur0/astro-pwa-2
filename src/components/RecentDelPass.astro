@@ -2,7 +2,7 @@
 import Drawer from '../components/ui/Drawer.tsx';
 ---
 
-<div class="max-width flex-center-childs"style="margin-bottom: var(--size-md2);">
+<div class="ZStack"style="margin-bottom: var(--size-md2);">
     <Drawer id='RecentDelPass' direction='right'>
 
         <fragment slot="trigger" class="prose"> 
@@ -49,13 +49,10 @@ import Drawer from '../components/ui/Drawer.tsx';
                         border-radius: var(--radius-s);
                         padding: var(--size-sm1);"></div>
 
-                    <div 
-                        class="flex-center-childs" 
-                        style="gap:var(--size-sm0);
-                        margin-top:var(--size-sm3);">
+                    <div class="HStack" style="margin-top:var(--size-sm3);">
                       
-                      <button class="not-prose max-width" >Cancel</button>
-                      <button class="max-width" id="RecentDelPass-restore-ok">Restore</button>
+                      <button style="width: var(--stretch);" class="not-prose max-width" >Cancel</button>
+                      <button style="width: var(--stretch);" id="RecentDelPass-restore-ok">Restore</button>
                   
                     </div>
                 </form>

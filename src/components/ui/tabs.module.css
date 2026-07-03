@@ -8,7 +8,7 @@
 }
 
 .panel {
-    width: 100%;
+    width: var(--stretch);
     display: none; 
 }
 
