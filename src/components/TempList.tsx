@@ -27,6 +27,8 @@ function openEditDialog(entry: ReadResultTypes["PasswordEntry"]) {
 
 
 const TempListItems : Component= ()=> {
+  console.log('DeleteMenu:', typeof DeleteMenu, 'Popover:', typeof Popover, 'tempList:', typeof tempList);
+
   return (
     <menu id="TempList-list" style="background: transparent;">
     <For

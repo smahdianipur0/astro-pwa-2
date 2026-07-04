@@ -19,6 +19,7 @@ export default defineConfig({
     supported: {'top-level-await': true},
   },
   build: {
+    minify: false,
     assetsInlineLimit: 51200,
     inlineStylesheets: 'always',
   },
