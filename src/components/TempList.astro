@@ -1,7 +1,7 @@
 ---
 import RecentDelPass from "../components/RecentDelPass.astro"
 import Drawer from '../components/ui/Drawer.tsx';
-import TempList from './TempList.tsx'
+import TempListItems from './TempListItems.tsx'
 ---
 
 <div id="TempList" class="blink ZStack">
@@ -64,7 +64,7 @@ import TempList from './TempList.tsx'
 
 
                 <fieldset class="box-shadow" style="padding: 0; color: oklch(var(--gray-95));">                  
-                    <TempList client:load/> 
+                    <TempListItems client:load/> 
                 </fieldset>
 
               

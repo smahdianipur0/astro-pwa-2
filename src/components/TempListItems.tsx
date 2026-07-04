@@ -26,7 +26,7 @@ function openEditDialog(entry: ReadResultTypes["PasswordEntry"]) {
 }
 
 
-export default function TempList() {
+export default function TempListItems() {
   return (
     <menu id="TempList-list" style="background: transparent;">
     <For
