@@ -25,8 +25,6 @@ function openEditDialog(entry: ReadResultTypes["PasswordEntry"]) {
   dlg.showModal();
 }
 
-console.log(entries());
-console.log("hello")
 
 export default function TempList() {
   return (
