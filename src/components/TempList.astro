@@ -1,6 +1,7 @@
 ---
 import RecentDelPass from "../components/RecentDelPass.astro"
 import Drawer from '../components/ui/Drawer.tsx';
+import TempList from './TempList.tsx'
 ---
 
 <div id="TempList" class="blink ZStack">
@@ -62,10 +63,8 @@ import Drawer from '../components/ui/Drawer.tsx';
                 </search>
 
 
-                <fieldset class="box-shadow" style="padding: 0; color: oklch(var(--gray-95));">
-                    <menu id="TempList-list" style="background: transparent;"> 
-                        <small  style="padding-block:var(--size-sm3)"> Loading records </small>
-                    </menu>
+                <fieldset class="box-shadow" style="padding: 0; color: oklch(var(--gray-95));">                  
+                    <TempList client:load/> 
                 </fieldset>
 
               
@@ -127,11 +126,8 @@ import Drawer from '../components/ui/Drawer.tsx';
 <script>
 
 import { pass } from '../logic/pass';
-import { showToast } from "../logic/misc.ts";
-import { dbCreate,dbUpdate, getEntryById, toRecordId } from "../utils/surrealdb-indexed";
+import { dbCreate,dbUpdate, toRecordId } from "../utils/surrealdb-indexed";
 import { tempList } from "../logic/tempList.ts" 
-import { Templist } from './TempList'
-import { render } from "solid-js/web"
 import { initDrawer } from "./ui/drawer"
 
 
@@ -140,7 +136,6 @@ document.getElementById("TempList")!.classList.remove('blink');
 
 
 const inputGroup     = document.getElementById("input-group")   as HTMLElement;
-const entriesList    = document.getElementById("TempList-list") as HTMLElement;
 const passwordInput  = document.getElementById("TempList-inputs-password") as HTMLInputElement;
 const titleInput     = document.getElementById("TempList-inputs-title")    as HTMLInputElement;
 const addEntryButton = document.getElementById("TempList-inputs-add")      as HTMLButtonElement;
@@ -166,52 +161,6 @@ searchInputEl.addEventListener("focus", (e) => {tempList.setIsSearching(true);})
 searchInputEl.addEventListener("blur", (e) => {tempList.setIsSearching(tempList.get("searchInput").trim() !== "")});
 
 
-// render entries
-tempList.on(["isSearching", "searchArray"], pl => {
-
-entriesList.textContent = '';
-
-if (tempList.get("isSearching") ? tempList.get("searchArray").length === 0 : tempList.get("entries").length === 0) { 
-  render(() => Templist(), entriesList);
-} else {
-
-  (tempList.get("isSearching") ? tempList.get("searchArray")  : (tempList.get("entries") ?? [])
-  .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())).
-  forEach((entry) => {
-    render(() => Templist(entry), entriesList);
-  });
-};  
-});
-
-
-entriesList.addEventListener("click", (e) => {
-
-//delelte
-const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
-if (deleteButton) {
-  const buttonId = toRecordId(deleteButton.id,`PasswordEntry`);
-  (async () => { buttonId && tempList.deleteEntries(buttonId) })();
-}
-
-//update
-const updateButton = (e!.target as HTMLInputElement).closest("[data-action='update']");
-if (updateButton) {
-  (async () => {
-    (document.getElementById("TempList-update") as HTMLDialogElement).showModal();
-
-      const buttonId = toRecordId((updateButton.id),`PasswordEntry`);
-      if (!buttonId){return};
-
-      const entry =await getEntryById(buttonId) ;
-      if (!entry){return};
-
-      (document.getElementById("TempList-update-title") as HTMLInputElement).value = entry.title;
-      (document.getElementById("TempList-update-pass") as HTMLInputElement).value = entry.password;
-      (document.getElementById("TempList-update") as HTMLDialogElement).setAttribute("data-_", updateButton.id);
-      
-  })();
-};
-
 // update dialog confirm
 document.getElementById("TempList-update")!.addEventListener("click", (e) => {
   if((e!.target as HTMLInputElement).matches("#TempList-update-ok")) {
@@ -227,16 +176,6 @@ document.getElementById("TempList-update")!.addEventListener("click", (e) => {
       tempList.updateEntries();
     })();
   }
-});
-
-// copy password
-const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
-if (copyButton) {
-  (async () => {
-    navigator.clipboard.writeText(copyButton.id);  
-     showToast();
-  })();
-}
 });
 
 // add entry

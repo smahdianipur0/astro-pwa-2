@@ -43,11 +43,12 @@ export const tempList = createStore({
 
     derived: {
 	    searchArray: derive(
-	      ['entries', 'searchInput'] as const, 
-	      ({ get }) => {
+	      ['entries', 'searchInput'] as const, ({ get }) => {
 	      	    const fuse  = new Fuse(get("entries"), { keys: ['title'] });
 			    const searched = fuse.search(get("searchInput")).map(entry => entry.item);
-			    return(searched as ReadAllResultTypes["PasswordEntry"] | []);
+			    return(searched as ReadAllResultTypes["PasswordEntry"] | []).sort(
+			    	(a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+			    );
 	      	}
 	    )
 	}
