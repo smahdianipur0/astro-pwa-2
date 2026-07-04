@@ -1,4 +1,4 @@
-import { For, createSignal } from "solid-js";
+import { For, createSignal, type Component } from "solid-js";
 import { tempList } from "../logic/tempList";
 import { showToast } from "../logic/misc";
 import Popover from "./ui/Popover";
@@ -26,7 +26,7 @@ function openEditDialog(entry: ReadResultTypes["PasswordEntry"]) {
 }
 
 
-export default function TempListItems() {
+const TempListItems : Component= ()=> {
   return (
     <menu id="TempList-list" style="background: transparent;">
     <For
@@ -89,3 +89,5 @@ export default function TempListItems() {
     </menu>
   );
 }
+
+export default TempListItems
