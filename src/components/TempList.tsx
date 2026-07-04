@@ -1,4 +1,4 @@
-import { For, createSignal, type Component, onCleanup } from "solid-js";
+import { For, createSignal, type Component } from "solid-js";
 import { tempList } from "../logic/tempList";
 import { showToast } from "../logic/misc";
 import Popover from "./ui/Popover";
@@ -9,6 +9,11 @@ function getList(): ReadAllResultTypes["PasswordEntry"] | [] {
   return tempList.get("isSearching") ? tempList.get("searchArray") : (tempList.get("entries") ?? []);
 }
 
+const [entries, setEntries] = createSignal<ReadAllResultTypes["PasswordEntry"] | []>(getList());
+
+tempList.on(["isSearching", "searchArray"], () => {
+  setEntries(getList());
+});
 
 
 
@@ -22,13 +27,6 @@ function openEditDialog(entry: ReadResultTypes["PasswordEntry"]) {
 
 
 const TempListItems : Component= ()=> {
-  const [entries, setEntries] = createSignal<ReadAllResultTypes["PasswordEntry"] | []>(getList());
-
-  const unsub = tempList.on(["isSearching", "searchArray"], () => {
-    setEntries(getList());
-  });
-  onCleanup(unsub);
-  
   return (
     <menu id="TempList-list" style="background: transparent;">
     <For

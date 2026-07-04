@@ -46,7 +46,7 @@ export type Store<S extends Record<string, any>, D extends DerivedDef<S>, M exte
       E extends keyof M ? MethodEvent<E, Parameters<M[E]>> : 
       never
       >
-    ): ()=> void;} & { 
+    ): void;} & { 
     unsubscribe(): void };
 
 export function createStore<S extends object, D extends DerivedDef<S>, M extends MethodsDef<S, D>>(
@@ -205,18 +205,15 @@ export function createStore<S extends object, D extends DerivedDef<S>, M extends
     });
   }
 
-  function on<E extends EventKey<S, D, M>>(events: readonly E[], cb: Subscriber<any>): ()=> void {
-    const keys = Array.from(new Set(events.map(String)))
-    keys.forEach(e => {
+  function on<E extends EventKey<S, D, M>>(events: readonly E[], cb: Subscriber<any>): void {
+    Array.from(new Set(events.map(String))).forEach(e => {
       const node = nodes.get(e);
       if (node) node.subs.add(cb);
     });
-    return () => {
-      keys.forEach(e => nodes.get(e)?.subs.delete(cb))
-    }
   }
 
   function unsubscribe() { nodes.forEach(node => node.subs.clear()) }
 
   return { get: getState, ...processed, on, unsubscribe } as Store<S, D, M>;
+  
 }
