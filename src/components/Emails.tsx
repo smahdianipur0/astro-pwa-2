@@ -32,7 +32,7 @@ export function Emails(entry:ReadResultTypes["Emails"], isEditing:boolean): JSX.
 
                 {isEditing && <div class="flex-spread-childs slide-in-right">
 
-                    <div class="flex-with-gap" style="justify-content: flex-end;">
+                    <div class="HStack trailing">
                         <Popover 
                             trigger={
                                 <div class='text-as-button ZStack' style="margin-right: calc(var(--size-sm0)* -1);" >
