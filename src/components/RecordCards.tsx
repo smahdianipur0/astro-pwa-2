@@ -19,7 +19,7 @@ export function RecordCards(entry: ReadResultTypes["Cards"]): JSX.Element {
               font-style: italic;">
               {entry.name || 'untitled'}</p>
 
-            <div class="flex-with-gap" style="justify-content: flex-end;">
+            <div class="HStack" >
 
               <details>
                 <summary></summary>

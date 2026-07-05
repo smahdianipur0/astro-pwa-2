@@ -42,7 +42,7 @@ export function List(entry?: ReadResultTypes["RecentDelPass"]): JSX.Element {
 
               <li>
                 <button 
-                    class="not-prose flex-with-gap" 
+                    class="not-prose HStack" 
                     style="color: oklch(var(--gray-95)); gap: var(--size-xs2);"
                     data-action="restore"
                     id={entry.id?.toString() ?? ''}> 

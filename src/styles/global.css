@@ -160,12 +160,6 @@ svg{
   align-items: center;
 }
 
-.flex-with-gap{
-  display: flex;
-  gap: var(--size-sm0);
-  align-items: center;
-}
-
 .max-width{
   width: -moz-available;
   width: -webkit-fill-available;
