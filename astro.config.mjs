@@ -14,10 +14,6 @@ export default defineConfig({
       exclude: ['@surrealdb/wasm'],
       esbuildOptions: { target: 'esnext' },
     },
-    build: {
-      minify: false,
-      assetsInlineLimit: 51200,
-    },
   },
   esbuild: {
     supported: { 'top-level-await': true },
