@@ -7,7 +7,7 @@ interface MenuComponentProps {
 
 const DeleteMenu: ParentComponent<MenuComponentProps> = (props) => {
   return (<>
-    <div class='not-prose' >
+    <div class='HStack not-prose' >
       <details class={styles.details}>
           <summary  class={styles.summary}></summary>
           {props.content}                                                  

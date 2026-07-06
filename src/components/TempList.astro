@@ -1,7 +1,6 @@
 ---
 import RecentDelPass from "../components/RecentDelPass.astro"
 import Drawer from '../components/ui/Drawer.tsx';
-import TempListItems from './TempList.tsx'
 ---
 
 <div id="TempList" class="blink ZStack">
@@ -17,56 +16,57 @@ import TempListItems from './TempList.tsx'
 
         <Fragment slot="content" class="prose" >
  
-                <fieldset class="box-shadow" id="TempList-inputs" >
-                    <div 
-                        style="display: flex; flex-direction: column;" 
-                        class="prose"
-                        id="input-group">
+            <fieldset class="box-shadow" id="TempList-inputs" >
+                <div 
+                    style="display: flex; flex-direction: column;" 
+                    class="prose"
+                    id="input-group">
 
+                    <input 
+                        type="text" 
+                        id="TempList-inputs-title" 
+                        placeholder="Title" 
+                        style="margin-bottom: var(--size-sm2);"/>
+
+                    <div style="display: flex; flex-direction: row;">
                         <input 
-                            type="text" 
-                            id="TempList-inputs-title" 
-                            placeholder="Title" 
-                            style="margin-bottom: var(--size-sm2);"/>
+                            type="checkbox"
+                            id="TempList-inputs-auto-pass" 
+                            style="height:var(--size-md4)"> 
 
-                        <div style="display: flex; flex-direction: row;">
-                            <input 
-                                type="checkbox"
-                                id="TempList-inputs-auto-pass" 
-                                style="height:var(--size-md4)"> 
-
-                            <label 
-                                style=" place-self: center; margin-left: var(--size-sm0);" 
-                                for="TempList-inputs-auto-pass">
-                                Enter Password Manually</label>
-                        </div>
-
-                        <input 
-                            type="text" 
-                            id="TempList-inputs-password"
-                            placeholder="Password" readonly />
-                        
-                        <button 
-                            style="margin-top: var(--size-sm2);"
-                            id="TempList-inputs-add">
-                            Add</button>
+                        <label 
+                            style=" place-self: center; margin-left: var(--size-sm0);" 
+                            for="TempList-inputs-auto-pass">
+                            Enter Password Manually</label>
                     </div>
-                </fieldset>
 
-                <search id="TempList-search" class="prose">
+                    <input 
+                        type="text" 
+                        id="TempList-inputs-password"
+                        placeholder="Password" readonly />
+                    
+                    <button 
+                        style="margin-top: var(--size-sm2);"
+                        id="TempList-inputs-add">
+                        Add</button>
+                </div>
+            </fieldset>
 
-                    <input type="search" id="TempList-search-input" placeholder="Search">
-                    <button type="reset" class="not-prose" id="TempList-search-cancel" >Cancel</button>
+            <search id="TempList-search" class="prose">
 
-                </search>
+                <input type="search" id="TempList-search-input" placeholder="Search">
+                <button type="reset" class="not-prose" id="TempList-search-cancel" >Cancel</button>
+
+            </search>
 
 
-                <fieldset class="box-shadow" style="padding: 0; color: oklch(var(--gray-95));">                  
-                    <TempListItems client:load/> 
-                </fieldset>
+            <fieldset class="box-shadow" style="padding: 0; color: oklch(var(--gray-95));">                  
+                <menu id="TempList-list" style="background: transparent;">
+                    <small class="ellipsis" style="width: var(--size-xl2)">Liading...</small>
+                </menu>
+            </fieldset>
 
-              
-                <RecentDelPass/>
+            <RecentDelPass/>
 
 
 
@@ -123,21 +123,24 @@ import TempListItems from './TempList.tsx'
 
 <script>
 
+import { dbCreate,dbUpdate, toRecordId, type ReadAllResultTypes } from "../utils/surrealdb-indexed";
 import { pass } from '../logic/pass';
-import { dbCreate,dbUpdate, toRecordId } from "../utils/surrealdb-indexed";
 import { tempList } from "../logic/tempList.ts" 
 import { initDrawer } from "./ui/drawer"
+import TempListItems from './TempList.tsx'
+import { render } from "solid-js/web"
 
 
 initDrawer("drawer");
 document.getElementById("TempList")!.classList.remove('blink');
 
 
-const inputGroup     = document.getElementById("input-group")   as HTMLElement;
+const inputGroup     = document.getElementById("input-group")              as HTMLElement;
 const passwordInput  = document.getElementById("TempList-inputs-password") as HTMLInputElement;
 const titleInput     = document.getElementById("TempList-inputs-title")    as HTMLInputElement;
 const addEntryButton = document.getElementById("TempList-inputs-add")      as HTMLButtonElement;
 const searchInputEl  = document.getElementById("TempList-search-input")    as HTMLInputElement;
+const entriesList    = document.getElementById("TempList-list")            as HTMLElement;
 
 
 
@@ -159,22 +162,7 @@ searchInputEl.addEventListener("focus", (e) => {tempList.setIsSearching(true);})
 searchInputEl.addEventListener("blur", (e) => {tempList.setIsSearching(tempList.get("searchInput").trim() !== "")});
 
 
-// update dialog confirm
-document.getElementById("TempList-update")!.addEventListener("click", (e) => {
-  if((e!.target as HTMLInputElement).matches("#TempList-update-ok")) {
-    (async () => {
-      const itemId = toRecordId(
-        ((document.getElementById("TempList-update") as HTMLDialogElement).dataset._?? "")
-        ,"PasswordEntry");
-       
-      itemId && dbUpdate("PasswordEntry:update", {
-        id: itemId, 
-        title:(document.getElementById("TempList-update-title") as HTMLInputElement).value, 
-        password:(document.getElementById("TempList-update-pass") as HTMLInputElement).value});
-      tempList.updateEntries();
-    })();
-  }
-});
+
 
 // add entry
   inputGroup.addEventListener("click", (e) => {
@@ -230,6 +218,37 @@ tempList.on(["password"], ({value}) => {
   passwordInput.value = value;
   addEntryButton.disabled = (!value)
 });
+
+// update dialog confirm
+document.getElementById("TempList-update")!.addEventListener("click", (e) => {
+  if((e!.target as HTMLInputElement).matches("#TempList-update-ok")) {
+    (async () => {
+      const itemId = toRecordId(
+        ((document.getElementById("TempList-update") as HTMLDialogElement).dataset._?? "")
+        ,"PasswordEntry");
+       
+      itemId && dbUpdate("PasswordEntry:update", {
+        id: itemId, 
+        title:(document.getElementById("TempList-update-title") as HTMLInputElement).value, 
+        password:(document.getElementById("TempList-update-pass") as HTMLInputElement).value});
+      tempList.updateEntries();
+    })();
+  }
+});
+
+
+// render entries list
+function getList(): ReadAllResultTypes["PasswordEntry"] | [] {
+  return tempList.get("isSearching") ? tempList.get("searchArray") : (tempList.get("entries") ?? []);
+}
+
+let dispose = render(() => TempListItems(getList()), entriesList)
+
+tempList.on(["isSearching", "searchArray"], () => {
+    dispose();
+    dispose = render(() => TempListItems(getList()), entriesList)
+});
+
 
 // initilize 
 tempList.updateEntries();

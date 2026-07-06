@@ -1,20 +1,8 @@
-import { For, createSignal, type Component } from "solid-js";
 import { tempList } from "../logic/tempList";
 import { showToast } from "../logic/misc";
 import Popover from "./ui/Popover";
 import DeleteMenu from "./ui/DeleteMenu";
 import type { ReadResultTypes, ReadAllResultTypes } from "../utils/surrealdb-indexed";
-
-function getList(): ReadAllResultTypes["PasswordEntry"] | [] {
-  return tempList.get("isSearching") ? tempList.get("searchArray") : (tempList.get("entries") ?? []);
-}
-
-const [entries, setEntries] = createSignal<ReadAllResultTypes["PasswordEntry"] | []>(getList());
-
-tempList.on(["isSearching", "searchArray"], () => {
-  setEntries(getList());
-});
-
 
 
 function openEditDialog(entry: ReadResultTypes["PasswordEntry"]) {
@@ -26,16 +14,16 @@ function openEditDialog(entry: ReadResultTypes["PasswordEntry"]) {
 }
 
 
-const TempListItems : Component= ()=> {
+const TempListItems = (entries: ReadAllResultTypes["PasswordEntry"] | [])=> {
   console.log('DeleteMenu:', typeof DeleteMenu, 'Popover:', typeof Popover, 'tempList:', typeof tempList);
 
   return (
-    <menu id="TempList-list" style="background: transparent;">
-    <For
-      each={entries()}
-      fallback={ <small style="text-align: center; padding-block: var(--size-sm3)"> No records found </small>}
-    >
-      {(entry) => (        
+    <>
+    {entries.length === 0 ? (
+      <small style="text-align: center; padding-block: var(--size-sm3)"> No records found </small>
+      ):(
+    
+      entries.map((entry) => (        
         <li style=" width: var(--stretch);background-color:transparent;">
           <div class="VStack leading" style="--gap: 0;">
             <small class="ellipsis" style="width: var(--size-xl2)">
@@ -51,7 +39,7 @@ const TempListItems : Component= ()=> {
             </button>
           </div>
 
-          <div class="ZStack">
+          <div>
             <Popover
               trigger={
                 <div class="text-as-button ZStack" style="margin-right: calc(var(--size-sm0) * -1);">
@@ -85,11 +73,9 @@ const TempListItems : Component= ()=> {
             </Popover>
           </div>
         </li>
-      
-      )}
-    </For>
-    </menu>
-  );
+      ))
+    )}
+  </>);
 }
 
 export default TempListItems
