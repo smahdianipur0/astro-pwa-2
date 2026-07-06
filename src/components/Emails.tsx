@@ -14,7 +14,7 @@ export function Emails(entry:ReadResultTypes["Emails"], isEditing:boolean): JSX.
             background-color:transparent; 
             padding-inline: 0;'>  
 
-            <div data-swapy-item={entry.id} class="flex-spread-childs max-width" style="height: var(--size-sm4);">
+            <div data-swapy-item={entry.id} class="HStack" style="height: var(--size-sm4); width:var(--stretch);">
 
                 <div>
                     <button 
@@ -30,9 +30,9 @@ export function Emails(entry:ReadResultTypes["Emails"], isEditing:boolean): JSX.
                         {entry.email ?? ''} </button>
                 </div>
 
-                {isEditing && <div class="flex-spread-childs slide-in-right">
+                {isEditing && <div class="HStack slide-in-right">
 
-                    <div class="HStack trailing">
+                    <div class="HStack">
                         <Popover 
                             trigger={
                                 <div class='text-as-button ZStack' style="margin-right: calc(var(--size-sm0)* -1);" >

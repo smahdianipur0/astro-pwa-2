@@ -7,10 +7,11 @@ import TempList from '../components/TempList.astro';
 ---
 
 <fieldset class="box-shadow" style="color: oklch(var(--gray-95));" id="GeneratePass">
-    <legend class="flex-spread-childs" style="width: 100%;">
+    <legend class="HStack" style="width: var(--stretch);">
 
         Password
-
+        
+        <div style="flex:1;"></div>
         <menu class="menu-horizontal" style="font-size: var(--font-sm4); width: initial;">
 
             <li>
@@ -79,7 +80,7 @@ import TempList from '../components/TempList.astro';
                     <div class="skeleton" style="width:var(--size-xl1)"> </div>
                 </div>
 
-                <div style="flex: 1 0 0px;"></div>
+                <div style="flex:1;"></div>
         
                     <button 
                         style="margin-right: calc(var(--size-sm0) * -1);"

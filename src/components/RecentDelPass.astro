@@ -2,23 +2,21 @@
 import Drawer from '../components/ui/Drawer.tsx';
 ---
 
-<div class="ZStack"style="margin-bottom: var(--size-md2);">
+<div class="ZStack"style="margin-bottom: var(--size-md2); width: min(100%, var(--size-xl7));">
+    <menu>
+        <li>
     <Drawer id='RecentDelPass' direction='right'>
 
         <fragment slot="trigger" class="prose"> 
-            <menu>
-                <li class="flex-spread-childs" 
-                    style="border-radius: var(--radius-s);
-                    margin-inline: auto;
-                    line-height: var(--size-sm4);
-                    width: min( calc(100cqw - (var(--size-sm1) * 2)) , var(--size-xl7));
-                    color: white;
-                    padding: var(--padding-4);
-                    background-color: oklch(var(--gray-15) / 75%);">
+
+                <div class="HStack" 
+                    style="line-height: var(--size-sm4);
+                    color: white;">
                     <div>Recently Deleted</div>
+                    <div style="flex: 1;"></div>
                     <svg style="padding: 2px" width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.293 4.293a1 1 0 0 0 0 1.414L14.586 12l-6.293 6.293a1 1 0 1 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7a1 1 0 0 0-1.414 0Z" fill="oklch(var(--gray-95) / 0.5)"/></svg>
-                </li>
-            </menu>
+                </div>
+
         </fragment>
 
         <fragment slot="title" style="font-weight: 500;">Recently Deleted</fragment>
@@ -29,7 +27,7 @@ import Drawer from '../components/ui/Drawer.tsx';
                     class="box-shadow" 
                     style="padding: 0; color: oklch(var(--gray-95));">
 
-                    <menu id="RecentDelPass-list">
+                    <menu id="RecentDelPass-list" style="background: transparent;">
                         <small style="padding-block: var(--size-sm3);">No records found</small>
                     </menu>
 
@@ -59,6 +57,9 @@ import Drawer from '../components/ui/Drawer.tsx';
             </dialog>
         </Fragment>
     </Drawer>
+    </li>
+    </menu>
+        
 </div>
 
 

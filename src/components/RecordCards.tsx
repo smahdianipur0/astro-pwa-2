@@ -7,17 +7,18 @@ export function RecordCards(entry: ReadResultTypes["Cards"]): JSX.Element {
       <fieldset class="box-shadow" style="margin-block: var(--size-sm3);">
         <div class="not-prose">
           <div 
-            class="flex-spread-childs" 
+            class="HStack" 
             style="border-bottom: 1px solid oklch(var(--gray-25) / 1); 
             padding-bottom: var(--size-sm1); 
             margin-bottom: var(--size-sm1);">
 
-            <p 
-              class="ellipsis" 
+            <p class="ellipsis" 
               style="width: 20ch; 
               font-weight: 600; 
               font-style: italic;">
               {entry.name || 'untitled'}</p>
+
+            <div style="flex:1" ></div>
 
             <div class="HStack" >
 

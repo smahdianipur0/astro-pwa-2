@@ -15,7 +15,6 @@ function openEditDialog(entry: ReadResultTypes["PasswordEntry"]) {
 
 
 const TempListItems = (entries: ReadAllResultTypes["PasswordEntry"] | [])=> {
-  console.log('DeleteMenu:', typeof DeleteMenu, 'Popover:', typeof Popover, 'tempList:', typeof tempList);
 
   return (
     <>

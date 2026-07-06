@@ -8,7 +8,7 @@ import Popover from "./ui/Popover";
             <fragment slot="trigger">
 
                 <div 
-                    class='text-as-button' 
+                    class='ZStack text-as-button' 
                     style="margin-right: calc(var(--size-sm0)* -1); 
                     display: flex 
                     align-items: center;" >
@@ -90,8 +90,6 @@ import { dbCreate, dbUpdate} from "../utils/surrealdb-indexed"
 import { records } from "../logic/records"
 import { RecordId } from "surrealdb";
 
-
-console.log("hi");
 
 //menu event listener
 const vaultMenu = document.getElementById("VaultMenu")  as HTMLElement;

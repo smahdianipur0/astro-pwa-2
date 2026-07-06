@@ -9,13 +9,13 @@ import RecordCards from './RecordCards.astro'
 
     <Auth/>
 
-    <div class="flex-spread-childs max-width" style="margin-block: var(--size-sm0);">
-        <div class="flex-spread-childs max-width" >
-            <label style="color: oklch(var(--gray-95))"  for="Records-vaults">Vaults</label>
-            <select id="Records-vaults" name="vaults" disabled></select>
-        </div>
+    <div class="HStack" style="margin-block: var(--size-sm0); width: var(--stretch);">
 
+        <label style="color: oklch(var(--gray-95))"  for="Records-vaults">Vaults</label>
+        <div style="flex:1"></div>
+        <select id="Records-vaults" name="vaults" disabled></select>
         <VaultMenu/>
+        
     </div>
 
 </fieldset>

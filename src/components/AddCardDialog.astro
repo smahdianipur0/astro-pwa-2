@@ -19,20 +19,22 @@
 
 <dialog id="AddCardDialog">
     <form method="dialog" onsubmit="return handleCardForm(this, event);">    
-        <p class="flex-spread-childs">
+        <div class="HStack">
 
             <label for="AddCardDialog-vault">Vault:</label>
+            <div style="flex:1"></div>
             <select name="select vault" id="AddCardDialog-vault"></select> 
 
-        </p>
+        </div>
 
         
-        <p class="flex-spread-childs" style="margin: 0;" >
+        <div class="HStack" style="margin-top: var(--size-sm1);">
 
             <label for="AddCardDialog-card-select">Card:</label>
+            <div style="flex:1"></div>
             <select name="select card" id="AddCardDialog-card-select"></select>
 
-        </p>
+        </div>
         
         <p id="AddCardDialog-card-field"></p>
 
