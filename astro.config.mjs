@@ -12,17 +12,19 @@ export default defineConfig({
     css: { transformer: 'lightningcss' },
     optimizeDeps: {
       exclude: ['@surrealdb/wasm'],
-      esbuildOptions: {target: 'esnext',},
+      esbuildOptions: { target: 'esnext' },
+    },
+    build: {
+      minify: false,
+      assetsInlineLimit: 51200,
     },
   },
   esbuild: {
-    supported: {'top-level-await': true},
+    supported: { 'top-level-await': true },
   },
   build: {
-    minify: false,
-    assetsInlineLimit: 51200,
     inlineStylesheets: 'always',
   },
   output: 'static',
-  adapter: vercel()
+  adapter: vercel(),
 });
