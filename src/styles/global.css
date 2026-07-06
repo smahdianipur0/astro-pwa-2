@@ -153,13 +153,6 @@ svg{
   background: linear-gradient(to top, transparent, oklch(var(--gray-10) / 70%));
 }
 
-
-.flex-spread-childs{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .max-width{
   width: -moz-available;
   width: -webkit-fill-available;
