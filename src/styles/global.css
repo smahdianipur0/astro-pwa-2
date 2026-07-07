@@ -153,11 +153,6 @@ svg{
   background: linear-gradient(to top, transparent, oklch(var(--gray-10) / 70%));
 }
 
-.max-width{
-  width: -moz-available;
-  width: -webkit-fill-available;
-}
-
 .ellipsis{
   white-space: nowrap;
   overflow: hidden;

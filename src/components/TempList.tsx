@@ -1,7 +1,7 @@
-import { tempList } from "../logic/tempList";
-import { showToast } from "../logic/misc";
 import Popover from "./ui/Popover";
 import DeleteMenu from "./ui/DeleteMenu";
+import { tempList } from "../logic/tempList";
+import { showToast } from "../logic/misc";
 import type { ReadResultTypes, ReadAllResultTypes } from "../utils/surrealdb-indexed";
 
 
@@ -25,17 +25,16 @@ const TempListItems = (entries: ReadAllResultTypes["PasswordEntry"] | [])=> {
       entries.map((entry) => (        
         <li style=" width: var(--stretch);background-color:transparent;">
           <div class="VStack leading" style="--gap: 0;">
-            <small class="ellipsis" style="width: var(--size-xl2)">
-              {entry.title || "untitled"}
-            </small>
+
+            <small class="ellipsis" style="width: var(--size-xl2)"> {entry.title || "untitled"} </small>
+
             <button class="not-prose ellipsis" style="text-align: start; width: var(--size-xl2); line-height: var(--size-sm4);  "
               onClick={() => {
                 navigator.clipboard.writeText(entry.password ?? "");
                 showToast();
               }}
-            >
-              {entry.password ?? ""}
-            </button>
+            >{entry.password ?? ""}</button>
+
           </div>
 
           <div>
