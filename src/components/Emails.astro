@@ -85,12 +85,11 @@ const examples = ["name@gmail.com", "name@yahoo.com", "name@outlook.com"]
 
 
 <script>
-import { showToast } from "../logic/misc.ts";
-import { Emails } from './Emails'
 import { render } from "solid-js/web"
 import { email } from '../logic/email'
 import { createSwapy } from 'swapy'
 import { dbUpdate, toRecordId } from "../utils/surrealdb-indexed";
+import EmailsList from './Emails'
 
 
 
@@ -116,21 +115,6 @@ document.getElementById("Emails")!.addEventListener("click", (e) => {
     if ((e!.target as HTMLButtonElement).matches("#Email-dialog-trigger")) { 
         (document.getElementById("Email-dialog") as HTMLDialogElement).showModal();
     }
-
-    const copyButton = (e!.target as HTMLInputElement).closest("[data-action='copy']");
-    if (copyButton) {
-        (async () => {
-            navigator.clipboard.writeText(copyButton.id);  
-            showToast();
-        })();
-    }
-      const deleteButton = (e!.target as HTMLInputElement).closest("[data-action='delete']");
-      if (deleteButton) {
-        const deletebuttonId = toRecordId(deleteButton.id);
-        deletebuttonId && (async () => {
-          email.deleteEmail( deletebuttonId);
-        })();
-      }
 });
 
 document.getElementById("Emails")!.addEventListener("change",(e)=>{
@@ -148,18 +132,23 @@ const swapy = createSwapy(container, {
 
 swapy.enable(false);
 
+let dispose: () => void
+
 email.on(["emailList"], ({value}) => {
     email.setEmailInput("");
     (document.getElementById("Email-input") as HTMLInputElement).value = "";
     (document.getElementById("Email-add")   as HTMLInputElement).disabled = true;
     container.textContent = "";
+    dispose?.();
 
-    (value ?? [])
-        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-        .forEach((entry) => {
-            render(() => Emails(entry, email.get("isEditing")), document.getElementById("Email-list") as HTMLElement);
-        });
-    
+    dispose = render(
+        () => EmailsList( 
+                (value ?? []).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
+                email.get("isEditing")
+            ),
+            container
+        )
+   
     swapy.update()
 
 });
@@ -168,16 +157,19 @@ email.on(["emailList"], ({value}) => {
 
 email.on(["isEditing"], ({value}) =>{ 
 
-    (document.getElementById("Email-list") as HTMLElement).style.maxHeight = value ? "var(--size-xl5)" : "var(--size-xl1)"
+    container.style.maxHeight = value ? "var(--size-xl5)" : "var(--size-xl1)"
     swapy.enable(value);
 
     container.textContent = "";
+    dispose?.();
 
-    (email.get("emailList")?? [])
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    .forEach((entry) => {
-        render(() => Emails(entry, value), document.getElementById("Email-list") as HTMLElement);
-    });
+    dispose = render(
+        () => EmailsList( 
+                (email.get("emailList")?? []).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
+                value
+            ),
+            container
+        )
 
     swapy.update()
 })

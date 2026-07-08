@@ -68,7 +68,7 @@ import Drawer from '../components/ui/Drawer.tsx';
 
 <script>
 
-import { dbCreate, dbDelete, toRecordId, type ReadAllResultTypes } from "../utils/surrealdb-indexed";
+import { dbCreate, dbDelete, toRecordId} from "../utils/surrealdb-indexed";
 import { tempList } from "../logic/tempList.ts" 
 import { render } from "solid-js/web"
 import { initDrawer } from "./ui/drawer"
@@ -79,18 +79,18 @@ initDrawer("RecentDelPass");
 
 tempList.updateRecentDelEntries();
 
-
 const recentdellist = document.getElementById("RecentDelPass-list")   as HTMLElement;
-
-function getList(list? : ReadAllResultTypes["RecentDelPass"] | []) {
-  return (list ?? []).sort( (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-}
-
-let dispose = render(() => RecentDelPassItems(getList()), recentdellist)
+let dispose: () => void
 
 tempList.on(["recentDelEntries"], ({value}) => {
-    dispose();
-    dispose = render(() => RecentDelPassItems(getList(value)), recentdellist)
+    dispose?.();
+    recentdellist.textContent = ""
+    dispose = render(
+        () => RecentDelPassItems(
+            (value ?? []).sort( (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+            ), 
+        recentdellist
+        )
 });
 
 

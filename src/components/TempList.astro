@@ -143,7 +143,6 @@ const searchInputEl  = document.getElementById("TempList-search-input")    as HT
 const entriesList    = document.getElementById("TempList-list")            as HTMLElement;
 
 
-
 document.getElementById("TempList-search")!.addEventListener("input",(e)=>{
   if((e!.target as HTMLInputElement).matches("#TempList-search-input")){
      tempList.setSearchInput((e!.target as HTMLInputElement).value)
@@ -238,15 +237,17 @@ document.getElementById("TempList-update")!.addEventListener("click", (e) => {
 
 
 // render entries list
-function getList(): ReadAllResultTypes["PasswordEntry"] | [] {
-  return tempList.get("isSearching") ? tempList.get("searchArray") : (tempList.get("entries") ?? []);
-}
-
-let dispose = render(() => TempListItems(getList()), entriesList)
+let dispose : () => void
 
 tempList.on(["isSearching", "searchArray"], () => {
-    dispose();
-    dispose = render(() => TempListItems(getList()), entriesList)
+    dispose?.();
+    entriesList.textContent = ""
+    dispose = render(
+        () => TempListItems(
+            tempList.get("isSearching") ? tempList.get("searchArray") : (tempList.get("entries") ?? [])
+            ), 
+        entriesList
+        )
 });
 
 
