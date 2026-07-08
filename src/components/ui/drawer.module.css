@@ -81,13 +81,6 @@
   margin-top: calc(var(--size-xs1) * -1);
 }
 
-.closeButton {
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  font: inherit;
-}
-
 .content {
   align-items: center;
   border-top-left-radius: var(--radius-l);
