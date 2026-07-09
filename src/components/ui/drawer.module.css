@@ -42,12 +42,14 @@
   cursor: default;
 }
 
-.openSnap {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+.openSnap { 
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
+  scroll-snap-align: end;
+  scroll-snap-stop: always; 
+  scroll-margin-bottom: -15dvh;
 }
 
 .openDismissZone {
@@ -59,7 +61,7 @@
 }
 
 .sheet {
-  height: min(90dvh, 700px);
+  height: 100dvh;
   background: oklch(var(--gray-10));
   border-top-left-radius: var(--radius-l);
   border-top-right-radius:var(--radius-l);
@@ -93,6 +95,7 @@
   position: absolute;
   inset: 0;
   overflow: hidden scroll;;
+  padding-bottom: 15dvh;
 }
 
 

@@ -4,7 +4,8 @@ export function initDrawer(drawerId: string): void {
 
   const track     = drawer.querySelector<HTMLElement>('[data-drawer-track]');
   const closeSnap = drawer.querySelector<HTMLElement>('[data-dismiss-snap]');
-  if (!track || !closeSnap) return;
+  const openSnap  = drawer.querySelector<HTMLElement>('[data-drawer-sheet]');
+  if (!track || !closeSnap || !openSnap) return;
 
   const horiz      = drawer.hasAttribute('data-dir-rtl');
   const scrollProp = horiz ? 'scrollLeft' : 'scrollTop';
@@ -15,8 +16,12 @@ export function initDrawer(drawerId: string): void {
   drawer.addEventListener('toggle', (e) => {
     const { newState } = e as ToggleEvent;
     if (newState === 'open') {
-      openSize          = closeSnap[sizeProp];
-      track[scrollProp] = openSize;
+      openSize = closeSnap[sizeProp];
+      openSnap.scrollIntoView(
+        horiz
+          ? {behavior: 'instant', inline: 'end', block: 'nearest'}
+          : {behavior: 'instant', block: 'end', inline: 'nearest'}
+        );
     }
     if (newState === 'closed') {
       track[scrollProp]          = 0;
