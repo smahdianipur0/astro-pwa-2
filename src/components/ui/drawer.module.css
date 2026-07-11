@@ -44,20 +44,9 @@
 
 .openSnap { 
   min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
   scroll-snap-align: end;
   scroll-snap-stop: always; 
   scroll-margin-bottom: -15dvh;
-}
-
-.openDismissZone {
-  flex: 1;
-  width: 100%;
-  border: 0;
-  background: transparent;
-  cursor: default;
 }
 
 .sheet {
@@ -84,16 +73,12 @@
 }
 
 .content {
-  align-items: center;
   border-top-left-radius: var(--radius-l);
   border-top-right-radius:var(--radius-l);
-  gap: var(--size-sm3);
   padding-top: var(--size-lg2);
   padding-inline: var(--size-sm1);
-  flex-direction: column;
-  display: flex;
-  position: absolute;
-  inset: 0;
+  width: var(--stretch);
+  height: var(--stretch);
   overflow: hidden scroll;;
   padding-bottom: 15dvh;
 }
@@ -140,11 +125,6 @@
   animation-name: sheetEnterRtl;
 }
 
-.drawer[data-dir-rtl] .handle {
-  width: 5px;
-  height: 44px;
-  margin: auto 12px;
-}
 
 @keyframes sheetEnterRtl {
   from { transform: translateX(100%); }

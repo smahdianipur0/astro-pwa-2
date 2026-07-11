@@ -37,7 +37,7 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
         <section data-drawer-sheet  class={styles.openSnap}>
 
           <div class={`ZStack subtle-shadow ${styles.sheet}`}>
-            <div class={styles.content}>
+            <div class={` VStack ${styles.content}`} style= "--gap:var(--size-sm3)">
               {props.content}
             </div>
             
