@@ -77,10 +77,15 @@
   border-top-right-radius:var(--radius-l);
   padding-top: var(--size-lg2);
   padding-inline: var(--size-sm1);
-  width: var(--stretch);
-  height: var(--stretch);
+  place-self: stretch;
   overflow: hidden scroll;;
   padding-bottom: 15dvh;
+}
+
+
+.drawer[data-dir-rtl]{
+  height: 85dvh;
+  align-self: end;
 }
 
 
