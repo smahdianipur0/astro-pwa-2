@@ -138,8 +138,6 @@ allTabRadios.forEach((radio) => {
 .bottom-nav-parent{
     padding: var(--size-sm2);
     display: flex;
-    position: sticky;
-    bottom: 0;
     gap: 2%;
 }
 
@@ -225,7 +223,7 @@ allTabRadios.forEach((radio) => {
 } 
 
 .tab-content {
-    place-self: stretch;
+    overflow: hidden scroll;
     display: none;
 }
 
@@ -261,7 +259,6 @@ allTabRadios.forEach((radio) => {
 
     #bottom-nav-parent{
       align-self: start;
-      top: 0;
       height: var(--size-lg1);
     }
 

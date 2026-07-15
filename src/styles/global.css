@@ -153,7 +153,6 @@ svg{
 }
 
 .gradient-blur{
-  width: var(--stretch);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 1) 65%);
