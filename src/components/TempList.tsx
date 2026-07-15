@@ -23,7 +23,7 @@ const TempListItems = (entries: ReadAllResultTypes["PasswordEntry"] | [])=> {
       ):(
     
       entries.map((entry) => (        
-        <li style=" width: var(--stretch);background-color:transparent;">
+        <li style="background-color:transparent;">
           <div class="VStack leading" style="--gap: 0;">
 
             <small class="ellipsis" style="width: var(--size-xl2)"> {entry.title || "untitled"} </small>

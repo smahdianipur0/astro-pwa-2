@@ -12,7 +12,7 @@ interface DrawerComponentProps {
 const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
   return (<>
 
-    <button  class="not-prose" style="width: var(--stretch);" popovertarget={props.id}>
+    <button  class="not-prose" popovertarget={props.id}>
       {props.trigger}
     </button>
 
@@ -41,7 +41,7 @@ const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
               {props.content}
             </div>
             
-            <div class={`top gradient-blur ${styles.header}`}> </div>
+            <div class={`top gradient-blur x-stretch ${styles.header}`}> </div>
             <div style="isolation: isolate;" class="top">{props.title}</div>
               <button style="padding-top: var(--size-sm0);"
               class="not-prose top-trailing"
