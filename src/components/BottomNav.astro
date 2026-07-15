@@ -3,7 +3,7 @@ import KeyIv from '../components/KeyIv.astro';
 import Popover from '../components/ui/Popover';
 ---
 
-<div class="bottom bottom-nav-parent " id="bottom-nav-parent">
+<div class="bottom bottom-nav-parent x-stretch" id="bottom-nav-parent">
     
     <div class="bottom-nav bottom-nav-one glass box-shadow ">
 
@@ -136,10 +136,10 @@ allTabRadios.forEach((radio) => {
 }
 
 .bottom-nav-parent{
-    width: var(--stretch);
     padding: var(--size-sm2);
     display: flex;
-    position: fixed;
+    position: sticky;
+    bottom: 0;
     gap: 2%;
 }
 
@@ -260,7 +260,8 @@ allTabRadios.forEach((radio) => {
     }
 
     #bottom-nav-parent{
-      place-self: start center;
+      align-self: start;
+      top: 0;
       height: var(--size-lg1);
     }
 

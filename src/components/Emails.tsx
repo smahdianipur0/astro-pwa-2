@@ -15,7 +15,7 @@ const EmailsList = (entries:ReadAllResultTypes["Emails"], isEditing:boolean) => 
                 background-color:transparent; 
                 padding-inline: 0;'>  
 
-                <div data-swapy-item={entry.id} class="HStack" style="height: var(--size-sm4); width:var(--stretch);">
+                <div data-swapy-item={entry.id} class="HStack" style="height: var(--size-sm4); --gap:0">
 
                     <div>
                         <button 

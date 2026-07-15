@@ -42,6 +42,9 @@ svg{
 
   &.top{ align-items: flex-start; }
   &.bottom{ align-items: flex-end;}
+
+  > .x-stretch{flex: 1;}
+  > .y-stretch{align-self: stretch;}
 }
 
 .VStack{
@@ -52,6 +55,9 @@ svg{
 
   &.leading{ align-items: flex-start; }
   &.trailing{ align-items: flex-end;}
+
+  > .x-stretch{align-self: stretch;}
+  > .y-stretch{flex: 1;}
 }
 
 
@@ -72,6 +78,9 @@ svg{
   > .bottom-leading{place-self: end start;}
   > .bottom{place-self: end center;}
   > .bottom-trailing{place-self: end end;}
+
+  > .x-stretch{justify-self: stretch; min-width: 0;}
+  > .y-stretch{align-self: stretch; min-width: 0;}
 }
 
 
