@@ -23,7 +23,7 @@ const Popover: ParentComponent<ComponentProps> = (props) => {
 
         <button popovertarget={id} 
             style={`anchor-name: ${anchorName}; cursor: pointer;`}
-            class="not-prose">
+            class="x-stretch not-prose">
             {props.trigger}
         </button>
 

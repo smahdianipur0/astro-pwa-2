@@ -66,9 +66,9 @@ const Tabs: ParentComponent<ComponentProps> = (props) => {
 
 
             </div>
-            <div class={`VStack leading ${styles.panel} ${styles.panel1}`}> {props.tab1} </div>
+            <div class={`VStack leading x-stretch ${styles.panel} ${styles.panel1}`}> {props.tab1} </div>
 
-            <div class={`VStack leading ${styles.panel} ${styles.panel2}`}> {props.tab2} </div>
+            <div class={`VStack leading x-stretch ${styles.panel} ${styles.panel2}`}> {props.tab2} </div>
 
         </div>
     </>);

@@ -71,7 +71,3 @@
   --move:   cubic-bezier(0.32, 0.72, 0  , 1);
 
 }
-
-@supports (width: -moz-available)         { :root {--stretch: -moz-available;} }
-@supports (width: -webkit-fill-available) { :root {--stretch: -webkit-fill-available;} }
-@supports (width: stretch)                { :root {--stretch: stretch;} }

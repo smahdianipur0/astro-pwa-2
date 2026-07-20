@@ -1,0 +1,56 @@
+@supports (width: -moz-available)         { :root {--stretch: -moz-available;} }
+@supports (width: -webkit-fill-available) { :root {--stretch: -webkit-fill-available;} }
+@supports (width: stretch)                { :root {--stretch: stretch;} }
+
+.x-stretch {width: var(--stretch);}
+.y-stretch {height: var(--stretch);}
+
+.HStack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--gap);
+
+  > * { flex-shrink: 0; } 
+
+  &.top { align-items: flex-start; }
+  &.bottom { align-items: flex-end; }
+
+  > .x-stretch {flex: 1 1 0%; min-width: 0;overflow-wrap: break-word;}
+  > .y-stretch { align-self: stretch; min-height: 0; }
+}
+
+.VStack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap);
+
+  > * { flex-shrink: 0; } 
+
+  &.leading { align-items: flex-start; }
+  &.trailing { align-items: flex-end; }
+
+  > .x-stretch { align-self: stretch; min-width: 0; overflow-wrap: break-word; }
+  > .y-stretch {flex: 1 1 0%;min-height: 0;overflow-wrap: break-word;}
+}
+
+.ZStack {
+  display: grid;
+  place-items: center;
+  grid-template-areas: "stack";
+
+  > * { grid-area: stack; }
+
+  > .top-leading { place-self: start start; }
+  > .top { place-self: start center; }
+  > .top-trailing { place-self: start end; }
+  > .leading { place-self: center start; }
+  > .trailing { place-self: center end; }
+  > .bottom-leading { place-self: end start; }
+  > .bottom { place-self: end center; }
+  > .bottom-trailing { place-self: end end; }
+
+  > .x-stretch { justify-self: stretch; min-width: 0; overflow-wrap: break-word; }
+  > .y-stretch { align-self: stretch; min-height: 0; }
+}

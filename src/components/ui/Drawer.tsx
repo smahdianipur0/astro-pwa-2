@@ -12,7 +12,7 @@ interface DrawerComponentProps {
 const DrawerComponent: ParentComponent<DrawerComponentProps> = (props) => {
   return (<>
 
-    <button  class="not-prose" popovertarget={props.id}>
+    <button  class="not-prose x-stretch " popovertarget={props.id}>
       {props.trigger}
     </button>
 

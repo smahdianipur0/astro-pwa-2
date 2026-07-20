@@ -34,56 +34,6 @@ svg{
   border-radius: 100px;
 }
 
-.HStack{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--gap);
-
-  &.top{ align-items: flex-start; }
-  &.bottom{ align-items: flex-end;}
-
-  > .x-stretch{flex: 1;}
-  > .y-stretch{align-self: stretch;}
-}
-
-.VStack{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--gap);
-
-  &.leading{ align-items: flex-start; }
-  &.trailing{ align-items: flex-end;}
-
-  > .x-stretch{align-self: stretch;}
-  > .y-stretch{flex: 1;}
-}
-
-
-.ZStack{
-  display: grid;
-  place-items: center;
-  grid-template-areas: "stack";
-
-  > * {
-    grid-area: stack;
-  }
-
-  > .top-leading{place-self: start start;}
-  > .top{place-self: start center;}
-  > .top-trailing{place-self: start end;}
-  > .leading{place-self: center start;}
-  > .trailing{place-self: center end;}
-  > .bottom-leading{place-self: end start;}
-  > .bottom{place-self: end center;}
-  > .bottom-trailing{place-self: end end;}
-
-  > .x-stretch{justify-self: stretch; min-width: 0;}
-  > .y-stretch{align-self: stretch; min-width: 0;}
-}
-
-
 .glass {
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px)
