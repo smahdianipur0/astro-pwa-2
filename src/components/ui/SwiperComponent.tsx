@@ -12,7 +12,7 @@ const SwiperComponent: ParentComponent<SwiperComponentProps> = (props) => {
         <div class={`HStack ${styles.main}`}>
           <div class="x-stretch">{props.children}</div>
           
-          <details class={`not-prose HStack ${styles.details}`} data-details name="row-actions">
+          <details class={`HStack ${styles.details}`} style="font-size: var(--size-sm0);" data-details name="row-actions">
             <summary class={`trailing ${styles.summary}`} aria-label="Row actions">
               ⋮
             </summary>

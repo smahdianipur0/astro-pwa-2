@@ -58,9 +58,13 @@ const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) =
                 ) : (
                     <SwiperComponent
                         options={
+                            <menu class="menu-horizontal">
+                                <li>
                             <DeleteMenu content={
-                                <button onClick={() => entry.id && email.deleteEmail(entry.id)}></button>
+                                <button onClick={() => entry.id && email.deleteEmail(entry.id)}>Delete</button>
                             }></DeleteMenu>
+                                </li>
+                            </menu>
                         }
                     >
                         <button
