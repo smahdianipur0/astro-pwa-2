@@ -14,11 +14,17 @@ const SwiperComponent: ParentComponent<SwiperComponentProps> = (props) => {
         <div class={`HStack ${styles.main}`}>
           <div class="x-stretch">{props.children}</div>
 
-          <details class={`HStack ${styles.details}`} style="font-size: var(--size-sm0);" data-details {...rowActionsGroupName}>
-            <summary class={`trailing ${styles.summary}`} aria-label="Row actions">
-              ⋮
+          <details class={`HStack ${styles.details}`} data-details {...rowActionsGroupName}>
+            <summary class={`summary-horizontal trailing ${styles.summary}`} aria-label="Row actions">
             </summary>
-            <div class={`HStack x-stretch y-stretch ${styles.optionsRow}`}>{props.options}</div>
+            <div class={`HStack x-stretch y-stretch ${styles.optionsRow}`}>
+              <menu style="width: fit-content;
+              margin-inline-start: auto;
+              margin-inline-end: var(--size-xs3);" 
+              class="menu-horizontal">
+              {props.options}
+            </menu>
+            </div>
           </details>
 
         </div>

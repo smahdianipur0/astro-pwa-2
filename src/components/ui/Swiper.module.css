@@ -1,16 +1,15 @@
 .row {
-  position: relative; /* unchanged — this is the overlay's containing block */
-}
-.row:last-child {
-  border-bottom: none;
+  position: relative;
+  flex: 1;
+  --test: var(--size-xl1)
 }
 
-/* CHANGED: grid instead of flex, plus container-type for the cqw trick below */
 .swipe {
   display: grid;
   grid-template-columns: 1fr auto;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  container-type: inline-size;
   scrollbar-width: none;
 }
 .swipe::-webkit-scrollbar {
@@ -24,18 +23,15 @@
   scroll-snap-align: end;
 }
 
-/* CHANGED: 100cqw instead of 100% */
 .main {
-  width: 100%;
+  width: 100cqw;
 }
 
 .reveal {
-  width: var(--reveal-w, 96px);
+  width: var(--test);
 }
 
-/* CHANGED: no width, no position — sizes to content (just the summary
-   when closed), and stays out of the containing-block chain so .row
-   is what the overlay below anchors to */
+
 .details {
   flex: none;
 }
@@ -45,11 +41,8 @@
   align-items: center;
   justify-content: center;
   width: 32px;
-  border-radius: 8px;
   cursor: pointer;
   user-select: none;
-  font-size: 18px;
-  color: #888;
 }
 .summary::-webkit-details-marker {
   display: none;
@@ -58,9 +51,6 @@
   content: '';
 }
 
-/* CHANGED: display:none (not visibility:hidden) so it's out of flow
-   when closed, then pops out via position:absolute when open —
-   anchored to .row, so it doesn't scroll with .main */
 .optionsRow {
   display: none;
 }
@@ -69,7 +59,6 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: var(--reveal-w, 96px);
+  width: var(--test);
   height: 100%;
-  --gap: 8px;
 }

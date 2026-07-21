@@ -15,8 +15,8 @@ const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) =
                 background-color:transparent; 
                 padding-inline: 0;'>
                 {isEditing ? (
-                    <div data-swapy-item={entry.id} class="HStack" style="height: var(--size-sm4); --gap:0">
-                        <div>
+                    <div data-swapy-item={entry.id} class="HStack x-stretch">
+
                             <button
                                 class="not-prose ellipsis"
                                 onClick={() => {
@@ -31,7 +31,8 @@ const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) =
                                 padding-inline: 0;`}>
                                 {entry.email ?? ''}
                             </button>
-                        </div>
+                            <div style="flex:1"></div>
+
                         <div class="HStack slide-in-right">
                             <div data-swapy-handle style="width: var(--size-md2);display: flex;justify-content: flex-end;">
                                 <div class="swapy-handle"></div>
@@ -41,13 +42,11 @@ const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) =
                 ) : (
                     <SwiperComponent
                         options={
-                            <menu class="menu-horizontal">
-                                <li>
-                            <DeleteMenu content={
-                                <button onClick={() => entry.id && email.deleteEmail(entry.id)}>Delete</button>
-                            }></DeleteMenu>
-                                </li>
-                            </menu>
+                            <li>
+                                <DeleteMenu content={
+                                    <button onClick={() => entry.id && email.deleteEmail(entry.id)}>Delete</button>
+                                }></DeleteMenu>
+                            </li>
                         }
                     >
                         <button
