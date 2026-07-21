@@ -90,6 +90,7 @@ import { email } from '../logic/email'
 import { createSwapy } from 'swapy'
 import { dbUpdate, toRecordId } from "../utils/surrealdb-indexed";
 import EmailsList from './Emails'
+import { initSwiper } from "./ui/Swiper";
 
 
 
@@ -131,6 +132,8 @@ const swapy = createSwapy(container, {
 });
 
 swapy.enable(false);
+
+initSwiper(container);
 
 let dispose: () => void
 

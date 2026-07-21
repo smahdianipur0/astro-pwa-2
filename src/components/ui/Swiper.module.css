@@ -1,0 +1,63 @@
+.row {
+  position: relative;
+}
+.row:last-child {
+  border-bottom: none;
+}
+
+.swipe {
+  --gap: 0px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.swipe::-webkit-scrollbar {
+  display: none;
+}
+
+.swipe > .main {
+  scroll-snap-align: start;
+}
+.swipe > .reveal {
+  scroll-snap-align: end;
+}
+
+.main {
+  width: 100%;
+}
+
+.reveal {
+  width: var(--reveal-w, 96px);
+}
+
+.details {
+  width: var(--reveal-w, 96px);
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 18px;
+  color: #888;
+}
+.summary::-webkit-details-marker {
+  display: none;
+}
+.summary::marker {
+  content: '';
+}
+
+.optionsRow {
+  visibility: hidden;
+  pointer-events: none;
+  --gap: 8px;
+}
+.swipe:has(.details[open]) .optionsRow {
+  visibility: visible;
+  pointer-events: auto;
+}
