@@ -15,9 +15,8 @@ const SwiperComponent: ParentComponent<SwiperComponentProps> = (props) => {
           <div class="x-stretch">{props.children}</div>
 
           <details class={`HStack ${styles.details}`} data-details {...rowActionsGroupName}>
-            <summary class={`summary-horizontal trailing ${styles.summary}`} aria-label="Row actions">
-            </summary>
-            <div class={`HStack x-stretch y-stretch ${styles.optionsRow}`}>
+            <summary class={`summary-horizontal trailing not-prose ${styles.summary}`} aria-label="Row actions"> ⋮ </summary>
+            <div class={`HStack x-stretch y-stretch prose ${styles.optionsRow}`}>
               <menu style="width: fit-content;
               margin-inline-start: auto;
               margin-inline-end: var(--size-xs3);" 

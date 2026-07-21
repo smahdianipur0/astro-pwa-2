@@ -1,7 +1,7 @@
 .row {
   position: relative;
   flex: 1;
-  --test: var(--size-xl1)
+  --reveal-width: var(--size-xl1)
 }
 
 .swipe {
@@ -28,7 +28,7 @@
 }
 
 .reveal {
-  width: var(--test);
+  width: var(--reveal-width);
 }
 
 
@@ -59,6 +59,6 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: var(--test);
+  width: var(--reveal-width);
   height: 100%;
 }
