@@ -11,7 +11,6 @@
   grid-template-columns: 1fr auto;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  container-type: inline-size;
   scrollbar-width: none;
 }
 .swipe::-webkit-scrollbar {
@@ -27,7 +26,7 @@
 
 /* CHANGED: 100cqw instead of 100% */
 .main {
-  width: 100cqw;
+  width: 100%;
 }
 
 .reveal {
