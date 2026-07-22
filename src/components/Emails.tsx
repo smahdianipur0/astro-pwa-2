@@ -1,5 +1,4 @@
 import type { ReadAllResultTypes } from "../utils/surrealdb-indexed"
-import Popover from "./ui/Popover";
 import DeleteMenu from './ui/DeleteMenu'
 import SwiperComponent from './ui/SwiperComponent'
 import { showToast } from "../logic/misc";

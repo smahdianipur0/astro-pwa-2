@@ -1,10 +1,11 @@
 .row {
   position: relative;
   flex: 1;
-  --reveal-width: var(--size-xl1)
+  --reveal-width: var(--size-xl1);
 }
 
 .swipe {
+  gap: var(--gap);
   display: grid;
   grid-template-columns: 1fr auto;
   overflow-x: auto;
@@ -25,10 +26,13 @@
 
 .main {
   width: 100cqw;
+  --gap: 0;
+  border-radius: calc( var(--radius-s) + var(--size-xs1));
+  transition: background-color .3s var(--appear);
 }
 
 .reveal {
-  width: var(--reveal-width);
+  width: max-content;
 }
 
 
@@ -51,14 +55,6 @@
   content: '';
 }
 
-.optionsRow {
-  display: none;
-}
-.details[open] .optionsRow {
-  display: flex;
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: var(--reveal-width);
-  height: 100%;
+.swipe:has([data-details][open]) .main {
+  background-color: oklch(var(--gray-95) / 0.05);
 }
