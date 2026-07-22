@@ -342,7 +342,7 @@
   padding: var(--size-sm3);
   border-radius: var(--radius-l);
   place-content:center;
-  background: oklch(var(--gray-15) / 0.85);
+  background: oklch(var(--gray-15));
 }
 
 
