@@ -10,7 +10,7 @@ export interface SwiperComponentProps {
 const SwiperComponent: ParentComponent<SwiperComponentProps> = (props) => {
   return (
     <div class={styles.row}>
-      <div class={`HStack ${styles.swipe}`} data-swipe>
+      <div class={styles.swipe} data-swipe>
         <div class={`HStack ${styles.main}`}>
           <div class="x-stretch">{props.children}</div>
           <details class={`HStack ${styles.details}`} data-details {...rowActionsGroupName}>
