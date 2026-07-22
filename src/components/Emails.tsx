@@ -57,7 +57,7 @@ const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) =
                             style={`text-align: start; 
                             font-weight: 700;
                             color: oklch(var(--gray-95));
-                            padding: var(--padding-0);
+                            padding: var(--padding-2);
                             padding-inline: 0;`}>
                             {entry.email ?? ''}
                         </button>
