@@ -5,6 +5,7 @@
 }
 
 .swipe {
+  height: fit-content;
   gap: var(--gap);
   display: grid;
   grid-template-columns: 1fr auto;
