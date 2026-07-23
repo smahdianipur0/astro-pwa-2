@@ -1,14 +1,12 @@
 .row {
   position: relative;
   flex: 1;
-  --reveal-width: var(--size-xl1);
+  --sum-width: var(--size-sm2);
 }
 
-.swipe {
-  gap: var(--gap);
-  display: grid;
-  grid-template-columns: 1fr auto;
-  overflow-x: auto;
+.swipe { 
+  --gap: 0;
+  overflow-x: scroll;
   scroll-snap-type: x mandatory;
   container-type: inline-size;
   scrollbar-width: none;
@@ -20,31 +18,23 @@
 .swipe > .main {
   scroll-snap-align: start;
 }
-.swipe > .reveal {
+.swipe > .details {
   scroll-snap-align: end;
 }
 
 .main {
-  width: 100cqw;
+  width: calc(100cqw - var(--sum-width));
   --gap: 0;
   border-radius: calc( var(--radius-s) + var(--size-xs1));
   transition: background-color .3s var(--appear);
 }
 
-.reveal {
-  width: max-content;
-}
-
-
-.details {
-  flex: none;
-}
 
 .summary {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
+  margin-inline-end: var(--size-sm2);
   cursor: pointer;
   user-select: none;
 }
@@ -53,8 +43,4 @@
 }
 .summary::marker {
   content: '';
-}
-
-.swipe:has([data-details][open]) .main {
-  background-color: oklch(var(--gray-95) / 0.05);
 }

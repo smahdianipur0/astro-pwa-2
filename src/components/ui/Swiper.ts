@@ -3,12 +3,22 @@ export function initSwiper(container: HTMLElement): () => void {
   const onScrollCapture = (e: Event) => {
     const swipe = e.target as HTMLElement;
     if (!swipe.matches?.('[data-swipe]')) return;
-    const details = swipe.querySelector<HTMLDetailsElement>('[data-details]');
-    if (!details) return;
-    const max = swipe.scrollWidth - swipe.clientWidth;
-    details.open = swipe.scrollLeft > max / 2;
-  };
 
+    const details = swipe.querySelector<HTMLDetailsElement>('[data-details]');
+    const main = swipe.querySelector<HTMLElement>('[data-main]');
+    if (!details || !main) return;
+
+    const threshold = main.clientWidth / 8;
+    const max = swipe.scrollWidth - swipe.clientWidth;
+    const overRight = swipe.scrollLeft - max;
+    const overLeft = -swipe.scrollLeft;
+
+    if (!details.open && overRight > threshold) {
+      details.open = true;
+    } else if (details.open && overLeft > threshold) {
+      details.open = false;
+    }
+  };
 
   const onToggleCapture = (e: Event) => {
     const details = e.target as HTMLDetailsElement;
