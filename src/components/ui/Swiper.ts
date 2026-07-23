@@ -8,15 +8,13 @@ export function initSwiper(container: HTMLElement): () => void {
     const main = swipe.querySelector<HTMLElement>('[data-main]');
     if (!details || !main) return;
 
-    const threshold = main.clientWidth / 8;
     const max = swipe.scrollWidth - swipe.clientWidth;
-    const overRight = swipe.scrollLeft - max;
-    const overLeft = -swipe.scrollLeft;
+    const threshold = main.clientWidth / 8;
 
-    if (!details.open && overRight > threshold) {
-      details.open = true;
-    } else if (details.open && overLeft > threshold) {
-      details.open = false;
+    if (!details.open && swipe.scrollLeft > max + threshold) {
+      details.open = true;   
+    } else if (details.open && swipe.scrollLeft <= 0) {
+      details.open = false;  
     }
   };
 

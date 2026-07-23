@@ -10,7 +10,7 @@ const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) =
 
             <li
                 data-swapy-slot={entry.createdAt}
-                style='width: 100%; 
+                style='width: 100%; height: var(--size-md3);
                 background-color:transparent; 
                 padding-inline: 0;'>
                 {isEditing ? (
