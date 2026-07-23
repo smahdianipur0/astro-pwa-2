@@ -9,7 +9,7 @@ export function initSwiper(container: HTMLElement): () => void {
     if (!details || !main) return;
 
     const max = swipe.scrollWidth - swipe.clientWidth;
-    const threshold = main.clientWidth / 8;
+    const threshold = main.clientWidth / 6;
 
     if (!details.open && swipe.scrollLeft > max + threshold) {
       details.open = true;   
