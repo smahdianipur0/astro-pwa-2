@@ -23,12 +23,12 @@
 
 .details-appear > :not(summary) {
   opacity: 0;
-  scale: 0.8;
+  scale: 0.5;
   transition:
-    opacity 250ms var(--appear),
-    scale   250ms var( --appear),
-    overlay 250ms allow-discrete,
-    display 250ms allow-discrete;
+    opacity 450ms var(--appear),
+    scale   450ms var( --appear),
+    overlay 450ms allow-discrete,
+    display 450ms allow-discrete;
 }
 
 .details-appear[open] > :not(summary){
@@ -39,6 +39,6 @@
 @starting-style {
   .details-appear[open] > :not(summary){
     opacity: 0;
-    scale: 0.8;
+    scale: 0.5;
   }
 }
