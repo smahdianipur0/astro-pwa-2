@@ -1,7 +1,7 @@
 import type { ReadResultTypes, ReadAllResultTypes } from "../utils/surrealdb-indexed";
 import Popover from "./ui/Popover";
 import DeleteMenu from './ui/DeleteMenu'
-import { showToast } from "../logic/misc";
+import { showToast } from "../components/ui/toast.ts";
 import { tempList } from "../logic/tempList";
 
 

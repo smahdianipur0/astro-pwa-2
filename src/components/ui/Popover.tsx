@@ -28,7 +28,7 @@ const Popover: ParentComponent<ComponentProps> = (props) => {
         </button>
 
 
-        <div class={`prose subtle-shadow ${styles.popover}`} 
+        <div class={`prose subtle-shadow popover-appear ${styles.popover}`} 
             id={id} popover="auto" 
             style={`position-anchor: ${anchorName}`}>
             {props.children}

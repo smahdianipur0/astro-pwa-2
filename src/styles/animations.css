@@ -1,0 +1,44 @@
+.popover-appear {
+  opacity: 0;
+  scale: 0.8;
+  transition:
+    opacity 250ms var(--appear),
+    scale   250ms var( --appear),
+    overlay 250ms allow-discrete,
+    display 250ms allow-discrete;
+}
+
+.popover-appear:popover-open {
+  opacity: 1;
+  scale: 1;
+}
+
+@starting-style {
+  .popover-appear:popover-open{
+    opacity: 0;
+    scale: 0.8;
+  }
+}
+
+
+.details-appear > :not(summary) {
+  opacity: 0;
+  scale: 0.8;
+  transition:
+    opacity 250ms var(--appear),
+    scale   250ms var( --appear),
+    overlay 250ms allow-discrete,
+    display 250ms allow-discrete;
+}
+
+.details-appear[open] > :not(summary){
+  opacity: 1;
+  scale: 1;
+}
+
+@starting-style {
+  .details-appear[open] > :not(summary){
+    opacity: 0;
+    scale: 0.8;
+  }
+}

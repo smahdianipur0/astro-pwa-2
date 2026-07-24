@@ -153,7 +153,7 @@ import TempList from '../components/TempList.astro';
 <script>
   
 import { pass } from '../logic/pass';
-import { showToast } from '../logic/misc'
+import { showToast } from "../components/ui/toast.ts";
 
 
 document.getElementById("GeneratePass")!.addEventListener("change",(e)=>{
@@ -176,7 +176,7 @@ pass.on(["rPassword"], ({value}) => { document.getElementById("GeneratePass-r-pa
 document.getElementById("GeneratePass")!.addEventListener("click",(e)=>{
    if((e!.target as HTMLInputElement).matches("#GeneratePass-copy-hint , #GeneratePass-r-password")){
       navigator.clipboard.writeText(pass.get("Password"));  
-      showToast(); 
+      showToast(pass.get("Password")); 
    }
 
   if((e!.target as HTMLInputElement).matches("#GeneratePass-redo")){
@@ -254,7 +254,7 @@ encryptedPass.addEventListener("click",(e)=>{
     if((e!.target as HTMLInputElement).matches("#GeneratePass-encrypted-pass-copy, #GeneratePass-encrypted-pass-copy-li")){
         if(pass.get("encryptedPass") !== "" && pass.get("keyIvIsValid") === true) {
             navigator.clipboard.writeText(pass.get("encryptedPass"));  
-            showToast(); 
+            showToast(pass.get("encryptedPass")); 
         } 
     };
 });

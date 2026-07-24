@@ -1,7 +1,7 @@
 import type { ReadAllResultTypes } from "../utils/surrealdb-indexed"
 import DeleteMenu from './ui/DeleteMenu'
-import SwiperComponent from './ui/SwiperComponent'
-import { showToast } from "../logic/misc";
+import Swiper from './ui/Swiper.tsx'
+import { showToast } from "../components/ui/toast.ts";
 import { email } from "../logic/email";
 
 const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) => {
@@ -39,7 +39,7 @@ const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) =
                         </div>
                     </div>
                 ) : (
-                    <SwiperComponent
+                    <Swiper
                         options={
                             <li>
                                 <DeleteMenu content={
@@ -61,7 +61,7 @@ const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) =
                             padding-inline: 0;`}>
                             {entry.email ?? ''}
                         </button>
-                    </SwiperComponent>
+                    </Swiper>
                 )}
             </li>
         )))}
