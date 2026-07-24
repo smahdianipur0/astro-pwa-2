@@ -17,7 +17,7 @@ const Swiper: ParentComponent<SwiperComponentProps> = (props) => {
 
         <details class={`HStack details-appear ${styles.details}`} data-details {...rowActionsGroupName}>
           <summary class={`summary-horizontal trailing not-prose ${styles.summary}`} aria-label="Row actions"> ⋮ </summary>
-          <menu style="width: fit-content; margin-inline-start: auto; margin-inline-end: var(--size-xs3);" class="menu-horizontal">
+          <menu style="width: fit-content; margin-inline-start: auto; margin-inline-end: var(--size-xs3); animation: none;" class="menu-horizontal">
             {props.options}
           </menu>
         </details>
