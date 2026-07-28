@@ -1,0 +1,90 @@
+.details {
+  margin: 0;
+  position: relative;
+  display: inline-block;
+  min-width: var(--size-sm0);
+  vertical-align: middle;
+  height: var(--size-md1);
+  transition: min-width 0.3s var(--appear);
+}
+
+.details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.details > summary + * {
+  color: inherit;
+}
+
+.details[open] summary + * {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: var(--size-sm0);
+  animation: details-show-rtl 200ms ease-in-out forwards;
+}
+
+.summary {
+  gap: var(--size-xs2);
+  height: var(--size-md1);
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  flex-direction: row;
+  align-items: center;
+  min-width: max-content;
+  display: flex;
+  position: relative;
+}
+
+.details[open] > summary {
+  min-width: var(--size-lg4);
+}
+
+.summary:not([data-icon])::before {
+  display: none;
+}
+
+.summary[data-icon]::before {
+  content: "";
+  background-color:var(--icon-color) ;
+  mask-image: var(--icon-url);
+  height: var(--size-sm3);
+  width: var(--size-sm3);
+}
+
+.details[open] > .summary::before {
+  content: 'Cancel';
+  display: block;
+  font-size: inherit;
+  color: oklch(var(--gray-95) / 1);
+  background-color: unset;
+  -webkit-mask-image: none;
+  mask-image: none;
+  width: var(--size-lg4);
+  height: auto;
+  text-align: end;
+}
+
+.summary:not([data-action])::after {
+  display: none;
+}
+
+.summary[data-action]::after {
+  content: attr(data-action);
+}
+
+.details[open] > .summary::after {
+  display: none;
+}
+
+@keyframes details-show-rtl {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(var(--size-sm1));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}

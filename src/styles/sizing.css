@@ -58,16 +58,4 @@
   --radius-s: var(--size-sm0);
   --radius-m: var(--size-sm2);
   --radius-l: calc( var(--radius-m) + var(--size-xs3));
-
-
-  --z-layer-pos-5:  5;
-  --z-layer-pos-4:  4;
-  --z-layer-pos-3:  3;
-  --z-layer-pos-2:  2;
-  --z-layer-neg-1: -1;
-
-
-  --appear: cubic-bezier(0.6 , 1.45, 0.5, 1);
-  --move:   cubic-bezier(0.32, 0.72, 0  , 1);
-
 }

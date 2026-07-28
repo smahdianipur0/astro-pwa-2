@@ -1,3 +1,8 @@
+:root{
+  --appear: cubic-bezier(0.6 , 1.45, 0.5, 1);
+  --move:   cubic-bezier(0.32, 0.72, 0  , 1);
+}
+
 .popover-appear {
   opacity: 0;
   scale: 0.8;

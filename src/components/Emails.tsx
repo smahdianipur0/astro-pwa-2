@@ -1,5 +1,5 @@
 import type { ReadAllResultTypes } from "../utils/surrealdb-indexed"
-import DeleteMenu from './ui/DeleteMenu'
+import TwoStepAction from './ui/TwoStepAction'
 import Swiper from './ui/Swiper.tsx'
 import { showToast } from "../components/ui/toast.ts";
 import { email } from "../logic/email";
@@ -42,9 +42,9 @@ const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) =
                     <Swiper
                         options={
                             <li>
-                                <DeleteMenu content={
+                                <TwoStepAction color="var(--danger)" icon="var(--icon-delete)">
                                     <button onClick={() => entry.id && email.deleteEmail(entry.id)}>Delete</button>
-                                }></DeleteMenu>
+                                </TwoStepAction>
                             </li>
                         }
                     >

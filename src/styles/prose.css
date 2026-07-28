@@ -190,7 +190,7 @@
   content: "";
   background: var(--border);
   border-radius: var(--radius-l);
-  z-index: var(--z-layer-neg-1);
+  z-index: -1;
   margin: -1px;
   position: absolute;
   inset: 0;
