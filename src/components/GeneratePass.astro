@@ -16,7 +16,7 @@ import TempList from '../components/TempList.astro';
 
             <li>
                 <button id="GeneratePass-copy-hint" class="not-prose blink" >
-                    <svg style='width: var(--size-sm3); pointer-events: none; overflow: unset;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5.503 4.627 5.5 6.75v10.504a3.25 3.25 0 0 0 3.25 3.25h8.616a2.251 2.251 0 0 1-2.122 1.5H8.75A4.75 4.75 0 0 1 4 17.254V6.75c0-.98.627-1.815 1.503-2.123ZM17.75 2A2.25 2.25 0 0 1 20 4.25v13a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-13A2.25 2.25 0 0 1 8.75 2h9Zm0 1.5h-9a.75.75 0 0 0-.75.75v13c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75v-13a.75.75 0 0 0-.75-.75Z" fill="oklch (var(--gray-95))"/></svg>
+                    <span class="icon" style="--icon-url:var(--icon-copy); pointer-events: none; display: block;"></span>
                 </button>
             </li>
 
@@ -31,13 +31,8 @@ import TempList from '../components/TempList.astro';
                 <Popover>
                     <fragment slot="trigger"> 
                      
-                    <div id="GeneratePass-encrypted-icon" class="ZStack blink" >
-                        
-                    
-                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM18 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="oklch(var(--gray-95))"></path>
-                        </svg> 
-
+                    <div id="GeneratePass-encrypted-icon" class="ZStack blink" >          
+                        <span class="icon" style="--icon-url:var(--icon-dots); pointer-events: none;"></span>
                     </div> 
 
                     </fragment>
@@ -54,9 +49,7 @@ import TempList from '../components/TempList.astro';
                         
                         <li>
                             <button id="GeneratePass-encrypted-pass-copy" class="not-prose HStack no-select">
-                                <svg style='width: var(--size-sm3); pointer-events: none;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5.503 4.627 5.5 6.75v10.504a3.25 3.25 0 0 0 3.25 3.25h8.616a2.251 2.251 0 0 1-2.122 1.5H8.75A4.75 4.75 0 0 1 4 17.254V6.75c0-.98.627-1.815 1.503-2.123ZM17.75 2A2.25 2.25 0 0 1 20 4.25v13a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-13A2.25 2.25 0 0 1 8.75 2h9Zm0 1.5h-9a.75.75 0 0 0-.75.75v13c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75v-13a.75.75 0 0 0-.75-.75Z" fill="oklch (var(--gray-95))"/>
-                                </svg>
+                                <span class="icon" style="--icon-url:var(--icon-copy); pointer-events: none;"></span>
                                 <div style="pointer-events: none;" > Copy </div> 
                             </button>
                         </li>   
@@ -88,7 +81,7 @@ import TempList from '../components/TempList.astro';
                         name="regenerate password" 
                         class="text-as-button blink">   
 
-                        <svg style='width: var(--size-sm3); pointer-events: none;' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m14.61 2.47-.077-.067a.748.748 0 0 0-.983.067l-.068.078a.755.755 0 0 0 .068.987l1.971 1.977H8.5l-.233.004C4.785 5.639 2 8.51 2 12.036c0 1.69.64 3.23 1.692 4.39l.072.069a.751.751 0 0 0 1.08-1.033l-.2-.231A5.009 5.009 0 0 1 3.5 12.035c0-2.771 2.239-5.018 5-5.018h6.881l-1.832 1.84-.067.078a.755.755 0 0 0 .068.987.748.748 0 0 0 1.06 0l3.182-3.193.067-.078a.755.755 0 0 0-.067-.987L14.61 2.47Zm5.62 5.101a.751.751 0 0 0-1.05 1.066 5.01 5.01 0 0 1 1.32 3.398c0 2.772-2.239 5.019-5 5.019H8.558l1.905-1.911.074-.086a.755.755 0 0 0-.007-.902l-.067-.077-.084-.073a.748.748 0 0 0-.9.006l-.076.067-3.182 3.194-.073.085a.755.755 0 0 0 .006.902l.067.077 3.182 3.194.084.072c.293.22.71.195.976-.073a.755.755 0 0 0 .068-.987l-.068-.077-1.899-1.906H15.5l.233-.004C19.215 18.432 22 15.56 22 12.035a6.513 6.513 0 0 0-1.697-4.395l-.073-.069Z" fill="oklch (var(--gray-95))"/></svg>
+                        <span class="icon" style="--icon-url:var(--icon-redo); pointer-events: none; display: block;"></span>
                     </button>                    
 
 
@@ -124,15 +117,13 @@ import TempList from '../components/TempList.astro';
 
 
         <div id="GeneratePass-led-div" class=" blink" style="align-self: flex-start; margin-block-start: var(--size-xs1);" >
-            <svg 
-            id="GeneratePass-led" 
-            style="--led-color: oklch(var(--warning));
+            <span id="GeneratePass-led" class="icon" 
+            style="display: block;
+            --icon-url:var(--icon-info);
+            --led-color: oklch(var(--warning));
             filter: drop-shadow(0px 0px 7px var(--led-color));
-            width: var(--size-sm3);
-            fill: var(--led-color); " 
-            width="24" height="24"  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 1.999c5.524 0 10.002 4.478 10.002 10.002 0 5.523-4.478 10.001-10.002 10.001-5.524 0-10.002-4.478-10.002-10.001C1.998 6.477 6.476 1.999 12 1.999Zm0 1.5a8.502 8.502 0 1 0 0 17.003A8.502 8.502 0 0 0 12 3.5Zm-.004 7a.75.75 0 0 1 .744.648l.007.102.003 5.502a.75.75 0 0 1-1.493.102l-.007-.101-.003-5.502a.75.75 0 0 1 .75-.75ZM12 7.003a.999.999 0 1 1 0 1.997.999.999 0 0 1 0-1.997Z" />
-            </svg>
+            background-color: var(--led-color); "></span>
+
         </div>  
 
         <small 
