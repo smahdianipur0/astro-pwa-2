@@ -72,14 +72,15 @@ import { dbCreate, dbDelete, toRecordId} from "../utils/surrealdb-indexed";
 import { tempList } from "../logic/tempList.ts" 
 import { render } from "solid-js/web"
 import { initDrawer } from "./ui/drawer"
+import { initSwiper } from "./ui/swiper.ts";
 import RecentDelPassItems from "./RecentDelPass"
 
+const recentdellist = document.getElementById("RecentDelPass-list")   as HTMLElement;
 
-initDrawer("RecentDelPass");
 
 tempList.updateRecentDelEntries();
-
-const recentdellist = document.getElementById("RecentDelPass-list")   as HTMLElement;
+initDrawer("RecentDelPass");
+initSwiper(recentdellist);
 let dispose: () => void
 
 tempList.on(["recentDelEntries"], ({value}) => {

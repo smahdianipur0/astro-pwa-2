@@ -123,15 +123,15 @@ import Drawer from '../components/ui/Drawer.tsx';
 
 <script>
 
-import { dbCreate,dbUpdate, toRecordId, type ReadAllResultTypes } from "../utils/surrealdb-indexed";
+import { dbCreate,dbUpdate, toRecordId } from "../utils/surrealdb-indexed";
 import { pass } from '../logic/pass';
 import { tempList } from "../logic/tempList.ts" 
 import { initDrawer } from "./ui/drawer"
+import { initSwiper } from "./ui/swiper.ts";
 import { render } from "solid-js/web"
 import TempListItems from './TempList.tsx'
 
 
-initDrawer("drawer");
 document.getElementById("TempList")!.classList.remove('blink');
 
 
@@ -141,6 +141,9 @@ const titleInput     = document.getElementById("TempList-inputs-title")    as HT
 const addEntryButton = document.getElementById("TempList-inputs-add")      as HTMLButtonElement;
 const searchInputEl  = document.getElementById("TempList-search-input")    as HTMLInputElement;
 const entriesList    = document.getElementById("TempList-list")            as HTMLElement;
+
+initDrawer("drawer");
+initSwiper(entriesList);
 
 
 document.getElementById("TempList-search")!.addEventListener("input",(e)=>{
