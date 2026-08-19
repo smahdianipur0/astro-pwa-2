@@ -1,9 +1,10 @@
 import type { ParentComponent } from 'solid-js'
 import styles from './twoStepAction.module.css'
+import {type IconName} from '../../utils/icons'
 
 interface TwoStepActionProps {
   color?: string;
-  icon?: string;
+  icon?: IconName;
   action?: string;
 }
 

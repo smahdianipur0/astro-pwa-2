@@ -1,4 +1,5 @@
 import type { Component } from 'solid-js'
+import {icons} from '../../utils/icons'
 
 const Toast: Component = () => {
   return (<>
@@ -11,7 +12,7 @@ const Toast: Component = () => {
         padding: var(--padding-3);
         transition: bottom 0.25s var(--move), scale 0.5s var(--appear);  
         color: oklch(var(--success));"> 
-        <span class="icon" style="--icon-url:var(--icon-copied); background-color:oklch(var(--success))"></span>
+        <span class="icon" style={{'--icon-url':icons.copied, 'background-color': 'oklch(var(--success))'}}></span>
         <div class="VStack leading" style="--gap:0;">
           <span>Copied</span>
           <small id="clipboard" class="prose ellipsis" style="max-width: var(--size-xl2); line-height: var(--size-sm3);"></small>

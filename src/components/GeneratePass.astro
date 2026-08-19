@@ -4,6 +4,7 @@ import Popover from '../components/ui/Popover'
 import CharactersCount from '../components/CharactersCount.astro';
 import CharactersPattern from '../components/CharactersPattern.astro'; 
 import TempList from '../components/TempList.astro';
+import {icons} from '../utils/icons'
 ---
 
 <fieldset class="box-shadow" style="color: oklch(var(--gray-95));" id="GeneratePass">
@@ -16,7 +17,7 @@ import TempList from '../components/TempList.astro';
 
             <li>
                 <button id="GeneratePass-copy-hint" class="not-prose blink" >
-                    <span class="icon" style="--icon-url:var(--icon-copy); pointer-events: none; display: block;"></span>
+                    <span class="icon" style={{'--icon-url':icons.copy, 'pointer-events': "none", "display": "block"}}></span>
                 </button>
             </li>
 
@@ -49,7 +50,7 @@ import TempList from '../components/TempList.astro';
                         
                         <li>
                             <button id="GeneratePass-encrypted-pass-copy" class="not-prose HStack no-select">
-                                <span class="icon" style="--icon-url:var(--icon-copy); pointer-events: none;"></span>
+                                <span class="icon" style={{"--icon-url": icons.copy, "pointer-events": "none"}}></span>
                                 <div style="pointer-events: none;" > Copy </div> 
                             </button>
                         </li>   

@@ -16,12 +16,8 @@ const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) =
                 {isEditing ? (
                     <div data-swapy-item={entry.id} class="HStack x-stretch">
 
-                            <button
+                            <p
                                 class="not-prose ellipsis"
-                                onClick={() => {
-                                    navigator.clipboard.writeText(entry.email ?? "");
-                                    showToast();
-                                }}
                                 style={`text-align: start; 
                                 width: var(--size-xl2);
                                 font-weight: 700;
@@ -29,7 +25,7 @@ const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) =
                                 padding: var(--padding-0);
                                 padding-inline: 0;`}>
                                 {entry.email ?? ''}
-                            </button>
+                            </p>
                             <div style="flex:1"></div>
 
                         <div class="HStack slide-in-right">
@@ -42,7 +38,7 @@ const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) =
                     <Swiper
                         options={
                             <li>
-                                <TwoStepAction color="var(--danger)" icon="var(--icon-delete)">
+                                <TwoStepAction color="var(--danger)" icon= "delete" >
                                     <button onClick={() => entry.id && email.deleteEmail(entry.id)}>Delete</button>
                                 </TwoStepAction>
                             </li>
@@ -52,7 +48,7 @@ const EmailsList = (entries: ReadAllResultTypes["Emails"], isEditing: boolean) =
                             class="not-prose ellipsis"
                             onClick={() => {
                                 navigator.clipboard.writeText(entry.email ?? "");
-                                showToast();
+                                showToast(entry.email ?? "");
                             }}
                             style={`text-align: start; 
                             font-weight: 700;

@@ -73,7 +73,7 @@ document.getElementById("Varification")!.addEventListener("click", (e) => {
       document.getElementById("Varification-target-res")!.textContent !== ""
    ) {
       navigator.clipboard.writeText(pass.get("otpRes"));
-      showToast();
+      showToast(pass.get("otpRes"));
    }
 });
 

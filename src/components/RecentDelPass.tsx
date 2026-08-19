@@ -1,5 +1,4 @@
 import type { ReadResultTypes, ReadAllResultTypes } from "../utils/surrealdb-indexed";
-import Popover from "./ui/Popover";
 import Swiper from "./ui/Swiper.tsx";
 import TwoStepAction from "./ui/TwoStepAction.tsx";
 import { showToast } from "../components/ui/toast.ts";
@@ -28,7 +27,7 @@ const RecentDelPassItems = (entries: ReadAllResultTypes["RecentDelPass"] | [])=>
             options={
               <>
                 <li>
-                  <TwoStepAction color="var(--danger)" icon="var(--icon-delete)">
+                  <TwoStepAction color="var(--danger)" icon="delete">
                     <button onClick={() => entry.id && tempList.deleteRecentDelEntris(entry.id)}>Delete</button> 
                   </TwoStepAction>                         
                 </li>
@@ -56,7 +55,7 @@ const RecentDelPassItems = (entries: ReadAllResultTypes["RecentDelPass"] | [])=>
               <button  class="not-prose ellipsis" style="text-align: start; width: var(--size-xl2);"
               onClick={() => {
                   navigator.clipboard.writeText(entry.password ?? "");
-                  showToast();
+                  showToast(entry.password ?? "");
                 }}
               > {entry.password ?? ''}</button>
 

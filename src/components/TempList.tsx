@@ -27,7 +27,7 @@ const TempListItems = (entries: ReadAllResultTypes["PasswordEntry"] | [])=> {
         <Swiper options={
           <>
             <li>
-              <TwoStepAction color="var(--danger)" icon="var(--icon-delete)">
+              <TwoStepAction color="var(--danger)" icon="delete">
                 <button onClick={() => entry.id && tempList.deleteEntries(entry.id)}> Delete</button>
               </TwoStepAction>
             </li>
@@ -51,7 +51,7 @@ const TempListItems = (entries: ReadAllResultTypes["PasswordEntry"] | [])=> {
             <button class="not-prose ellipsis" style="text-align: start; width: var(--size-xl2); line-height: var(--size-sm4);  "
               onClick={() => {
                 navigator.clipboard.writeText(entry.password ?? "");
-                showToast();
+                showToast(entry.password ?? "");
               }}
             >{entry.password ?? ""}</button>
 

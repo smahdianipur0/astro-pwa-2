@@ -87,13 +87,13 @@ document.getElementById("Encdec")!.addEventListener("click",(e)=>{
    if((e!.target as HTMLInputElement).matches("#Encdec-enc-target") &&
       ((document.getElementById("Encdec-enc-target")! as HTMLInputElement).disabled  === false )){
       navigator.clipboard.writeText(pass.get("resultE"));  
-      showToast();
+      showToast(pass.get("resultE"));
    }
 
    if((e!.target as HTMLInputElement).matches("#Encdec-dec-target") &&
       ((document.getElementById("Encdec-dec-target")! as HTMLInputElement).disabled  === false )){
       navigator.clipboard.writeText(pass.get("resultD"));  
-      showToast();
+      showToast(pass.get("resultE"));
    }
 });
 
