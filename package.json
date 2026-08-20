@@ -36,7 +36,7 @@
   "devDependencies": {
     "@types/qrcode": "^1.5.5",
     "lightningcss": "^1.29.1",
-    "vite-plugin-top-level-await": "^1.5.0",
+    "vite-plugin-top-level-await": "^1.6.0",
     "vite-plugin-wasm": "^3.4.1"
   }
 }
