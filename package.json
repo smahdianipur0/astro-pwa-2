@@ -38,5 +38,9 @@
     "lightningcss": "^1.29.1",
     "vite-plugin-top-level-await": "^1.6.0",
     "vite-plugin-wasm": "^3.4.1"
+  },
+    "overrides": {
+    "@swc/core": "1.12.14"
   }
+
 }
