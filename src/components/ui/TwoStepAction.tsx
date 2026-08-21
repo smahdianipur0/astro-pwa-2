@@ -1,6 +1,6 @@
 import type { ParentComponent } from 'solid-js'
 import styles from './twoStepAction.module.css'
-import {type IconName} from '../../utils/icons'
+import {icons, type IconName} from '../../utils/icons'
 
 interface TwoStepActionProps {
   color?: string;
@@ -9,10 +9,11 @@ interface TwoStepActionProps {
 }
 
 const TwoStepAction: ParentComponent<TwoStepActionProps> = (props) => {
+  const iconUrl = () => (props.icon ? icons[props.icon] : 'none');
   return (
     <div class='HStack not-prose'>
       <details style={`color: oklch(${props.color})`} class={styles.details} >
-        <summary style={`--icon-url: ${props.icon}; --icon-color: oklch(${props.color})`}
+        <summary style={`--icon-url: ${iconUrl()}; --icon-color: oklch(${props.color})`}
           class={styles.summary}
           data-icon={props.icon}
           data-action={props.action}
